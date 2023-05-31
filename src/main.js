@@ -21,14 +21,23 @@ app.mixin({
             item.loading = true;
             
             var auth = { "Authorization" : 'Token d5ee83538b357e350221f46aa6d3421f62c95ccc' };
-            const response = await fetch('http://127.0.0.1:8000/api/' + item.url, { headers : auth })
 
-            response.json().then(data => {
+            fetch('http://127.0.0.1:8000/api/' + item.url, { headers : auth })
+            .then((response) => {
+              if (response.ok) {
+                return response.json();
+              }
+              throw new Error('Something went wrong');
+            })
+            .then(data => {
+              item.loading = false
               item.response = data
               item.error = null
             })
             .catch(error => {
+              item.loading = false
               item.error = error
+              console.error("There was an error!", error);
             })
             .finally(() => {
               item.loading = false

@@ -13,32 +13,30 @@ import moment from 'moment'
     <div v-if="!workshops.loading && workshops.response && workshops.response.length">
       <h3>Twoje warsztaty</h3>
       <div class="scroll">
-        <HomeCard v-for="data in workshops.response" :name=data.name :location=data.location :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')" :imgSrc=data.photo />
+        <HomeCard v-for="(data, index) in workshops.response" :key="index"  :name=data.name :location=data.location :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')" :imgSrc=data.photo />
       </div>
     </div>
 
     <div v-if="!schedule.loading && schedule.response && filterScheudleRightNow(schedule.response).length">
       <h3>Co się teraz dzieje?</h3>
       <div class="scroll">
-        <HomeCard v-for="data in filterScheudleRightNow(schedule.response)" :name=data.name :location=data.location :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')" :imgSrc=data.photo />
+        <HomeCard v-for="(data, index) in filterScheudleRightNow(schedule.response)" :key="index" :name=data.name :location=data.location :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')" :imgSrc=data.photo />
       </div>
     </div>
-    <p v-if="schedule.loading">Ładowanie..</p>
-    <p v-if="schedule.error">Błąd wczytywania</p>
 
     <div v-if="!announcements.loading && announcements.response && announcements.response.length">
       <h3>Ogłoszenia</h3>
-        <TextBox v-for="data in announcements.response" :title=data.title :content=data.content /> 
+        <TextBox v-for="(data, index) in announcements.response" :key="index" :title=data.title :content=data.content /> 
     </div>
 
     <div v-if="!schedule.loading && schedule.response && filterScheduleUpNext(schedule.response).length">
       <h3>Następne</h3>
       <div class="scroll">
-        <HomeCard v-for="data in filterScheduleUpNext(schedule.response)" :name=data.name :location=data.location :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')" :imgSrc=data.photo />
+        <HomeCard v-for="(data, index) in filterScheduleUpNext(schedule.response)" :key="index" :name=data.name :location=data.location :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')" :imgSrc=data.photo />
       </div>
     </div>
-    <p v-if="schedule.loading">Ładowanie..</p>
-    <p v-if="schedule.error">Błąd wczytywania</p>
+    <p v-if="schedule.loading" class="loading">Ładowanie..</p>
+    <p v-if="schedule.error" class="error">Błąd wczytywania</p>
     
   </main>
 </template>
@@ -48,13 +46,26 @@ main {
   padding: 40px 0;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 120px);
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: red;
+}
+
 h3 {
   background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%)
     /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-fill-color: transparent;
   padding: 5px 20px;
   font-size: 16px;
 }

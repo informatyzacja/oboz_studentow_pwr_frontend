@@ -1,6 +1,6 @@
 <template>
     <div class="navigation-bar">
-        <router-link to="/">
+        <router-link to="/sos">
             <div class="navigation_bar__item">
                 <img src="/icons8-sos.png" alt="sos" />
                 <p>SOS</p>
@@ -8,7 +8,7 @@
         </router-link>
         <router-link to="/">
             <div class="navigation_bar__item">
-                <img src="/icons8-map_marker.png" alt="sos" />
+                <img src="/icons8-map_marker.png" alt="map" />
                 <p>Mapka<br>Harmonogram</p>
             </div>
         </router-link>
@@ -19,13 +19,13 @@
         </router-link>
         <router-link to="/">
             <div class="navigation_bar__item">
-                <img src="/icons8-hammer.png" alt="sos" />
+                <img src="/icons8-hammer.png" alt="hammer" />
                 <p>Warsztaty</p>
             </div>
         </router-link>
         <router-link to="/">
             <div class="navigation_bar__item">
-                <img src="/icons8-male_user.png" alt="sos" />
+                <img src="/icons8-male_user.png" alt="user" />
                 <p>Profil</p>
             </div>
         </router-link>
