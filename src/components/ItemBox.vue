@@ -8,6 +8,10 @@ defineProps({
         type: String,
         required: false
     },
+    leftBigText: {
+        type: String,
+        required: false
+    },
     bgColor: {
         type: String,
         required: false,
@@ -20,6 +24,11 @@ defineProps({
     rightIcon: {
         type: String,
         required: false,
+    },
+    small: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 
 });
@@ -27,12 +36,13 @@ defineProps({
 </script>
 
 <template>
-    <div class="item" :style="{ backgroundColor: bgColor }">
+    <div class="item" :style="{ backgroundColor: bgColor }" :class="{ small: small }">
 
         <div class="itemLeft">
             <div v-if="leftIcon" class="leftIcon">
                 <img :src="leftIcon"/>
             </div>
+            <h6>{{ leftBigText }}</h6>
             <div class="text">
                 <h5>{{ bigText }}</h5>
                 <p v-if="smallText">{{ smallText }}</p>
@@ -75,6 +85,14 @@ h5 {
     line-height: 17px;
 }
 
+h6 {
+    margin: 0;
+    padding: 1px;
+    font-size: 12px;
+    line-height: 13px;
+    color: var(--text-gray);
+}
+
 p {
     margin: 0;
     padding: 1px;
@@ -84,7 +102,8 @@ p {
 }
 
 .rightIcon {
-    height: 30px;
+    max-height: 30px;
+    max-width: 30px;
     display: flex;
     margin-left: 10px
 }
@@ -105,6 +124,15 @@ img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
+}
+
+.small {
+    min-height: 45px;
+    padding: 5px 15px;
+}
+.small .leftIcon {
+    width: 32px;
+    height: 32px;
 }
 
 </style>

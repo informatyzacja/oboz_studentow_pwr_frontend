@@ -1,7 +1,10 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import {  RouterView } from 'vue-router'
 import NavigationBar from './components/navigation/NavigationBar.vue';
+
+import moment from 'moment';
+import 'moment/dist/locale/pl';
+moment.locale('pl');
 </script>
 
 <template>

@@ -1,19 +1,19 @@
-<!-- eslint-disable vue/valid-v-for -->
-<!-- eslint-disable vue/valid-v-for -->
 <script setup>
 import HomeCard from '../components/home/HomeCard.vue'
 import TextBox from '../components/TextBox.vue'
 import moment from 'moment'
+
+
 </script>
 
 <template>
   <main>
     <!-- <TheWelcome /> -->
 
-    <div v-if="!workshops.loading && workshops.response && workshops.response.length">
-      <h3>Twoje warsztaty</h3>
+    <div v-if="!workshops.loading && workshops.response && filterToday(workshops.response).length">
+      <h3>Twoje dzisiejsze warsztaty</h3>
       <div class="scroll">
-        <HomeCard v-for="(data, index) in workshops.response" :key="index"  :name=data.name :location=data.location :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')" :imgSrc=data.photo />
+        <HomeCard v-for="(data, index) in filterToday(workshops.response)" :key="index"  :name=data.name :location=data.location :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')" :imgSrc=data.photo />
       </div>
     </div>
 
@@ -103,12 +103,19 @@ export default {
       })
     },
     filterScheduleUpNext(schedule) {
+      return this.filterToday(
+        schedule.filter(item => {
+          return moment(item.start).isAfter(moment())
+        }).sort((a, b) => {
+          return moment(a.start).diff(moment(b.start))
+        }).slice(0, 5)
+      )
+    },
+    filterToday(schedule) {
       return schedule.filter(item => {
-        return moment(item.start).isAfter(moment())
-      }).sort((a, b) => {
-        return moment(a.start).diff(moment(b.start))
-      }).slice(0, 5)
-    }
+        return moment(item.start).isSame(moment(), 'day')
+      })
+    },
     
   }
 }

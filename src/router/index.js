@@ -13,6 +13,11 @@ const router = createRouter({
       path: '/sos',
       name: 'sos',
       component: () => import('../views/SosView.vue')
+    },
+    {
+      path: '/profil',
+      name: 'profil',
+      component: () => import('../views/ProfileView.vue')
     }
   ]
 })

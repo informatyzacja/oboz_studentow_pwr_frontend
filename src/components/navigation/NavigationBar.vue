@@ -6,7 +6,7 @@
                 <p>SOS</p>
             </div>
         </router-link>
-        <router-link to="/">
+        <router-link to="/mapa">
             <div class="navigation_bar__item">
                 <img src="/icons8-map_marker.png" alt="map" />
                 <p>Mapka<br>Harmonogram</p>
@@ -17,13 +17,13 @@
             <img src="/The-Hunger-Games-PNG-File.png" alt="logo" />
         </div>
         </router-link>
-        <router-link to="/">
+        <router-link to="/warsztaty">
             <div class="navigation_bar__item">
                 <img src="/icons8-hammer.png" alt="hammer" />
                 <p>Warsztaty</p>
             </div>
         </router-link>
-        <router-link to="/">
+        <router-link to="/profil">
             <div class="navigation_bar__item">
                 <img src="/icons8-male_user.png" alt="user" />
                 <p>Profil</p>
@@ -37,10 +37,10 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 0 25px;
-    height: 50px;
+    padding: 15px 25px;
+    height: 75px;
     background-color: var(--bg-lighter);
-    box-shadow: 0px -3px 8px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
 
     position: fixed;
     bottom: 0;

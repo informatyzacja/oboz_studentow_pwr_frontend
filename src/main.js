@@ -18,11 +18,11 @@ app.mixin({
     methods: {
         async loadData(item) {
       
-            item.loading = true;
+            // item.loading = true;
             
             var auth = { "Authorization" : 'Token d5ee83538b357e350221f46aa6d3421f62c95ccc' };
 
-            fetch('http://127.0.0.1:8000/api/' + item.url, { headers : auth })
+            fetch('http://192.168.0.34:8000/api/' + item.url, { headers : auth })
             .then((response) => {
               if (response.ok) {
                 return response.json();
