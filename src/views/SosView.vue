@@ -7,6 +7,7 @@ import ItemBox from '../components/ItemBox.vue';
 
 <template>
     <div class="sos">
+        <h1>SOS</h1>
         <h3>Ratownicy</h3>
         <div v-if="!lifeGuard.loading && lifeGuard.response && lifeGuard.response.length">
             <a v-for="(data, index) in lifeGuard.response" :key="index" :href="'tel:'+data.phoneNumber">
@@ -37,6 +38,10 @@ import ItemBox from '../components/ItemBox.vue';
         <p v-if="sztab.response && !sztab.response.length" class="error">Sztab sie najebał</p>
         <p v-if="sztab.loading" class="loading">Ładowanie..</p>
         <p v-if="sztab.error" class="error">Błąd wczytywania</p>
+
+        <router-link to="/faq">
+          <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" rightIcon="/arrow.svg" />
+        </router-link>
     </div>
 </template>
 
@@ -44,6 +49,13 @@ import ItemBox from '../components/ItemBox.vue';
 <style scoped>
 .sos {
     padding: 20px;
+}
+
+h1 {
+  background: var(--radial-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 h3 {
@@ -54,6 +66,13 @@ h3 {
   background-clip: text;
   padding: 5px 2px;
   font-size: 12px;
+}
+
+.faq {
+  position: absolute;
+  bottom: 100px;
+  left: 20px;
+  right: 20px;
 }
 
 .error {

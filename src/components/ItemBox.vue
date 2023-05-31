@@ -85,6 +85,8 @@ p {
 
 .rightIcon {
     height: 30px;
+    display: flex;
+    margin-left: 10px
 }
 
 .leftIcon {
