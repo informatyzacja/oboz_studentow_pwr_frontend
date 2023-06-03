@@ -1,9 +1,13 @@
 import { defineStore } from 'pinia'
-import { loadData } from './loadData.js'
+import { loadData, ready } from './functions.js'
 
 export const useProfileStore = defineStore('profile', {
   state: () => ({ loading: true, error: null, data: null, url: 'profile/' }),
-  getters: {},
+  getters: {
+    ready() {
+      return ready(this)
+    },
+  },
   actions: {
     fetchData() {
       loadData(this)
@@ -13,7 +17,11 @@ export const useProfileStore = defineStore('profile', {
 
 export const useLinkStore = defineStore('link', {
   state: () => ({ loading: true, error: null, data: null, url: 'link/' }),
-  getters: {},
+  getters: {
+    ready() {
+      return ready(this)
+    },
+  },
   actions: {
     fetchData() {
       loadData(this)

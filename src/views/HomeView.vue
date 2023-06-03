@@ -13,8 +13,7 @@ import { mapStores } from 'pinia'
 
     <div
       v-if="
-        !apiDataStore.userWorkshop.loading &&
-        apiDataStore.userWorkshop.data &&
+        apiDataStore.userWorkshop.ready &&
         apiDataStore.userWorkshop.today.length
       "
     >
@@ -33,8 +32,7 @@ import { mapStores } from 'pinia'
 
     <div
       v-if="
-        !apiDataStore.schedule.loading &&
-        apiDataStore.schedule.data &&
+        apiDataStore.schedule.ready &&
         apiDataStore.schedule.rightNow.length
       "
     >
@@ -53,8 +51,7 @@ import { mapStores } from 'pinia'
 
     <div
       v-if="
-        !apiDataStore.announcement.loading &&
-        apiDataStore.announcement.data &&
+        apiDataStore.announcement.ready &&
         apiDataStore.announcement.data.length
       "
     >
@@ -69,8 +66,7 @@ import { mapStores } from 'pinia'
 
     <div
       v-if="
-        !apiDataStore.schedule.loading &&
-        apiDataStore.schedule.data &&
+        apiDataStore.schedule.ready &&
         apiDataStore.schedule.upNext.length
       "
     >

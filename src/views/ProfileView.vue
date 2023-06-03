@@ -13,8 +13,7 @@ import { mapStores } from 'pinia'
     <div
       class="flex"
       v-if="
-        !apiDataStore.profile.loading &&
-        apiDataStore.profile.data &&
+        apiDataStore.profile.ready &&
         apiDataStore.profile.data.length
       "
     >
@@ -40,9 +39,7 @@ import { mapStores } from 'pinia'
 
         <!-- TODO add grupa obozowa -->
         <div
-          v-if="
-            !apiDataStore.links.loading && apiDataStore.links.data && apiDataStore.links.data.length
-          "
+          v-if="apiDataStore.links.ready && apiDataStore.links.data.length"
         >
           <a v-for="(data, index) in apiDataStore.links.data" :key="index" :href="data.url">
             <ItemBox :bigText="data.name" :leftIcon="data.icon" rightIcon="arrow.svg" />
@@ -85,8 +82,7 @@ import { mapStores } from 'pinia'
 
     <div
       v-if="
-        !apiDataStore.userWorkshop.loading &&
-        apiDataStore.userWorkshop.data &&
+        apiDataStore.userWorkshop.ready &&
         apiDataStore.userWorkshop.data.length
       "
     >

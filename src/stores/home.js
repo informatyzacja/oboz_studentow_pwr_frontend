@@ -1,15 +1,18 @@
 import { defineStore } from 'pinia'
-import { loadData } from './loadData.js'
+import { loadData, ready } from './functions.js'
 import moment from 'moment'
 
 export const useUserWorkshopStore = defineStore('userWorkshop', {
   state: () => ({ loading: true, error: null, data: null, url: 'workshopUserSignedUp/' }),
   getters: {
+    ready() {
+      return ready(this)
+    },
     today() {
       return this.data.filter((item) => {
         return moment(item.start).isSame(moment(), 'day')
       })
-    }
+    },
   },
   actions: {
     fetchData() {
@@ -21,6 +24,9 @@ export const useUserWorkshopStore = defineStore('userWorkshop', {
 export const useScheduleStore = defineStore('schedule', {
   state: () => ({ loading: true, error: null, data: null, url: 'schedule/' }),
   getters: {
+    ready() {
+      return ready(this)
+    },
     rightNow() {
       return this.data.filter((item) => {
         return moment(item.start).isBefore(moment()) && moment(item.end).isAfter(moment())
@@ -54,7 +60,11 @@ export const useScheduleStore = defineStore('schedule', {
 
 export const useAnnouncementStore = defineStore('announcement', {
   state: () => ({ loading: true, error: null, data: null, url: 'announcement/' }),
-  getters: {},
+  getters: {
+    ready() {
+      return ready(this)
+    },
+  },
   actions: {
     fetchData() {
       loadData(this)

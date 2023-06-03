@@ -11,8 +11,7 @@ import { mapStores } from 'pinia'
     <h3>Ratownicy</h3>
     <div
       v-if="
-        !apiDataStore.contacts.lifeGuard.loading &&
-        apiDataStore.contacts.lifeGuard.data &&
+        apiDataStore.contacts.lifeGuard.ready &&
         apiDataStore.contacts.lifeGuard.data.length
       "
     >
@@ -42,8 +41,7 @@ import { mapStores } from 'pinia'
     <h3>Obecnie da dyżurze trzeźwości</h3>
     <div
       v-if="
-        !apiDataStore.contacts.currentSoberDuty.loading &&
-        apiDataStore.contacts.currentSoberDuty.data &&
+        apiDataStore.contacts.currentSoberDuty.ready &&
         apiDataStore.contacts.currentSoberDuty.data.length
       "
     >
@@ -75,8 +73,7 @@ import { mapStores } from 'pinia'
     <h3>Sztab</h3>
     <div
       v-if="
-        !apiDataStore.contacts.sztab.loading &&
-        apiDataStore.contacts.sztab.data &&
+        apiDataStore.contacts.sztab.ready &&
         apiDataStore.contacts.sztab.data.length
       "
     >
@@ -97,7 +94,7 @@ import { mapStores } from 'pinia'
       v-if="apiDataStore.contacts.sztab.data && !apiDataStore.contacts.sztab.data.length"
       class="error"
     >
-      apiDataStore.contacts.sztab sie najebał
+      Sztab się najebał
     </p>
     <p v-if="apiDataStore.contacts.sztab.loading" class="loading">Ładowanie..</p>
     <p v-if="apiDataStore.contacts.sztab.error" class="error">Błąd wczytywania</p>

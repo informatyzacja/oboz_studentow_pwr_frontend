@@ -24,3 +24,8 @@ export function loadData(item) {
       item.loading = false
     })
 }
+
+
+export function ready(item) {
+  return !item.loading && item.data
+}

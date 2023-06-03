@@ -1,9 +1,13 @@
 import { defineStore } from 'pinia'
-import { loadData } from './loadData.js'
+import { loadData, ready } from './functions.js'
 
 export const useContactsStore = defineStore('contact', {
   state: () => ({ loading: true, error: null, data: null, url: 'contact/' }),
-  getters: {},
+  getters: {
+    ready() {
+      return ready(this)
+    },
+  },
   actions: {
     fetchData() {
       loadData(this)
@@ -13,7 +17,11 @@ export const useContactsStore = defineStore('contact', {
 
 export const useLifeGuardsStore = defineStore('lifeGuard', {
   state: () => ({ loading: true, error: null, data: null, url: 'lifeGuard/' }),
-  getters: {},
+  getters: {
+    ready() {
+      return ready(this)
+    },
+  },
   actions: {
     fetchData() {
       loadData(this)
@@ -23,7 +31,11 @@ export const useLifeGuardsStore = defineStore('lifeGuard', {
 
 export const useCurrentSoberDutyStore = defineStore('currentSoberDuty', {
   state: () => ({ loading: true, error: null, data: null, url: 'currentSoberDuty/' }),
-  getters: {},
+  getters: {
+    ready() {
+      return ready(this)
+    },
+  },
   actions: {
     fetchData() {
       loadData(this)
