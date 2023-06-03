@@ -1,13 +1,15 @@
 <script setup>
 import ItemBox from '../components/ItemBox.vue'
+import TopBar from '../components/navigation/TopBar.vue'
+import LoadingIndicator from '../components/LoadingIndicator.vue'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 </script>
 
 <template>
+  <TopBar title="SOS" />
   <div class="sos">
-    <h1>SOS</h1>
     <h3>Ratownicy</h3>
     <div
       v-if="
@@ -35,7 +37,8 @@ import { mapStores } from 'pinia'
     >
       Brak ratowników
     </p>
-    <p v-if="apiDataStore.contacts.lifeGuard.loading" class="loading">Ładowanie..</p>
+
+    <LoadingIndicator v-if="apiDataStore.contacts.lifeGuard.loading" />
     <p v-if="apiDataStore.contacts.lifeGuard.error" class="error">Błąd wczytywania</p>
 
     <h3>Obecnie da dyżurze trzeźwości</h3>
@@ -67,7 +70,8 @@ import { mapStores } from 'pinia'
     >
       Nikt nie jest na dyżurze trzeźwości
     </p>
-    <p v-if="apiDataStore.contacts.currentSoberDuty.loading" class="loading">Ładowanie..</p>
+
+    <LoadingIndicator v-if="apiDataStore.contacts.currentSoberDuty.loading" />
     <p v-if="apiDataStore.contacts.currentSoberDuty.error" class="error">Błąd wczytywania</p>
 
     <h3>Sztab</h3>
@@ -96,7 +100,8 @@ import { mapStores } from 'pinia'
     >
       Sztab się najebał
     </p>
-    <p v-if="apiDataStore.contacts.sztab.loading" class="loading">Ładowanie..</p>
+
+    <LoadingIndicator v-if="apiDataStore.contacts.sztab.loading" />
     <p v-if="apiDataStore.contacts.sztab.error" class="error">Błąd wczytywania</p>
 
     <router-link to="/faq">
@@ -107,14 +112,7 @@ import { mapStores } from 'pinia'
 
 <style scoped>
 .sos {
-  padding: 20px;
-}
-
-h1 {
-  background: var(--radial-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  padding: 0 20px;
 }
 
 h3 {

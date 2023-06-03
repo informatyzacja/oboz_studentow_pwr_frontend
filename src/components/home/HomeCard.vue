@@ -17,12 +17,19 @@ defineProps({
   imgSrc: {
     type: String,
     required: true
+  },
+  userCount: {
+    type: String
+  },
+  big: {
+    type: Boolean,
+    default: false
   }
-})
+});
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" :class="{big: big}">
     <img class="bg" :src="imgSrc" />
     <div class="time">
       <p>{{ time }}</p>
@@ -31,6 +38,7 @@ defineProps({
     <div class="description">
       <h2><IconLocation class="icon" /> {{ location }}</h2>
       <h1>{{ name }}</h1>
+      <h3 v-if="userCount" >{{ userCount }} osób</h3>
     </div>
   </div>
 </template>
@@ -45,6 +53,13 @@ defineProps({
 
   display: inline-block;
   margin: 0 10px;
+}
+
+.card.big {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 5/4;
+  margin: 0 0 10px;
 }
 
 .bg {
@@ -79,13 +94,13 @@ defineProps({
 .description {
   position: absolute;
   bottom: 0;
-  padding: 0px 14px;
+  padding: 15px;
 }
 
 .description h1 {
   font-size: 20px;
   line-height: 20px;
-  padding: 5px 0 12px;
+  padding: 5px 0 0;
   white-space: normal;
 }
 
@@ -96,6 +111,13 @@ defineProps({
   display: flex;
   align-items: center;
   gap: 5px;
+}
+
+.description h3 {
+  font-size: 13px;
+  line-height: 13px;
+  padding: 5px 0 0;
+  color: var(--text-gray);
 }
 
 .description .icon {

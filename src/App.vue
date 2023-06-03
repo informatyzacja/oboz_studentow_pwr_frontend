@@ -31,6 +31,6 @@ moment.locale('pl')
 .wrapper {
   max-width: 500px;
   margin: 0 auto;
-  margin-bottom: 60px;
+  margin-bottom: 100px;
 }
 </style>

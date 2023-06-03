@@ -1,5 +1,7 @@
 <script setup>
 import ItemBox from '../components/ItemBox.vue'
+import TopBar from '../components/navigation/TopBar.vue'
+import LoadingIndicator from '../components/LoadingIndicator.vue'
 import moment from 'moment'
 
 import { useApiDataStore } from '../stores/api.js'
@@ -7,8 +9,8 @@ import { mapStores } from 'pinia'
 </script>
 
 <template>
+  <TopBar title="Profil" />
   <div class="padding">
-    <h1>Profil</h1>
 
     <div
       class="flex"
@@ -37,7 +39,7 @@ import { mapStores } from 'pinia'
 
         <div class="spacer"></div>
 
-        <!-- TODO add grupa obozowa -->
+        <!-- TODO add grupa na gre nocna -->
         <div
           v-if="apiDataStore.links.ready && apiDataStore.links.data.length"
         >
@@ -77,7 +79,7 @@ import { mapStores } from 'pinia'
       </div>
     </div>
 
-    <p v-if="apiDataStore.profile.loading" class="loading">Ładowanie..</p>
+    <LoadingIndicator v-if="apiDataStore.profile.loading" />
     <p v-if="apiDataStore.profile.error" class="error">Błąd wczytywania</p>
 
     <div
@@ -101,13 +103,12 @@ import { mapStores } from 'pinia'
 
     <h6>W przypadku błędnych danych prosimy o kontakt z sztabem</h6>
 
-    <div class="spacer"></div>
   </div>
 </template>
 
 <style scoped>
 .padding {
-  padding: 20px;
+  padding: 0 20px;
 }
 
 h1 {

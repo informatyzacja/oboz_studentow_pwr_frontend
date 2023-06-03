@@ -1,6 +1,7 @@
 <script setup>
 import HomeCard from '../components/home/HomeCard.vue'
 import TextBox from '../components/TextBox.vue'
+import LoadingIndicator from '../components/LoadingIndicator.vue'
 import moment from 'moment'
 
 import { useApiDataStore } from '../stores/api.js'
@@ -82,7 +83,7 @@ import { mapStores } from 'pinia'
         />
       </div>
     </div>
-    <p v-if="apiDataStore.schedule.loading" class="loading">Ładowanie..</p>
+    <LoadingIndicator v-if="apiDataStore.schedule.loading" />
     <p v-if="apiDataStore.schedule.error" class="error">Błąd wczytywania</p>
   </main>
 </template>
