@@ -3,41 +3,91 @@ import HomeCard from '../components/home/HomeCard.vue'
 import TextBox from '../components/TextBox.vue'
 import moment from 'moment'
 
-
+import { useApiDataStore } from '../stores/api.js'
+import { mapStores } from 'pinia'
 </script>
 
 <template>
   <main>
     <!-- <TheWelcome /> -->
 
-    <div v-if="!workshops.loading && workshops.response && filterToday(workshops.response).length">
+    <div
+      v-if="
+        !apiDataStore.userWorkshop.loading &&
+        apiDataStore.userWorkshop.data &&
+        apiDataStore.userWorkshop.today.length
+      "
+    >
       <h3>Twoje dzisiejsze warsztaty</h3>
       <div class="scroll">
-        <HomeCard v-for="(data, index) in filterToday(workshops.response)" :key="index"  :name=data.name :location=data.location :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')" :imgSrc=data.photo />
+        <HomeCard
+          v-for="(data, index) in apiDataStore.userWorkshop.today"
+          :key="index"
+          :name="data.name"
+          :location="data.location"
+          :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')"
+          :imgSrc="data.photo"
+        />
       </div>
     </div>
 
-    <div v-if="!schedule.loading && schedule.response && filterScheudleRightNow(schedule.response).length">
+    <div
+      v-if="
+        !apiDataStore.schedule.loading &&
+        apiDataStore.schedule.data &&
+        apiDataStore.schedule.rightNow.length
+      "
+    >
       <h3>Co się teraz dzieje?</h3>
       <div class="scroll">
-        <HomeCard v-for="(data, index) in filterScheudleRightNow(schedule.response)" :key="index" :name=data.name :location=data.location :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')" :imgSrc=data.photo />
+        <HomeCard
+          v-for="(data, index) in apiDataStore.schedule.rightNow"
+          :key="index"
+          :name="data.name"
+          :location="data.location"
+          :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')"
+          :imgSrc="data.photo"
+        />
       </div>
     </div>
 
-    <div v-if="!announcements.loading && announcements.response && announcements.response.length">
+    <div
+      v-if="
+        !apiDataStore.announcement.loading &&
+        apiDataStore.announcement.data &&
+        apiDataStore.announcement.data.length
+      "
+    >
       <h3>Ogłoszenia</h3>
-        <TextBox v-for="(data, index) in announcements.response" :key="index" :title=data.title :content=data.content /> 
+      <TextBox
+        v-for="(data, index) in apiDataStore.announcement.data"
+        :key="index"
+        :title="data.title"
+        :content="data.content"
+      />
     </div>
 
-    <div v-if="!schedule.loading && schedule.response && filterScheduleUpNext(schedule.response).length">
+    <div
+      v-if="
+        !apiDataStore.schedule.loading &&
+        apiDataStore.schedule.data &&
+        apiDataStore.schedule.upNext.length
+      "
+    >
       <h3>Następne</h3>
       <div class="scroll">
-        <HomeCard v-for="(data, index) in filterScheduleUpNext(schedule.response)" :key="index" :name=data.name :location=data.location :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')" :imgSrc=data.photo />
+        <HomeCard
+          v-for="(data, index) in apiDataStore.schedule.upNext"
+          :key="index"
+          :name="data.name"
+          :location="data.location"
+          :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')"
+          :imgSrc="data.photo"
+        />
       </div>
     </div>
-    <p v-if="schedule.loading" class="loading">Ładowanie..</p>
-    <p v-if="schedule.error" class="error">Błąd wczytywania</p>
-    
+    <p v-if="apiDataStore.schedule.loading" class="loading">Ładowanie..</p>
+    <p v-if="apiDataStore.schedule.error" class="error">Błąd wczytywania</p>
   </main>
 </template>
 
@@ -84,39 +134,13 @@ h3 {
 
 <script>
 export default {
-  data() {
-    return {
-      workshops: {loading: true, error: null, response: null, url: 'workshopUserSignedUp/'},
-      schedule: {loading: true, error: null, response: null, url: 'schedule/'},
-      announcements: {loading: true, error: null, response: null, url: 'announcement/'}, 
-    }
+  computed: {
+    ...mapStores(useApiDataStore)
   },
   mounted() {
-    this.loadData(this.workshops);
-    this.loadData(this.schedule);
-    this.loadData(this.announcements);
-  },
-  methods: {
-    filterScheudleRightNow(schedule) {
-      return schedule.filter(item => {
-        return moment(item.start).isBefore(moment()) && moment(item.end).isAfter(moment())
-      })
-    },
-    filterScheduleUpNext(schedule) {
-      return this.filterToday(
-        schedule.filter(item => {
-          return moment(item.start).isAfter(moment())
-        }).sort((a, b) => {
-          return moment(a.start).diff(moment(b.start))
-        }).slice(0, 5)
-      )
-    },
-    filterToday(schedule) {
-      return schedule.filter(item => {
-        return moment(item.start).isSame(moment(), 'day')
-      })
-    },
-    
+    this.apiDataStore.userWorkshop.fetchData()
+    this.apiDataStore.schedule.fetchData()
+    this.apiDataStore.announcement.fetchData()
   }
 }
 </script>

@@ -1,10 +1,10 @@
 <script setup>
-import {  RouterView } from 'vue-router'
-import NavigationBar from './components/navigation/NavigationBar.vue';
+import { RouterView } from 'vue-router'
+import NavigationBar from './components/navigation/NavigationBar.vue'
 
-import moment from 'moment';
-import 'moment/dist/locale/pl';
-moment.locale('pl');
+import moment from 'moment'
+import 'moment/dist/locale/pl'
+moment.locale('pl')
 </script>
 
 <template>
@@ -31,6 +31,6 @@ moment.locale('pl');
 .wrapper {
   max-width: 500px;
   margin: 0 auto;
-  padding-bottom: 40px;
+  margin-bottom: 60px;
 }
 </style>

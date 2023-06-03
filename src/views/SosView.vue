@@ -1,61 +1,123 @@
 <script setup>
-import ItemBox from '../components/ItemBox.vue';
+import ItemBox from '../components/ItemBox.vue'
 
-
-
+import { useApiDataStore } from '../stores/api.js'
+import { mapStores } from 'pinia'
 </script>
 
 <template>
-    <div class="sos">
-        <h1>SOS</h1>
-        <h3>Ratownicy</h3>
-        <div v-if="!lifeGuard.loading && lifeGuard.response && lifeGuard.response.length">
-            <a v-for="(data, index) in lifeGuard.response" :key="index" :href="'tel:'+data.phoneNumber">
-                <ItemBox  :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo" rightIcon="/phone_icon.svg" bgColor="var(--red)" />
-            </a>
-        </div>
-        <p v-if="lifeGuard.response && !lifeGuard.response.length" class="error">Brak ratowników</p>
-        <p v-if="lifeGuard.loading" class="loading">Ładowanie..</p>
-        <p v-if="lifeGuard.error" class="error">Błąd wczytywania</p>
-
-
-        <h3>Obecnie da dyżurze trzeźwości</h3>
-        <div v-if="!soberDuty.loading && soberDuty.response && soberDuty.response.length">
-            <a v-for="(data, index) in soberDuty.response" :key="index" :href="'tel:'+data.phoneNumber">
-                <ItemBox  :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo" rightIcon="/phone_icon.svg" />
-            </a>
-        </div>
-        <p v-if="soberDuty.response && !soberDuty.response.length" class="error">Nikt nie jest na dyżurze trzeźwości</p>
-        <p v-if="soberDuty.loading" class="loading">Ładowanie..</p>
-        <p v-if="soberDuty.error" class="error">Błąd wczytywania</p>
-
-        <h3>Sztab</h3>
-        <div v-if="!sztab.loading && sztab.response && sztab.response.length">
-            <a v-for="(data, index) in sztab.response" :key="index" :href="'tel:'+data.phoneNumber">
-                <ItemBox  :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo" rightIcon="/phone_icon.svg" />
-            </a>
-        </div>
-        <p v-if="sztab.response && !sztab.response.length" class="error">Sztab sie najebał</p>
-        <p v-if="sztab.loading" class="loading">Ładowanie..</p>
-        <p v-if="sztab.error" class="error">Błąd wczytywania</p>
-
-        <router-link to="/faq">
-          <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" rightIcon="/arrow.svg" />
-        </router-link>
+  <div class="sos">
+    <h1>SOS</h1>
+    <h3>Ratownicy</h3>
+    <div
+      v-if="
+        !apiDataStore.contacts.lifeGuard.loading &&
+        apiDataStore.contacts.lifeGuard.data &&
+        apiDataStore.contacts.lifeGuard.data.length
+      "
+    >
+      <a
+        v-for="(data, index) in apiDataStore.contacts.lifeGuard.data"
+        :key="index"
+        :href="'tel:' + data.phoneNumber"
+      >
+        <ItemBox
+          :bigText="data.first_name + ' ' + data.last_name"
+          :smallText="data.title"
+          :leftIcon="data.photo"
+          rightIcon="/phone_icon.svg"
+          bgColor="var(--red)"
+        />
+      </a>
     </div>
-</template>
+    <p
+      v-if="apiDataStore.contacts.lifeGuard.data && !apiDataStore.contacts.lifeGuard.data.length"
+      class="error"
+    >
+      Brak ratowników
+    </p>
+    <p v-if="apiDataStore.contacts.lifeGuard.loading" class="loading">Ładowanie..</p>
+    <p v-if="apiDataStore.contacts.lifeGuard.error" class="error">Błąd wczytywania</p>
 
+    <h3>Obecnie da dyżurze trzeźwości</h3>
+    <div
+      v-if="
+        !apiDataStore.contacts.currentSoberDuty.loading &&
+        apiDataStore.contacts.currentSoberDuty.data &&
+        apiDataStore.contacts.currentSoberDuty.data.length
+      "
+    >
+      <a
+        v-for="(data, index) in apiDataStore.contacts.currentSoberDuty.data"
+        :key="index"
+        :href="'tel:' + data.phoneNumber"
+      >
+        <ItemBox
+          :bigText="data.first_name + ' ' + data.last_name"
+          :smallText="data.title"
+          :leftIcon="data.photo"
+          rightIcon="/phone_icon.svg"
+        />
+      </a>
+    </div>
+    <p
+      v-if="
+        apiDataStore.contacts.currentSoberDuty.data &&
+        !apiDataStore.contacts.currentSoberDuty.data.length
+      "
+      class="error"
+    >
+      Nikt nie jest na dyżurze trzeźwości
+    </p>
+    <p v-if="apiDataStore.contacts.currentSoberDuty.loading" class="loading">Ładowanie..</p>
+    <p v-if="apiDataStore.contacts.currentSoberDuty.error" class="error">Błąd wczytywania</p>
+
+    <h3>Sztab</h3>
+    <div
+      v-if="
+        !apiDataStore.contacts.sztab.loading &&
+        apiDataStore.contacts.sztab.data &&
+        apiDataStore.contacts.sztab.data.length
+      "
+    >
+      <a
+        v-for="(data, index) in apiDataStore.contacts.sztab.data"
+        :key="index"
+        :href="'tel:' + data.phoneNumber"
+      >
+        <ItemBox
+          :bigText="data.first_name + ' ' + data.last_name"
+          :smallText="data.title"
+          :leftIcon="data.photo"
+          rightIcon="/phone_icon.svg"
+        />
+      </a>
+    </div>
+    <p
+      v-if="apiDataStore.contacts.sztab.data && !apiDataStore.contacts.sztab.data.length"
+      class="error"
+    >
+      apiDataStore.contacts.sztab sie najebał
+    </p>
+    <p v-if="apiDataStore.contacts.sztab.loading" class="loading">Ładowanie..</p>
+    <p v-if="apiDataStore.contacts.sztab.error" class="error">Błąd wczytywania</p>
+
+    <router-link to="/faq">
+      <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" rightIcon="/arrow.svg" />
+    </router-link>
+  </div>
+</template>
 
 <style scoped>
 .sos {
-    padding: 20px;
+  padding: 20px;
 }
 
 h1 {
   background: var(--radial-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 h3 {
@@ -78,22 +140,15 @@ h3 {
 .error {
   color: red;
 }
-
 </style>
 
 <script>
 export default {
-  data() {
-    return {
-      lifeGuard: {loading: true, error: null, response: null, url: 'lifeGuard/'},
-      soberDuty: {loading: true, error: null, response: null, url: 'currentSoberDuty/'},
-      sztab: {loading: true, error: null, response: null, url: 'contact/'}, 
-    }
+  computed: {
+    ...mapStores(useApiDataStore)
   },
   mounted() {
-    this.loadData(this.lifeGuard);
-    this.loadData(this.soberDuty);
-    this.loadData(this.sztab);
-  },
+    this.apiDataStore.contacts.fetchData()
+  }
 }
 </script>

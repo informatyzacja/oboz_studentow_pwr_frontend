@@ -1,80 +1,124 @@
 <script setup>
-import ItemBox from '../components/ItemBox.vue';
-import moment from 'moment';
+import ItemBox from '../components/ItemBox.vue'
+import moment from 'moment'
+
+import { useApiDataStore } from '../stores/api.js'
+import { mapStores } from 'pinia'
 </script>
 
-
 <template>
-    <div class="padding">
-        <h1>Profil</h1>
+  <div class="padding">
+    <h1>Profil</h1>
 
-        <div class='flex' v-if="!profile.loading && profile.response && profile.response.length">
+    <div
+      class="flex"
+      v-if="
+        !apiDataStore.profile.loading &&
+        apiDataStore.profile.data &&
+        apiDataStore.profile.data.length
+      "
+    >
+      <img :src="apiDataStore.profile.data[0].photo" alt="profile photo" class="profile_photo" />
+      <p class="name">
+        {{ apiDataStore.profile.data[0].first_name }} {{ apiDataStore.profile.data[0].last_name }}
+      </p>
+      <p class="email">{{ apiDataStore.profile.data[0].email }}</p>
 
-          <img :src="profile.response[0].photo" alt="profile photo" class="profile_photo" />
-          <p class="name">{{profile.response[0].first_name}} {{profile.response[0].last_name}}</p>
-          <p class="email">{{profile.response[0].email}}</p>
+      <div class="spacer"></div>
 
-          <div class="spacer"></div>
-
-          <!-- Frakcja -->
-          <div class="itemBoxContainer">
-            <!-- TODO add link to fraction -->
-            <ItemBox v-if="profile.response[0].fraction" :bigText="profile.response[0].fraction.name" :leftIcon="profile.response[0].fraction.logo" rightIcon="arrow.svg" />
-
-            <div class="spacer"></div>
-
-           <!-- TODO add grupa obozowa -->
-            <div v-if="!links.loading && links.response && links.response.length">
-              <a v-for="(data, index) in links.response" :key="index" :href="data.url">
-                <ItemBox :bigText="data.name" :leftIcon="data.icon" rightIcon="arrow.svg" />
-              </a>
-            </div>
-            <router-link to="/faq">
-              <ItemBox bigText="Częste pytania" rightIcon="/arrow.svg" leftIcon="icons8-faq.png" />
-            </router-link>
-
-            <div class="spacer"></div>
-
-            <h3>Dane</h3>
-            <div v-if="profile.response[0].bus">
-              <a :href="profile.response[0].bus.location">
-                <ItemBox  :bigText="'Bus nr ' + profile.response[0].bus.description" leftIcon="icons8-bus.png" small rightIcon="arrow.svg"/>
-              </a>
-            </div>
-            <ItemBox v-if="profile.response[0].bandId" :bigText="'Opaska nr ' + profile.response[0].bandId" leftIcon="icons8-bangles.png" small/>
-            <ItemBox v-if="profile.response[0].houseNumber" :bigText="'Domek nr ' + profile.response[0].houseNumber" leftIcon="icons8-exterior.png" small/>
-
-          </div>
-        </div>
-
-        <p v-if="profile.loading" class="loading">Ładowanie..</p>
-        <p v-if="profile.error" class="error">Błąd wczytywania</p>
-
-        <div v-if="!workshops.loading && workshops.response && workshops.response.length">
-          <h3>Twoje warsztaty</h3>
-          <div class="scroll">
-            <ItemBox v-for="(data, index) in workshops.response" :key="index" :leftBigText="moment(data.start).format('dd. DD.MM') " :bigText="data.name" rightIcon="arrow.svg" small/>
-          </div>
-        </div>
-
-        <h6>W przypadku błędnych danych prosimy o kontakt z sztabem</h6>
+      <!-- Frakcja -->
+      <div class="itemBoxContainer">
+        <!-- TODO add link to fraction -->
+        <ItemBox
+          v-if="apiDataStore.profile.data[0].fraction"
+          :bigText="apiDataStore.profile.data[0].fraction.name"
+          :leftIcon="apiDataStore.profile.data[0].fraction.logo"
+          rightIcon="arrow.svg"
+        />
 
         <div class="spacer"></div>
 
-    </div>
-</template>
+        <!-- TODO add grupa obozowa -->
+        <div
+          v-if="
+            !apiDataStore.links.loading && apiDataStore.links.data && apiDataStore.links.data.length
+          "
+        >
+          <a v-for="(data, index) in apiDataStore.links.data" :key="index" :href="data.url">
+            <ItemBox :bigText="data.name" :leftIcon="data.icon" rightIcon="arrow.svg" />
+          </a>
+        </div>
+        <router-link to="/faq">
+          <ItemBox bigText="Częste pytania" rightIcon="/arrow.svg" leftIcon="icons8-faq.png" />
+        </router-link>
 
+        <div class="spacer"></div>
+
+        <h3>Dane</h3>
+        <div v-if="apiDataStore.profile.data[0].bus">
+          <a :href="apiDataStore.profile.data[0].bus.location">
+            <ItemBox
+              :bigText="'Bus nr ' + apiDataStore.profile.data[0].bus.description"
+              leftIcon="icons8-bus.png"
+              small
+              rightIcon="arrow.svg"
+            />
+          </a>
+        </div>
+        <ItemBox
+          v-if="apiDataStore.profile.data[0].bandId"
+          :bigText="'Opaska nr ' + apiDataStore.profile.data[0].bandId"
+          leftIcon="icons8-bangles.png"
+          small
+        />
+        <ItemBox
+          v-if="apiDataStore.profile.data[0].houseNumber"
+          :bigText="'Domek nr ' + apiDataStore.profile.data[0].houseNumber"
+          leftIcon="icons8-exterior.png"
+          small
+        />
+      </div>
+    </div>
+
+    <p v-if="apiDataStore.profile.loading" class="loading">Ładowanie..</p>
+    <p v-if="apiDataStore.profile.error" class="error">Błąd wczytywania</p>
+
+    <div
+      v-if="
+        !apiDataStore.userWorkshop.loading &&
+        apiDataStore.userWorkshop.data &&
+        apiDataStore.userWorkshop.data.length
+      "
+    >
+      <h3>Twoje warsztaty</h3>
+      <div class="scroll">
+        <ItemBox
+          v-for="(data, index) in apiDataStore.userWorkshop.data"
+          :key="index"
+          :leftBigText="moment(data.start).format('dd. DD.MM')"
+          :bigText="data.name"
+          rightIcon="arrow.svg"
+          small
+        />
+      </div>
+    </div>
+
+    <h6>W przypadku błędnych danych prosimy o kontakt z sztabem</h6>
+
+    <div class="spacer"></div>
+  </div>
+</template>
 
 <style scoped>
 .padding {
-    padding: 20px;
+  padding: 20px;
 }
 
 h1 {
   background: var(--radial-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 h3 {
@@ -90,7 +134,7 @@ h3 {
 h6 {
   color: var(--text-gray);
 }
- 
+
 .loading {
   display: flex;
   justify-content: center;
@@ -112,27 +156,26 @@ h6 {
   box-shadow: 0px -3px 8px rgba(0, 0, 0, 0.25);
   object-fit: cover;
   margin-top: 10px;
-} 
+}
 
 .name {
   font-size: 23px;
   line-height: 25px;
   margin-top: 15px;
-} 
+}
 
 .email {
   font-size: 13px;
-  color: var(--text-gray)
-} 
+  color: var(--text-gray);
+}
 
 .itemBoxContainer {
   width: 100%;
-} 
-
+}
 
 .spacer {
   height: 15px;
-} 
+}
 
 .flex {
   width: 100%;
@@ -140,23 +183,18 @@ h6 {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-} 
-
+}
 </style>
 
 <script>
 export default {
-  data() {
-    return {
-      profile: {loading: true, error: null, response: null, url: 'profile/'},
-      workshops: {loading: true, error: null, response: null, url: 'workshopUserSignedUp/'},
-      links: {loading: true, error: null, response: null, url: 'link/'},
-    }
+  computed: {
+    ...mapStores(useApiDataStore)
   },
   mounted() {
-    this.loadData(this.profile);
-    this.loadData(this.workshops);
-    this.loadData(this.links);
-  },
+    this.apiDataStore.profile.fetchData()
+    this.apiDataStore.links.fetchData()
+    this.apiDataStore.userWorkshop.fetchData()
+  }
 }
 </script>
