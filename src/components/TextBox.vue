@@ -8,12 +8,12 @@ defineProps({
     type: String,
     required: false
   }
-})
+});
 </script>
 
 <template>
   <div class="textbox">
-    <h4>{{ title }}</h4>
+    <h4 v-if="title">{{ title }}</h4>
     <p>{{ content }}</p>
   </div>
 </template>
@@ -35,7 +35,7 @@ h4 {
 
 p {
   font-size: 14px;
+  line-height: 16px;
   font-weight: 400;
-  margin-bottom: 10px;
 }
 </style>

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import { useAllContactsStore } from './contact.js'
+import { useContactStore } from './contacts.js'
 import { useUserWorkshopStore, useScheduleStore, useAnnouncementStore } from './home.js'
 import { useProfileStore, useLinkStore } from './misc.js'
 import { useWorkshopStore } from './workshops.js'
@@ -12,7 +12,7 @@ export const useApiDataStore = defineStore('apiData', {
     announcement: useAnnouncementStore(),
     profile: useProfileStore(),
     links: useLinkStore(),
-    contacts: useAllContactsStore(),
+    contacts: useContactStore(),
     workshops: useWorkshopStore(),
   })
 })

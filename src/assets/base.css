@@ -41,7 +41,7 @@
 
 @font-face {
   font-family: 'Sui Generis';
-  src: url('sui\ generis\ rg.ttf') format('truetype');
+  src: url('/sui\ generis\ rg.ttf') format('truetype');
 }
 
 body {

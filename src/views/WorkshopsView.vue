@@ -12,25 +12,18 @@ import { mapStores } from 'pinia'
   <TopBar title="Warsztaty" />
   <main>
     <!-- TODO: Add day changer -->
-    <div
-      v-if="
-        apiDataStore.workshops.ready &&
-        apiDataStore.workshops.data.length
-      "
-    >
-        <HomeCard
-          v-for="(data, index) in apiDataStore.workshops.data"
-          :key="index"
-          :name="data.name"
-          :location="data.location"
-          :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')"
-          :imgSrc="data.photo"
-          :userCount="data.userCount + '/' + data.userLimit"
-          big
-        />
-      </div>
+    <div v-if="apiDataStore.workshops.ready &&
+      apiDataStore.workshops.data.length">
 
-    
+      <router-link :to="'warsztaty/'+data.id"  v-for="(data, index) in apiDataStore.workshops.data" :key="index" >
+        <HomeCard :name="data.name"
+          :location="data.location" :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')"
+          :imgSrc="data.photo" :userCount="data.userCount + '/' + data.userLimit" big />
+      </router-link>
+
+    </div>
+
+
     <LoadingIndicator v-if="apiDataStore.workshops.loading" />
     <p v-if="apiDataStore.workshops.error" class="error">Błąd wczytywania</p>
   </main>
@@ -50,7 +43,8 @@ main {
 
 h3 {
   background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%)
-    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+  ;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -62,9 +56,12 @@ h3 {
   overflow-x: auto;
   white-space: nowrap;
   padding: 0 10px;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
+
 ::-webkit-scrollbar {
   display: none;
 }

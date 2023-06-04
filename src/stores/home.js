@@ -9,6 +9,9 @@ export const useUserWorkshopStore = defineStore('userWorkshop', {
       return ready(this)
     },
     today() {
+      if (!this.ready || !this.data) {
+        return []
+      }
       return this.data.filter((item) => {
         return moment(item.start).isSame(moment(), 'day')
       })
@@ -28,11 +31,17 @@ export const useScheduleStore = defineStore('schedule', {
       return ready(this)
     },
     rightNow() {
+      if (!this.ready || !this.data) {
+        return []
+      }
       return this.data.filter((item) => {
         return moment(item.start).isBefore(moment()) && moment(item.end).isAfter(moment())
       })
     },
     upNext() {
+      if (!this.ready || !this.data) {
+        return []
+      }
       return this.data
         .filter((item) => {
           return moment(item.start).isAfter(moment())
@@ -46,6 +55,9 @@ export const useScheduleStore = defineStore('schedule', {
         })
     },
     today() {
+      if (!this.ready || !this.data) {
+        return []
+      }
       return this.data.filter((item) => {
         return moment(item.start).isSame(moment(), 'day')
       })

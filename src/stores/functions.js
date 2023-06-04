@@ -8,7 +8,7 @@ export function loadData(item) {
       if (data.ok) {
         return data.json()
       }
-      throw new Error('Something went wrong')
+      throw new Error('Request failed!')
     })
     .then((data) => {
       item.loading = false

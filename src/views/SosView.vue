@@ -13,12 +13,12 @@ import { mapStores } from 'pinia'
     <h3>Ratownicy</h3>
     <div
       v-if="
-        apiDataStore.contacts.lifeGuard.ready &&
-        apiDataStore.contacts.lifeGuard.data.length
+        apiDataStore.contacts.ready &&
+        apiDataStore.contacts.data.lifeGuard.length
       "
     >
       <a
-        v-for="(data, index) in apiDataStore.contacts.lifeGuard.data"
+        v-for="(data, index) in apiDataStore.contacts.data.lifeGuard"
         :key="index"
         :href="'tel:' + data.phoneNumber"
       >
@@ -32,24 +32,24 @@ import { mapStores } from 'pinia'
       </a>
     </div>
     <p
-      v-if="apiDataStore.contacts.lifeGuard.data && !apiDataStore.contacts.lifeGuard.data.length"
+      v-if="apiDataStore.contacts.ready && apiDataStore.contacts.data.lifeGuard && !apiDataStore.contacts.data.lifeGuard.length"
       class="error"
     >
       Brak ratowników
     </p>
 
-    <LoadingIndicator v-if="apiDataStore.contacts.lifeGuard.loading" />
-    <p v-if="apiDataStore.contacts.lifeGuard.error" class="error">Błąd wczytywania</p>
+    <LoadingIndicator v-if="apiDataStore.contacts.loading" />
+    <p v-if="apiDataStore.contacts.error" class="error">Błąd wczytywania</p>
 
-    <h3>Obecnie da dyżurze trzeźwości</h3>
+    <h3>Obecnie na dyżurze trzeźwości</h3>
     <div
       v-if="
-        apiDataStore.contacts.currentSoberDuty.ready &&
-        apiDataStore.contacts.currentSoberDuty.data.length
+        apiDataStore.contacts.ready &&
+        apiDataStore.contacts.data.currentSoberDuty.length
       "
     >
       <a
-        v-for="(data, index) in apiDataStore.contacts.currentSoberDuty.data"
+        v-for="(data, index) in apiDataStore.contacts.data.currentSoberDuty"
         :key="index"
         :href="'tel:' + data.phoneNumber"
       >
@@ -63,26 +63,28 @@ import { mapStores } from 'pinia'
     </div>
     <p
       v-if="
-        apiDataStore.contacts.currentSoberDuty.data &&
-        !apiDataStore.contacts.currentSoberDuty.data.length
+        apiDataStore.contacts.ready &&
+        apiDataStore.contacts.data.currentSoberDuty &&
+        !apiDataStore.contacts.data.currentSoberDuty.length
       "
       class="error"
     >
       Nikt nie jest na dyżurze trzeźwości
     </p>
 
-    <LoadingIndicator v-if="apiDataStore.contacts.currentSoberDuty.loading" />
-    <p v-if="apiDataStore.contacts.currentSoberDuty.error" class="error">Błąd wczytywania</p>
+    <LoadingIndicator v-if="apiDataStore.contacts.loading" />
+    <p v-if="apiDataStore.contacts.error" class="error">Błąd wczytywania</p>
 
     <h3>Sztab</h3>
     <div
       v-if="
-        apiDataStore.contacts.sztab.ready &&
-        apiDataStore.contacts.sztab.data.length
+        apiDataStore.contacts.ready &&
+        apiDataStore.contacts.data.staff &&
+        apiDataStore.contacts.data.staff.length
       "
     >
       <a
-        v-for="(data, index) in apiDataStore.contacts.sztab.data"
+        v-for="(data, index) in apiDataStore.contacts.data.staff"
         :key="index"
         :href="'tel:' + data.phoneNumber"
       >
@@ -95,14 +97,15 @@ import { mapStores } from 'pinia'
       </a>
     </div>
     <p
-      v-if="apiDataStore.contacts.sztab.data && !apiDataStore.contacts.sztab.data.length"
+      v-if="
+        apiDataStore.contacts.ready && apiDataStore.contacts.data.staff && !apiDataStore.contacts.data.staff.length"
       class="error"
     >
       Sztab się najebał
     </p>
 
-    <LoadingIndicator v-if="apiDataStore.contacts.sztab.loading" />
-    <p v-if="apiDataStore.contacts.sztab.error" class="error">Błąd wczytywania</p>
+    <LoadingIndicator v-if="apiDataStore.contacts.loading" />
+    <p v-if="apiDataStore.contacts.error" class="error">Błąd wczytywania</p>
 
     <router-link to="/faq">
       <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" rightIcon="/arrow.svg" />
