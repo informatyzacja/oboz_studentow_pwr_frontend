@@ -11,12 +11,10 @@ import { mapStores } from 'pinia'
 </script>
 
 <template>
-  <!-- <TopBar title="Warsztaty" /> -->
+  <TopBar :backLink="$router.options.history.state.back || '/warsztaty'" absolute />
   <main>
-    <!-- TODO: Add day changer -->
     <div v-if="apiDataStore.workshops.ready &&
-      apiDataStore.workshops.data.length" 
-      :set="data = apiDataStore.workshops.withId(parseInt($route.params.id))">
+      apiDataStore.workshops.data.length" :set="data = apiDataStore.workshops.withId(parseInt($route.params.id))">
 
       <div class="card">
 
@@ -34,21 +32,16 @@ import { mapStores } from 'pinia'
           <h3>{{ data.userCount + '/' + data.userLimit }} osób</h3>
         </div>
 
-        </div>
+      </div>
 
-          <TextBox :content="data.description" />
+      <TextBox :content="data.description" />
 
-          <div class="padding" v-if="data.workshopleaders && data.workshopleaders.length">
+      <div class="padding" v-if="data.workshopleaders && data.workshopleaders.length">
 
-            <h3>Prowadzący</h3>
-            <ItemBox
-              v-for="(data, index) in data.workshopleaders"
-              :key="index"
-              :bigText="data.first_name + ' ' + data.last_name"
-              :smallText="data.title"
-              :leftIcon="data.photo"
-            />
-          </div>
+        <h3>Prowadzący</h3>
+        <ItemBox v-for="(data, index) in data.workshopleaders" :key="index"
+          :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo" />
+      </div>
 
     </div>
 
@@ -59,14 +52,14 @@ import { mapStores } from 'pinia'
 </template>
 
 <style scoped>
-
 .padding {
   padding: 0px 20px;
 }
 
 h3 {
   background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%)
-    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+  ;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -81,6 +74,7 @@ h3 {
   align-items: center;
   color: red;
 }
+
 .card {
   width: 100%;
   height: 325px;
@@ -153,7 +147,6 @@ h3 {
   height: 16px;
   padding-bottom: 1px;
 }
-
 </style>
 
 <script>

@@ -16,16 +16,22 @@ import { mapStores } from 'pinia'
       apiDataStore.workshops.data.length">
 
       <div class="day-changer">
-        <div v-if="currentDay>0" class="arrow-circle arrow-circle-left" @click="currentDay--" >
-          <div class="arrow arrow-left"></div>
-        </div>
+        <RouterLink v-if="currentDay>0" :to="'/warsztaty/'+(currentDay-1)">
+          <div  class="arrow-circle arrow-circle-left" >
+            <div class="arrow arrow-left"></div>
+          </div>
+        </RouterLink>
+
         <h5>{{ moment(apiDataStore.workshops.futureDates[currentDay]).format('dddd, Do MMMM') }}</h5>
-        <div v-if="currentDay<apiDataStore.workshops.futureDates.length-1" class="arrow-circle arrow-circle-right" @click="currentDay++" >
-          <div class="arrow arrow-right"></div>
-        </div>
+
+        <RouterLink v-if="currentDay<apiDataStore.workshops.futureDates.length-1" :to="'/warsztaty/'+(currentDay+1)">
+          <div class="arrow-circle arrow-circle-right" >
+            <div class="arrow arrow-right"></div>
+          </div>
+        </RouterLink>
       </div>
 
-      <router-link :to="'warsztaty/'+data.id"  v-for="(data, index) in apiDataStore.workshops.withDate(apiDataStore.workshops.futureDates[currentDay])" :key="index" >
+      <router-link :to="'/warsztaty/info/'+data.id" v-for="(data, index) in apiDataStore.workshops.withDate(apiDataStore.workshops.futureDates[currentDay])" :key="index" >
         <HomeCard :name="data.name"
           :location="data.location" :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')"
           :imgSrc="data.photo" :userCount="data.userCount + '/' + data.userLimit" big />
@@ -127,6 +133,12 @@ export default {
     return {
       currentDay: 0
     }
+  },
+  created() {
+    this.currentDay = parseInt(this.$route.params.day) || 0;
+    this.$watch(() => this.$route.params.day, (newVal) => {
+      this.currentDay = parseInt(newVal) || 0;
+    })
   },
   computed: {
     ...mapStores(useApiDataStore)

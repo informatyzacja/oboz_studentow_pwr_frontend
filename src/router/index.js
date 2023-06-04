@@ -25,7 +25,12 @@ const router = createRouter({
       component: () => import('../views/WorkshopsView.vue')
     },
     {
-      path: '/warsztaty/:id',
+      path: '/warsztaty/:day',
+      name: 'warsztatyDay',
+      component: () => import('../views/WorkshopsView.vue')
+    },
+    {
+      path: '/warsztaty/info/:id',
       name: 'warsztatyDetail',
       component: () => import('../views/WorkshopDetailView.vue')
     },
