@@ -21,15 +21,46 @@ export const useWorkshopStore = defineStore('workshop', {
           return []
         }
         return this.data.filter((item) => {
-            return moment(item.start).isAfter(moment())
+            return moment(item.end).isAfter(moment())
         })
     },
+    withDate() {
+      return (date) => (
+        this.data.filter((item) => {
+          return moment(item.start).isSame(date, 'day')
+        })
+      )
+    },
+    
+
     withId() {
       return (id) => (
         this.data.find((item) => {
           return item.id === id
         })
       )
+    },
+
+
+    allDates() {
+      if (!this.ready || !this.data) {
+        return []
+      }
+      return [...new Set(
+        this.data.map((item) => {
+          return moment(item.start).format('YYYY-MM-DD')
+        })
+      )]
+    },
+    futureDates() {
+      if (!this.ready || !this.data) {
+        return []
+      }
+      return [...new Set(
+        this.future.map((item) => {
+          return moment(item.start).format('YYYY-MM-DD')
+        })
+      )]
     }
   },
   actions: {
