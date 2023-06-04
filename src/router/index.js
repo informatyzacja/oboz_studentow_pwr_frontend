@@ -29,6 +29,16 @@ const router = createRouter({
       name: 'warsztatyDetail',
       component: () => import('../views/WorkshopDetailView.vue')
     },
+    {
+      path: '/mapa',
+      name: 'mapa',
+      component: () => import('../views/MapAndScheduleView.vue')
+    },
+    {
+      path: '/faq',
+      name: 'faq',
+      component: () => import('../views/FaqView.vue')
+    },
   ]
 })
 
