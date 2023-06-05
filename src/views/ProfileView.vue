@@ -60,7 +60,7 @@ import { mapStores } from 'pinia'
               :bigText="'Bus nr ' + apiDataStore.profile.data[0].bus.description"
               leftIcon="icons8-bus.png"
               small
-              rightIcon="arrow.svg"
+              :rightIcon="apiDataStore.profile.data[0].bus.location ? 'arrow.svg' : ''"
             />
           </a>
         </div>
@@ -90,26 +90,26 @@ import { mapStores } from 'pinia'
     >
       <h3>Twoje warsztaty</h3>
       <div class="scroll">
-        <ItemBox
+        <RouterLink
           v-for="(data, index) in apiDataStore.userWorkshop.data"
           :key="index"
-          :leftBigText="moment(data.start).format('dd. DD.MM')"
-          :bigText="data.name"
-          rightIcon="arrow.svg"
-          small
-        />
+          :to="`/warsztaty/info/${data.id}`">
+          <ItemBox
+            :leftBigText="moment(data.start).format('dd. DD.MM')"
+            :bigText="data.name"
+            rightIcon="arrow.svg"
+            small
+          />
+        </RouterLink>
       </div>
     </div>
 
-    <h6 v-if="apiDataStore.profile.ready">W przypadku błędnych danych prosimy o kontakt z sztabem</h6>
+    <h6 v-if="apiDataStore.profile.ready">W przypadku błędnych danych prosimy o kontakt ze sztabem</h6>
 
   </div>
 </template>
 
 <style scoped>
-.padding {
-  padding: 0 20px;
-}
 
 h1 {
   background: var(--radial-gradient);
@@ -119,8 +119,7 @@ h1 {
 }
 
 h3 {
-  background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%)
-    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -139,12 +138,6 @@ h6 {
   height: calc(100vh - 120px);
 }
 
-.error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: red;
-}
 .profile_photo {
   width: 140px;
   height: 140px;

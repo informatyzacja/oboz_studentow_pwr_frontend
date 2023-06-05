@@ -57,12 +57,15 @@ import { mapStores } from 'pinia'
       "
     >
       <h3>Ogłoszenia</h3>
-      <TextBox
-        v-for="(data, index) in apiDataStore.announcement.data"
-        :key="index"
-        :title="data.title"
-        :content="data.content"
-      />
+      <div class="padding">
+        <TextBox
+          v-for="(data, index) in apiDataStore.announcement.data"
+          :key="index"
+          :title="data.title"
+          :content="data.content"
+          style="margin-bottom: 10px;"
+        />
+      </div>
     </div>
 
     <div
@@ -100,12 +103,6 @@ main {
   height: calc(100vh - 120px);
 }
 
-.error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: red;
-}
 
 h3 {
   background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%)

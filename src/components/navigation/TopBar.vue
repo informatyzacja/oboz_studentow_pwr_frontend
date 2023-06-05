@@ -49,7 +49,6 @@ h1 {
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  background: white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,10 +59,16 @@ h1 {
 .arrow {
   border: solid black;
   border-width: 0 4px 4px 0;
+  border-image: var(--radial-gradient) 1;
   display: inline-block;
   padding: 7px;
   margin-left: 4px;
   transform: rotate(135deg);
   -webkit-transform: rotate(135deg);
+}
+
+.header_absolute .arrow {
+  border-image: none;
+  border-color: black;
 }
 </style>

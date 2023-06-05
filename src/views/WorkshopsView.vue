@@ -95,12 +95,6 @@ main {
   padding: 0px 20px;
 }
 
-.error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: red;
-}
 
 .day-changer h5 {
   background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%);

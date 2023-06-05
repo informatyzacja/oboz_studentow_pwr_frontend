@@ -135,9 +135,6 @@ h3 {
   right: 20px;
 }
 
-.error {
-  color: red;
-}
 </style>
 
 <script>

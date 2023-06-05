@@ -24,17 +24,18 @@ defineProps({
   border-radius: 20px;
   position: relative;
   padding: 20px;
-  margin: 0px 20px 10px;
+  /* margin: 0px 20px 10px; */
 }
 
 h4 {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
+  /* font-weight: 600; */
   margin-bottom: 10px;
 }
 
 p {
-  font-size: 14px;
+  font-size: 13px;
   line-height: 16px;
   font-weight: 400;
 }

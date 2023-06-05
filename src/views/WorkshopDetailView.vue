@@ -44,14 +44,14 @@ import { API_URL, auth } from '../config.js'
         </div>
 
       </div>
+      
+      <div class="padding">
+        <TextBox :content="data.description" />
 
-      <TextBox :content="data.description" />
+          <h3 v-if="data.workshopleaders && data.workshopleaders.length">Prowadzący</h3>
+          <ItemBox v-for="(data, index) in data.workshopleaders" :key="index"
+            :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo" />
 
-      <div class="padding" v-if="data.workshopleaders && data.workshopleaders.length">
-
-        <h3>Prowadzący</h3>
-        <ItemBox v-for="(data, index) in data.workshopleaders" :key="index"
-          :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo" />
       </div>
 
     </div>
@@ -90,9 +90,6 @@ import { API_URL, auth } from '../config.js'
   background-color: gray;
 }
 
-.padding {
-  padding: 0px 20px;
-}
 
 h3 {
   background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%)
@@ -105,13 +102,6 @@ h3 {
   font-size: 13px;
 }
 
-
-.error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: red;
-}
 
 .card {
   width: 100%;

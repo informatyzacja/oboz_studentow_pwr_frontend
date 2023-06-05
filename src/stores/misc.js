@@ -28,3 +28,24 @@ export const useLinkStore = defineStore('link', {
     }
   }
 })
+
+export const useFaqStore = defineStore('faq', {
+  state: () => ({ loading: true, error: null, data: null, url: 'faq/' }),
+  getters: {
+    ready() {
+      return ready(this)
+    },
+    withId() {
+      return (id) => (
+        this.data.find((item) => {
+          return item.id === id
+        })
+      )
+    },
+  },
+  actions: {
+    fetchData() {
+      loadData(this)
+    }
+  }
+})
