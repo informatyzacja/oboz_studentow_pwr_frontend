@@ -22,7 +22,6 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
         apiDataStore.profile.data.length
       "
     >
-      <!-- <img :src="apiDataStore.profile.data[0].photo" alt="profile photo" class="profile_photo" /> -->
       <div class="qr" @click="$refs.qrOverlay.show">
         <div class="qr_div" :class="{ hidden: qrLoading }">
           <VueQr :text="getOrigin+'/user/'+apiDataStore.profile.data[0].id" logoSrc="/The-Hunger-Games-PNG-File.png" :dotScale="0.8" colorDark="#de7539" colorLight="transparent" whiteMargin="false" :margin="0" :callback="qrReady" :size="250"/>
@@ -33,6 +32,7 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 
       <OverlayView ref="qrOverlay">
         <div class="qr_overlay">
+          <h6 style="margin-bottom: 15px">Twój indyfidualny kod QR używany jest do potwierdzania Twojej tożsamości np. podczas wydawania posiłków</h6>
           <div class="qr_div" :class="{ hidden: qrLoading }">
             <VueQr :text="getOrigin+'/user/'+apiDataStore.profile.data[0].id" logoSrc="/The-Hunger-Games-PNG-File.png" :dotScale="0.8" colorDark="#de7539" colorLight="transparent" whiteMargin="false" :margin="0" :callback="qrReady" :size="250"/>
           </div>
@@ -151,6 +151,7 @@ h3 {
 
 h6 {
   color: var(--text-gray);
+  text-align: center;
 }
 
 button {
@@ -188,10 +189,10 @@ button {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: 30px auto;
+  margin: 40px auto;
 
   background: var(--bg);
-  padding: 40px;
+  padding: 30px 40px;
   border-radius: 20px;
 }
 
