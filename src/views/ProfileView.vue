@@ -131,13 +131,6 @@ h6 {
   color: var(--text-gray);
 }
 
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: calc(100vh - 120px);
-}
-
 .profile_photo {
   width: 140px;
   height: 140px;
