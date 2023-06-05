@@ -6,7 +6,7 @@ export const useProfileStore = defineStore('profile', {
   getters: {
     ready() {
       return ready(this)
-    },
+    }
   },
   actions: {
     fetchData() {
@@ -20,7 +20,7 @@ export const useLinkStore = defineStore('link', {
   getters: {
     ready() {
       return ready(this)
-    },
+    }
   },
   actions: {
     fetchData() {
@@ -36,12 +36,11 @@ export const useFaqStore = defineStore('faq', {
       return ready(this)
     },
     withId() {
-      return (id) => (
+      return (id) =>
         this.data.find((item) => {
           return item.id === id
         })
-      )
-    },
+    }
   },
   actions: {
     fetchData() {

@@ -17,50 +17,50 @@ export const useWorkshopStore = defineStore('workshop', {
       })
     },
     future() {
-        if (!this.ready || !this.data) {
-          return []
-        }
-        return this.data.filter((item) => {
-            return moment(item.end).isAfter(moment())
-        })
+      if (!this.ready || !this.data) {
+        return []
+      }
+      return this.data.filter((item) => {
+        return moment(item.end).isAfter(moment())
+      })
     },
     withDate() {
-      return (date) => (
+      return (date) =>
         this.data.filter((item) => {
           return moment(item.start).isSame(date, 'day')
         })
-      )
     },
-    
 
     withId() {
-      return (id) => (
+      return (id) =>
         this.data.find((item) => {
           return item.id === id
         })
-      )
     },
-
 
     allDates() {
       if (!this.ready || !this.data) {
         return []
       }
-      return [...new Set(
-        this.data.map((item) => {
-          return moment(item.start).format('YYYY-MM-DD')
-        })
-      )]
+      return [
+        ...new Set(
+          this.data.map((item) => {
+            return moment(item.start).format('YYYY-MM-DD')
+          })
+        )
+      ]
     },
     futureDates() {
       if (!this.ready || !this.data) {
         return []
       }
-      return [...new Set(
-        this.future.map((item) => {
-          return moment(item.start).format('YYYY-MM-DD')
-        })
-      )]
+      return [
+        ...new Set(
+          this.future.map((item) => {
+            return moment(item.start).format('YYYY-MM-DD')
+          })
+        )
+      ]
     }
   },
   actions: {
@@ -73,7 +73,7 @@ export const useWorkshopStore = defineStore('workshop', {
           item.loader = true
           return
         }
-      });
+      })
     },
     addLoaderSignup(userSignUpId) {
       this.data.forEach((item) => {
@@ -81,7 +81,7 @@ export const useWorkshopStore = defineStore('workshop', {
           item.loader = true
           return
         }
-      });
+      })
     }
   }
 })

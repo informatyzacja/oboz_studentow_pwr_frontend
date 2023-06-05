@@ -1,4 +1,3 @@
-
 import { API_URL, auth } from '../config.js'
 
 export function loadData(item) {
@@ -23,7 +22,6 @@ export function loadData(item) {
       item.loading = false
     })
 }
-
 
 export function ready(item) {
   return !item.loading && item.data

@@ -8,7 +8,7 @@ defineProps({
     type: String,
     required: false
   }
-});
+})
 </script>
 
 <template>

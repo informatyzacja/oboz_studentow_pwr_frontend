@@ -12,12 +12,7 @@ import { mapStores } from 'pinia'
   <main>
     <!-- <TheWelcome /> -->
 
-    <div
-      v-if="
-        apiDataStore.userWorkshop.ready &&
-        apiDataStore.userWorkshop.today.length
-      "
-    >
+    <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
       <h3>Twoje dzisiejsze warsztaty</h3>
       <div class="scroll">
         <HomeCard
@@ -31,12 +26,7 @@ import { mapStores } from 'pinia'
       </div>
     </div>
 
-    <div
-      v-if="
-        apiDataStore.schedule.ready &&
-        apiDataStore.schedule.rightNow.length
-      "
-    >
+    <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length">
       <h3>Co się teraz dzieje?</h3>
       <div class="scroll">
         <HomeCard
@@ -50,12 +40,7 @@ import { mapStores } from 'pinia'
       </div>
     </div>
 
-    <div
-      v-if="
-        apiDataStore.announcement.ready &&
-        apiDataStore.announcement.data.length
-      "
-    >
+    <div v-if="apiDataStore.announcement.ready && apiDataStore.announcement.data.length">
       <h3>Ogłoszenia</h3>
       <div class="padding">
         <TextBox
@@ -63,17 +48,12 @@ import { mapStores } from 'pinia'
           :key="index"
           :title="data.title"
           :content="data.content"
-          style="margin-bottom: 10px;"
+          style="margin-bottom: 10px"
         />
       </div>
     </div>
 
-    <div
-      v-if="
-        apiDataStore.schedule.ready &&
-        apiDataStore.schedule.upNext.length
-      "
-    >
+    <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.upNext.length">
       <h3>Następne</h3>
       <div class="scroll">
         <HomeCard
@@ -102,7 +82,6 @@ main {
   align-items: center;
   height: calc(100vh - 120px);
 }
-
 
 h3 {
   background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%)

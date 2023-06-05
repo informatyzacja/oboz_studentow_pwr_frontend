@@ -15,11 +15,11 @@ import { API_URL, auth } from '../config.js'
 <template>
   <TopBar :backLink="$router.options.history.state.back || '/warsztaty'" absolute />
   <main>
-    <div v-if="apiDataStore.workshops.ready &&
-      apiDataStore.workshops.data.length" :set="data = apiDataStore.workshops.withId(parseInt($route.params.id))">
-
+    <div
+      v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length"
+      :set="(data = apiDataStore.workshops.withId(parseInt($route.params.id)))"
+    >
       <div class="card">
-
         <img class="bg" :src="data.photo" />
         <div class="time">
           <p>{{ moment(data.start).format('dd. DD.MM') }}</p>
@@ -28,34 +28,49 @@ import { API_URL, auth } from '../config.js'
         <div class="overlay"></div>
         <div class="description">
           <div>
-            <h2>
-              <IconLocation class="icon" /> {{ data.location }}
-            </h2>
+            <h2><IconLocation class="icon" /> {{ data.location }}</h2>
             <h1>{{ data.name }}</h1>
             <h3>{{ data.userCount + '/' + data.userLimit }} osób</h3>
           </div>
           <div>
-              <button class="button button_inactive" v-if="loading || data.loader" disabled> <LoadingIndicator inline small /> </button>
-              <button class="button button_inactive" v-else-if="data.userCount >= data.userLimit" disabled> Brak miejsc </button>
-              <button class="button button_inactive" v-else-if="!data.signupsOpen" disabled> Zapisy nieaktywne </button>
-              <button class="button button_signedup" v-else-if="data.userSignUpId" @click="signOut(data.userSignUpId)"> Wypisz się </button>
-              <button class="button" v-else @click="signUp($route.params.id)"> Zapisz się </button>
+            <button class="button button_inactive" v-if="loading || data.loader" disabled>
+              <LoadingIndicator inline small />
+            </button>
+            <button
+              class="button button_inactive"
+              v-else-if="data.userCount >= data.userLimit"
+              disabled
+            >
+              Brak miejsc
+            </button>
+            <button class="button button_inactive" v-else-if="!data.signupsOpen" disabled>
+              Zapisy nieaktywne
+            </button>
+            <button
+              class="button button_signedup"
+              v-else-if="data.userSignUpId"
+              @click="signOut(data.userSignUpId)"
+            >
+              Wypisz się
+            </button>
+            <button class="button" v-else @click="signUp($route.params.id)">Zapisz się</button>
           </div>
         </div>
-
       </div>
-      
+
       <div class="padding">
         <TextBox :content="data.description" />
 
-          <h3 v-if="data.workshopleaders && data.workshopleaders.length">Prowadzący</h3>
-          <ItemBox v-for="(data, index) in data.workshopleaders" :key="index"
-            :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo" />
-
+        <h3 v-if="data.workshopleaders && data.workshopleaders.length">Prowadzący</h3>
+        <ItemBox
+          v-for="(data, index) in data.workshopleaders"
+          :key="index"
+          :bigText="data.first_name + ' ' + data.last_name"
+          :smallText="data.title"
+          :leftIcon="data.photo"
+        />
       </div>
-
     </div>
-
 
     <LoadingIndicator v-if="apiDataStore.workshops.loading" />
     <p v-if="apiDataStore.workshops.error" class="error">Błąd wczytywania</p>
@@ -90,18 +105,15 @@ import { API_URL, auth } from '../config.js'
   background-color: gray;
 }
 
-
 h3 {
   background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%)
-    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
-  ;
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   padding: 5px 2px;
   font-size: 13px;
 }
-
 
 .card {
   width: 100%;
@@ -186,7 +198,7 @@ h3 {
 export default {
   data() {
     return {
-        loading: false
+      loading: false
     }
   },
   computed: {
@@ -197,28 +209,27 @@ export default {
   },
   methods: {
     signUp(workshopId) {
-      this.apiDataStore.workshops.addLoader(workshopId);
-      this.workshopApiCall('POST', 'workshopSignUps/', JSON.stringify({ workshop: workshopId }));
+      this.apiDataStore.workshops.addLoader(workshopId)
+      this.workshopApiCall('POST', 'workshopSignUps/', JSON.stringify({ workshop: workshopId }))
     },
     signOut(userSignUpId) {
-      this.apiDataStore.workshops.addLoaderSignup(userSignUpId);
+      this.apiDataStore.workshops.addLoaderSignup(userSignUpId)
       this.workshopApiCall('DELETE', 'workshopSignUps/' + userSignUpId + '/', null)
     },
     workshopApiCall(method, URL, body = {}) {
       this.loading = true
-      fetch(API_URL + URL, { 
-        headers: Object.assign({}, { "Content-type": "application/json; charset=UTF-8" }, auth), 
-        method: method, 
+      fetch(API_URL + URL, {
+        headers: Object.assign({}, { 'Content-type': 'application/json; charset=UTF-8' }, auth),
+        method: method,
         body: body
-       })
+      })
         .then((data) => {
           if (data.ok) {
             return data
           }
           throw new Error('Request failed!')
         })
-        .then(() => {
-        })
+        .then(() => {})
         .catch((error) => {
           console.error('There was an error!', error)
         })

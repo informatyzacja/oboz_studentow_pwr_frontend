@@ -14,35 +14,51 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 <template>
   <TopBar title="Profil" />
   <div class="padding">
-
-    <div
-      class="flex"
-      v-if="
-        apiDataStore.profile.ready &&
-        apiDataStore.profile.data.length
-      "
-    >
+    <div class="flex" v-if="apiDataStore.profile.ready && apiDataStore.profile.data.length">
       <div class="qr" @click="$refs.qrOverlay.show">
         <div class="qr_div" :class="{ hidden: qrLoading }">
-          <VueQr :text="getOrigin+'/user/'+apiDataStore.profile.data[0].id" logoSrc="/The-Hunger-Games-PNG-File.png" :dotScale="0.8" colorDark="#de7539" colorLight="transparent" whiteMargin="false" :margin="0" :callback="qrReady" :size="250"/>
+          <VueQr
+            :text="getOrigin + '/user/' + apiDataStore.profile.data[0].id"
+            logoSrc="/The-Hunger-Games-PNG-File.png"
+            :dotScale="0.8"
+            colorDark="#de7539"
+            colorLight="transparent"
+            whiteMargin="false"
+            :margin="0"
+            :callback="qrReady"
+            :size="250"
+          />
         </div>
-        <LoadingIndicator v-if=qrLoading inline />
+        <LoadingIndicator v-if="qrLoading" inline />
       </div>
       Kod: {{ apiDataStore.profile.data[0].id }}
 
       <OverlayView ref="qrOverlay">
         <div class="qr_overlay">
-          <h6 style="margin-bottom: 15px">Twój indyfidualny kod QR używany jest do potwierdzania Twojej tożsamości np. podczas wydawania posiłków</h6>
+          <h6 style="margin-bottom: 15px">
+            Twój indyfidualny kod QR używany jest do potwierdzania Twojej tożsamości np. podczas
+            wydawania posiłków
+          </h6>
           <div class="qr_div" :class="{ hidden: qrLoading }">
-            <VueQr :text="getOrigin+'/user/'+apiDataStore.profile.data[0].id" logoSrc="/The-Hunger-Games-PNG-File.png" :dotScale="0.8" colorDark="#de7539" colorLight="transparent" whiteMargin="false" :margin="0" :callback="qrReady" :size="250"/>
+            <VueQr
+              :text="getOrigin + '/user/' + apiDataStore.profile.data[0].id"
+              logoSrc="/The-Hunger-Games-PNG-File.png"
+              :dotScale="0.8"
+              colorDark="#de7539"
+              colorLight="transparent"
+              whiteMargin="false"
+              :margin="0"
+              :callback="qrReady"
+              :size="250"
+            />
           </div>
-          <LoadingIndicator v-if=qrLoading inline />
+          <LoadingIndicator v-if="qrLoading" inline />
           Kod: {{ apiDataStore.profile.data[0].id }}
           <button @click="$refs.qrOverlay.hide">Zamknij</button>
         </div>
       </OverlayView>
 
-      <p class="name"> 
+      <p class="name">
         {{ apiDataStore.profile.data[0].first_name }} {{ apiDataStore.profile.data[0].last_name }}
       </p>
       <p class="email">{{ apiDataStore.profile.data[0].email }}</p>
@@ -52,19 +68,19 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
       <!-- Frakcja -->
       <div class="itemBoxContainer">
         <!-- TODO add link to fraction -->
-        <ItemBox
-          v-if="apiDataStore.profile.data[0].fraction"
-          :bigText="apiDataStore.profile.data[0].fraction.name"
-          :leftIcon="apiDataStore.profile.data[0].fraction.logo"
-          rightIcon="arrow.svg"
-        />
+        <RouterLink to="/moja-frakcja">
+          <ItemBox
+            v-if="apiDataStore.profile.data[0].fraction"
+            :bigText="apiDataStore.profile.data[0].fraction.name"
+            :leftIcon="apiDataStore.profile.data[0].fraction.logo"
+            rightIcon="arrow.svg"
+          />
+        </RouterLink>
 
         <div class="spacer"></div>
 
         <!-- TODO add grupa na gre nocna -->
-        <div
-          v-if="apiDataStore.links.ready && apiDataStore.links.data.length"
-        >
+        <div v-if="apiDataStore.links.ready && apiDataStore.links.data.length">
           <a v-for="(data, index) in apiDataStore.links.data" :key="index" :href="data.url">
             <ItemBox :bigText="data.name" :leftIcon="data.icon" rightIcon="arrow.svg" />
           </a>
@@ -104,18 +120,14 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
     <LoadingIndicator v-if="apiDataStore.profile.loading" />
     <p v-if="apiDataStore.profile.error" class="error">Błąd wczytywania</p>
 
-    <div
-      v-if="
-        apiDataStore.userWorkshop.ready &&
-        apiDataStore.userWorkshop.data.length
-      "
-    >
+    <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.data.length">
       <h3>Twoje warsztaty</h3>
       <div class="scroll">
         <RouterLink
           v-for="(data, index) in apiDataStore.userWorkshop.data"
           :key="index"
-          :to="`/warsztaty/info/${data.id}`">
+          :to="`/warsztaty/info/${data.id}`"
+        >
           <ItemBox
             :leftBigText="moment(data.start).format('dd. DD.MM')"
             :bigText="data.name"
@@ -126,13 +138,13 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
       </div>
     </div>
 
-    <h6 v-if="apiDataStore.profile.ready">W przypadku błędnych danych prosimy o kontakt ze sztabem</h6>
-
+    <h6 v-if="apiDataStore.profile.ready">
+      W przypadku błędnych danych prosimy o kontakt ze sztabem
+    </h6>
   </div>
 </template>
 
 <style scoped>
-
 h1 {
   background: var(--radial-gradient);
   -webkit-background-clip: text;
@@ -196,7 +208,10 @@ button {
   border-radius: 20px;
 }
 
-.qr img, .qr_overlay img, .qr .qr_div, .qr_overlay .qr_div {
+.qr img,
+.qr_overlay img,
+.qr .qr_div,
+.qr_overlay .qr_div {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -252,10 +267,10 @@ export default {
     this.apiDataStore.links.fetchData()
     this.apiDataStore.userWorkshop.fetchData()
   },
-  methods:{
-        qrReady(){
-          this.qrLoading = false
-        }
+  methods: {
+    qrReady() {
+      this.qrLoading = false
     }
+  }
 }
 </script>

@@ -1,112 +1,109 @@
-
 <script>
 export default {
-    methods: {
-        show: function () {
-            this.$el.style.display = "block";
-            window.requestAnimationFrame(() => {
-                this.$el.style.opacity = 1;
-                console.log(this.$el.firstElementChild)
-                this.$el.firstElementChild.classList.add("scale-up-top");
-                setTimeout(() => {
-                    this.$el.firstElementChild.classList.remove("scale-up-top");
-                }, 200)
-            })
-        },
-        hide: function () {
-            this.$el.style.opacity = 0;
-                this.$el.firstElementChild.classList.add("scale-down-top");
-            setTimeout(() => {
-                this.$el.style.display = "none";
-                this.$el.firstElementChild.classList.remove("scale-down-top");
-            }, 200)
-        },
-        hideOnBackround: function (e) {
-            if (e.target.classList.contains("overlay")) {
-                this.hide();
-            }
-        }
+  methods: {
+    show: function () {
+      this.$el.style.display = 'block'
+      window.requestAnimationFrame(() => {
+        this.$el.style.opacity = 1
+        console.log(this.$el.firstElementChild)
+        this.$el.firstElementChild.classList.add('scale-up-top')
+        setTimeout(() => {
+          this.$el.firstElementChild.classList.remove('scale-up-top')
+        }, 200)
+      })
+    },
+    hide: function () {
+      this.$el.style.opacity = 0
+      this.$el.firstElementChild.classList.add('scale-down-top')
+      setTimeout(() => {
+        this.$el.style.display = 'none'
+        this.$el.firstElementChild.classList.remove('scale-down-top')
+      }, 200)
+    },
+    hideOnBackround: function (e) {
+      if (e.target.classList.contains('overlay')) {
+        this.hide()
+      }
     }
+  }
 }
 </script>
 
 <template>
-    <div class="overlay" @click="hideOnBackround">
-        <div>
-         <slot></slot>
-        </div>
+  <div class="overlay" @click="hideOnBackround">
+    <div>
+      <slot></slot>
     </div>
+  </div>
 </template>
-
 
 <style scoped>
 .overlay {
-    position: fixed;
-    /* Sit on top of the page content */
-    display: none;
-    /* Hidden by default */
-    opacity: 0;
-    width: 100%;
-    /* Full width (cover the whole page) */
-    height: 100%;
-    /* Full height (cover the whole page) */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    /* Black background with opacity */
-    z-index: 12;
-    /* Specify a stack order in case you're using a different order for other elements */
-    cursor: pointer;
-    /* Add a pointer on hover */
-    transition: opacity .15s linear;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transform: translateZ(20px);
-    overflow: auto;
+  position: fixed;
+  /* Sit on top of the page content */
+  display: none;
+  /* Hidden by default */
+  opacity: 0;
+  width: 100%;
+  /* Full width (cover the whole page) */
+  height: 100%;
+  /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Black background with opacity */
+  z-index: 12;
+  /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer;
+  /* Add a pointer on hover */
+  transition: opacity 0.15s linear;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transform: translateZ(20px);
+  overflow: auto;
 }
 
 .scale-up-top {
-    -webkit-animation: scale-up-top .2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-    animation: scale-up-top .2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  -webkit-animation: scale-up-top 0.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: scale-up-top 0.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
 @keyframes scale-up-top {
-    0% {
-        -webkit-transform: scale(0.5);
-        transform: scale(0.5);
-        -webkit-transform-origin: 50% 0%;
-        transform-origin: 50% 0%;
-    }
+  0% {
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+  }
 
-    100% {
-        -webkit-transform: scale(1);
-        transform: scale(1);
-        -webkit-transform-origin: 50% 0%;
-        transform-origin: 50% 0%;
-    }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+  }
 }
 
 @-webkit-keyframes scale-up-top {
-    0% {
-        -webkit-transform: scale(0.5);
-        transform: scale(0.5);
-        -webkit-transform-origin: 50% 0%;
-        transform-origin: 50% 0%;
-    }
+  0% {
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+  }
 
-    100% {
-        -webkit-transform: scale(1);
-        transform: scale(1);
-        -webkit-transform-origin: 50% 0%;
-        transform-origin: 50% 0%;
-    }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+  }
 }
 
-
 .scale-down-top {
-    -webkit-animation: scale-down-top .2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-    animation: scale-down-top .2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  -webkit-animation: scale-down-top 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: scale-down-top 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
 /* ----------------------------------------------
@@ -122,34 +119,34 @@ export default {
  * ----------------------------------------
  */
 @-webkit-keyframes scale-down-top {
-    0% {
-        -webkit-transform: scale(1);
-        transform: scale(1);
-        -webkit-transform-origin: 50% 0%;
-        transform-origin: 50% 0%;
-    }
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+  }
 
-    100% {
-        -webkit-transform: scale(0.5);
-        transform: scale(0.5);
-        -webkit-transform-origin: 50% 0%;
-        transform-origin: 50% 0%;
-    }
+  100% {
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+  }
 }
 
 @keyframes scale-down-top {
-    0% {
-        -webkit-transform: scale(1);
-        transform: scale(1);
-        -webkit-transform-origin: 50% 0%;
-        transform-origin: 50% 0%;
-    }
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+  }
 
-    100% {
-        -webkit-transform: scale(0.5);
-        transform: scale(0.5);
-        -webkit-transform-origin: 50% 0%;
-        transform-origin: 50% 0%;
-    }
+  100% {
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+  }
 }
 </style>

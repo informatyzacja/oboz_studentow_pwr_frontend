@@ -25,11 +25,11 @@ defineProps({
     type: Boolean,
     default: false
   }
-});
+})
 </script>
 
 <template>
-  <div class="card" :class="{big: big}">
+  <div class="card" :class="{ big: big }">
     <img class="bg" :src="imgSrc" />
     <div class="time">
       <p>{{ time }}</p>
@@ -38,7 +38,7 @@ defineProps({
     <div class="description">
       <h2><IconLocation class="icon" /> {{ location }}</h2>
       <h1>{{ name }}</h1>
-      <h3 v-if="userCount" >{{ userCount }} osób</h3>
+      <h3 v-if="userCount">{{ userCount }} osób</h3>
     </div>
   </div>
 </template>

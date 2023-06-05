@@ -11,12 +11,7 @@ import { mapStores } from 'pinia'
   <TopBar title="SOS" />
   <div class="sos">
     <h3>Ratownicy</h3>
-    <div
-      v-if="
-        apiDataStore.contacts.ready &&
-        apiDataStore.contacts.data.lifeGuard.length
-      "
-    >
+    <div v-if="apiDataStore.contacts.ready && apiDataStore.contacts.data.lifeGuard.length">
       <a
         v-for="(data, index) in apiDataStore.contacts.data.lifeGuard"
         :key="index"
@@ -32,7 +27,11 @@ import { mapStores } from 'pinia'
       </a>
     </div>
     <p
-      v-if="apiDataStore.contacts.ready && apiDataStore.contacts.data.lifeGuard && !apiDataStore.contacts.data.lifeGuard.length"
+      v-if="
+        apiDataStore.contacts.ready &&
+        apiDataStore.contacts.data.lifeGuard &&
+        !apiDataStore.contacts.data.lifeGuard.length
+      "
       class="error"
     >
       Brak ratowników
@@ -42,12 +41,7 @@ import { mapStores } from 'pinia'
     <p v-if="apiDataStore.contacts.error" class="error">Błąd wczytywania</p>
 
     <h3>Obecnie na dyżurze trzeźwości</h3>
-    <div
-      v-if="
-        apiDataStore.contacts.ready &&
-        apiDataStore.contacts.data.currentSoberDuty.length
-      "
-    >
+    <div v-if="apiDataStore.contacts.ready && apiDataStore.contacts.data.currentSoberDuty.length">
       <a
         v-for="(data, index) in apiDataStore.contacts.data.currentSoberDuty"
         :key="index"
@@ -98,7 +92,10 @@ import { mapStores } from 'pinia'
     </div>
     <p
       v-if="
-        apiDataStore.contacts.ready && apiDataStore.contacts.data.staff && !apiDataStore.contacts.data.staff.length"
+        apiDataStore.contacts.ready &&
+        apiDataStore.contacts.data.staff &&
+        !apiDataStore.contacts.data.staff.length
+      "
       class="error"
     >
       Sztab się najebał
@@ -134,7 +131,6 @@ h3 {
   left: 20px;
   right: 20px;
 }
-
 </style>
 
 <script>

@@ -15,6 +15,6 @@ export const useApiDataStore = defineStore('apiData', {
     links: useLinkStore(),
     contacts: useContactStore(),
     workshops: useWorkshopStore(),
-    faq: useFaqStore(),
+    faq: useFaqStore()
   })
 })

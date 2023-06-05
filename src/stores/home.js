@@ -15,7 +15,7 @@ export const useUserWorkshopStore = defineStore('userWorkshop', {
       return this.data.filter((item) => {
         return moment(item.start).isSame(moment(), 'day')
       })
-    },
+    }
   },
   actions: {
     fetchData() {
@@ -75,7 +75,7 @@ export const useAnnouncementStore = defineStore('announcement', {
   getters: {
     ready() {
       return ready(this)
-    },
+    }
   },
   actions: {
     fetchData() {

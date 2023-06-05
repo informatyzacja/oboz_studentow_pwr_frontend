@@ -6,7 +6,7 @@ export const useContactStore = defineStore('contact', {
   getters: {
     ready() {
       return ready(this)
-    },
+    }
   },
   actions: {
     fetchData() {
