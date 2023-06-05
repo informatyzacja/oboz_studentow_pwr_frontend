@@ -1,12 +1,26 @@
+<script setup>
+defineProps({
+    inline: {
+        type: Boolean,
+        default: false
+    },
+    small: {
+        type: Boolean,
+        default: false
+    }
+});
+</script>
+
+
 <template>
-    <div class="loading-indicator">
-        <div class="loading-indicator__spinner"></div>
+    <div :class="{ loading_indicator: !inline }">
+        <div class="loading_indicator__spinner" :class="{ loading_indicator__spinner_small: small }"></div>
     </div>
 </template>
 
 <style scoped>
 
-.loading-indicator {
+.loading_indicator {
     position: fixed;
     top: 0;
     left: 0;
@@ -18,13 +32,20 @@
     /* z-index: 1000; */
 }
 
-.loading-indicator__spinner {
+.loading_indicator__spinner {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     border: 5px solid var(--text-gray);
     border-top-color: var(--text);
     animation: spin 1s ease-in-out infinite;
+}
+
+.loading_indicator__spinner_small {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--text-gray);
+    border-top-color: var(--text);
 }
 
 @keyframes spin {

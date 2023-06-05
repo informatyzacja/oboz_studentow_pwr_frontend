@@ -66,6 +66,22 @@ export const useWorkshopStore = defineStore('workshop', {
   actions: {
     fetchData() {
       loadData(this)
+    },
+    addLoader(id) {
+      this.data.forEach((item) => {
+        if (item.id == id) {
+          item.loader = true
+          return
+        }
+      });
+    },
+    addLoaderSignup(userSignUpId) {
+      this.data.forEach((item) => {
+        if (item.userSignUpId == userSignUpId) {
+          item.loader = true
+          return
+        }
+      });
     }
   }
 })

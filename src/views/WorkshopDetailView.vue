@@ -8,6 +8,8 @@ import moment from 'moment'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
+
+import { API_URL, auth } from '../config.js'
 </script>
 
 <template>
@@ -25,11 +27,20 @@ import { mapStores } from 'pinia'
         </div>
         <div class="overlay"></div>
         <div class="description">
-          <h2>
-            <IconLocation class="icon" /> {{ data.location }}
-          </h2>
-          <h1>{{ data.name }}</h1>
-          <h3>{{ data.userCount + '/' + data.userLimit }} osób</h3>
+          <div>
+            <h2>
+              <IconLocation class="icon" /> {{ data.location }}
+            </h2>
+            <h1>{{ data.name }}</h1>
+            <h3>{{ data.userCount + '/' + data.userLimit }} osób</h3>
+          </div>
+          <div>
+              <button class="button button_inactive" v-if="loading || data.loader" disabled> <LoadingIndicator inline small /> </button>
+              <button class="button button_inactive" v-else-if="data.userCount >= data.userLimit" disabled> Brak miejsc </button>
+              <button class="button button_inactive" v-else-if="!data.signupsOpen" disabled> Zapisy nieaktywne </button>
+              <button class="button button_signedup" v-else-if="data.userSignUpId" @click="signOut(data.userSignUpId)"> Wypisz się </button>
+              <button class="button" v-else @click="signUp($route.params.id)"> Zapisz się </button>
+          </div>
         </div>
 
       </div>
@@ -52,6 +63,33 @@ import { mapStores } from 'pinia'
 </template>
 
 <style scoped>
+.button {
+  border-radius: 10px;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  line-height: 16px;
+  cursor: pointer;
+  font-family: 'Sui Generis';
+  background-color: green;
+
+  width: 130px;
+  /* height: 40px; */
+  display: flex;
+  justify-content: center;
+
+  margin-bottom: 12px;
+}
+
+.button.button_signedup {
+  background-color: var(--red-action);
+}
+
+.button.button_inactive {
+  background-color: gray;
+}
+
 .padding {
   padding: 0px 20px;
 }
@@ -118,11 +156,16 @@ h3 {
   position: absolute;
   bottom: 0;
   padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: end;
+  gap: 5px;
 }
 
 .description h1 {
-  font-size: 24px;
-  line-height: 24px;
+  font-size: 22px;
+  line-height: 22px;
   padding: 5px 0 0;
   white-space: normal;
 }
@@ -151,11 +194,49 @@ h3 {
 
 <script>
 export default {
+  data() {
+    return {
+        loading: false
+    }
+  },
   computed: {
     ...mapStores(useApiDataStore)
   },
   mounted() {
     this.apiDataStore.workshops.fetchData()
+  },
+  methods: {
+    signUp(workshopId) {
+      this.apiDataStore.workshops.addLoader(workshopId);
+      this.workshopApiCall('POST', 'workshopSignUps/', JSON.stringify({ workshop: workshopId }));
+    },
+    signOut(userSignUpId) {
+      this.apiDataStore.workshops.addLoaderSignup(userSignUpId);
+      this.workshopApiCall('DELETE', 'workshopSignUps/' + userSignUpId + '/', null)
+    },
+    workshopApiCall(method, URL, body = {}) {
+      this.loading = true
+      fetch(API_URL + URL, { 
+        headers: Object.assign({}, { "Content-type": "application/json; charset=UTF-8" }, auth), 
+        method: method, 
+        body: body
+       })
+        .then((data) => {
+          if (data.ok) {
+            return data
+          }
+          throw new Error('Request failed!')
+        })
+        .then(() => {
+        })
+        .catch((error) => {
+          console.error('There was an error!', error)
+        })
+        .finally(() => {
+          this.apiDataStore.workshops.fetchData()
+          this.loading = false
+        })
+    }
   }
 }
 </script>

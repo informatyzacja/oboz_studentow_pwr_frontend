@@ -13,6 +13,7 @@ app.use(router)
 
 app.mount('#app')
 
+
 // app.mixin({
 //   methods: {
 //     // Global functions
