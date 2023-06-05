@@ -31,11 +31,11 @@ import { mapStores } from 'pinia'
         </RouterLink>
       </div>
 
-      <router-link :to="'/warsztaty/info/'+data.id" v-for="(data, index) in apiDataStore.workshops.withDate(apiDataStore.workshops.futureDates[currentDay])" :key="index" >
+      <RouterLink :to="'/warsztaty/info/'+data.id" v-for="(data, index) in apiDataStore.workshops.withDate(apiDataStore.workshops.futureDates[currentDay])" :key="index" >
         <HomeCard :name="data.name"
           :location="data.location" :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')"
           :imgSrc="data.photo" :userCount="data.userCount + '/' + data.userLimit" big />
-      </router-link>
+      </RouterLink>
 
     </div>
 

@@ -107,9 +107,9 @@ import { mapStores } from 'pinia'
     <LoadingIndicator v-if="apiDataStore.contacts.loading" />
     <p v-if="apiDataStore.contacts.error" class="error">Błąd wczytywania</p>
 
-    <router-link to="/faq">
+    <RouterLink to="/faq">
       <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" rightIcon="/arrow.svg" />
-    </router-link>
+    </RouterLink>
   </div>
 </template>
 

@@ -15,11 +15,11 @@ defineProps({
 
 <template>
     <div class="header" :class="{header_absolute: absolute}">
-        <router-link v-if="backLink" :to="backLink">
+        <RouterLink v-if="backLink" :to="backLink">
             <div class="arrow-circle" >
               <div class="arrow"></div>
             </div>
-        </router-link>
+        </RouterLink>
         <h1>{{ title }}</h1>
     </div>
 </template>

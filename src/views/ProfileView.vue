@@ -47,9 +47,9 @@ import { mapStores } from 'pinia'
             <ItemBox :bigText="data.name" :leftIcon="data.icon" rightIcon="arrow.svg" />
           </a>
         </div>
-        <router-link to="/faq">
+        <RouterLink to="/faq">
           <ItemBox bigText="Częste pytania" rightIcon="/arrow.svg" leftIcon="icons8-faq.png" />
-        </router-link>
+        </RouterLink>
 
         <div class="spacer"></div>
 
@@ -101,7 +101,7 @@ import { mapStores } from 'pinia'
       </div>
     </div>
 
-    <h6>W przypadku błędnych danych prosimy o kontakt z sztabem</h6>
+    <h6 v-if="apiDataStore.profile.ready">W przypadku błędnych danych prosimy o kontakt z sztabem</h6>
 
   </div>
 </template>

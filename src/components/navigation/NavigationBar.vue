@@ -1,34 +1,34 @@
 <template>
   <div class="navigation-bar">
-    <router-link to="/sos">
+    <RouterLink to="/sos">
       <div class="navigation_bar__item">
         <img src="/icons8-sos.png" alt="sos" />
         <p>SOS</p>
       </div>
-    </router-link>
-    <router-link to="/mapa">
+    </RouterLink>
+    <RouterLink to="/mapa">
       <div class="navigation_bar__item">
         <img src="/icons8-map_marker.png" alt="map" />
         <p>Mapka<br />Harmonogram</p>
       </div>
-    </router-link>
-    <router-link to="/">
+    </RouterLink>
+    <RouterLink to="/">
       <div class="navigation-bar__logo">
         <img src="/The-Hunger-Games-PNG-File.png" alt="logo" />
       </div>
-    </router-link>
-    <router-link to="/warsztaty">
+    </RouterLink>
+    <RouterLink to="/warsztaty">
       <div class="navigation_bar__item">
         <img src="/icons8-hammer.png" alt="hammer" />
         <p>Warsztaty</p>
       </div>
-    </router-link>
-    <router-link to="/profil">
+    </RouterLink>
+    <RouterLink to="/profil">
       <div class="navigation_bar__item">
         <img src="/icons8-male_user.png" alt="user" />
         <p>Profil</p>
       </div>
-    </router-link>
+    </RouterLink>
   </div>
 </template>
 
