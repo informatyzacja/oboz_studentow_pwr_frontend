@@ -28,8 +28,6 @@ defineProps({
     height: 100%;
     display: grid;
     place-items: center;
-    /* background-color: var(--bg); */
-    /* z-index: 1000; */
 }
 
 .loading_indicator__spinner {
@@ -38,7 +36,7 @@ defineProps({
     border-radius: 50%;
     border: 5px solid var(--text-gray);
     border-top-color: var(--text);
-    animation: spin 1s ease-in-out infinite;
+    animation: spin .5s linear infinite;
 }
 
 .loading_indicator__spinner_small {

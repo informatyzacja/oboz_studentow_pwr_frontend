@@ -2,10 +2,13 @@
 import ItemBox from '../components/ItemBox.vue'
 import TopBar from '../components/navigation/TopBar.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
+import OverlayView from '../components/OverlayView.vue'
 import moment from 'moment'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
+
+import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 </script>
 
 <template>
@@ -19,8 +22,27 @@ import { mapStores } from 'pinia'
         apiDataStore.profile.data.length
       "
     >
-      <img :src="apiDataStore.profile.data[0].photo" alt="profile photo" class="profile_photo" />
-      <p class="name">
+      <!-- <img :src="apiDataStore.profile.data[0].photo" alt="profile photo" class="profile_photo" /> -->
+      <div class="qr" @click="$refs.qrOverlay.show">
+        <div class="qr_div" :class="{ hidden: qrLoading }">
+          <VueQr :text="getOrigin+'/user/'+apiDataStore.profile.data[0].id" logoSrc="/The-Hunger-Games-PNG-File.png" :dotScale="0.8" colorDark="#de7539" colorLight="transparent" whiteMargin="false" :margin="0" :callback="qrReady" :size="250"/>
+        </div>
+        <LoadingIndicator v-if=qrLoading inline />
+      </div>
+      Kod: {{ apiDataStore.profile.data[0].id }}
+
+      <OverlayView ref="qrOverlay">
+        <div class="qr_overlay">
+          <div class="qr_div" :class="{ hidden: qrLoading }">
+            <VueQr :text="getOrigin+'/user/'+apiDataStore.profile.data[0].id" logoSrc="/The-Hunger-Games-PNG-File.png" :dotScale="0.8" colorDark="#de7539" colorLight="transparent" whiteMargin="false" :margin="0" :callback="qrReady" :size="250"/>
+          </div>
+          <LoadingIndicator v-if=qrLoading inline />
+          Kod: {{ apiDataStore.profile.data[0].id }}
+          <button @click="$refs.qrOverlay.hide">Zamknij</button>
+        </div>
+      </OverlayView>
+
+      <p class="name"> 
         {{ apiDataStore.profile.data[0].first_name }} {{ apiDataStore.profile.data[0].last_name }}
       </p>
       <p class="email">{{ apiDataStore.profile.data[0].email }}</p>
@@ -131,14 +153,56 @@ h6 {
   color: var(--text-gray);
 }
 
-.profile_photo {
+button {
+  border-radius: 10px;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  line-height: 16px;
+  cursor: pointer;
+  font-family: 'Sui Generis';
+  background-color: var(--bg-light);
+
+  width: 130px;
+  display: flex;
+  justify-content: center;
+
+  margin-top: 20px;
+}
+.qr {
   width: 140px;
   height: 140px;
-  border-radius: 50%;
-  background-color: var(--bg-lighter);
-  box-shadow: 0px -3px 8px rgba(0, 0, 0, 0.25);
-  object-fit: cover;
   margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qr_overlay {
+  box-sizing: content-box;
+  width: 250px;
+  max-width: 70%;
+  /* height: 240px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 30px auto;
+
+  background: var(--bg);
+  padding: 40px;
+  border-radius: 20px;
+}
+
+.qr img, .qr_overlay img, .qr .qr_div, .qr_overlay .qr_div {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hidden {
+  display: none;
 }
 
 .name {
@@ -171,13 +235,26 @@ h6 {
 
 <script>
 export default {
+  data() {
+    return {
+      qrLoading: true
+    }
+  },
   computed: {
-    ...mapStores(useApiDataStore)
+    ...mapStores(useApiDataStore),
+    getOrigin() {
+      return location.origin
+    }
   },
   mounted() {
     this.apiDataStore.profile.fetchData()
     this.apiDataStore.links.fetchData()
     this.apiDataStore.userWorkshop.fetchData()
-  }
+  },
+  methods:{
+        qrReady(){
+          this.qrLoading = false
+        }
+    }
 }
 </script>

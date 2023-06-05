@@ -49,6 +49,10 @@ const router = createRouter({
       name: 'faqDetail',
       component: () => import('../views/FaqDetailView.vue')
     },
+    {
+      path: '/user/:id',
+      redirect: { name: 'home' }
+    }
   ]
 })
 
