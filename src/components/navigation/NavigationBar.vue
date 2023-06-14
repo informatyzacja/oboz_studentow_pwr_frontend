@@ -2,30 +2,30 @@
   <div class="navigation-bar">
     <RouterLink to="/sos">
       <div class="navigation_bar__item">
-        <img src="/icons8-sos.png" alt="sos" />
+        <img src="/vue-public/icons8-sos.png" alt="sos" />
         <p>SOS</p>
       </div>
     </RouterLink>
     <RouterLink to="/mapa">
       <div class="navigation_bar__item">
-        <img src="/icons8-map_marker.png" alt="map" />
+        <img src="/vue-public/icons8-map_marker.png" alt="map" />
         <p>Mapka<br />Harmonogram</p>
       </div>
     </RouterLink>
     <RouterLink to="/">
       <div class="navigation-bar__logo">
-        <img src="/The-Hunger-Games-PNG-File.png" alt="logo" />
+        <img src="/vue-public/The-Hunger-Games-PNG-File.png" alt="logo" />
       </div>
     </RouterLink>
     <RouterLink to="/warsztaty">
       <div class="navigation_bar__item">
-        <img src="/icons8-hammer.png" alt="hammer" />
+        <img src="/vue-public/icons8-hammer.png" alt="hammer" />
         <p>Warsztaty</p>
       </div>
     </RouterLink>
     <RouterLink to="/profil">
       <div class="navigation_bar__item">
-        <img src="/icons8-male_user.png" alt="user" />
+        <img src="/vue-public/icons8-male_user.png" alt="user" />
         <p>Profil</p>
       </div>
     </RouterLink>

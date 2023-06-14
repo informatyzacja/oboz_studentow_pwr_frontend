@@ -42,7 +42,7 @@
 
 @font-face {
   font-family: 'Sui Generis';
-  src: url('/sui\ generis\ rg.ttf') format('truetype');
+  src: url('/vue-public/sui\ generis\ rg.ttf') format('truetype');
 }
 
 body {

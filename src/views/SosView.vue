@@ -21,7 +21,7 @@ import { mapStores } from 'pinia'
           :bigText="data.first_name + ' ' + data.last_name"
           :smallText="data.title"
           :leftIcon="data.photo"
-          rightIcon="/phone_icon.svg"
+          rightIcon="/vue-public/phone_icon.svg"
           bgColor="var(--red)"
         />
       </a>
@@ -51,7 +51,7 @@ import { mapStores } from 'pinia'
           :bigText="data.first_name + ' ' + data.last_name"
           :smallText="data.title"
           :leftIcon="data.photo"
-          rightIcon="/phone_icon.svg"
+          rightIcon="/vue-public/phone_icon.svg"
         />
       </a>
     </div>
@@ -86,7 +86,7 @@ import { mapStores } from 'pinia'
           :bigText="data.first_name + ' ' + data.last_name"
           :smallText="data.title"
           :leftIcon="data.photo"
-          rightIcon="/phone_icon.svg"
+          rightIcon="/vue-public/phone_icon.svg"
         />
       </a>
     </div>
@@ -105,7 +105,7 @@ import { mapStores } from 'pinia'
     <p v-if="apiDataStore.contacts.error" class="error">Błąd wczytywania</p>
 
     <RouterLink to="/faq">
-      <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" rightIcon="/arrow.svg" />
+      <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" rightIcon="/vue-public/arrow.svg" />
     </RouterLink>
   </div>
 </template>

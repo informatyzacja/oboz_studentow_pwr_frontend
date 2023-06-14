@@ -23,7 +23,7 @@ import { mapStores } from 'pinia'
         :smallText="
           data.answer.length > 40 + 3 ? data.answer.substring(0, 40) + '...' : data.answer
         "
-        rightIcon="arrow.svg"
+        rightIcon="/vue-public/arrow.svg"
       />
     </RouterLink>
   </div>

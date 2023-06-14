@@ -1,7 +1,7 @@
 import { API_URL, auth } from '../config.js'
 
 export function loadData(item) {
-  fetch(API_URL + item.url, { headers: auth })
+  fetch(API_URL + item.url)
     .then((data) => {
       if (data.ok) {
         return data.json()

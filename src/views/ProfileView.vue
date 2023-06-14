@@ -42,7 +42,7 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
           <div class="qr_div" :class="{ hidden: qrLoading }">
             <VueQr
               :text="getOrigin + '/user/' + apiDataStore.profile.data[0].id"
-              logoSrc="/The-Hunger-Games-PNG-File.png"
+              logoSrc="/vue-public/The-Hunger-Games-PNG-File.png"
               :dotScale="0.8"
               colorDark="#de7539"
               colorLight="transparent"
@@ -73,7 +73,7 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
             v-if="apiDataStore.profile.data[0].fraction"
             :bigText="apiDataStore.profile.data[0].fraction.name"
             :leftIcon="apiDataStore.profile.data[0].fraction.logo"
-            rightIcon="arrow.svg"
+            rightIcon="/vue-public/arrow.svg"
           />
         </RouterLink>
 
@@ -82,7 +82,7 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
         <!-- TODO add grupa na gre nocna -->
         <div v-if="apiDataStore.links.ready && apiDataStore.links.data.length">
           <a v-for="(data, index) in apiDataStore.links.data" :key="index" :href="data.url">
-            <ItemBox :bigText="data.name" :leftIcon="data.icon" rightIcon="arrow.svg" />
+            <ItemBox :bigText="data.name" :leftIcon="data.icon" rightIcon="/vue-public/arrow.svg" />
           </a>
         </div>
         <RouterLink to="/faq">
@@ -96,22 +96,22 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
           <a :href="apiDataStore.profile.data[0].bus.location">
             <ItemBox
               :bigText="'Bus nr ' + apiDataStore.profile.data[0].bus.description"
-              leftIcon="icons8-bus.png"
+              leftIcon="/vue-public/icons8-bus.png"
               small
-              :rightIcon="apiDataStore.profile.data[0].bus.location ? 'arrow.svg' : ''"
+              :rightIcon="apiDataStore.profile.data[0].bus.location ? '/vue-public/arrow.svg' : ''"
             />
           </a>
         </div>
         <ItemBox
           v-if="apiDataStore.profile.data[0].bandId"
           :bigText="'Opaska nr ' + apiDataStore.profile.data[0].bandId"
-          leftIcon="icons8-bangles.png"
+          leftIcon="/vue-public/icons8-bangles.png"
           small
         />
         <ItemBox
           v-if="apiDataStore.profile.data[0].houseNumber"
           :bigText="'Domek nr ' + apiDataStore.profile.data[0].houseNumber"
-          leftIcon="icons8-exterior.png"
+          leftIcon="/vue-public/icons8-exterior.png"
           small
         />
       </div>
@@ -131,7 +131,7 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
           <ItemBox
             :leftBigText="moment(data.start).format('dd. DD.MM')"
             :bigText="data.name"
-            rightIcon="arrow.svg"
+            rightIcon="/vue-public/arrow.svg"
             small
           />
         </RouterLink>
