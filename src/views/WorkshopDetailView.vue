@@ -10,6 +10,7 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import { API_URL, AUTH_HEADER } from '../config.js'
+import { getCookie } from '../stores/functions.js'
 </script>
 
 <template>
@@ -218,9 +219,11 @@ export default {
     },
     workshopApiCall(method, URL, body = {}) {
       this.loading = true
+      const csrftoken = getCookie('csrftoken');
       fetch(API_URL + URL, {
-        headers: Object.assign({}, { 'Content-type': 'application/json; charset=UTF-8' }, AUTH_HEADER),
+        headers: Object.assign({}, { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken }, AUTH_HEADER),
         method: method,
+        mode: 'same-origin',
         body: body
       })
         .then((data) => {
