@@ -52,6 +52,11 @@ const router = createRouter({
     {
       path: '/user/:id',
       redirect: { name: 'home' }
+    },
+    {
+      path: '/moja-frakcja',
+      name: 'moja-frakcja',
+      component: () => import('../views/MyFractionView.vue')
     }
   ]
 })

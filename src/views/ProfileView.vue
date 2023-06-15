@@ -67,7 +67,6 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 
       <!-- Frakcja -->
       <div class="itemBoxContainer">
-        <!-- TODO add link to fraction -->
         <RouterLink to="/moja-frakcja" v-if="apiDataStore.profile.data[0].fraction.name">
           <ItemBox
             v-if="apiDataStore.profile.data[0].fraction"
@@ -82,7 +81,7 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
         <!-- TODO add grupa na gre nocna -->
 
         <div v-if="apiDataStore.links.ready && apiDataStore.links.data.length">
-          <a v-for="(data, index) in apiDataStore.links.data" :key="index" :href="data.url">
+          <a v-for="(data, index) in apiDataStore.links.data" :key="index" :href="data.url" target="_blank">
             <ItemBox :bigText="data.name" :leftIcon="data.icon" rightIcon="/vue-public/arrow.svg" />
           </a>
         </div>
