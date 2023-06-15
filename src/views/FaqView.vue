@@ -27,6 +27,7 @@ import { mapStores } from 'pinia'
       />
     </RouterLink>
   </div>
+  <p v-if="apiDataStore.faq.ready && !apiDataStore.faq.data.length" class="error">Brak FAQ</p>
   <LoadingIndicator v-if="apiDataStore.faq.loading" />
   <p v-if="apiDataStore.faq.error" class="error">Błąd wczytywania</p>
 </template>

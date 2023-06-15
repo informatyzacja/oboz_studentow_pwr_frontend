@@ -19,7 +19,7 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
         <div class="qr_div" :class="{ hidden: qrLoading }">
           <VueQr
             :text="getOrigin + '/user/' + apiDataStore.profile.data[0].id"
-            logoSrc="/The-Hunger-Games-PNG-File.png"
+            logoSrc="/vue-public/The-Hunger-Games-PNG-File.png"
             :dotScale="0.8"
             colorDark="#de7539"
             colorLight="transparent"
@@ -68,7 +68,7 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
       <!-- Frakcja -->
       <div class="itemBoxContainer">
         <!-- TODO add link to fraction -->
-        <RouterLink to="/moja-frakcja">
+        <RouterLink to="/moja-frakcja" v-if="apiDataStore.profile.data[0].fraction.name">
           <ItemBox
             v-if="apiDataStore.profile.data[0].fraction"
             :bigText="apiDataStore.profile.data[0].fraction.name"
@@ -80,18 +80,19 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
         <div class="spacer"></div>
 
         <!-- TODO add grupa na gre nocna -->
+
         <div v-if="apiDataStore.links.ready && apiDataStore.links.data.length">
           <a v-for="(data, index) in apiDataStore.links.data" :key="index" :href="data.url">
             <ItemBox :bigText="data.name" :leftIcon="data.icon" rightIcon="/vue-public/arrow.svg" />
           </a>
         </div>
         <RouterLink to="/faq">
-          <ItemBox bigText="Częste pytania" rightIcon="/arrow.svg" leftIcon="icons8-faq.png" />
+          <ItemBox bigText="Częste pytania" rightIcon="/vue-public/arrow.svg" leftIcon="/vue-public/icons8-faq.png" />
         </RouterLink>
 
         <div class="spacer"></div>
 
-        <h3>Dane</h3>
+        <h3 v-if="apiDataStore.profile.data[0].bus || apiDataStore.profile.data[0].bandId || apiDataStore.profile.data[0].houseNumber">Dane</h3>
         <div v-if="apiDataStore.profile.data[0].bus">
           <a :href="apiDataStore.profile.data[0].bus.location">
             <ItemBox

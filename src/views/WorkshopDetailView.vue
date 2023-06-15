@@ -9,7 +9,7 @@ import moment from 'moment'
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
-import { API_URL, auth } from '../config.js'
+import { API_URL, AUTH_HEADER } from '../config.js'
 </script>
 
 <template>
@@ -219,7 +219,7 @@ export default {
     workshopApiCall(method, URL, body = {}) {
       this.loading = true
       fetch(API_URL + URL, {
-        headers: Object.assign({}, { 'Content-type': 'application/json; charset=UTF-8' }, auth),
+        headers: Object.assign({}, { 'Content-type': 'application/json; charset=UTF-8' }, AUTH_HEADER),
         method: method,
         body: body
       })

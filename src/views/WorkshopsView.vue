@@ -50,6 +50,9 @@ import { mapStores } from 'pinia'
         />
       </RouterLink>
     </div>
+    <p v-if="apiDataStore.workshops.ready && !apiDataStore.workshops.data.length" class="error">
+      Brak warsztatów
+    </p>
 
     <LoadingIndicator v-if="apiDataStore.workshops.loading" />
     <p v-if="apiDataStore.workshops.error" class="error">Błąd wczytywania</p>

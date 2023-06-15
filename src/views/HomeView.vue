@@ -66,6 +66,9 @@ import { mapStores } from 'pinia'
         />
       </div>
     </div>
+
+    <p v-if="apiDataStore.userWorkshop.ready && !apiDataStore.userWorkshop.today.length && apiDataStore.schedule.ready && !apiDataStore.schedule.rightNow.length && !apiDataStore.schedule.upNext.length && apiDataStore.announcement.ready && !apiDataStore.announcement.data.length" class="error">Brak danych</p>
+
     <LoadingIndicator v-if="apiDataStore.schedule.loading" />
     <p v-if="apiDataStore.schedule.error" class="error">Błąd wczytywania</p>
   </main>
@@ -111,6 +114,8 @@ export default {
     ...mapStores(useApiDataStore)
   },
   mounted() {
+    console.log(import.meta.env.VITE_API_URL);
+  
     this.apiDataStore.userWorkshop.fetchData()
     this.apiDataStore.schedule.fetchData()
     this.apiDataStore.announcement.fetchData()

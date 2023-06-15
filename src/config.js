@@ -1,3 +1,2 @@
-// export const API_URL = 'http://192.168.0.34:8000/api/';
-export const API_URL = '/api/'
-export const auth = { Authorization: 'Token d5ee83538b357e350221f46aa6d3421f62c95ccc' }
+export const API_URL = import.meta.env.VITE_API_URL || '/api/'
+export const AUTH_HEADER = JSON.parse( import.meta.env.VITE_AUTH_HEADER || '{}' )
