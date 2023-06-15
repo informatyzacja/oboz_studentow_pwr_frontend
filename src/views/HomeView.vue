@@ -20,7 +20,7 @@ import { mapStores } from 'pinia'
           :key="index"
           :name="data.name"
           :location="data.location"
-          :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')"
+          :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
           :imgSrc="data.photo"
         />
       </div>
@@ -34,7 +34,7 @@ import { mapStores } from 'pinia'
           :key="index"
           :name="data.name"
           :location="data.location"
-          :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')"
+          :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
           :imgSrc="data.photo"
         />
       </div>
@@ -61,7 +61,7 @@ import { mapStores } from 'pinia'
           :key="index"
           :name="data.name"
           :location="data.location"
-          :time="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')"
+          :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
           :imgSrc="data.photo"
         />
       </div>

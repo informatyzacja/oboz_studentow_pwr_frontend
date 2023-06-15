@@ -24,7 +24,7 @@ import { getCookie } from '../stores/functions.js'
         <img class="bg" :src="data.photo" />
         <div class="time">
           <p>{{ moment(data.start).format('dd. DD.MM') }}</p>
-          <p>{{ moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm') }}</p>
+          <p>{{ moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm') }}</p>
         </div>
         <div class="overlay"></div>
         <div class="description">
