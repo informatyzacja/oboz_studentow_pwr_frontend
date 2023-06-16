@@ -114,8 +114,6 @@ export default {
     ...mapStores(useApiDataStore)
   },
   mounted() {
-    console.log(import.meta.env.VITE_API_URL);
-  
     this.apiDataStore.userWorkshop.fetchData()
     this.apiDataStore.schedule.fetchData()
     this.apiDataStore.announcement.fetchData()

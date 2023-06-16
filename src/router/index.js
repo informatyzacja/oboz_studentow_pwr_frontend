@@ -57,7 +57,11 @@ const router = createRouter({
       path: '/moja-frakcja',
       name: 'moja-frakcja',
       component: () => import('../views/MyFractionView.vue')
-    }
+    },
+    // {
+    //   path: '/:notFound',
+    //   redirect: '/login/'
+    // }
   ]
 })
 

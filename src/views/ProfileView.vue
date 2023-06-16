@@ -61,6 +61,7 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
       <p class="name">
         {{ apiDataStore.profile.data[0].first_name }} {{ apiDataStore.profile.data[0].last_name }}
       </p>
+      {{ apiDataStore.profile.data[0].title }}
       <p class="email">{{ apiDataStore.profile.data[0].email }}</p>
 
       <div class="spacer"></div>
