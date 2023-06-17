@@ -223,7 +223,6 @@ export default {
       fetch(API_URL + URL, {
         headers: Object.assign({}, { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken }, AUTH_HEADER),
         method: method,
-        mode: 'same-origin',
         body: body
       })
         .then((data) => {
