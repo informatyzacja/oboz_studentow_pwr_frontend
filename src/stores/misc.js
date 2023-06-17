@@ -6,6 +6,14 @@ export const useProfileStore = defineStore('profile', {
   getters: {
     ready() {
       return ready(this)
+    },
+    groupWithId() {
+      return (id) => {
+        if (!this.ready || !this.data || !this.data.length || !this.data[0].groups) return null
+        return this.data[0].groups.find((item) => {
+          return item.id == parseInt(id)
+        })
+      }
     }
   },
   actions: {

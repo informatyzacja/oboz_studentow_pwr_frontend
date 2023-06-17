@@ -58,6 +58,11 @@ const router = createRouter({
       name: 'moja-frakcja',
       component: () => import('../views/MyFractionView.vue')
     },
+    {
+      path: '/grupa/:id',
+      name: 'grupa',
+      component: () => import('../views/GroupView.vue')
+    }
     // {
     //   path: '/:notFound',
     //   redirect: '/login/'

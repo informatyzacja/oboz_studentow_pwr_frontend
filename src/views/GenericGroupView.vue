@@ -27,7 +27,7 @@ defineProps({
   <div class="padding"  v-if="group">
     <div class="flex">
       
-      <div class="logo">
+      <div class="logo" v-if="group.logo">
         <img :src="group.logo" />
       </div>
 
@@ -52,7 +52,6 @@ defineProps({
       <ItemBox :bigText=messengerDescription :leftIcon=messangerIcon :rightIcon=rightArrow />
     </a>
 
-    <h3>Opiekunowie</h3>
     <div
       v-if="
         ready &&
@@ -60,6 +59,7 @@ defineProps({
         group.wardens.length
       "
     >
+    <h3>Opiekunowie</h3>
       <a
         v-for="(data, index) in group.wardens"
         :key="index"
@@ -72,6 +72,23 @@ defineProps({
           :rightIcon=phoneIcon
         />
       </a>
+    </div>
+
+    <div
+      v-if="
+        ready &&
+        group.members &&
+        group.members.length
+      "
+    >
+    <h3>Członkowie</h3>
+        <ItemBox
+          v-for="(data, index) in group.members"
+          :key="index"
+          :bigText="data.first_name + ' ' + data.last_name"
+          :smallText="data.title"
+          :leftIcon="data.photo"
+        />
     </div>
 
 
@@ -153,8 +170,8 @@ button {
 }
 
 .name {
-  font-size: 23px;
-  line-height: 25px;
+  font-size: 25px;
+  line-height: 26px;
   margin-top: 15px;
 }
 

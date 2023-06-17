@@ -7,11 +7,11 @@ import { mapStores } from 'pinia'
 
 
 <template>
-    <GenericGroupView title="Frakcja" backLink="/profil" mapDescription="Miejsce spotkań" messengerDescription="Grupa frakcji" 
+    <GenericGroupView :title="apiDataStore.profile.ready ? apiDataStore.profile.groupWithId($route.params.id).type.name : 'Grupa'" backLink="/profil" mapDescription="Miejsce startu" messengerDescription="Grupa frakcji" 
     :ready="apiDataStore.profile.ready" 
     :loading="apiDataStore.profile.loading"
     :error="apiDataStore.profile.error"
-    :group="apiDataStore.profile.ready ? apiDataStore.profile.data[0].fraction : {}"
+    :group="apiDataStore.profile.ready ? apiDataStore.profile.groupWithId($route.params.id) : {}"
      ></GenericGroupView>
 </template>
 
@@ -23,6 +23,6 @@ export default {
   },
   mounted() {
     this.apiDataStore.profile.fetchData()
-  },
+  }
 }
 </script>

@@ -83,22 +83,33 @@ import domekIcon from '../assets/icons8-exterior.png'
             :rightIcon=rightArrow
           />
         </RouterLink>
+        <!-- grupy -->
+        <RouterLink :to="'/grupa/'+data.id" v-for="(data, index) in apiDataStore.profile.data[0].groups" :key="index">
+          <ItemBox
+            :leftBigText=data.type.name
+            :bigText=data.name
+            :rightIcon=rightArrow
+          />
+        </RouterLink>
 
         <div class="spacer"></div>
 
-        <!-- TODO add grupa na gre nocna -->
 
+        <!-- linki -->
         <div v-if="apiDataStore.links.ready && apiDataStore.links.data.length">
           <a v-for="(data, index) in apiDataStore.links.data" :key="index" :href="data.url" target="_blank">
             <ItemBox :bigText="data.name" :leftIcon="data.icon" :rightIcon=rightArrow />
           </a>
         </div>
+
+        <!-- faq -->
         <RouterLink to="/faq">
           <ItemBox bigText="Częste pytania" :rightIcon=rightArrow :leftIcon=faqIcon />
         </RouterLink>
 
         <div class="spacer"></div>
 
+        <!-- dane -->
         <h3 v-if="apiDataStore.profile.data[0].bus || apiDataStore.profile.data[0].bandId || apiDataStore.profile.data[0].houseNumber">Dane</h3>
         <div v-if="apiDataStore.profile.data[0].bus">
           <a :href="apiDataStore.profile.data[0].bus.location">
@@ -128,6 +139,7 @@ import domekIcon from '../assets/icons8-exterior.png'
     <LoadingIndicator v-if="apiDataStore.profile.loading" />
     <p v-if="apiDataStore.profile.error" class="error">Błąd wczytywania</p>
 
+    <!-- warsztaty -->
     <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.data.length">
       <h3>Twoje warsztaty</h3>
       <div class="scroll">
