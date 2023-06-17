@@ -5,6 +5,9 @@ import LoadingIndicator from '../components/LoadingIndicator.vue'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
+
+import rightArrow from '../assets/arrow.svg'
+import phoneIcon from '../assets/phone_icon.svg'
 </script>
 
 <template>
@@ -21,7 +24,7 @@ import { mapStores } from 'pinia'
           :bigText="data.first_name + ' ' + data.last_name"
           :smallText="data.title"
           :leftIcon="data.photo"
-          rightIcon="/vue-public/phone_icon.svg"
+          :rightIcon=phoneIcon
           bgColor="var(--red)"
         />
       </a>
@@ -51,7 +54,7 @@ import { mapStores } from 'pinia'
           :bigText="data.first_name + ' ' + data.last_name"
           :smallText="data.title"
           :leftIcon="data.photo"
-          rightIcon="/vue-public/phone_icon.svg"
+          :rightIcon=phoneIcon
         />
       </a>
     </div>
@@ -86,7 +89,7 @@ import { mapStores } from 'pinia'
           :bigText="data.first_name + ' ' + data.last_name"
           :smallText="data.title"
           :leftIcon="data.photo"
-          rightIcon="/vue-public/phone_icon.svg"
+          :rightIcon=phoneIcon
         />
       </a>
     </div>
@@ -105,7 +108,7 @@ import { mapStores } from 'pinia'
     <p v-if="apiDataStore.contacts.error" class="error">Błąd wczytywania</p>
 
     <RouterLink to="/faq">
-      <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" rightIcon="/vue-public/arrow.svg" />
+      <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" :rightIcon=rightArrow />
     </RouterLink>
   </div>
 </template>

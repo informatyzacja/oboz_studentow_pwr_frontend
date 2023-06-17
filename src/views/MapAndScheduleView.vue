@@ -1,15 +1,18 @@
 <script setup>
 import TopBar from '../components/navigation/TopBar.vue'
 import OverlayView from '../components/OverlayView.vue'
+
+import map from '../assets/map.jpg'
+import schedule from '../assets/schedule.jpg'
 </script>
 
 <template>
   <TopBar title="Mapka" />
   <div class="padding">
-    <img src="/vue-public/map.jpg" alt="map" @click="$refs.mapOverlay.show" />
+    <img :src=map alt="map" @click="$refs.mapOverlay.show" />
     <OverlayView ref="mapOverlay">
       <div class="image_overlay">
-        <img src="/vue-public/map.jpg" alt="map" />
+        <img :src=map alt="map" />
         <button @click="$refs.mapOverlay.hide">Zamknij</button>
       </div>
     </OverlayView>
@@ -17,10 +20,10 @@ import OverlayView from '../components/OverlayView.vue'
 
   <TopBar title="Harmonogram" />
   <div class="padding">
-    <img src="/vue-public/schedule.jpg" alt="harmonogram" @click="$refs.scheduleOverlay.show" />
+    <img :src=schedule alt="harmonogram" @click="$refs.scheduleOverlay.show" />
     <OverlayView ref="scheduleOverlay">
       <div class="image_overlay">
-        <img src="/vue-public/schedule.jpg" alt="schedule" />
+        <img :src=schedule alt="schedule" />
         <button @click="$refs.scheduleOverlay.hide">Zamknij</button>
       </div>
     </OverlayView>

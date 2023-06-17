@@ -5,6 +5,8 @@ import LoadingIndicator from '../components/LoadingIndicator.vue'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
+
+import rightArrow from '../assets/arrow.svg'
 </script>
 
 <template>
@@ -23,7 +25,7 @@ import { mapStores } from 'pinia'
         :smallText="
           data.answer.length > 40 + 3 ? data.answer.substring(0, 40) + '...' : data.answer
         "
-        rightIcon="/vue-public/arrow.svg"
+        :rightIcon=rightArrow
       />
     </RouterLink>
   </div>

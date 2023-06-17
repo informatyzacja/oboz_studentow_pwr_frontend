@@ -9,6 +9,13 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import VueQr from 'vue-qr/src/packages/vue-qr.vue'
+
+import rightArrow from '../assets/arrow.svg'
+import Logo from '../assets/The-Hunger-Games-PNG-File.png'
+import faqIcon from '../assets/icons8-faq.png'
+import busIcon from '../assets/icons8-bus.png'
+import opaskaIcon from '../assets/icons8-bangles.png'
+import domekIcon from '../assets/icons8-exterior.png'
 </script>
 
 <template>
@@ -19,7 +26,7 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
         <div class="qr_div" :class="{ hidden: qrLoading }">
           <VueQr
             :text="getOrigin + '/user/' + apiDataStore.profile.data[0].id"
-            logoSrc="/vue-public/The-Hunger-Games-PNG-File.png"
+            :logoSrc=Logo
             :dotScale="0.8"
             colorDark="#de7539"
             colorLight="transparent"
@@ -42,7 +49,7 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
           <div class="qr_div" :class="{ hidden: qrLoading }">
             <VueQr
               :text="getOrigin + '/user/' + apiDataStore.profile.data[0].id"
-              logoSrc="/vue-public/The-Hunger-Games-PNG-File.png"
+              :logoSrc=Logo
               :dotScale="0.8"
               colorDark="#de7539"
               colorLight="transparent"
@@ -73,7 +80,7 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
             v-if="apiDataStore.profile.data[0].fraction"
             :bigText="apiDataStore.profile.data[0].fraction.name"
             :leftIcon="apiDataStore.profile.data[0].fraction.logo"
-            rightIcon="/vue-public/arrow.svg"
+            :rightIcon=rightArrow
           />
         </RouterLink>
 
@@ -83,11 +90,11 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 
         <div v-if="apiDataStore.links.ready && apiDataStore.links.data.length">
           <a v-for="(data, index) in apiDataStore.links.data" :key="index" :href="data.url" target="_blank">
-            <ItemBox :bigText="data.name" :leftIcon="data.icon" rightIcon="/vue-public/arrow.svg" />
+            <ItemBox :bigText="data.name" :leftIcon="data.icon" :rightIcon=rightArrow />
           </a>
         </div>
         <RouterLink to="/faq">
-          <ItemBox bigText="Częste pytania" rightIcon="/vue-public/arrow.svg" leftIcon="/vue-public/icons8-faq.png" />
+          <ItemBox bigText="Częste pytania" :rightIcon=rightArrow :leftIcon=faqIcon />
         </RouterLink>
 
         <div class="spacer"></div>
@@ -97,22 +104,22 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
           <a :href="apiDataStore.profile.data[0].bus.location">
             <ItemBox
               :bigText="'Bus nr ' + apiDataStore.profile.data[0].bus.description"
-              leftIcon="/vue-public/icons8-bus.png"
+              :leftIcon=busIcon
               small
-              :rightIcon="apiDataStore.profile.data[0].bus.location ? '/vue-public/arrow.svg' : ''"
+              :rightIcon="apiDataStore.profile.data[0].bus.location ? rightArrow : ''"
             />
           </a>
         </div>
         <ItemBox
           v-if="apiDataStore.profile.data[0].bandId"
           :bigText="'Opaska nr ' + apiDataStore.profile.data[0].bandId"
-          leftIcon="/vue-public/icons8-bangles.png"
+          :leftIcon=opaskaIcon
           small
         />
         <ItemBox
           v-if="apiDataStore.profile.data[0].houseNumber"
           :bigText="'Domek nr ' + apiDataStore.profile.data[0].houseNumber"
-          leftIcon="/vue-public/icons8-exterior.png"
+          :leftIcon=domekIcon
           small
         />
       </div>
@@ -132,7 +139,7 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
           <ItemBox
             :leftBigText="moment(data.start).format('dd. DD.MM')"
             :bigText="data.name"
-            rightIcon="/vue-public/arrow.svg"
+            :rightIcon=rightArrow
             small
           />
         </RouterLink>

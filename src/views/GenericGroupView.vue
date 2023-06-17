@@ -4,6 +4,9 @@ import TopBar from '../components/navigation/TopBar.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
 import TextBox from '../components/TextBox.vue'
 
+import rightArrow from '../assets/arrow.svg'
+import messangerIcon from '../assets/icons8-facebook_messenger.png'
+import phoneIcon from '../assets/phone_icon.svg'
 
 defineProps({
   title: String,
@@ -46,7 +49,7 @@ defineProps({
     </div>
 
     <a v-if="group.messenger" :href="group.messenger" target="_blank">
-      <ItemBox :bigText="messengerDescription" leftIcon="/vue-public/icons8-facebook_messenger.png" rightIcon="/vue-public/arrow.svg" />
+      <ItemBox :bigText=messengerDescription :leftIcon=messangerIcon :rightIcon=rightArrow />
     </a>
 
     <h3>Opiekunowie</h3>
@@ -66,7 +69,7 @@ defineProps({
           :bigText="data.first_name + ' ' + data.last_name"
           :smallText="data.title"
           :leftIcon="data.photo"
-          rightIcon="/vue-public/phone_icon.svg"
+          :rightIcon=phoneIcon
         />
       </a>
     </div>

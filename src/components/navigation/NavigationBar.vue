@@ -1,31 +1,39 @@
+<script setup>
+import SosIcon from '../../assets/icons8-sos.png'
+import MapIcon from '../../assets/icons8-map_marker.png'
+import Logo from '../../assets/The-Hunger-Games-PNG-File.png'
+import HammerIcon from '../../assets/icons8-hammer.png'
+import UserIcon from '../../assets/icons8-male_user.png'
+</script>
+
 <template>
   <div class="navigation-bar">
     <RouterLink to="/sos">
       <div class="navigation_bar__item">
-        <img src="/vue-public/icons8-sos.png" alt="sos" />
+        <img :src=SosIcon alt="sos" />
         <p>SOS</p>
       </div>
     </RouterLink>
     <RouterLink to="/mapa">
       <div class="navigation_bar__item">
-        <img src="/vue-public/icons8-map_marker.png" alt="map" />
+        <img :src=MapIcon alt="map" />
         <p>Mapka<br />Harmonogram</p>
       </div>
     </RouterLink>
     <RouterLink to="/">
       <div class="navigation-bar__logo">
-        <img src="/vue-public/The-Hunger-Games-PNG-File.png" alt="logo" />
+        <img :src=Logo alt="logo" />
       </div>
     </RouterLink>
     <RouterLink to="/warsztaty">
       <div class="navigation_bar__item">
-        <img src="/vue-public/icons8-hammer.png" alt="hammer" />
+        <img :src=HammerIcon alt="hammer" />
         <p>Warsztaty</p>
       </div>
     </RouterLink>
     <RouterLink to="/profil">
       <div class="navigation_bar__item">
-        <img src="/vue-public/icons8-male_user.png" alt="user" />
+        <img :src=UserIcon alt="user" />
         <p>Profil</p>
       </div>
     </RouterLink>
