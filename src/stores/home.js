@@ -83,3 +83,25 @@ export const useAnnouncementStore = defineStore('announcement', {
     }
   }
 })
+
+export const useDailyQuestStore = defineStore('dailyQuest', {
+  state: () => ({ loading: true, error: null, data: null, url: 'dailyQuest/' }),
+  getters: {
+    ready() {
+      return ready(this)
+    },
+    future() {
+      if (!this.ready || !this.data) {
+        return []
+      }
+      return this.data.filter((item) => {
+        return moment(item.finish).isAfter(moment())
+      })
+    }
+  },
+  actions: {
+    fetchData() {
+      loadData(this)
+    }
+  }
+})

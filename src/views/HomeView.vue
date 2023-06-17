@@ -4,13 +4,22 @@ import TextBox from '../components/TextBox.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
 import moment from 'moment'
 
+import DailyQuestView from '../components/home/DailyQuestView.vue'
+
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 </script>
 
 <template>
   <main>
-    <!-- <TheWelcome /> -->
+    
+    <div class="padding" v-if="apiDataStore.dailyQuest.ready && apiDataStore.dailyQuest.future.length">
+      <DailyQuestView v-for="(data, index) in apiDataStore.dailyQuest.future" 
+          :key="index"
+          :finish=data.finish
+          :msg=data.content 
+      />
+    </div>
 
     <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
       <h3>Twoje dzisiejsze warsztaty</h3>
@@ -117,6 +126,7 @@ export default {
     this.apiDataStore.userWorkshop.fetchData()
     this.apiDataStore.schedule.fetchData()
     this.apiDataStore.announcement.fetchData()
+    this.apiDataStore.dailyQuest.fetchData()
   }
 }
 </script>
