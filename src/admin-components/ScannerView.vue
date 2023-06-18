@@ -14,7 +14,7 @@ import { getCookie } from '../stores/functions.js'
 
     <div class="padding">
         <h3>Tryb skanowania</h3>
-        <ItemBox bigText="Walidacja posiłków"/>
+        <ItemBox bigText="Walidacja posiłków" small/>
 
         <div class="center">
             <input type="text" placeholder="Wpisz kod" class="search" v-model="searchQuery"/>

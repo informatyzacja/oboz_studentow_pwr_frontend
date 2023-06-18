@@ -16,6 +16,7 @@ import faqIcon from '../assets/icons8-faq.png'
 import busIcon from '../assets/icons8-bus.png'
 import opaskaIcon from '../assets/icons8-bangles.png'
 import domekIcon from '../assets/icons8-exterior.png'
+import logoutIcon from '../assets/icons8-logout.png'
 </script>
 
 <template>
@@ -27,7 +28,7 @@ import domekIcon from '../assets/icons8-exterior.png'
         <div class="qr" @click="$refs.qrOverlay.show">
           <div class="qr_div" :class="{ hidden: qrLoading }">
             <VueQr
-              :text="getOrigin + '/user/' + apiDataStore.profile.data[0].id"
+              :text="getOrigin + '/app/' + apiDataStore.profile.data[0].id"
               :logoSrc=Logo
               :logoScale=0.15
               :dotScale="0.8"
@@ -52,7 +53,7 @@ import domekIcon from '../assets/icons8-exterior.png'
           </h6>
             <div class="qr_div" :class="{ hidden: qrLoading }">
               <VueQr
-                :text="getOrigin + '/user/' + apiDataStore.profile.data[0].id"
+                :text="getOrigin + '/app/' + apiDataStore.profile.data[0].id"
                 :logoSrc=Logo
                 :logoScale=0.15
                 :dotScale="0.8"
@@ -163,9 +164,16 @@ import domekIcon from '../assets/icons8-exterior.png'
       </div>
     </div>
 
+
     <h6 v-if="apiDataStore.profile.ready">
       W przypadku błędnych danych prosimy o kontakt ze sztabem
     </h6>
+
+    <div class="spacer"></div>
+    <div class="spacer"></div>
+    <a href="/logout/">
+      <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small/>
+    </a>
   </div>
 </template>
 
