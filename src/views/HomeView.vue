@@ -24,14 +24,18 @@ import { mapStores } from 'pinia'
     <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
       <h3>Twoje dzisiejsze warsztaty</h3>
       <div class="scroll">
-        <HomeCard
+        <RouterLink
           v-for="(data, index) in apiDataStore.userWorkshop.today"
           :key="index"
-          :name="data.name"
-          :location="data.location"
-          :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-          :imgSrc="data.photo"
-        />
+          :to="`/warsztaty/info/${data.id}`"
+        >
+          <HomeCard
+            :name="data.name"
+            :location="data.location"
+            :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
+            :imgSrc="data.photo"
+          />
+        </RouterLink>
       </div>
     </div>
 

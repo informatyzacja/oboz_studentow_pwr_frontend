@@ -62,12 +62,37 @@ const router = createRouter({
       path: '/grupa/:id',
       name: 'grupa',
       component: () => import('../views/GroupView.vue')
+    },
+    {
+      path: '/:notFound',
+      redirect: '/'
+    },
+
+
+    // ADMIN ROUTES
+    {
+      path: '/admin-menu',
+      name: 'admin-menu',
+      component: () => import('../admin-components/MenuView.vue')
+    },
+    {
+      path: '/skaner',
+      name: 'skaner',
+      component: () => import('../admin-components/ScannerView.vue')
     }
-    // {
-    //   path: '/:notFound',
-    //   redirect: '/login/'
-    // }
   ]
+})
+
+import { useApiDataStore } from '../stores/api.js'
+
+
+router.beforeEach((to, from, next) => {
+  const apiDataStore = useApiDataStore();
+  if (!apiDataStore.permissions.hasPermissionsNeeded(to)) {
+    next('/');
+  } else {
+    next();
+  }
 })
 
 export default router

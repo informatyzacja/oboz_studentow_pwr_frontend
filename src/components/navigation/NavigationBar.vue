@@ -4,10 +4,15 @@ import MapIcon from '../../assets/icons8-map_marker.png'
 import Logo from '../../assets/The-Hunger-Games-PNG-File.png'
 import HammerIcon from '../../assets/icons8-hammer.png'
 import UserIcon from '../../assets/icons8-male_user.png'
+
+import ScannerIcon from '../../assets/icons8-barcode_reader.png'
+
+import { useApiDataStore } from '../../stores/api.js'
+import { mapStores } from 'pinia'
 </script>
 
 <template>
-  <div class="navigation-bar">
+  <div class="navigation-bar" v-if="!apiDataStore.permissions.ready || !apiDataStore.permissions.data.length">
     <RouterLink to="/sos">
       <div class="navigation_bar__item">
         <img :src=SosIcon alt="sos" />
@@ -38,7 +43,51 @@ import UserIcon from '../../assets/icons8-male_user.png'
       </div>
     </RouterLink>
   </div>
+
+  <!-- staff -->
+  <div class="navigation-bar" v-else>
+    <RouterLink to="/skaner">
+      <div class="navigation_bar__item">
+        <img :src=ScannerIcon alt="skaner" />
+        <p>Skaner</p>
+      </div>
+    </RouterLink>
+    <RouterLink to="/mapa">
+      <div class="navigation_bar__item">
+        <img :src=MapIcon alt="map" />
+        <p>Mapka<br />Harmonogram</p>
+      </div>
+    </RouterLink>
+    <RouterLink to="/admin-menu">
+      <div class="navigation-bar__logo">
+        <img :src=Logo alt="logo" />
+      </div>
+    </RouterLink>
+    <RouterLink to="/warsztaty">
+      <div class="navigation_bar__item">
+        <img :src=HammerIcon alt="hammer" />
+        <p>Warsztaty</p>
+      </div>
+    </RouterLink>
+    <RouterLink to="/profil">
+      <div class="navigation_bar__item">
+        <img :src=UserIcon alt="user" />
+        <p>Profil</p>
+      </div>
+    </RouterLink>
+  </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    ...mapStores(useApiDataStore)
+  },
+  mounted() {
+    this.apiDataStore.permissions.fetchData()
+  }
+}
+</script>
 
 <style scoped>
 .navigation-bar {

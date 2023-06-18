@@ -6,6 +6,8 @@ import { useProfileStore, useLinkStore } from './misc.js'
 import { useWorkshopStore } from './workshops.js'
 import { useFaqStore } from './misc.js'
 
+import { usePermissionStore } from './staff/permissions.js'
+
 export const useApiDataStore = defineStore('apiData', {
   state: () => ({
     userWorkshop: useUserWorkshopStore(),
@@ -17,5 +19,6 @@ export const useApiDataStore = defineStore('apiData', {
     workshops: useWorkshopStore(),
     faq: useFaqStore(),
     dailyQuest: useDailyQuestStore(),
+    permissions: usePermissionStore()
   })
 })

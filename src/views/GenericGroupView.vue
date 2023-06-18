@@ -165,9 +165,6 @@ button {
   border-radius: 20px;
 }
 
-.hidden {
-  display: none;
-}
 
 .name {
   font-size: 25px;

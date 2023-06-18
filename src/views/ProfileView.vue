@@ -22,36 +22,15 @@ import domekIcon from '../assets/icons8-exterior.png'
   <TopBar title="Profil" />
   <div class="padding">
     <div class="flex" v-if="apiDataStore.profile.ready && apiDataStore.profile.data.length">
-      <div class="qr" @click="$refs.qrOverlay.show">
-        <div class="qr_div" :class="{ hidden: qrLoading }">
-          <VueQr
-            :text="getOrigin + '/user/' + apiDataStore.profile.data[0].id"
-            :logoSrc=Logo
-            :dotScale="0.8"
-            colorDark="#de7539"
-            colorLight="transparent"
-            whiteMargin="false"
-            :margin="0"
-            :callback="qrReady"
-            :size="250"
-          />
-        </div>
-        <LoadingIndicator v-if="qrLoading" inline />
-      </div>
-      Kod: {{ apiDataStore.profile.data[0].id }}
-
-      <OverlayView ref="qrOverlay">
-        <div class="qr_overlay">
-          <h6 style="margin-bottom: 15px">
-            Twój indyfidualny kod QR używany jest do potwierdzania Twojej tożsamości np. podczas
-            wydawania posiłków
-          </h6>
+      
+      <div class="qr_card">
+        <div class="qr" @click="$refs.qrOverlay.show">
           <div class="qr_div" :class="{ hidden: qrLoading }">
             <VueQr
               :text="getOrigin + '/user/' + apiDataStore.profile.data[0].id"
               :logoSrc=Logo
               :dotScale="0.8"
-              colorDark="#de7539"
+              colorDark="black"
               colorLight="transparent"
               whiteMargin="false"
               :margin="0"
@@ -60,7 +39,32 @@ import domekIcon from '../assets/icons8-exterior.png'
             />
           </div>
           <LoadingIndicator v-if="qrLoading" inline />
-          Kod: {{ apiDataStore.profile.data[0].id }}
+        </div>
+        Kod: {{ apiDataStore.profile.data[0].id }}
+      </div>
+
+      <OverlayView ref="qrOverlay">
+        <div class="qr_overlay">
+          <h6 style="margin-bottom: 15px">
+            Twój indyfidualny kod QR używany jest do potwierdzania Twojej tożsamości np. podczas
+            wydawania posiłków
+          </h6>
+            <div class="qr_div" :class="{ hidden: qrLoading }">
+              <VueQr
+                :text="getOrigin + '/user/' + apiDataStore.profile.data[0].id"
+                :logoSrc=Logo
+                logoScale="0.15"
+                :dotScale="0.8"
+                colorDark="black"
+                colorLight="transparent"
+                whiteMargin="false"
+                :margin="0"
+                :callback="qrReady"
+                :size="250"
+              />
+            </div>
+            <LoadingIndicator v-if="qrLoading" inline />
+            <p>Kod: {{ apiDataStore.profile.data[0].id }}</p>
           <button @click="$refs.qrOverlay.hide">Zamknij</button>
         </div>
       </OverlayView>
@@ -181,10 +185,6 @@ h3 {
   font-size: 13px;
 }
 
-h6 {
-  color: var(--text-gray);
-  text-align: center;
-}
 
 button {
   border-radius: 10px;
@@ -212,10 +212,19 @@ button {
   align-items: center;
 }
 
+.qr_card {
+  /* background-color: var(--theme-dark); */
+  background: var(--radial-gradient);
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 5px 25px;
+  color: black;
+}
+
 .qr_overlay {
   box-sizing: content-box;
-  width: 250px;
-  max-width: 70%;
+  width: 350px;
+  max-width: 80%;
   /* height: 240px; */
   display: flex;
   justify-content: center;
@@ -225,7 +234,14 @@ button {
 
   background: var(--bg);
   padding: 30px 40px;
-  border-radius: 20px;
+  border-radius: 5px 25px;
+  background: var(--radial-gradient);
+  text-align: center;
+  color: black;
+}
+
+.qr_overlay p {
+  font-size: 20px;
 }
 
 .qr img,
@@ -237,9 +253,6 @@ button {
   object-fit: cover;
 }
 
-.hidden {
-  display: none;
-}
 
 .name {
   font-size: 23px;

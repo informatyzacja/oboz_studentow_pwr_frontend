@@ -68,3 +68,8 @@ body {
   align-items: center;
   color: red;
 }
+
+
+.hidden {
+  display: none;
+}
