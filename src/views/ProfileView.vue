@@ -29,6 +29,7 @@ import domekIcon from '../assets/icons8-exterior.png'
             <VueQr
               :text="getOrigin + '/user/' + apiDataStore.profile.data[0].id"
               :logoSrc=Logo
+              :logoScale=0.15
               :dotScale="0.8"
               colorDark="black"
               colorLight="transparent"
@@ -53,14 +54,14 @@ import domekIcon from '../assets/icons8-exterior.png'
               <VueQr
                 :text="getOrigin + '/user/' + apiDataStore.profile.data[0].id"
                 :logoSrc=Logo
-                logoScale="0.15"
+                :logoScale=0.15
                 :dotScale="0.8"
                 colorDark="black"
                 colorLight="transparent"
                 whiteMargin="false"
                 :margin="0"
                 :callback="qrReady"
-                :size="250"
+                :size="350"
               />
             </div>
             <LoadingIndicator v-if="qrLoading" inline />

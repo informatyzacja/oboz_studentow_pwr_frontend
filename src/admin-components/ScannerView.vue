@@ -2,7 +2,8 @@
 import TopBar from '../components/navigation/TopBar.vue';
 import ItemBox from '../components/ItemBox.vue';
 import LoadingIndicator from '../components/LoadingIndicator.vue';
-import { QrcodeStream } from 'vue3-qrcode-reader'
+// import { QrcodeStream } from 'vue3-qrcode-reader'
+import QrcodeStream from 'vue-qrcode-reader/src/components/QrcodeStream.vue'
 
 import { API_URL, AUTH_HEADER } from '../config.js'
 import { getCookie } from '../stores/functions.js'
@@ -47,6 +48,7 @@ export default {
             searchQuery: '',
             qrReaderError: '',
             result: '',
+            originalResult: '',
 
             qrScannerLoading: true,
             mealId: 1,
@@ -60,6 +62,7 @@ export default {
     methods: {
         onDecode(result) {
             if (result === "") return;
+            this.originalResult = result
             this.result = result.substring(result.lastIndexOf('/') + 1)
             this.mealValidationApiCall({user_id: this.result, meal_id: this.mealId})
         },
@@ -129,46 +132,50 @@ export default {
                 this.qrScannerLoading = false
             }
         },
-        track(detectedCode, ctx) {
-            const [ firstPoint, ...otherPoints ] = [detectedCode.topLeftCorner, detectedCode.topRightCorner, detectedCode.bottomRightCorner, detectedCode.bottomLeftCorner]
-            
+        track(detectedCodes, ctx) {
+            for (const detectedCode of detectedCodes) {
+                const [ firstPoint, ...otherPoints ] = detectedCode.cornerPoints
 
-            //outline
-            const gradient = ctx.createLinearGradient(0, 0, 200, 0);
-            gradient.addColorStop("0", "#de7539");
-            gradient.addColorStop("1.0", "#dea766");
 
-            // ctx.strokeStyle = "#de7539";
-            ctx.strokeStyle = gradient;
-            ctx.lineWidth = 10;          
+                //outline
+                const gradient = ctx.createLinearGradient(0, 0, 200, 0);
+                gradient.addColorStop("0", "#de7539");
+                gradient.addColorStop("1.0", "#dea766");
 
-            ctx.beginPath();
-            ctx.moveTo(firstPoint.x, firstPoint.y);
-            for (const { x, y } of otherPoints) {
-            ctx.lineTo(x, y);
+                // ctx.strokeStyle = "#de7539";
+                ctx.strokeStyle = this.resultLoading || this.originalResult!=detectedCode.rawValue ? "gray" : (this.success ? "green" : 'red');
+                ctx.lineWidth = 10;          
+
+                ctx.beginPath();
+                ctx.moveTo(firstPoint.x, firstPoint.y);
+                for (const { x, y } of otherPoints) {
+                ctx.lineTo(x, y);
+                }
+                ctx.lineTo(firstPoint.x, firstPoint.y);
+                ctx.closePath();
+                ctx.stroke();
+
+
+                //text
+                const { boundingBox } = detectedCode
+
+                const centerX = boundingBox.x + boundingBox.width/ 2
+                const centerY = boundingBox.y + boundingBox.height/ 2
+
+                const fontSize = Math.max(12, 55 * boundingBox.width/ctx.canvas.width)
+
+                ctx.font = `bold ${fontSize}px sans-serif`
+                ctx.textAlign = "center"
+
+                const value = !this.resultLoading ? this.user || this.error : 'Ładowanie...'
+
+                ctx.lineWidth = 3
+                ctx.strokeStyle = 'white'
+                ctx.strokeText(value, centerX, centerY)
+
+                ctx.fillStyle = 'black'
+                ctx.fillText(value, centerX, centerY)
             }
-            ctx.lineTo(firstPoint.x, firstPoint.y);
-            ctx.closePath();
-            ctx.stroke();
-
-
-            //text
-            const centerX = (detectedCode.topLeftCorner.x + detectedCode.bottomRightCorner.x)/ 2
-            const centerY = (detectedCode.topLeftCorner.y + detectedCode.bottomRightCorner.y)/ 2
-
-            const fontSize = Math.max(12, 0.13 * (Math.abs(detectedCode.topLeftCorner.x - detectedCode.bottomRightCorner.x) + Math.abs(detectedCode.topLeftCorner.y - detectedCode.bottomRightCorner.y)))
-
-            ctx.font = `bold ${fontSize}px sans-serif`
-            ctx.textAlign = "center"
-
-            const value = !this.resultLoading ? this.user : 'Ładowanie...'
-
-            ctx.lineWidth = 3
-            ctx.strokeStyle = 'white'
-            ctx.strokeText(value, centerX, centerY)
-
-            ctx.fillStyle = 'black'
-            ctx.fillText(value, centerX, centerY)
         },
 
 
@@ -253,6 +260,7 @@ h3 {
     color: white;
     font-size: 23px;
     margin: 10px;
+    text-align: center;
 }
 
 .result h5 {

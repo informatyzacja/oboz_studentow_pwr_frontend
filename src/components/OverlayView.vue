@@ -5,7 +5,6 @@ export default {
       this.$el.style.display = 'block'
       window.requestAnimationFrame(() => {
         this.$el.style.opacity = 1
-        console.log(this.$el.firstElementChild)
         this.$el.firstElementChild.classList.add('scale-up-top')
         setTimeout(() => {
           this.$el.firstElementChild.classList.remove('scale-up-top')
