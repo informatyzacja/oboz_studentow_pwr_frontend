@@ -18,7 +18,7 @@ import { getCookie } from '../stores/functions.js'
 
         <div class="center">
             <input type="text" placeholder="Wpisz kod" class="search" v-model="searchQuery"/>
-            <button class="button" @click="search" v-if="searchQuery != ''">Zatwierdź</button>
+            <button class="button success" @click="search" v-if="searchQuery != ''">Sprawdź</button>
 
             <div class="scanner">
                 <p class="error">{{ qrReaderError }}</p>
@@ -32,7 +32,8 @@ import { getCookie } from '../stores/functions.js'
                 <p v-if="result">Kod: {{ result }}</p>
                 <h4>{{ user }}</h4>
                 <h5>{{ error }}</h5>
-                <LoadingIndicator v-if="resultLoading" inline />
+                <LoadingIndicator v-if="resultLoading" inline small/>
+                <button class="button" v-if="validationCheckSuccessful && !validationSuccessful && !resultLoading" @click="validateMeal">Zatwierdź</button>
             </div>
         </div>  
     </div>
@@ -57,6 +58,9 @@ export default {
             user: '',
             error: '',
             success: null,
+
+            validationCheckSuccessful: null,
+            validationSuccessful: null,
         }
     },
     methods: {
@@ -64,22 +68,56 @@ export default {
             if (result === "") return;
             this.originalResult = result
             this.result = result.substring(result.lastIndexOf('/') + 1)
-            this.mealValidationApiCall({user_id: this.result, meal_id: this.mealId})
+            this.checkMealValidation({user_id: this.result, meal_id: this.mealId})
         },
         search() {
             this.result = this.searchQuery
-            this.mealValidationApiCall({user_id: this.searchQuery, meal_id: this.mealId})
+            this.checkMealValidation({user_id: this.result, meal_id: this.mealId})
             this.searchQuery = ''
         },
 
-        mealValidationApiCall(body) {
+        checkMealValidation(body) {
             this.loading = true
-            const csrftoken = getCookie('csrftoken');
             this.resultLoading = true;
             this.user = '';
             this.error = '';
             this.success = null;
-            fetch(API_URL + "../staff-api/validate-meal/", {
+            this.validationSuccessful = null;
+            this.validationCheckSuccessful = null;
+            fetch(API_URL + "../staff-api/meal-validation/check/?" + new URLSearchParams(body), {
+                headers: AUTH_HEADER,
+                method: 'GET'
+            })
+                .then((data) => {
+                    if (data.ok) {
+                        return data.json()
+                    }
+                    this.error = data.status + " " + data.statusText
+                    this.success = false
+                    throw new Error('Request failed!')
+                })
+                .then((data) => {
+                    this.success = data.success
+                    this.validationCheckSuccessful = data.success
+                    this.error = data.error
+                    this.user = data.user
+                })
+                .catch((error) => {
+                    console.error('There was an error!', error)
+                })
+                .finally(() => {
+                    this.resultLoading = false
+                })
+        },
+
+        validateMeal() {
+            this.loading = true
+            const csrftoken = getCookie('csrftoken');
+            this.resultLoading = true;
+            // this.error = '';
+            // this.success = null;
+            const body = {user_id: this.result, meal_id: this.mealId}
+            fetch(API_URL + "../staff-api/meal-validation/validate/", {
                 headers: Object.assign({}, { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken }, AUTH_HEADER),
                 method: 'PUT',
                 body: JSON.stringify(body)
@@ -94,10 +132,14 @@ export default {
                 })
                 .then((data) => {
                     this.success = data.success
+                    this.validationSuccessful = data.success
                     this.error = data.error
+                    if (this.success ) {
+                        this.error = "Zatwierdzono"
+                    }
                     this.user = data.user
                 })
-                    .catch((error) => {
+                .catch((error) => {
                     console.error('There was an error!', error)
                 })
                 .finally(() => {
@@ -242,18 +284,20 @@ h3 {
   line-height: 16px;
   cursor: pointer;
   font-family: 'Sui Generis';
-  background-color: green;
 
   display: flex;
   justify-content: center;
 
   margin-bottom: 12px;
+
+  background-color: var(--bg-light);
 }
 
 .result {
     background-color: var(--bg-light);
     width: 95%;
-    min-height: 150px;
+    min-height: 100px;
+    padding: 10px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -269,11 +313,13 @@ h3 {
     font-size: 17px;
     color: #bbb;
 }
-
-.result.error {
+.result p {
+    font-size: 15px;
+}
+.error {
     background-color: var(--red);
 }
-.result.success {
+.success {
     background-color: green;
 }
 
