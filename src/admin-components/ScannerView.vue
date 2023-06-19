@@ -19,7 +19,7 @@ import { getCookie } from '../stores/functions.js'
         <ItemBox :bigText="currentMealLoadng ? 'Ładowanie...' : (currentMeal ? currentMeal.type__name + ', ' + moment(currentMeal.date).format('dddd DD.MM') : 'Obecnie nie odbywa się żaden posiłek')" small/>
 
         <div class="center">
-            <input type="number" maxLength="5" placeholder="Wpisz kod" class="search" v-model="searchQuery" @input="event => {if (event.target.value.length > event.target.maxLength)  event.target.value = event.target.value.slice(0, event.target.maxLength);}"/>
+            <input type="number" maxLength="5" placeholder="Wpisz kod" class="search" v-model="searchQuery" @input="event => {if (event.target.value.length > event.target.maxLength)  searchQuery = event.target.value.slice(0, event.target.maxLength);}"/>
             <button class="button success" @click="search" v-if="searchQuery != '' && !currentMealLoadng && currentMeal">Sprawdź</button>
 
             <div class="scanner">
