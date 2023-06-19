@@ -76,11 +76,21 @@ export default {
         }
     },
     methods: {
+        isNumeric(str) {
+            if (typeof str != "string") return false // we only process strings!  
+            return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+                    !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+        },
         onDecode(result) {
             if (result === "") return;
             if (this.currentMealLoadng) return;
             this.originalResult = result
             this.result = result.substring(result.lastIndexOf('/') + 1)
+            if (this.result.length > 5 || !this.isNumeric(this.result)) {
+                this.result = '';
+                this.error = "Błędny kod"
+                return
+            }
             this.checkMealValidation({user_id: this.result, meal_id: this.currentMeal.id})
         },
         search() {
