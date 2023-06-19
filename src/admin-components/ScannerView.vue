@@ -10,11 +10,11 @@ import { getCookie } from '../stores/functions.js'
 </script>
 
 <template>
-    <TopBar title="Skaner"/>
+    <TopBar title="Walidacja posiłków" backLink="/skaner"/>
 
     <div class="padding">
-        <h3>Tryb skanowania</h3>
-        <ItemBox bigText="Walidacja posiłków" small/>
+        <!-- <h3>Tryb skanowania</h3>
+        <ItemBox bigText="Walidacja posiłków" small/> -->
         <!-- <h3>Posiłek</h3> -->
         <ItemBox :bigText="currentMealLoadng ? 'Ładowanie...' : (currentMeal ? currentMeal.type__name + ', ' + moment(currentMeal.date).format('dddd DD.MM') : 'Obecnie nie odbywa się żaden posiłek')" small/>
 

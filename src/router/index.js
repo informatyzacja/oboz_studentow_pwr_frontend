@@ -78,6 +78,11 @@ const router = createRouter({
     {
       path: '/skaner',
       name: 'skaner',
+      component: () => import('../admin-components/ScannerMenuView.vue')
+    },
+    {
+      path: '/skaner/posilki',
+      name: 'skaner-posilki',
       component: () => import('../admin-components/ScannerView.vue')
     }
   ]
