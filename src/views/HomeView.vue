@@ -2,23 +2,42 @@
 import HomeCard from '../components/home/HomeCard.vue'
 import TextBox from '../components/TextBox.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
+import TopBar from '../components/navigation/TopBar.vue'
 import moment from 'moment'
 
 import DailyQuestView from '../components/home/DailyQuestView.vue'
+import OverlayView from '../components/OverlayView.vue'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 </script>
 
 <template>
+  <TopBar title="Home"/>
   <main>
-    
+
     <div class="padding" v-if="apiDataStore.dailyQuest.ready && apiDataStore.dailyQuest.future.length">
-      <DailyQuestView v-for="(data, index) in apiDataStore.dailyQuest.future" 
-          :key="index"
-          :finish=data.finish
-          :msg=data.content 
-      />
+      <div v-for="(data, index) in apiDataStore.dailyQuest.future" :key="index">
+
+          <DailyQuestView
+            :finish=data.finish
+            :title=data.title 
+            :points=data.points
+            @click="showRef('dailyQuestOverlay', index)"
+            />
+
+        <OverlayView ref="dailyQuestOverlay" >
+          <div class="daily_quest_overlay">
+            <DailyQuestView  
+            :finish=data.finish
+            :title=data.title 
+            :description=data.description 
+            :points=data.points
+            />
+            <button @click="hideRef('dailyQuestOverlay', index)">Zamknij</button>
+            </div>
+        </OverlayView>
+      </div>
     </div>
 
     <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
@@ -88,9 +107,6 @@ import { mapStores } from 'pinia'
 </template>
 
 <style scoped>
-main {
-  padding: 40px 0;
-}
 
 .loading {
   display: flex;
@@ -119,10 +135,47 @@ h3 {
 ::-webkit-scrollbar {
   display: none;
 }
+
+.daily_quest_overlay {
+  padding: 20px;
+  margin: 40px auto;
+  width: 85%;
+  background: var(--bg-lighter);
+  border-radius: 35px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  border-radius: 10px;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  line-height: 16px;
+  cursor: pointer;
+  font-family: 'Sui Generis';
+  background-color: var(--bg-light);
+
+  width: 130px;
+  display: flex;
+  justify-content: center;
+
+  margin-top: 10px;
+}
 </style>
 
 <script>
 export default {
+  components: {
+    HomeCard,
+    TextBox,
+    LoadingIndicator,
+    OverlayView,
+    DailyQuestView
+  },
   computed: {
     ...mapStores(useApiDataStore)
   },
@@ -131,6 +184,14 @@ export default {
     this.apiDataStore.schedule.fetchData()
     this.apiDataStore.announcement.fetchData()
     this.apiDataStore.dailyQuest.fetchData()
+  },
+  methods: {
+    showRef(ref,index) {
+      this.$refs[ref][index].show()
+    },
+    hideRef(ref,index) {
+      this.$refs[ref][index].hide()
+    }
   }
 }
 </script>

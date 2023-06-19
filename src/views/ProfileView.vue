@@ -24,8 +24,8 @@ import logoutIcon from '../assets/icons8-logout.png'
   <div class="padding">
     <div class="flex" v-if="apiDataStore.profile.ready && apiDataStore.profile.data.length">
       
-      <div class="qr_card">
-        <div class="qr" @click="$refs.qrOverlay.show">
+      <div class="qr_card" @click="$refs.qrOverlay.show">
+        <div class="qr" >
           <div class="qr_div" :class="{ hidden: qrLoading }">
             <VueQr
               :text="getOrigin + '/app/' + apiDataStore.profile.data[0].id"

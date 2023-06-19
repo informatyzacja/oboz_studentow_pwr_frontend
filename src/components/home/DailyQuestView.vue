@@ -2,12 +2,20 @@
 import moment from 'moment';
 
 defineProps({
-  msg: {
+  title: {
     type: String,
     required: true
   },
+  description: {
+    type: String,
+    required: false
+  },
   finish: {
     type: String,
+    required: true
+  },
+  points: {
+    type: Number,
     required: true
   }
 });
@@ -16,13 +24,17 @@ defineProps({
 <template>
     <div class="daily-quest">
         <div class="header">
+            <div>
             <h1>Daily Quest</h1>
+            <h5>Punkty: {{ points || "?" }}</h5>
+            </div>
             <div class="timer">
                 <p>Pozostały czas:</p>
                 <h2>{{ time }}</h2>
             </div>
         </div>
-        <h3>{{ msg }}</h3>
+        <h3>{{ title }}</h3>
+        <h6>{{ description }}</h6>
         <h4>Po odbiór punktów należy sie zgłosić do sztabu</h4>
     </div>
 </template>
@@ -86,19 +98,27 @@ export default {
     margin: 0;
     font-size: 25px;
     line-height: 25px;
-    /* font-weight: 600; */
 }
 
 h1 {
     color: black;
     font-size: 34px;
+    line-height: 34px;
 }
 h3 {
-    font-size: 14px;
+    font-size: 18px;
+}
+h6 {
+    font-size: 16px;
 }
 h4 {
     text-align: right;
     font-size: 10px;
     margin-top: 20px;
+}
+h5 {
+    color: rgb(56, 56, 56);
+    font-size: 14px;
+
 }
 </style>
