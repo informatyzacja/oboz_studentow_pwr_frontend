@@ -38,21 +38,21 @@ import { getCookie } from '../stores/functions.js'
               <LoadingIndicator inline small />
             </button>
             <button
-              class="button button_inactive"
-              v-else-if="data.userCount >= data.userLimit"
-              disabled
-            >
-              Brak miejsc
-            </button>
-            <button class="button button_inactive" v-else-if="!data.signupsOpen" disabled>
-              Zapisy nieaktywne
-            </button>
-            <button
               class="button button_signedup"
               v-else-if="data.userSignUpId"
               @click="signOut(data.userSignUpId)"
             >
               Wypisz się
+            </button>
+            <button class="button button_inactive" v-else-if="!data.signupsOpen" disabled>
+              Zapisy nieaktywne
+            </button>
+            <button
+              class="button button_inactive"
+              v-else-if="data.userCount >= data.userLimit"
+              disabled
+            >
+              Brak miejsc
             </button>
             <button class="button" v-else @click="signUp($route.params.id)">Zapisz się</button>
           </div>
