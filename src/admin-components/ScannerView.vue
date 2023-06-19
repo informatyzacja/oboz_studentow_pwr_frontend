@@ -33,7 +33,7 @@ import { getCookie } from '../stores/functions.js'
             <div class="result" :class="{error: success===false, success: success===true}">
                 <p v-if="result">Kod: {{ result }}</p>
                 <h4>{{ user }}</h4>
-                <h7 v-if="user_title">{{ user_title }}</h7>
+                <h5 v-if="user_title">{{ user_title }}</h5>
                 <h6 v-if="user_diet">Dieta: {{ user_diet }}</h6>
                 <h5>{{ error }}</h5>
                 <LoadingIndicator v-if="resultLoading" inline small/>
@@ -357,11 +357,7 @@ h3 {
 .result h6 {
     font-size: 16px;
 }
-.result h7 {
-    font-size: 15px;
-    line-height: 15px;
-    color: #bbb;
-}
+
 .result p {
     font-size: 15px;
 }
