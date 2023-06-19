@@ -2,8 +2,8 @@
 import TopBar from '../components/navigation/TopBar.vue';
 import ItemBox from '../components/ItemBox.vue';
 import LoadingIndicator from '../components/LoadingIndicator.vue';
-// import { QrcodeStream } from 'vue3-qrcode-reader'
 import QrcodeStream from 'vue-qrcode-reader/src/components/QrcodeStream.vue'
+import moment from 'moment';
 
 import { API_URL, AUTH_HEADER } from '../config.js'
 import { getCookie } from '../stores/functions.js'
@@ -15,14 +15,16 @@ import { getCookie } from '../stores/functions.js'
     <div class="padding">
         <h3>Tryb skanowania</h3>
         <ItemBox bigText="Walidacja posiłków" small/>
+        <!-- <h3>Posiłek</h3> -->
+        <ItemBox :bigText="currentMealLoadng ? 'Ładowanie...' : (currentMeal ? currentMeal.type__name + ', ' + moment(currentMeal.date).format('dddd DD.MM') : 'Obecnie nie odbywa się żaden posiłek')" small/>
 
         <div class="center">
             <input type="text" placeholder="Wpisz kod" class="search" v-model="searchQuery"/>
-            <button class="button success" @click="search" v-if="searchQuery != ''">Sprawdź</button>
+            <button class="button success" @click="search" v-if="searchQuery != '' && !currentMealLoadng && currentMeal">Sprawdź</button>
 
             <div class="scanner">
                 <p class="error">{{ qrReaderError }}</p>
-                <div class="scanner-inside" :class="{ hidden: qrScannerLoading }">
+                <div class="scanner-inside" :class="{ hidden: qrScannerLoading || currentMealLoadng || !currentMeal }">
                     <QrcodeStream @decode="onDecode" @init="onInit" :track="track"/>
                 </div>
                 <LoadingIndicator v-if="qrScannerLoading" inline />
@@ -44,6 +46,9 @@ export default {
     components: {
         QrcodeStream
     },
+    mounted() {
+        this.getCurrentMeal()
+    },
     data() {
         return {
             searchQuery: '',
@@ -52,7 +57,6 @@ export default {
             originalResult: '',
 
             qrScannerLoading: true,
-            mealId: 1,
             resultLoading: false,
 
             user: '',
@@ -61,18 +65,24 @@ export default {
 
             validationCheckSuccessful: null,
             validationSuccessful: null,
+
+            currentMealLoadng: true,
+            currentMeal: null,
+
         }
     },
     methods: {
         onDecode(result) {
             if (result === "") return;
+            if (this.currentMealLoadng) return;
             this.originalResult = result
             this.result = result.substring(result.lastIndexOf('/') + 1)
-            this.checkMealValidation({user_id: this.result, meal_id: this.mealId})
+            this.checkMealValidation({user_id: this.result, meal_id: this.currentMeal.id})
         },
         search() {
+            if (this.currentMealLoadng) return;
             this.result = this.searchQuery
-            this.checkMealValidation({user_id: this.result, meal_id: this.mealId})
+            this.checkMealValidation({user_id: this.result, meal_id: this.currentMeal.id})
             this.searchQuery = ''
         },
 
@@ -114,9 +124,7 @@ export default {
             this.loading = true
             const csrftoken = getCookie('csrftoken');
             this.resultLoading = true;
-            // this.error = '';
-            // this.success = null;
-            const body = {user_id: this.result, meal_id: this.mealId}
+            const body = {user_id: this.result, meal_id: this.currentMeal.id}
             fetch(API_URL + "../staff-api/meal-validation/validate/", {
                 headers: Object.assign({}, { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken }, AUTH_HEADER),
                 method: 'PUT',
@@ -146,7 +154,32 @@ export default {
                     this.resultLoading = false
                 })
         },
-
+        
+        getCurrentMeal() {
+            fetch(API_URL + "../staff-api/meal-validation/current-meal/", {
+                headers: AUTH_HEADER,
+                method: 'GET'
+            })
+            .then((data) => {
+                if (data.ok) {
+                    try {
+                        return data.json()
+                    } catch (error) {
+                        return null
+                    }
+                }
+                throw new Error('Request failed!')
+            })
+            .then((data) => {
+                this.currentMeal = data
+            })
+            .catch((error) => {
+                console.error('There was an error!', error)
+            })
+            .finally(() => {
+                this.currentMealLoadng = false
+            })
+        },
 
 
         
