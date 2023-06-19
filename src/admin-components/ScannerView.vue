@@ -28,7 +28,7 @@ import { getCookie } from '../stores/functions.js'
                 <LoadingIndicator v-if="qrScannerLoading" inline />
             </div>
 
-            <div class="result" :class="{error: !success}">
+            <div class="result" :class="{error: success===false, success: success===true}">
                 <p v-if="result">Kod: {{ result }}</p>
                 <h4>{{ user }}</h4>
                 <h5>{{ error }}</h5>
@@ -56,7 +56,7 @@ export default {
 
             user: '',
             error: '',
-            success: true,
+            success: null,
         }
     },
     methods: {
@@ -69,6 +69,7 @@ export default {
         search() {
             this.result = this.searchQuery
             this.mealValidationApiCall({user_id: this.searchQuery, meal_id: this.mealId})
+            this.searchQuery = ''
         },
 
         mealValidationApiCall(body) {
@@ -77,7 +78,7 @@ export default {
             this.resultLoading = true;
             this.user = '';
             this.error = '';
-            this.success = true;
+            this.success = null;
             fetch(API_URL + "../staff-api/validate-meal/", {
                 headers: Object.assign({}, { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken }, AUTH_HEADER),
                 method: 'PUT',
@@ -87,13 +88,14 @@ export default {
                     if (data.ok) {
                         return data.json()
                     }
+                    this.error = data.status + " " + data.statusText
+                    this.success = false
                     throw new Error('Request failed!')
                 })
                 .then((data) => {
                     this.success = data.success
                     this.error = data.error
                     this.user = data.user
-                    this.searchQuery = ''
                 })
                     .catch((error) => {
                     console.error('There was an error!', error)
@@ -249,7 +251,7 @@ h3 {
 }
 
 .result {
-    background-color: green;
+    background-color: var(--bg-light);
     width: 95%;
     min-height: 150px;
     display: flex;
@@ -270,6 +272,9 @@ h3 {
 
 .result.error {
     background-color: var(--red);
+}
+.result.success {
+    background-color: green;
 }
 
 
