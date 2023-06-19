@@ -33,6 +33,8 @@ import { getCookie } from '../stores/functions.js'
             <div class="result" :class="{error: success===false, success: success===true}">
                 <p v-if="result">Kod: {{ result }}</p>
                 <h4>{{ user }}</h4>
+                <h7 v-if="user_title">{{ user_title }}</h7>
+                <h6 v-if="user_diet">Dieta: {{ user_diet }}</h6>
                 <h5>{{ error }}</h5>
                 <LoadingIndicator v-if="resultLoading" inline small/>
                 <button class="button" v-if="validationCheckSuccessful && !validationSuccessful && !resultLoading" @click="validateMeal">Zatwierdź</button>
@@ -62,6 +64,8 @@ export default {
             user: '',
             error: '',
             success: null,
+            user_title: '',
+            user_diet: '',
 
             validationCheckSuccessful: null,
             validationSuccessful: null,
@@ -111,6 +115,8 @@ export default {
                     this.validationCheckSuccessful = data.success
                     this.error = data.error
                     this.user = data.user
+                    this.user_title = data.user_title
+                    this.user_diet = data.user_diet
                 })
                 .catch((error) => {
                     console.error('There was an error!', error)
@@ -146,6 +152,8 @@ export default {
                         this.error = "Zatwierdzono"
                     }
                     this.user = data.user
+                    this.user_title = data.user_title
+                    this.user_diet = data.user_diet
                 })
                 .catch((error) => {
                     console.error('There was an error!', error)
@@ -344,6 +352,14 @@ h3 {
 
 .result h5 {
     font-size: 17px;
+    color: #bbb;
+}
+.result h6 {
+    font-size: 16px;
+}
+.result h7 {
+    font-size: 15px;
+    line-height: 15px;
     color: #bbb;
 }
 .result p {
