@@ -91,11 +91,12 @@ export default {
 
 <style scoped>
 .navigation-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding: 15px 25px;
-  height: 75px;
+  display: grid;
+  /* justify-content: space-between;
+  align-items: flex-end; */
+  /* padding: 15px 25px; */
+  grid-template-columns: repeat(5, 1fr);
+  height: 72px;
   background-color: var(--bg-lighter);
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
 
@@ -107,19 +108,20 @@ export default {
 }
 
 .navigation-bar__logo {
-  width: 75px;
-  height: 75px;
+  width: 82px;
+  height: 82px;
   border-radius: 50%;
   background-color: var(--bg-lighter);
   display: flex;
   justify-content: center;
   align-items: center;
   box-shadow: 0px -3px 8px rgba(0, 0, 0, 0.25);
+  margin: -10px auto 0;
 }
 
 .navigation-bar__logo img {
-  width: 60px;
-  height: 60px;
+  width: 80%;
+  height: 80%;
 }
 
 .navigation_bar__item {
@@ -128,18 +130,20 @@ export default {
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 9px;
+  font-size: 12px;
   text-align: center;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
-  height: 50px;
+  justify-content: center;
+  /* height: 50px; */
+  height: 100%;
 }
 
 .navigation_bar__item img {
-  width: 30px;
+  margin-bottom: 2px;
+  width: 24px;
   object-fit: contain;
 }
 
