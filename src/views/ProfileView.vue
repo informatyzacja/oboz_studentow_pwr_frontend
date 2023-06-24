@@ -17,6 +17,8 @@ import busIcon from '../assets/icons8-bus.png'
 import opaskaIcon from '../assets/icons8-bangles.png'
 import domekIcon from '../assets/icons8-exterior.png'
 import logoutIcon from '../assets/icons8-logout.png'
+import politykaPrywatnosciIcon from '../assets/icons8-terms_and_conditions.png'
+import regulaminIcon from '../assets/icons8-rules_book.png'
 </script>
 
 <template>
@@ -170,6 +172,13 @@ import logoutIcon from '../assets/icons8-logout.png'
     </h6>
 
     <div class="spacer"></div>
+    <div class="spacer"></div>
+    <a href="/" target="_blank">
+      <ItemBox big-text="Regulamin" :leftIcon="regulaminIcon" small/>
+    </a>
+    <a href="/" target="_blank">
+      <ItemBox big-text="Polityka prywatności" :leftIcon="politykaPrywatnosciIcon" small/>
+    </a>
     <div class="spacer"></div>
     <a href="/logout/">
       <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small/>
