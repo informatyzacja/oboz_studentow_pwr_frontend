@@ -30,7 +30,7 @@ defineProps({
     required: false,
     default: false
   }
-})
+});
 </script>
 
 <template>
@@ -118,6 +118,7 @@ img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+  filter: grayscale(100%) brightness(10);
 }
 
 .small {

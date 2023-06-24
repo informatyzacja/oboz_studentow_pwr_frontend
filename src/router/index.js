@@ -83,7 +83,7 @@ const router = createRouter({
     {
       path: '/skaner/posilki',
       name: 'skaner-posilki',
-      component: () => import('../admin-components/ScannerView.vue')
+      component: () => import('../admin-components/MealScannerView.vue')
     }
   ]
 })
