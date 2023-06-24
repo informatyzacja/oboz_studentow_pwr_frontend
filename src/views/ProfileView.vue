@@ -188,7 +188,7 @@ import { REULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
 
     <div class="credits">
       <p>© Obóz Studentow PWr 2023</p>
-      <p>Made with 🍺.  by Marvin</p>
+      <p>Made with 🍺 by Marvin</p>
     </div>
   </div>
 </template>
@@ -308,7 +308,7 @@ button {
 
 .credits {
   margin-top: 20px;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-gray);
   text-align: center;
 }

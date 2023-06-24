@@ -1,9 +1,7 @@
 <script setup>
 import TopBar from '../components/navigation/TopBar.vue'
 import OverlayView from '../components/OverlayView.vue'
-
-// import map from '../assets/map.jpg'
-// import schedule from '../assets/schedule.jpg'
+import LoadingIndicator from '../components/LoadingIndicator.vue'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
@@ -25,6 +23,10 @@ import { mapStores } from 'pinia'
 
     </div>
   </div>
+
+  <LoadingIndicator v-if="apiDataStore.images.loading" />
+  <p v-if="apiDataStore.images.error" class="error">Błąd wczytywania</p>
+  <p v-if="apiDataStore.images.ready && !apiDataStore.images.data.length" class="error">Brak danych</p>
 
 </template>
 
