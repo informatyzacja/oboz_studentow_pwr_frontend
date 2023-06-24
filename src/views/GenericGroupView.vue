@@ -4,6 +4,8 @@ import TopBar from '../components/navigation/TopBar.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
 import TextBox from '../components/TextBox.vue'
 
+import OverlayView from '../components/OverlayView.vue'
+
 import rightArrow from '../assets/arrow.svg'
 import messangerIcon from '../assets/icons8-facebook_messenger.png'
 import phoneIcon from '../assets/phone_icon.svg'
@@ -44,9 +46,17 @@ defineProps({
     <div class="spacer" v-if="group.description"></div>
 
     <h3 v-if="group.map">{{ mapDescription }}</h3>
-    <div class="map">
+    <div class="map" @click="$refs.mapOverlay.show">
       <img v-if="group.map" :src="group.map" />
     </div>
+
+    <OverlayView ref="mapOverlay">
+      <div class="image_overlay">
+        <img :src=group.map alt="mapa" />
+        <a class="button" :href=group.map :download="group.name+'_Mapa_Obóz_Studentow_PWr_2023'">Pobierz</a>
+        <button class="red-bg" @click="$refs.mapOverlay.hide">Zamknij</button>
+      </div>
+    </OverlayView>
 
     <a v-if="group.messenger" :href="group.messenger" target="_blank">
       <ItemBox :bigText=messengerDescription :leftIcon=messangerIcon :rightIcon=rightArrow />
@@ -191,6 +201,49 @@ button {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.image_overlay img {
+  width: 100%;
+  height: auto;
+  max-height: 60vw;
+  object-fit: cover;
+  border-radius: 20px;
+}
+.image_overlay {
+  box-sizing: border-box;
+  /* width: 100%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 30px 10px;
+
+  background: var(--bg);
+  padding: 10px 10px 30px;
+  border-radius: 20px;
+}
+
+button, a.button {
+  border-radius: 10px;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  line-height: 16px;
+  cursor: pointer;
+  font-family: 'Sui Generis';
+  background-color: var(--bg-light);
+
+  width: 130px;
+  display: flex;
+  justify-content: center;
+
+  margin-top: 20px;
+}
+
+.red-bg {
+  background-color: var(--red);
 }
 </style>
 
