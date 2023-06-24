@@ -5,6 +5,7 @@ import { useUserWorkshopStore, useScheduleStore, useAnnouncementStore, useDailyQ
 import { useProfileStore, useLinkStore } from './misc.js'
 import { useWorkshopStore } from './workshops.js'
 import { useFaqStore } from './misc.js'
+import { useImageStore } from './images.js'
 
 import { usePermissionStore } from './staff/permissions.js'
 
@@ -19,6 +20,7 @@ export const useApiDataStore = defineStore('apiData', {
     workshops: useWorkshopStore(),
     faq: useFaqStore(),
     dailyQuest: useDailyQuestStore(),
-    permissions: usePermissionStore()
+    permissions: usePermissionStore(),
+    images: useImageStore()
   })
 })
