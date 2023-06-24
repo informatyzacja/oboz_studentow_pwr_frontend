@@ -19,6 +19,8 @@ import domekIcon from '../assets/icons8-exterior.png'
 import logoutIcon from '../assets/icons8-logout.png'
 import politykaPrywatnosciIcon from '../assets/icons8-terms_and_conditions.png'
 import regulaminIcon from '../assets/icons8-rules_book.png'
+
+import { REULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
 </script>
 
 <template>
@@ -173,10 +175,10 @@ import regulaminIcon from '../assets/icons8-rules_book.png'
 
     <div class="spacer"></div>
     <div class="spacer"></div>
-    <a href="/" target="_blank">
+    <a :href="REULAMIN_LINK" target="_blank">
       <ItemBox big-text="Regulamin" :leftIcon="regulaminIcon" small/>
     </a>
-    <a href="/" target="_blank">
+    <a :href="POLITYKA_PRYWATNOSCI_LINK" target="_blank">
       <ItemBox big-text="Polityka prywatności" :leftIcon="politykaPrywatnosciIcon" small/>
     </a>
     <div class="spacer"></div>
