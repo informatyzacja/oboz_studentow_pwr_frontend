@@ -174,6 +174,11 @@ import logoutIcon from '../assets/icons8-logout.png'
     <a href="/logout/">
       <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small/>
     </a>
+
+    <div class="credits">
+      <p>© Obóz Studentow PWr 2023</p>
+      <p>Made with 🍺.  by Marvin</p>
+    </div>
   </div>
 </template>
 
@@ -288,6 +293,13 @@ button {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.credits {
+  margin-top: 20px;
+  font-size: 11px;
+  color: var(--text-gray);
+  text-align: center;
 }
 </style>
 
