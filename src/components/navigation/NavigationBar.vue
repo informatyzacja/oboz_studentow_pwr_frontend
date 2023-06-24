@@ -13,68 +13,72 @@ import { mapStores } from 'pinia'
 
 <template>
   <div class="navigation-bar" v-if="!apiDataStore.permissions.ready || !apiDataStore.permissions.data.length">
-    <RouterLink to="/sos">
-      <div class="navigation_bar__item">
-        <img :src=SosIcon alt="sos" />
-        <p>SOS</p>
-      </div>
-    </RouterLink>
-    <RouterLink to="/mapa">
-      <div class="navigation_bar__item">
-        <img :src=MapIcon alt="map" />
-        <p>Mapka<br />Harmonogram</p>
-      </div>
-    </RouterLink>
-    <RouterLink to="/">
-      <div class="navigation-bar__logo">
-        <img :src=Logo alt="logo" />
-      </div>
-    </RouterLink>
-    <RouterLink to="/warsztaty">
-      <div class="navigation_bar__item">
-        <img :src=HammerIcon alt="hammer" />
-        <p>Warsztaty</p>
-      </div>
-    </RouterLink>
-    <RouterLink to="/profil">
-      <div class="navigation_bar__item">
-        <img :src=UserIcon alt="user" />
-        <p>Profil</p>
-      </div>
-    </RouterLink>
+    <div class="navigation-bar__content">
+      <RouterLink to="/sos">
+        <div class="navigation_bar__item">
+          <img :src=SosIcon alt="sos" />
+          <p>SOS</p>
+        </div>
+      </RouterLink>
+      <RouterLink to="/mapa">
+        <div class="navigation_bar__item">
+          <img :src=MapIcon alt="map" />
+          <p>Mapka<br />Harmonogram</p>
+        </div>
+      </RouterLink>
+      <RouterLink to="/">
+        <div class="navigation-bar__logo">
+          <img :src=Logo alt="logo" />
+        </div>
+      </RouterLink>
+      <RouterLink to="/warsztaty">
+        <div class="navigation_bar__item">
+          <img :src=HammerIcon alt="hammer" />
+          <p>Warsztaty</p>
+        </div>
+      </RouterLink>
+      <RouterLink to="/profil">
+        <div class="navigation_bar__item">
+          <img :src=UserIcon alt="user" />
+          <p>Profil</p>
+        </div>
+      </RouterLink>
+    </div>
   </div>
 
   <!-- staff -->
   <div class="navigation-bar" v-else>
-    <RouterLink to="/skaner">
-      <div class="navigation_bar__item">
-        <img :src=ScannerIcon alt="skaner" />
-        <p>Skaner</p>
-      </div>
-    </RouterLink>
-    <RouterLink to="/mapa">
-      <div class="navigation_bar__item">
-        <img :src=MapIcon alt="map" />
-        <p>Mapka<br />Harmonogram</p>
-      </div>
-    </RouterLink>
-    <RouterLink to="/admin-menu">
-      <div class="navigation-bar__logo">
-        <img :src=Logo alt="logo" />
-      </div>
-    </RouterLink>
-    <RouterLink to="/warsztaty">
-      <div class="navigation_bar__item">
-        <img :src=HammerIcon alt="hammer" />
-        <p>Warsztaty</p>
-      </div>
-    </RouterLink>
-    <RouterLink to="/profil">
-      <div class="navigation_bar__item">
-        <img :src=UserIcon alt="user" />
-        <p>Profil</p>
-      </div>
-    </RouterLink>
+    <div class="navigation-bar__content">
+      <RouterLink to="/skaner">
+        <div class="navigation_bar__item">
+          <img :src=ScannerIcon alt="skaner" />
+          <p>Skaner</p>
+        </div>
+      </RouterLink>
+      <RouterLink to="/mapa">
+        <div class="navigation_bar__item">
+          <img :src=MapIcon alt="map" />
+          <p>Mapka<br />Harmonogram</p>
+        </div>
+      </RouterLink>
+      <RouterLink to="/admin-menu">
+        <div class="navigation-bar__logo">
+          <img :src=Logo alt="logo" />
+        </div>
+      </RouterLink>
+      <RouterLink to="/warsztaty">
+        <div class="navigation_bar__item">
+          <img :src=HammerIcon alt="hammer" />
+          <p>Warsztaty</p>
+        </div>
+      </RouterLink>
+      <RouterLink to="/profil">
+        <div class="navigation_bar__item">
+          <img :src=UserIcon alt="user" />
+          <p>Profil</p>
+        </div>
+      </RouterLink>
+    </div>
   </div>
 </template>
 
@@ -91,12 +95,7 @@ export default {
 
 <style scoped>
 .navigation-bar {
-  display: grid;
-  /* justify-content: space-between;
-  align-items: flex-end; */
-  /* padding: 15px 25px; */
-  grid-template-columns: repeat(5, 1fr);
-  height: 72px;
+  height: 82px;
   background-color: var(--bg-lighter);
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
 
@@ -105,6 +104,12 @@ export default {
   width: 100%;
   left: 0;
   right: 0;
+
+}
+.navigation-bar__content {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+
 }
 
 .navigation-bar__logo {

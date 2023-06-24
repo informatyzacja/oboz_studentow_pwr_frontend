@@ -17,7 +17,7 @@ import { mapStores } from 'pinia'
         <div class="image_overlay">
           <img :src=data.image :alt="data.name" />
           <a class="button" :href=data.image :download="data.name+'_Obóz_Studentow_PWr_2023'">Pobierz</a>
-          <button class="error" @click="hideRef('imageOverlay', index)">Zamknij</button>
+          <button class="red-bg" @click="hideRef('imageOverlay', index)">Zamknij</button>
         </div>
       </OverlayView>
 
@@ -99,7 +99,7 @@ button, a.button {
   margin-top: 20px;
 }
 
-.error {
+.red-bg {
   background-color: var(--red);
 }
 </style>
