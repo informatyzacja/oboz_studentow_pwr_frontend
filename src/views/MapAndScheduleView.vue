@@ -13,7 +13,8 @@ import schedule from '../assets/schedule.jpg'
     <OverlayView ref="mapOverlay">
       <div class="image_overlay">
         <img :src=map alt="map" />
-        <button @click="$refs.mapOverlay.hide">Zamknij</button>
+        <a class="button" :href=map download="Mapka_Obóz_Studentow_PWr_2023">Pobierz</a>
+        <button class="error" @click="$refs.mapOverlay.hide">Zamknij</button>
       </div>
     </OverlayView>
   </div>
@@ -24,7 +25,8 @@ import schedule from '../assets/schedule.jpg'
     <OverlayView ref="scheduleOverlay">
       <div class="image_overlay">
         <img :src=schedule alt="schedule" />
-        <button @click="$refs.scheduleOverlay.hide">Zamknij</button>
+        <a class="button" :href=schedule download="Harmonogram_Obóz_Studentow_PWr_2023">Pobierz</a>
+        <button class="error" @click="$refs.scheduleOverlay.hide">Zamknij</button>
       </div>
     </OverlayView>
   </div>
@@ -53,7 +55,7 @@ import schedule from '../assets/schedule.jpg'
   border-radius: 20px;
 }
 
-button {
+button, a.button {
   border-radius: 10px;
   border: none;
   color: white;
@@ -69,5 +71,9 @@ button {
   justify-content: center;
 
   margin-top: 20px;
+}
+
+.error {
+  background-color: var(--red);
 }
 </style>
