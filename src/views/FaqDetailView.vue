@@ -22,13 +22,22 @@ import { mapStores } from 'pinia'
 
 <script>
 export default {
+  data() {
+    return {
+      timer: null
+    }
+  },
   computed: {
     ...mapStores(useApiDataStore)
   },
   mounted() {
     if (!this.apiDataStore.faq.data) {
       this.apiDataStore.faq.fetchData()
+      this.timer = setInterval(this.apiDataStore.faq.fetchData, 300000);
     }
+  },
+  beforeUnmount () {
+    clearInterval(this.timer);
   }
 }
 </script>

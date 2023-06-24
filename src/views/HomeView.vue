@@ -176,6 +176,14 @@ export default {
     OverlayView,
     DailyQuestView
   },
+  data() {
+    return {
+      timer1: null,
+      timer2: null,
+      timer3: null,
+      timer4: null,
+    }
+  },
   computed: {
     ...mapStores(useApiDataStore)
   },
@@ -184,6 +192,11 @@ export default {
     this.apiDataStore.schedule.fetchData()
     this.apiDataStore.announcement.fetchData()
     this.apiDataStore.dailyQuest.fetchData()
+
+    this.timer1 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000);
+    this.timer2 = setInterval(this.apiDataStore.schedule.fetchData, 300000);
+    this.timer3 = setInterval(this.apiDataStore.announcement.fetchData, 60000);
+    this.timer4 = setInterval(this.apiDataStore.dailyQuest.fetchData, 300000);
   },
   methods: {
     showRef(ref,index) {
@@ -192,6 +205,12 @@ export default {
     hideRef(ref,index) {
       this.$refs[ref][index].hide()
     }
+  },
+  beforeUnmount () {
+    clearInterval(this.timer1);
+    clearInterval(this.timer2);
+    clearInterval(this.timer3);
+    clearInterval(this.timer4);
   }
 }
 </script>

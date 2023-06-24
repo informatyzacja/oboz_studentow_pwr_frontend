@@ -36,11 +36,20 @@ import rightArrow from '../assets/arrow.svg'
 
 <script>
 export default {
+  data() {
+    return {
+      timer: null
+    }
+  },
   computed: {
     ...mapStores(useApiDataStore)
   },
   mounted() {
     this.apiDataStore.faq.fetchData()
+      this.timer = setInterval(this.apiDataStore.faq.fetchData, 300000);
+  },
+  beforeUnmount () {
+    clearInterval(this.timer);
   }
 }
 </script>

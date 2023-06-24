@@ -199,7 +199,8 @@ h3 {
 export default {
   data() {
     return {
-      loading: false
+      loading: false,
+      timer: null
     }
   },
   computed: {
@@ -207,6 +208,7 @@ export default {
   },
   mounted() {
     this.apiDataStore.workshops.fetchData()
+    this.timer = setInterval(this.apiDataStore.workshops.fetchData, 5*1000); // co 5 sekund
   },
   methods: {
     signUp(workshopId) {
@@ -240,6 +242,9 @@ export default {
           this.loading = false
         })
     }
+  },
+  beforeUnmount () {
+    clearInterval(this.timer);
   }
 }
 </script>

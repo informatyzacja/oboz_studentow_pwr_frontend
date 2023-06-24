@@ -138,11 +138,20 @@ h3 {
 
 <script>
 export default {
+  data() {
+    return {
+      timer: null
+    }
+  },
   computed: {
     ...mapStores(useApiDataStore)
   },
   mounted() {
     this.apiDataStore.contacts.fetchData()
+    this.timer = setInterval(this.apiDataStore.contacts.fetchData, 1000000);
+  },
+  beforeUnmount () {
+    clearInterval(this.timer);
   }
 }
 </script>

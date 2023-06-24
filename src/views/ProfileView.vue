@@ -295,7 +295,10 @@ button {
 export default {
   data() {
     return {
-      qrLoading: true
+      qrLoading: true,
+      timer1: null,
+      timer2: null,
+      timer3: null
     }
   },
   computed: {
@@ -308,11 +311,20 @@ export default {
     this.apiDataStore.profile.fetchData()
     this.apiDataStore.links.fetchData()
     this.apiDataStore.userWorkshop.fetchData()
+
+    this.timer1 = setInterval(this.apiDataStore.profile.fetchData, 300000);
+    this.timer2 = setInterval(this.apiDataStore.links.fetchData, 300000);
+    this.timer3 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000);
   },
   methods: {
     qrReady() {
       this.qrLoading = false
     }
+  },
+  beforeUnmount () {
+    clearInterval(this.timer1);
+    clearInterval(this.timer2);
+    clearInterval(this.timer3);
   }
 }
 </script>

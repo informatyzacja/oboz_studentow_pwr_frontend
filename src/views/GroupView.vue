@@ -18,11 +18,20 @@ import { mapStores } from 'pinia'
 
 <script>
 export default {
+  data() {
+    return {
+      timer: null
+    }
+  },
   computed: {
     ...mapStores(useApiDataStore),
   },
   mounted() {
     this.apiDataStore.profile.fetchData()
+    this.timer = setInterval(this.apiDataStore.profile.fetchData, 300000);
+  },
+  beforeUnmount () {
+    clearInterval(this.timer);
   }
 }
 </script>

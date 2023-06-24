@@ -136,7 +136,8 @@ main {
 export default {
   data() {
     return {
-      currentDay: 0
+      currentDay: 0,
+      timer: null
     }
   },
   created() {
@@ -153,6 +154,10 @@ export default {
   },
   mounted() {
     this.apiDataStore.workshops.fetchData()
+    this.timer = setInterval(this.apiDataStore.workshops.fetchData, 60000);
+  },
+  beforeUnmount () {
+    clearInterval(this.timer);
   }
 }
 </script>
