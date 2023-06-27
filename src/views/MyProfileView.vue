@@ -7,6 +7,7 @@ import ItemBox from '../components/ItemBox.vue'
 import logoutIcon from '../assets/icons8-logout.png'
 import politykaPrywatnosciIcon from '../assets/icons8-terms_and_conditions.png'
 import regulaminIcon from '../assets/icons8-rules_book.png'
+import refreshIcon from '../assets/icons8-refresh.png'
 
 import { REULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
 
@@ -49,9 +50,11 @@ grupaLink="/moja-grupa"
         <ItemBox big-text="Polityka prywatności" :leftIcon="politykaPrywatnosciIcon" small/>
         </a>
         <div class="spacer"></div>
+        <ItemBox big-text="Odśwież aplikację" :leftIcon="refreshIcon" small @click="refreshApp"/>
         <a href="/logout/">
-        <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small/>
+          <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small/>
         </a>
+
     </template>
 
 </GenericProfileView>
@@ -80,6 +83,9 @@ export default {
     this.timer3 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000);
   },
   methods: {
+    refreshApp() {
+      location.reload();
+    }
   },
   beforeUnmount () {
     clearInterval(this.timer1);
