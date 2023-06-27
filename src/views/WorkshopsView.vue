@@ -55,7 +55,7 @@ import { mapStores } from 'pinia'
     </p>
 
     <LoadingIndicator v-if="apiDataStore.workshops.loading" />
-    <p v-if="apiDataStore.workshops.error" class="error">{{apiDataStore.workshops.error}}</p>
+    <p v-if="apiDataStore.workshops.error" class="error">{{ apiDataStore.workshops.error }}</p>
   </main>
 </template>
 
@@ -154,10 +154,10 @@ export default {
   },
   mounted() {
     this.apiDataStore.workshops.fetchData()
-    this.timer = setInterval(this.apiDataStore.workshops.fetchData, 60000);
+    this.timer = setInterval(this.apiDataStore.workshops.fetchData, 60000)
   },
-  beforeUnmount () {
-    clearInterval(this.timer);
+  beforeUnmount() {
+    clearInterval(this.timer)
   }
 }
 </script>

@@ -13,34 +13,37 @@ import { mapStores } from 'pinia'
 </script>
 
 <template>
-  <div class="navigation-bar" v-if="!apiDataStore.permissions.ready || !apiDataStore.permissions.data.length">
+  <div
+    class="navigation-bar"
+    v-if="!apiDataStore.permissions.ready || !apiDataStore.permissions.data.length"
+  >
     <div class="navigation-bar__content">
       <RouterLink to="/sos">
         <div class="navigation_bar__item">
-          <img :src=SosIcon alt="sos" />
+          <img :src="SosIcon" alt="sos" />
           <p>SOS</p>
         </div>
       </RouterLink>
       <RouterLink to="/mapa">
         <div class="navigation_bar__item">
-          <img :src=MapIcon alt="map" />
+          <img :src="MapIcon" alt="map" />
           <p>Mapka<br />Harmonogram</p>
         </div>
       </RouterLink>
       <RouterLink to="/">
         <div class="navigation-bar__logo">
-          <img :src=Logo alt="logo" />
+          <img :src="Logo" alt="logo" />
         </div>
       </RouterLink>
       <RouterLink to="/warsztaty">
         <div class="navigation_bar__item">
-          <img :src=HammerIcon alt="hammer" />
+          <img :src="HammerIcon" alt="hammer" />
           <p>Warsztaty</p>
         </div>
       </RouterLink>
       <RouterLink to="/profil">
         <div class="navigation_bar__item">
-          <img :src=UserIcon alt="user" />
+          <img :src="UserIcon" alt="user" />
           <p>Profil</p>
         </div>
       </RouterLink>
@@ -52,30 +55,30 @@ import { mapStores } from 'pinia'
     <div class="navigation-bar__content">
       <RouterLink to="/skaner">
         <div class="navigation_bar__item">
-          <img :src=ScannerIcon alt="skaner" />
+          <img :src="ScannerIcon" alt="skaner" />
           <p>Skaner</p>
         </div>
       </RouterLink>
       <RouterLink to="/admin-menu">
         <div class="navigation_bar__item">
-          <img :src=MenuIcon alt="menu" />
+          <img :src="MenuIcon" alt="menu" />
           <p>Menu</p>
         </div>
       </RouterLink>
       <RouterLink to="/">
         <div class="navigation-bar__logo">
-          <img :src=Logo alt="logo" />
+          <img :src="Logo" alt="logo" />
         </div>
       </RouterLink>
       <RouterLink to="/warsztaty">
         <div class="navigation_bar__item">
-          <img :src=HammerIcon alt="hammer" />
+          <img :src="HammerIcon" alt="hammer" />
           <p>Warsztaty</p>
         </div>
       </RouterLink>
       <RouterLink to="/profil">
         <div class="navigation_bar__item">
-          <img :src=UserIcon alt="user" />
+          <img :src="UserIcon" alt="user" />
           <p>Profil</p>
         </div>
       </RouterLink>
@@ -105,12 +108,10 @@ export default {
   width: 100%;
   left: 0;
   right: 0;
-
 }
 .navigation-bar__content {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-
 }
 
 .navigation-bar__logo {

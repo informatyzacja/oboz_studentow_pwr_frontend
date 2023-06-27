@@ -13,29 +13,30 @@ import { mapStores } from 'pinia'
 </script>
 
 <template>
-  <TopBar title="Home"/>
+  <TopBar title="Home" />
   <main>
-
-    <div class="padding" v-if="apiDataStore.dailyQuest.ready && apiDataStore.dailyQuest.future.length">
+    <div
+      class="padding"
+      v-if="apiDataStore.dailyQuest.ready && apiDataStore.dailyQuest.future.length"
+    >
       <div v-for="(data, index) in apiDataStore.dailyQuest.future" :key="index">
+        <DailyQuestView
+          :finish="data.finish"
+          :title="data.title"
+          :points="data.points"
+          @click="showRef('dailyQuestOverlay', index)"
+        />
 
-          <DailyQuestView
-            :finish=data.finish
-            :title=data.title 
-            :points=data.points
-            @click="showRef('dailyQuestOverlay', index)"
-            />
-
-        <OverlayView ref="dailyQuestOverlay" >
+        <OverlayView ref="dailyQuestOverlay">
           <div class="daily_quest_overlay">
-            <DailyQuestView  
-            :finish=data.finish
-            :title=data.title 
-            :description=data.description 
-            :points=data.points
+            <DailyQuestView
+              :finish="data.finish"
+              :title="data.title"
+              :description="data.description"
+              :points="data.points"
             />
             <button @click="hideRef('dailyQuestOverlay', index)">Zamknij</button>
-            </div>
+          </div>
         </OverlayView>
       </div>
     </div>
@@ -99,15 +100,27 @@ import { mapStores } from 'pinia'
       </div>
     </div>
 
-    <p v-if="apiDataStore.userWorkshop.ready && !apiDataStore.userWorkshop.today.length && apiDataStore.schedule.ready && !apiDataStore.schedule.rightNow.length && !apiDataStore.schedule.upNext.length && apiDataStore.announcement.ready && !apiDataStore.announcement.data.length" class="error">Brak danych</p>
+    <p
+      v-if="
+        apiDataStore.userWorkshop.ready &&
+        !apiDataStore.userWorkshop.today.length &&
+        apiDataStore.schedule.ready &&
+        !apiDataStore.schedule.rightNow.length &&
+        !apiDataStore.schedule.upNext.length &&
+        apiDataStore.announcement.ready &&
+        !apiDataStore.announcement.data.length
+      "
+      class="error"
+    >
+      Brak danych
+    </p>
 
     <LoadingIndicator v-if="apiDataStore.schedule.loading" />
-    <p v-if="apiDataStore.schedule.error" class="error">{{apiDataStore.schedule.error}}</p>
+    <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
   </main>
 </template>
 
 <style scoped>
-
 .loading {
   display: flex;
   justify-content: center;
@@ -181,7 +194,7 @@ export default {
       timer1: null,
       timer2: null,
       timer3: null,
-      timer4: null,
+      timer4: null
     }
   },
   computed: {
@@ -193,24 +206,24 @@ export default {
     this.apiDataStore.announcement.fetchData()
     this.apiDataStore.dailyQuest.fetchData()
 
-    this.timer1 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000);
-    this.timer2 = setInterval(this.apiDataStore.schedule.fetchData, 300000);
-    this.timer3 = setInterval(this.apiDataStore.announcement.fetchData, 60000);
-    this.timer4 = setInterval(this.apiDataStore.dailyQuest.fetchData, 300000);
+    this.timer1 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000)
+    this.timer2 = setInterval(this.apiDataStore.schedule.fetchData, 300000)
+    this.timer3 = setInterval(this.apiDataStore.announcement.fetchData, 60000)
+    this.timer4 = setInterval(this.apiDataStore.dailyQuest.fetchData, 300000)
   },
   methods: {
-    showRef(ref,index) {
+    showRef(ref, index) {
       this.$refs[ref][index].show()
     },
-    hideRef(ref,index) {
+    hideRef(ref, index) {
       this.$refs[ref][index].hide()
     }
   },
-  beforeUnmount () {
-    clearInterval(this.timer1);
-    clearInterval(this.timer2);
-    clearInterval(this.timer3);
-    clearInterval(this.timer4);
+  beforeUnmount() {
+    clearInterval(this.timer1)
+    clearInterval(this.timer2)
+    clearInterval(this.timer3)
+    clearInterval(this.timer4)
   }
 }
 </script>

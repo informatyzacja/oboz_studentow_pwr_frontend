@@ -68,7 +68,6 @@ const router = createRouter({
       redirect: '/'
     },
 
-
     // ADMIN ROUTES
     {
       path: '/admin-menu',
@@ -114,19 +113,18 @@ const router = createRouter({
       path: '/grupy',
       name: 'grupy',
       component: () => import('../admin-components/GroupListView.vue')
-    },
+    }
   ]
 })
 
 import { useApiDataStore } from '../stores/api.js'
 
-
 router.beforeEach((to, from, next) => {
-  const apiDataStore = useApiDataStore();
+  const apiDataStore = useApiDataStore()
   if (!apiDataStore.permissions.hasPermissionsNeeded(to)) {
-    next('/');
+    next('/')
   } else {
-    next();
+    next()
   }
 })
 

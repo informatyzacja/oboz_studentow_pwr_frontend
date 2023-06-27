@@ -1,21 +1,20 @@
 import { defineStore } from 'pinia'
 import { loadData, ready } from '../functions.js'
 
-
 const permissions = {
   'admin-menu': 'any',
 
   //Skaner
-  'skaner': ['can_validate_meals','can_add_points','can_view_user_info'],
+  skaner: ['can_validate_meals', 'can_add_points', 'can_view_user_info'],
   'skaner-posilki': ['can_validate_meals'],
   'skaner-uczestnik': ['can_view_user_info'],
   'skaner-punkty': ['can_add_points'],
 
-  'uczestnik': ['can_view_user_info'],
-  'frakcja': ['can_view_fractions'],
-  'grupa': ['can_view_groups'],
-  'frakcje': ['can_view_fractions'],
-  'grupy': ['can_view_groups'],
+  uczestnik: ['can_view_user_info'],
+  frakcja: ['can_view_fractions'],
+  grupa: ['can_view_groups'],
+  frakcje: ['can_view_fractions'],
+  grupy: ['can_view_groups']
 }
 
 export const usePermissionStore = defineStore('permissions', {
@@ -26,30 +25,31 @@ export const usePermissionStore = defineStore('permissions', {
     },
     hasPermission() {
       return (codename) => {
-        return this.data && this.data.find(p => p.codename === codename)
+        return this.data && this.data.find((p) => p.codename === codename)
       }
     },
     hasOneOfPermissions() {
       return (codenames) => {
         for (const codename of codenames) {
-          if (this.data && this.data.find(p => p.codename === codename)) {
-            return true;
+          if (this.data && this.data.find((p) => p.codename === codename)) {
+            return true
           }
         }
-        return false;
+        return false
       }
     },
     hasPermissionsNeeded() {
       return (to) => {
         if (!(to.name in permissions)) {
-          return true;
+          return true
         }
         if (!this.ready) {
-          return false;
+          return false
         }
         return (
-          (permissions[to.name] === 'any' && this.data.length) || 
-          this.hasOneOfPermissions(permissions[to.name]));
+          (permissions[to.name] === 'any' && this.data.length) ||
+          this.hasOneOfPermissions(permissions[to.name])
+        )
       }
     }
   },

@@ -1,5 +1,5 @@
 <script setup>
-import GenericProfileView from './GenericProfileView.vue';
+import GenericProfileView from './GenericProfileView.vue'
 
 import TopBar from '../components/navigation/TopBar.vue'
 import ItemBox from '../components/ItemBox.vue'
@@ -13,52 +13,49 @@ import { REULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
-
 </script>
 
 <template>
-<GenericProfileView 
-:profileData="apiDataStore.profile.data && apiDataStore.profile.data.length ? apiDataStore.profile.data[0] : {}" 
-:loading="apiDataStore.profile.loading"
-:ready="apiDataStore.profile.ready" 
-:error="apiDataStore.profile.error"
-
-:linksData="apiDataStore.links.data"
-:linksReady="apiDataStore.links.ready"
-
-:userWorkshopData="apiDataStore.userWorkshop.data"
-:userWorkshopReady="apiDataStore.userWorkshop.ready"
-
-frakcjaLink="/moja-frakcja"
-grupaLink="/moja-grupa"
->
+  <GenericProfileView
+    :profileData="
+      apiDataStore.profile.data && apiDataStore.profile.data.length
+        ? apiDataStore.profile.data[0]
+        : {}
+    "
+    :loading="apiDataStore.profile.loading"
+    :ready="apiDataStore.profile.ready"
+    :error="apiDataStore.profile.error"
+    :linksData="apiDataStore.links.data"
+    :linksReady="apiDataStore.links.ready"
+    :userWorkshopData="apiDataStore.userWorkshop.data"
+    :userWorkshopReady="apiDataStore.userWorkshop.ready"
+    frakcjaLink="/moja-frakcja"
+    grupaLink="/moja-grupa"
+  >
     <template #topBar>
-        <TopBar title="Profil" />
+      <TopBar title="Profil" />
     </template>
 
     <template #footer>
-        <h6 v-if="apiDataStore.profile.ready">
+      <h6 v-if="apiDataStore.profile.ready">
         W przypadku błędnych danych prosimy o kontakt ze sztabem
-        </h6>
+      </h6>
 
-        <div class="spacer"></div>
-        <div class="spacer"></div>
-        <a :href="REULAMIN_LINK" target="_blank">
-        <ItemBox big-text="Regulamin" :leftIcon="regulaminIcon" small/>
-        </a>
-        <a :href="POLITYKA_PRYWATNOSCI_LINK" target="_blank">
-        <ItemBox big-text="Polityka prywatności" :leftIcon="politykaPrywatnosciIcon" small/>
-        </a>
-        <div class="spacer"></div>
-        <ItemBox big-text="Odśwież aplikację" :leftIcon="refreshIcon" small @click="refreshApp"/>
-        <a href="/logout/">
-          <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small/>
-        </a>
-
+      <div class="spacer"></div>
+      <div class="spacer"></div>
+      <a :href="REULAMIN_LINK" target="_blank">
+        <ItemBox big-text="Regulamin" :leftIcon="regulaminIcon" small />
+      </a>
+      <a :href="POLITYKA_PRYWATNOSCI_LINK" target="_blank">
+        <ItemBox big-text="Polityka prywatności" :leftIcon="politykaPrywatnosciIcon" small />
+      </a>
+      <div class="spacer"></div>
+      <ItemBox big-text="Odśwież aplikację" :leftIcon="refreshIcon" small @click="refreshApp" />
+      <a href="/logout/">
+        <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small />
+      </a>
     </template>
-
-</GenericProfileView>
-
+  </GenericProfileView>
 </template>
 
 <script>
@@ -78,26 +75,24 @@ export default {
     this.apiDataStore.links.fetchData()
     this.apiDataStore.userWorkshop.fetchData()
 
-    this.timer1 = setInterval(this.apiDataStore.profile.fetchData, 300000);
-    this.timer2 = setInterval(this.apiDataStore.links.fetchData, 300000);
-    this.timer3 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000);
+    this.timer1 = setInterval(this.apiDataStore.profile.fetchData, 300000)
+    this.timer2 = setInterval(this.apiDataStore.links.fetchData, 300000)
+    this.timer3 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000)
   },
   methods: {
     refreshApp() {
-      location.reload();
+      location.reload()
     }
   },
-  beforeUnmount () {
-    clearInterval(this.timer1);
-    clearInterval(this.timer2);
-    clearInterval(this.timer3);
+  beforeUnmount() {
+    clearInterval(this.timer1)
+    clearInterval(this.timer2)
+    clearInterval(this.timer3)
   }
 }
 </script>
 
 <style scoped>
-
-
 .spacer {
   height: 15px;
 }

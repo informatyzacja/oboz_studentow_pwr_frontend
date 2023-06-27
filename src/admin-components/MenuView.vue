@@ -1,6 +1,6 @@
 <script setup>
-import TopBar from '../components/navigation/TopBar.vue';
-import MenuCard from './MenuCard.vue';
+import TopBar from '../components/navigation/TopBar.vue'
+import MenuCard from './MenuCard.vue'
 
 import SosIcon from '../assets/icons8-sos.png'
 import MapIcon from '../assets/icons8-map_marker.png'
@@ -14,15 +14,43 @@ import { mapStores } from 'pinia'
 </script>
 
 <template>
-  <TopBar title="Menu"/>
+  <TopBar title="Menu" />
   <div class="padding cards">
-    <MenuCard title="Skaner" :icon=ScannerIcon link="/skaner" v-if="apiDataStore.permissions.ready && apiDataStore.permissions.hasOneOfPermissions(['can_validate_meals','can_view_user_info','can_add_points'])"/>
-    <MenuCard title="Frakcje" :icon="FractionIcon" link="/frakcje" v-if="apiDataStore.permissions.ready && apiDataStore.permissions.hasOneOfPermissions(['can_view_fractions'])"/>
-    <MenuCard title="Grupy" :icon="GroupIcon" link="/grupy" v-if="apiDataStore.permissions.ready && apiDataStore.permissions.hasOneOfPermissions(['can_view_groups'])"/>
+    <MenuCard
+      title="Skaner"
+      :icon="ScannerIcon"
+      link="/skaner"
+      v-if="
+        apiDataStore.permissions.ready &&
+        apiDataStore.permissions.hasOneOfPermissions([
+          'can_validate_meals',
+          'can_view_user_info',
+          'can_add_points'
+        ])
+      "
+    />
+    <MenuCard
+      title="Frakcje"
+      :icon="FractionIcon"
+      link="/frakcje"
+      v-if="
+        apiDataStore.permissions.ready &&
+        apiDataStore.permissions.hasOneOfPermissions(['can_view_fractions'])
+      "
+    />
+    <MenuCard
+      title="Grupy"
+      :icon="GroupIcon"
+      link="/grupy"
+      v-if="
+        apiDataStore.permissions.ready &&
+        apiDataStore.permissions.hasOneOfPermissions(['can_view_groups'])
+      "
+    />
 
-    <MenuCard title="Warsztaty" :icon=HammerIcon link="/warsztaty"/>
-    <MenuCard title="Sos" :icon=SosIcon link="/sos"/>
-    <MenuCard title="Mapka Harmonogram" :icon=MapIcon link="/mapa"/>
+    <MenuCard title="Warsztaty" :icon="HammerIcon" link="/warsztaty" />
+    <MenuCard title="Sos" :icon="SosIcon" link="/sos" />
+    <MenuCard title="Mapka Harmonogram" :icon="MapIcon" link="/mapa" />
 
     <div style="height: 140px; width: 140px"></div>
     <div style="height: 140px; width: 140px"></div>
@@ -41,14 +69,11 @@ import { mapStores } from 'pinia'
 }
 </style>
 
-
 <script>
 export default {
   computed: {
     ...mapStores(useApiDataStore)
   },
-  mounted() {
-  }
+  mounted() {}
 }
 </script>
-

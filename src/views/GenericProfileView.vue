@@ -13,21 +13,32 @@ import busIcon from '../assets/icons8-bus.png'
 import opaskaIcon from '../assets/icons8-bangles.png'
 import domekIcon from '../assets/icons8-exterior.png'
 
-defineProps(['profileData', 'ready', 'loading', 'error', 'linksData', 'linksReady', 'userWorkshopData', 'userWorkshopReady', 'hideFAQ', 'frakcjaLink', 'grupaLink']);
+defineProps([
+  'profileData',
+  'ready',
+  'loading',
+  'error',
+  'linksData',
+  'linksReady',
+  'userWorkshopData',
+  'userWorkshopReady',
+  'hideFAQ',
+  'frakcjaLink',
+  'grupaLink'
+])
 </script>
 
 <template>
   <slot name="topBar"></slot>
   <div class="padding">
     <div class="flex" v-if="ready && profileData">
-      
       <div class="qr_card" @click="$refs.qrOverlay.show">
-        <div class="qr" >
+        <div class="qr">
           <div class="qr_div" :class="{ hidden: qrLoading }">
             <VueQr
               :text="getOrigin + '/app/' + profileData.id"
-              :logoSrc=Logo
-              :logoScale=0.15
+              :logoSrc="Logo"
+              :logoScale="0.15"
               :dotScale="0.8"
               colorDark="black"
               colorLight="transparent"
@@ -48,29 +59,27 @@ defineProps(['profileData', 'ready', 'loading', 'error', 'linksData', 'linksRead
             Twój indyfidualny kod QR używany jest do potwierdzania Twojej tożsamości np. podczas
             wydawania posiłków
           </h6>
-            <div class="qr_div" :class="{ hidden: qrLoading }">
-              <VueQr
-                :text="getOrigin + '/app/' + profileData.id"
-                :logoSrc=Logo
-                :logoScale=0.15
-                :dotScale="0.8"
-                colorDark="black"
-                colorLight="transparent"
-                whiteMargin="false"
-                :margin="0"
-                :callback="qrReady"
-                :size="350"
-              />
-            </div>
-            <LoadingIndicator v-if="qrLoading" inline />
-            <p>Kod: {{ profileData.id }}</p>
+          <div class="qr_div" :class="{ hidden: qrLoading }">
+            <VueQr
+              :text="getOrigin + '/app/' + profileData.id"
+              :logoSrc="Logo"
+              :logoScale="0.15"
+              :dotScale="0.8"
+              colorDark="black"
+              colorLight="transparent"
+              whiteMargin="false"
+              :margin="0"
+              :callback="qrReady"
+              :size="350"
+            />
+          </div>
+          <LoadingIndicator v-if="qrLoading" inline />
+          <p>Kod: {{ profileData.id }}</p>
           <button @click="$refs.qrOverlay.hide">Zamknij</button>
         </div>
       </OverlayView>
 
-      <p class="name">
-        {{ profileData.first_name }} {{ profileData.last_name }}
-      </p>
+      <p class="name">{{ profileData.first_name }} {{ profileData.last_name }}</p>
       {{ profileData.title }}
       <p class="email">{{ profileData.email }}</p>
 
@@ -78,7 +87,11 @@ defineProps(['profileData', 'ready', 'loading', 'error', 'linksData', 'linksRead
 
       <!-- Frakcja -->
       <div class="itemBoxContainer">
-        <RouterLink :to="frakcjaLink+'/'+profileData.fraction.id" v-if="profileData.fraction.name" :class="{disabled: !frakcjaLink}">
+        <RouterLink
+          :to="frakcjaLink + '/' + profileData.fraction.id"
+          v-if="profileData.fraction.name"
+          :class="{ disabled: !frakcjaLink }"
+        >
           <ItemBox
             v-if="profileData.fraction"
             :bigText="profileData.fraction.name"
@@ -87,27 +100,31 @@ defineProps(['profileData', 'ready', 'loading', 'error', 'linksData', 'linksRead
           />
         </RouterLink>
         <!-- grupy -->
-        <RouterLink :to="grupaLink+'/'+data.id" v-for="(data, index) in profileData.groups" :key="index" :class="{disabled: !grupaLink}">
+        <RouterLink
+          :to="grupaLink + '/' + data.id"
+          v-for="(data, index) in profileData.groups"
+          :key="index"
+          :class="{ disabled: !grupaLink }"
+        >
           <ItemBox
-            :leftBigText=data.type.name
-            :bigText=data.name
+            :leftBigText="data.type.name"
+            :bigText="data.name"
             :rightIcon="grupaLink ? rightArrow : ''"
           />
         </RouterLink>
 
         <div class="spacer"></div>
 
-
         <!-- linki -->
         <div v-if="linksReady && linksData.length">
           <a v-for="(data, index) in linksData" :key="index" :href="data.url" target="_blank">
-            <ItemBox :bigText="data.name" :leftIcon="data.icon" :rightIcon=rightArrow />
+            <ItemBox :bigText="data.name" :leftIcon="data.icon" :rightIcon="rightArrow" />
           </a>
         </div>
 
         <!-- faq -->
         <RouterLink to="/faq" v-if="!hideFAQ">
-          <ItemBox bigText="Częste pytania" :rightIcon=rightArrow :leftIcon=faqIcon />
+          <ItemBox bigText="Częste pytania" :rightIcon="rightArrow" :leftIcon="faqIcon" />
         </RouterLink>
 
         <div class="spacer"></div>
@@ -118,7 +135,7 @@ defineProps(['profileData', 'ready', 'loading', 'error', 'linksData', 'linksRead
           <a :href="profileData.bus.location">
             <ItemBox
               :bigText="'Bus nr ' + profileData.bus.description"
-              :leftIcon=busIcon
+              :leftIcon="busIcon"
               small
               :rightIcon="profileData.bus.location ? rightArrow : ''"
             />
@@ -127,13 +144,13 @@ defineProps(['profileData', 'ready', 'loading', 'error', 'linksData', 'linksRead
         <ItemBox
           v-if="profileData.bandId"
           :bigText="'Opaska nr ' + profileData.bandId"
-          :leftIcon=opaskaIcon
+          :leftIcon="opaskaIcon"
           small
         />
         <ItemBox
           v-if="profileData.houseNumber"
           :bigText="'Domek nr ' + profileData.houseNumber"
-          :leftIcon=domekIcon
+          :leftIcon="domekIcon"
           small
         />
       </div>
@@ -154,13 +171,12 @@ defineProps(['profileData', 'ready', 'loading', 'error', 'linksData', 'linksRead
           <ItemBox
             :leftBigText="moment(data.start).format('dd. DD.MM')"
             :bigText="data.name"
-            :rightIcon=rightArrow
+            :rightIcon="rightArrow"
             small
           />
         </RouterLink>
       </div>
     </div>
-
 
     <slot name="footer"></slot>
 
@@ -172,10 +188,9 @@ defineProps(['profileData', 'ready', 'loading', 'error', 'linksData', 'linksRead
 </template>
 
 <style scoped>
- .disabled {
-    pointer-events:none;     
- }
-
+.disabled {
+  pointer-events: none;
+}
 
 h1 {
   background: var(--radial-gradient);
@@ -192,9 +207,6 @@ h3 {
   padding: 5px 2px;
   font-size: 13px;
 }
-
-
-
 
 .name {
   font-size: 23px;
@@ -229,10 +241,6 @@ h3 {
   color: var(--text-gray);
   text-align: center;
 }
-
-
-
-
 
 button {
   border-radius: 10px;
@@ -302,12 +310,11 @@ button {
 }
 </style>
 
-
 <script>
 export default {
   data() {
     return {
-      qrLoading: true,
+      qrLoading: true
     }
   },
   computed: {
@@ -315,12 +322,11 @@ export default {
       return location.origin
     }
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     qrReady() {
       this.qrLoading = false
     }
-  },
+  }
 }
 </script>

@@ -25,13 +25,13 @@ import rightArrow from '../assets/arrow.svg'
         :smallText="
           data.answer.length > 40 + 3 ? data.answer.substring(0, 40) + '...' : data.answer
         "
-        :rightIcon=rightArrow
+        :rightIcon="rightArrow"
       />
     </RouterLink>
   </div>
   <p v-if="apiDataStore.faq.ready && !apiDataStore.faq.data.length" class="error">Brak FAQ</p>
   <LoadingIndicator v-if="apiDataStore.faq.loading" />
-  <p v-if="apiDataStore.faq.error" class="error">{{apiDataStore.faq.error}}</p>
+  <p v-if="apiDataStore.faq.error" class="error">{{ apiDataStore.faq.error }}</p>
 </template>
 
 <script>
@@ -46,10 +46,10 @@ export default {
   },
   mounted() {
     this.apiDataStore.faq.fetchData()
-      this.timer = setInterval(this.apiDataStore.faq.fetchData, 300000);
+    this.timer = setInterval(this.apiDataStore.faq.fetchData, 300000)
   },
-  beforeUnmount () {
-    clearInterval(this.timer);
+  beforeUnmount() {
+    clearInterval(this.timer)
   }
 }
 </script>

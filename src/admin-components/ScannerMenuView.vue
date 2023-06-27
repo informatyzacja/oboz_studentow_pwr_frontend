@@ -1,7 +1,7 @@
 <script setup>
-import ItemBox from '../components/ItemBox.vue';
-import TopBar from '../components/navigation/TopBar.vue';
-import LoadingIndicator from '../components/LoadingIndicator.vue';
+import ItemBox from '../components/ItemBox.vue'
+import TopBar from '../components/navigation/TopBar.vue'
+import LoadingIndicator from '../components/LoadingIndicator.vue'
 
 import arrow from '../assets/arrow.svg'
 import mealIcon from '../assets/icons8-cutlery.png'
@@ -13,30 +13,45 @@ import { mapStores } from 'pinia'
 </script>
 
 <template>
-    <TopBar title="Skaner"/>
-    <div class="padding">
-        <RouterLink to="/skaner/posilki" v-if="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_validate_meals')">
-            <ItemBox bigText="Walidacja posiłków" :leftIcon="mealIcon" :rightIcon="arrow"/>
-        </RouterLink>
+  <TopBar title="Skaner" />
+  <div class="padding">
+    <RouterLink
+      to="/skaner/posilki"
+      v-if="
+        apiDataStore.permissions.ready &&
+        apiDataStore.permissions.hasPermission('can_validate_meals')
+      "
+    >
+      <ItemBox bigText="Walidacja posiłków" :leftIcon="mealIcon" :rightIcon="arrow" />
+    </RouterLink>
 
-        <RouterLink to="/skaner/punkty" v-if="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_add_points')">
-            <ItemBox bigText="Dodaj punkty" :leftIcon="pointsIcon" :rightIcon="arrow"/>
-        </RouterLink>
+    <RouterLink
+      to="/skaner/punkty"
+      v-if="
+        apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_add_points')
+      "
+    >
+      <ItemBox bigText="Dodaj punkty" :leftIcon="pointsIcon" :rightIcon="arrow" />
+    </RouterLink>
 
-        <RouterLink to="/skaner/uczestnik" v-if="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_user_info')">
-            <ItemBox bigText="Informacje o uczestniku" :leftIcon="userIcon" :rightIcon="arrow"/>
-        </RouterLink>
-    </div>
-    <LoadingIndicator v-if="!apiDataStore.permissions.ready"/>
+    <RouterLink
+      to="/skaner/uczestnik"
+      v-if="
+        apiDataStore.permissions.ready &&
+        apiDataStore.permissions.hasPermission('can_view_user_info')
+      "
+    >
+      <ItemBox bigText="Informacje o uczestniku" :leftIcon="userIcon" :rightIcon="arrow" />
+    </RouterLink>
+  </div>
+  <LoadingIndicator v-if="!apiDataStore.permissions.ready" />
 </template>
-
 
 <script>
 export default {
   computed: {
     ...mapStores(useApiDataStore)
   },
-  mounted() {
-  }
+  mounted() {}
 }
 </script>

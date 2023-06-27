@@ -1,20 +1,22 @@
 <script setup>
-import GenericGroupView from './GenericGroupView.vue';
+import GenericGroupView from './GenericGroupView.vue'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 </script>
 
-
 <template>
-    <GenericGroupView title="Frakcja" backLink="/profil" mapDescription="Miejsce spotkań" messengerDescription="Grupa frakcji" 
-    :ready="apiDataStore.profile.ready" 
+  <GenericGroupView
+    title="Frakcja"
+    backLink="/profil"
+    mapDescription="Miejsce spotkań"
+    messengerDescription="Grupa frakcji"
+    :ready="apiDataStore.profile.ready"
     :loading="apiDataStore.profile.loading"
     :error="apiDataStore.profile.error"
     :group="apiDataStore.profile.ready ? apiDataStore.profile.data[0].fraction : {}"
-     ></GenericGroupView>
+  ></GenericGroupView>
 </template>
-
 
 <script>
 export default {
@@ -24,14 +26,14 @@ export default {
     }
   },
   computed: {
-    ...mapStores(useApiDataStore),
+    ...mapStores(useApiDataStore)
   },
   mounted() {
     this.apiDataStore.profile.fetchData()
-    this.timer = setInterval(this.apiDataStore.profile.fetchData, 300000);
+    this.timer = setInterval(this.apiDataStore.profile.fetchData, 300000)
   },
-  beforeUnmount () {
-    clearInterval(this.timer);
+  beforeUnmount() {
+    clearInterval(this.timer)
   }
 }
 </script>

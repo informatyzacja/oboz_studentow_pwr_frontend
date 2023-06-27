@@ -11,23 +11,25 @@ import { mapStores } from 'pinia'
   <div v-for="(data, index) in apiDataStore.images.data" :key="index">
     <TopBar :title="data.name" />
     <div class="padding">
-      <img :src=data.image :alt="data.name" @click="showRef('imageOverlay', index)" />
+      <img :src="data.image" :alt="data.name" @click="showRef('imageOverlay', index)" />
 
       <OverlayView ref="imageOverlay">
         <div class="image_overlay">
-          <img :src=data.image :alt="data.name" />
-          <a class="button" :href=data.image :download="data.name+'_Obóz_Studentow_PWr_2023'">Pobierz</a>
+          <img :src="data.image" :alt="data.name" />
+          <a class="button" :href="data.image" :download="data.name + '_Obóz_Studentow_PWr_2023'"
+            >Pobierz</a
+          >
           <button class="red-bg" @click="hideRef('imageOverlay', index)">Zamknij</button>
         </div>
       </OverlayView>
-
     </div>
   </div>
 
   <LoadingIndicator v-if="apiDataStore.images.loading" />
-  <p v-if="apiDataStore.images.error" class="error">{{apiDataStore.images.error}}</p>
-  <p v-if="apiDataStore.images.ready && !apiDataStore.images.data.length" class="error">Brak danych</p>
-
+  <p v-if="apiDataStore.images.error" class="error">{{ apiDataStore.images.error }}</p>
+  <p v-if="apiDataStore.images.ready && !apiDataStore.images.data.length" class="error">
+    Brak danych
+  </p>
 </template>
 
 <script>
@@ -42,16 +44,16 @@ export default {
   },
   mounted() {
     this.apiDataStore.images.fetchData()
-    this.timer = setInterval(this.apiDataStore.images.fetchData, 300000);
+    this.timer = setInterval(this.apiDataStore.images.fetchData, 300000)
   },
-  beforeUnmount () {
-    clearInterval(this.timer);
+  beforeUnmount() {
+    clearInterval(this.timer)
   },
   methods: {
-    showRef(ref,index) {
+    showRef(ref, index) {
       this.$refs[ref][index].show()
     },
-    hideRef(ref,index) {
+    hideRef(ref, index) {
       this.$refs[ref][index].hide()
     }
   }
@@ -81,7 +83,8 @@ export default {
   border-radius: 20px;
 }
 
-button, a.button {
+button,
+a.button {
   border-radius: 10px;
   border: none;
   color: white;

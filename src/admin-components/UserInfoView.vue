@@ -15,24 +15,27 @@ import { mapStores } from 'pinia'
 :userWorkshopData="apiDataStore.userWorkshop.data"
 :userWorkshopReady="apiDataStore.userWorkshop.ready" -->
 <template>
-<GenericProfileView 
-:profileData="profileData" 
-:loading="loading"
-:ready="ready" 
-:error="error"
-
-:hideFAQ="true"
-
-:frakcjaLink="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_fractions') ? '/frakcja' : null"
-:grupaLink="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_groups') ?  '/grupa' : null"
->
+  <GenericProfileView
+    :profileData="profileData"
+    :loading="loading"
+    :ready="ready"
+    :error="error"
+    :hideFAQ="true"
+    :frakcjaLink="
+      apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_fractions')
+        ? '/frakcja'
+        : null
+    "
+    :grupaLink="
+      apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_groups')
+        ? '/grupa'
+        : null
+    "
+  >
     <template #topBar>
-        <TopBar title="Informacje o uczestniku" backLink="/skaner/uczestnik" />
+      <TopBar title="Informacje o uczestniku" backLink="/skaner/uczestnik" />
     </template>
-
-
-</GenericProfileView>
-
+  </GenericProfileView>
 </template>
 
 <script>
@@ -51,52 +54,50 @@ export default {
   },
   mounted() {
     this.fetchUserData()
-    this.timer = setInterval(this.fetchUserData, 300000);
+    this.timer = setInterval(this.fetchUserData, 300000)
   },
   methods: {
     fetchUserData() {
-      const params = {'user_id': this.$route.params.id}
-      fetch(API_URL + "../staff-api/get-user-info/?" + new URLSearchParams(params), {
-          headers: AUTH_HEADER,
-          method: 'GET'
+      const params = { user_id: this.$route.params.id }
+      fetch(API_URL + '../staff-api/get-user-info/?' + new URLSearchParams(params), {
+        headers: AUTH_HEADER,
+        method: 'GET'
       })
-      .then((data) => {
+        .then((data) => {
           if (data.ok) {
-              return data.json()
+            return data.json()
           }
-      if (data.status === 403) {
-        window.location.href = '/login'
-      }
+          if (data.status === 403) {
+            window.location.href = '/login'
+          }
           throw new Error(data.statusText)
-      })
-      .then((data) => {
+        })
+        .then((data) => {
           if (data.error) {
-              this.error = data.error
-              this.ready = false
-              return
+            this.error = data.error
+            this.ready = false
+            return
           }
           this.error = null
           this.profileData = data
           this.ready = true
-      })
-      .catch((error) => {
+        })
+        .catch((error) => {
           this.error = error
           console.error('There was an error!', error)
-      })
-      .finally(() => {
+        })
+        .finally(() => {
           this.loading = false
-      })
+        })
     }
   },
-  beforeUnmount () {
-    clearInterval(this.timer);
+  beforeUnmount() {
+    clearInterval(this.timer)
   }
 }
 </script>
 
 <style scoped>
-
-
 .spacer {
   height: 15px;
 }

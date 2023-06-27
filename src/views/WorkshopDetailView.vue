@@ -44,7 +44,16 @@ import { getCookie } from '../stores/functions.js'
             >
               Wypisz się
             </button>
-            <button class="button button_inactive" v-else-if="!(data.signupsOpen && (data.signupsOpenTime==null || moment(data.signupsOpenTime).isBefore(moment())) )" disabled>
+            <button
+              class="button button_inactive"
+              v-else-if="
+                !(
+                  data.signupsOpen &&
+                  (data.signupsOpenTime == null || moment(data.signupsOpenTime).isBefore(moment()))
+                )
+              "
+              disabled
+            >
               Zapisy nieaktywne
             </button>
             <button
@@ -55,13 +64,33 @@ import { getCookie } from '../stores/functions.js'
               Brak miejsc
             </button>
             <button class="button" v-else @click="signUp($route.params.id)">Zapisz się</button>
-            <p class="signupsOpenTime" v-if="data.signupsOpenTime && moment(data.signupsOpenTime).isSame(moment(), 'day') && moment(data.signupsOpenTime).isAfter(moment())">Otwierają się o {{ moment(data.signupsOpenTime).format('H:mm') }}</p>
+            <p
+              class="signupsOpenTime"
+              v-if="
+                data.signupsOpenTime &&
+                moment(data.signupsOpenTime).isSame(moment(), 'day') &&
+                moment(data.signupsOpenTime).isAfter(moment())
+              "
+            >
+              Otwierają się o {{ moment(data.signupsOpenTime).format('H:mm') }}
+            </p>
           </div>
         </div>
       </div>
 
       <div class="padding">
-        <p class="signupsOpenTime" style="margin-bottom: 20px;" v-if="data.signupsOpenTime && moment(data.signupsOpenTime).isSame(moment(), 'day') && moment(data.signupsOpenTime).isAfter(moment()) && moment(data.signupsOpenTime).diff(moment()) < 120*1000">Zapisy same się uruchomią, nie musisz odświeżać aplikacji</p>
+        <p
+          class="signupsOpenTime"
+          style="margin-bottom: 20px"
+          v-if="
+            data.signupsOpenTime &&
+            moment(data.signupsOpenTime).isSame(moment(), 'day') &&
+            moment(data.signupsOpenTime).isAfter(moment()) &&
+            moment(data.signupsOpenTime).diff(moment()) < 120 * 1000
+          "
+        >
+          Zapisy same się uruchomią, nie musisz odświeżać aplikacji
+        </p>
 
         <TextBox :content="data.description" />
 
@@ -77,7 +106,7 @@ import { getCookie } from '../stores/functions.js'
     </div>
 
     <LoadingIndicator v-if="apiDataStore.workshops.loading" />
-    <p v-if="apiDataStore.workshops.error" class="error">{{apiDataStore.workshops.error}}</p>
+    <p v-if="apiDataStore.workshops.error" class="error">{{ apiDataStore.workshops.error }}</p>
   </main>
 </template>
 
@@ -218,7 +247,7 @@ export default {
   },
   mounted() {
     this.apiDataStore.workshops.fetchData()
-    this.timer = setInterval(this.apiDataStore.workshops.fetchData, 5*1000); // co 5 sekund
+    this.timer = setInterval(this.apiDataStore.workshops.fetchData, 5 * 1000) // co 5 sekund
   },
   methods: {
     signUp(workshopId) {
@@ -231,9 +260,13 @@ export default {
     },
     workshopApiCall(method, URL, body = {}) {
       this.loading = true
-      const csrftoken = getCookie('csrftoken');
+      const csrftoken = getCookie('csrftoken')
       fetch(API_URL + URL, {
-        headers: Object.assign({}, { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken }, AUTH_HEADER),
+        headers: Object.assign(
+          {},
+          { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken },
+          AUTH_HEADER
+        ),
         method: method,
         body: body
       })
@@ -253,8 +286,8 @@ export default {
         })
     }
   },
-  beforeUnmount () {
-    clearInterval(this.timer);
+  beforeUnmount() {
+    clearInterval(this.timer)
   }
 }
 </script>

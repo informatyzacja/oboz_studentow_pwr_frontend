@@ -18,17 +18,15 @@ defineProps([
   'group',
   'ready',
   'loading',
-  'error',
-]);
-
+  'error'
+])
 </script>
 
 <template>
-  <TopBar :title="title" :backLink="$router.options.history.state.back || backLink "/>
+  <TopBar :title="title" :backLink="$router.options.history.state.back || backLink" />
   <p v-if="!group">Nie znaleziono grupy</p>
-  <div class="padding"  v-if="group">
+  <div class="padding" v-if="group">
     <div class="flex">
-      
       <div class="logo" v-if="group.logo">
         <img :src="group.logo" />
       </div>
@@ -38,9 +36,7 @@ defineProps([
       </p>
 
       <div class="spacer"></div>
-
-    </div>  
-
+    </div>
 
     <TextBox v-if="group.description" :content="group.description" />
     <div class="spacer" v-if="group.description"></div>
@@ -52,59 +48,43 @@ defineProps([
 
     <OverlayView ref="mapOverlay">
       <div class="image_overlay">
-        <img :src=group.map alt="mapa" />
-        <a class="button" :href=group.map :download="group.name+'_Mapa_Obóz_Studentow_PWr_2023'">Pobierz</a>
+        <img :src="group.map" alt="mapa" />
+        <a class="button" :href="group.map" :download="group.name + '_Mapa_Obóz_Studentow_PWr_2023'"
+          >Pobierz</a
+        >
         <button class="red-bg" @click="$refs.mapOverlay.hide">Zamknij</button>
       </div>
     </OverlayView>
 
     <a v-if="group.messenger" :href="group.messenger" target="_blank">
-      <ItemBox :bigText=messengerDescription :leftIcon=messangerIcon :rightIcon=rightArrow />
+      <ItemBox :bigText="messengerDescription" :leftIcon="messangerIcon" :rightIcon="rightArrow" />
     </a>
 
-    <div
-      v-if="
-        ready &&
-        group.wardens &&
-        group.wardens.length
-      "
-    >
-    <h3>Opiekunowie</h3>
-      <a
-        v-for="(data, index) in group.wardens"
-        :key="index"
-        :href="'tel:' + data.phoneNumber"
-      >
+    <div v-if="ready && group.wardens && group.wardens.length">
+      <h3>Opiekunowie</h3>
+      <a v-for="(data, index) in group.wardens" :key="index" :href="'tel:' + data.phoneNumber">
         <ItemBox
           :bigText="data.first_name + ' ' + data.last_name"
           :smallText="data.title"
           :leftIcon="data.photo"
-          :rightIcon=phoneIcon
+          :rightIcon="phoneIcon"
         />
       </a>
     </div>
 
-    <div
-      v-if="
-        ready &&
-        group.members &&
-        group.members.length
-      "
-    >
-    <h3>Członkowie</h3>
-        <ItemBox
-          v-for="(data, index) in group.members"
-          :key="index"
-          :bigText="data.first_name + ' ' + data.last_name"
-          :smallText="data.title"
-          :leftIcon="data.photo"
-        />
+    <div v-if="ready && group.members && group.members.length">
+      <h3>Członkowie</h3>
+      <ItemBox
+        v-for="(data, index) in group.members"
+        :key="index"
+        :bigText="data.first_name + ' ' + data.last_name"
+        :smallText="data.title"
+        :leftIcon="data.photo"
+      />
     </div>
 
-
     <LoadingIndicator v-if="loading" />
-    <p v-if="error" class="error">{{error}}</p>
-
+    <p v-if="error" class="error">{{ error }}</p>
   </div>
 </template>
 
@@ -175,7 +155,6 @@ button {
   border-radius: 20px;
 }
 
-
 .name {
   font-size: 25px;
   line-height: 26px;
@@ -224,7 +203,8 @@ button {
   border-radius: 20px;
 }
 
-button, a.button {
+button,
+a.button {
   border-radius: 10px;
   border: none;
   color: white;
@@ -246,4 +226,3 @@ button, a.button {
   background-color: var(--red);
 }
 </style>
-

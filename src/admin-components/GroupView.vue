@@ -1,5 +1,5 @@
 <script setup>
-import GenericGroupView from '../views/GenericGroupView.vue';
+import GenericGroupView from '../views/GenericGroupView.vue'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
@@ -7,16 +7,18 @@ import { mapStores } from 'pinia'
 import { API_URL, AUTH_HEADER } from '../config.js'
 </script>
 
-
 <template>
-    <GenericGroupView :title="ready ? data.type.name : 'Grupa'"  :backLink="$router.options.history.state.back || '/skaner/uczestnik'"  mapDescription="Miejsce startu" messengerDescription="Grupa messengerowa" 
-    :ready="ready" 
+  <GenericGroupView
+    :title="ready ? data.type.name : 'Grupa'"
+    :backLink="$router.options.history.state.back || '/skaner/uczestnik'"
+    mapDescription="Miejsce startu"
+    messengerDescription="Grupa messengerowa"
+    :ready="ready"
     :loading="loading"
     :error="error"
     :group="data"
-     ></GenericGroupView>
+  ></GenericGroupView>
 </template>
-
 
 <script>
 export default {
@@ -30,49 +32,49 @@ export default {
     }
   },
   computed: {
-    ...mapStores(useApiDataStore),
+    ...mapStores(useApiDataStore)
   },
   mounted() {
     this.fetchFractionData()
-    this.timer = setInterval(this.fetchFractionData, 300000);
+    this.timer = setInterval(this.fetchFractionData, 300000)
   },
   methods: {
     fetchFractionData() {
-      const params = {'group_id': this.$route.params.id}
-      fetch(API_URL + "../staff-api/get-group/?" + new URLSearchParams(params), {
-          headers: AUTH_HEADER,
-          method: 'GET'
+      const params = { group_id: this.$route.params.id }
+      fetch(API_URL + '../staff-api/get-group/?' + new URLSearchParams(params), {
+        headers: AUTH_HEADER,
+        method: 'GET'
       })
-      .then((data) => {
+        .then((data) => {
           if (data.ok) {
-              return data.json()
+            return data.json()
           }
-      if (data.status === 403) {
-        window.location.href = '/login'
-      }
+          if (data.status === 403) {
+            window.location.href = '/login'
+          }
           throw new Error(data.statusText)
-      })
-      .then((data) => {
+        })
+        .then((data) => {
           if (data.error) {
-              this.error = data.error
-              this.ready = false
-              return
+            this.error = data.error
+            this.ready = false
+            return
           }
           this.error = null
           this.data = data
           this.ready = true
-      })
-      .catch((error) => {
+        })
+        .catch((error) => {
           this.error = error
           console.error('There was an error!', error)
-      })
-      .finally(() => {
+        })
+        .finally(() => {
           this.loading = false
-      })
+        })
     }
   },
-  beforeUnmount () {
-    clearInterval(this.timer);
+  beforeUnmount() {
+    clearInterval(this.timer)
   }
 }
 </script>

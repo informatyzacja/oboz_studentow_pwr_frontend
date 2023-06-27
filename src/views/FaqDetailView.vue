@@ -17,7 +17,7 @@ import { mapStores } from 'pinia'
     <TextBox :content="data.answer" :title="data.question" />
   </div>
   <LoadingIndicator v-if="apiDataStore.faq.loading" />
-  <p v-if="apiDataStore.faq.error" class="error">{{apiDataStore.faq.error}}</p>
+  <p v-if="apiDataStore.faq.error" class="error">{{ apiDataStore.faq.error }}</p>
 </template>
 
 <script>
@@ -33,11 +33,11 @@ export default {
   mounted() {
     if (!this.apiDataStore.faq.data) {
       this.apiDataStore.faq.fetchData()
-      this.timer = setInterval(this.apiDataStore.faq.fetchData, 300000);
+      this.timer = setInterval(this.apiDataStore.faq.fetchData, 300000)
     }
   },
-  beforeUnmount () {
-    clearInterval(this.timer);
+  beforeUnmount() {
+    clearInterval(this.timer)
   }
 }
 </script>

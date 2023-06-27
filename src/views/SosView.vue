@@ -24,7 +24,7 @@ import phoneIcon from '../assets/phone_icon.svg'
           :bigText="data.first_name + ' ' + data.last_name"
           :smallText="data.title"
           :leftIcon="data.photo"
-          :rightIcon=phoneIcon
+          :rightIcon="phoneIcon"
           bgColor="var(--red)"
         />
       </a>
@@ -41,7 +41,7 @@ import phoneIcon from '../assets/phone_icon.svg'
     </p>
 
     <LoadingIndicator v-if="apiDataStore.contacts.loading" />
-    <p v-if="apiDataStore.contacts.error" class="error">{{apiDataStore.contacts.error}}</p>
+    <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
 
     <h3>Obecnie na dyżurze trzeźwości</h3>
     <div v-if="apiDataStore.contacts.ready && apiDataStore.contacts.data.currentSoberDuty.length">
@@ -54,7 +54,7 @@ import phoneIcon from '../assets/phone_icon.svg'
           :bigText="data.first_name + ' ' + data.last_name"
           :smallText="data.title"
           :leftIcon="data.photo"
-          :rightIcon=phoneIcon
+          :rightIcon="phoneIcon"
         />
       </a>
     </div>
@@ -70,7 +70,7 @@ import phoneIcon from '../assets/phone_icon.svg'
     </p>
 
     <LoadingIndicator v-if="apiDataStore.contacts.loading" />
-    <p v-if="apiDataStore.contacts.error" class="error">{{apiDataStore.contacts.error}}</p>
+    <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
 
     <h3>Sztab</h3>
     <div
@@ -89,7 +89,7 @@ import phoneIcon from '../assets/phone_icon.svg'
           :bigText="data.first_name + ' ' + data.last_name"
           :smallText="data.title"
           :leftIcon="data.photo"
-          :rightIcon=phoneIcon
+          :rightIcon="phoneIcon"
         />
       </a>
     </div>
@@ -105,10 +105,10 @@ import phoneIcon from '../assets/phone_icon.svg'
     </p>
 
     <LoadingIndicator v-if="apiDataStore.contacts.loading" />
-    <p v-if="apiDataStore.contacts.error" class="error">{{apiDataStore.contacts.error}}</p>
+    <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
 
     <RouterLink to="/faq">
-      <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" :rightIcon=rightArrow />
+      <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" :rightIcon="rightArrow" />
     </RouterLink>
   </div>
 </template>
@@ -148,10 +148,10 @@ export default {
   },
   mounted() {
     this.apiDataStore.contacts.fetchData()
-    this.timer = setInterval(this.apiDataStore.contacts.fetchData, 1000000);
+    this.timer = setInterval(this.apiDataStore.contacts.fetchData, 1000000)
   },
-  beforeUnmount () {
-    clearInterval(this.timer);
+  beforeUnmount() {
+    clearInterval(this.timer)
   }
 }
 </script>
