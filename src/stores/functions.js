@@ -6,6 +6,9 @@ export function loadData(item) {
       if (data.ok) {
         return data.json()
       }
+      if (data.status === 403) {
+        window.location.href = '/login'
+      }
       throw new Error(data.statusText)
     })
     .then((data) => {

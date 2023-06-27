@@ -13,8 +13,8 @@ import { mapStores } from 'pinia'
 </script>
 
 <template>
+    <TopBar title="Skaner"/>
     <div class="padding">
-        <TopBar title="Skaner"/>
         <RouterLink to="/skaner/posilki" v-if="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_validate_meals')">
             <ItemBox bigText="Walidacja posiłków" :leftIcon="mealIcon" :rightIcon="arrow"/>
         </RouterLink>

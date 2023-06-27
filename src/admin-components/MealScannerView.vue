@@ -85,6 +85,9 @@ export default {
                     if (data.ok) {
                         return data.json()
                     }
+      if (data.status === 403) {
+        window.location.href = '/login'
+      }
                     this.error = data.status + " " + data.statusText
                     this.success = false
                     throw new Error('Request failed!')
@@ -119,6 +122,9 @@ export default {
                     if (data.ok) {
                         return data.json()
                     }
+      if (data.status === 403) {
+        window.location.href = '/login'
+      }
                     this.error = data.status + " " + data.statusText
                     this.success = false
                     throw new Error('Request failed!')
@@ -151,6 +157,9 @@ export default {
                 if (data.ok) {
                     return data.json()
                 }
+      if (data.status === 403) {
+        window.location.href = '/login'
+      }
                 throw new Error('Request failed!')
             })
             .then((data) => {
