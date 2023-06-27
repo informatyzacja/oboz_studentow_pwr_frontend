@@ -1,14 +1,9 @@
 <script setup>
-import TopBar from '../components/navigation/TopBar.vue';
-import ItemBox from '../components/ItemBox.vue';
 import LoadingIndicator from '../components/LoadingIndicator.vue';
 import QrcodeStream from 'vue-qrcode-reader/src/components/QrcodeStream.vue'
-import moment from 'moment';
 
-import { API_URL, AUTH_HEADER } from '../config.js'
-import { getCookie } from '../stores/functions.js'
 
-defineProps(['hideScanner']);
+defineProps(['hideScanner', 'codeText', 'codeFrameColor']);
 defineEmits(['error', 'result']);
 </script>
 
@@ -106,7 +101,7 @@ export default {
                 gradient.addColorStop("1.0", "#dea766");
 
                 // ctx.strokeStyle = "#de7539";
-                ctx.strokeStyle = this.resultLoading || this.originalResult!=detectedCode.rawValue ? "gray" : (this.success ? "green" : 'red');
+                ctx.strokeStyle = this.codeFrameColor && this.originalResult==detectedCode.rawValue ? this.codeFrameColor : 'gray';
                 ctx.lineWidth = 10;          
 
                 ctx.beginPath();
@@ -130,7 +125,7 @@ export default {
                 ctx.font = `bold ${fontSize}px sans-serif`
                 ctx.textAlign = "center"
 
-                const value = !this.resultLoading ? this.user || this.error : 'Ładowanie...'
+                const value = this.codeText ? this.codeText : ""; 
 
                 ctx.lineWidth = 3
                 ctx.strokeStyle = 'white'

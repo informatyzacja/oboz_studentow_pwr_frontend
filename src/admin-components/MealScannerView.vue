@@ -19,7 +19,12 @@ import { getCookie } from '../stores/functions.js'
         <ItemBox :bigText="currentMealLoadng ? 'Ładowanie...' : (currentMeal ? currentMeal.type__name + ', ' + moment(currentMeal.date).format('dddd DD.MM') : 'Obecnie nie odbywa się żaden posiłek')" small/>
 
         <div class="center">
-            <ScannerBaseView @error="(err) => error=err" @result="(res) => {result=res; checkMealValidation()}" :hideScanner="currentMealLoadng || !currentMeal"/>
+            <ScannerBaseView 
+            @error="(err) => error=err" 
+            @result="(res) => {result=res; checkMealValidation()}" :hideScanner="currentMealLoadng || !currentMeal"
+            :codeText="!this.resultLoading ? this.user || this.error : 'Ładowanie...'"
+            :codeFrameColor="this.resultLoading ? 'gray' : (this.success ? 'green' : '#9a2929') "
+             />
             
 
             <div class="result" :class="{error: success===false, success: success===true}" v-if="result || user || error || resultLoading || (validationCheckSuccessful && !validationSuccessful && !resultLoading)" >
@@ -57,7 +62,6 @@ export default {
 
             currentMealLoadng: true,
             currentMeal: null,
-
         }
     },
     methods: {
