@@ -65,7 +65,8 @@ const router = createRouter({
     },
     {
       path: '/:notFound',
-      redirect: '/'
+      name: 'notFound',
+      component: () => import('../views/NotFoundView.vue')
     },
 
     // ADMIN ROUTES
