@@ -44,7 +44,7 @@ import { getCookie } from '../stores/functions.js'
             >
               Wypisz się
             </button>
-            <button class="button button_inactive" v-else-if="!data.signupsOpen" disabled>
+            <button class="button button_inactive" v-else-if="!(data.signupsOpen && (data.signupsOpenTime==null || moment(data.signupsOpenTime).isBefore(moment())) )" disabled>
               Zapisy nieaktywne
             </button>
             <button
@@ -55,11 +55,14 @@ import { getCookie } from '../stores/functions.js'
               Brak miejsc
             </button>
             <button class="button" v-else @click="signUp($route.params.id)">Zapisz się</button>
+            <p class="signupsOpenTime" v-if="data.signupsOpenTime && moment(data.signupsOpenTime).isSame(moment(), 'day') && moment(data.signupsOpenTime).isAfter(moment())">Otwierają się o {{ moment(data.signupsOpenTime).format('H:mm') }}</p>
           </div>
         </div>
       </div>
 
       <div class="padding">
+        <p class="signupsOpenTime" style="margin-bottom: 20px;" v-if="data.signupsOpenTime && moment(data.signupsOpenTime).isSame(moment(), 'day') && moment(data.signupsOpenTime).isAfter(moment()) && moment(data.signupsOpenTime).diff(moment()) < 120*1000">Zapisy same się uruchomią, nie musisz odświeżać aplikacji</p>
+
         <TextBox :content="data.description" />
 
         <h3 v-if="data.workshopleaders && data.workshopleaders.length">Prowadzący</h3>
@@ -192,6 +195,13 @@ h3 {
 .description .icon {
   height: 16px;
   padding-bottom: 1px;
+}
+
+.signupsOpenTime {
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--text-gray);
+  margin-top: 5px;
 }
 </style>
 
