@@ -21,8 +21,8 @@ defineProps(['title','icon','link']);
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 200px;
-    height: 200px;
+    width: 140px;
+    height: 140px;
     background-color: var(--color-primary);
     border-radius: 20px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -30,10 +30,11 @@ defineProps(['title','icon','link']);
 }
 .card__icon img {
     filter: grayscale(100%) brightness(10);
+    width: 70px;
 }
 .card__title p {
-    font-size: 17px;
-    line-height: 22px;
+    font-size: 15px;
+    line-height: 19px;
     padding: 0 15px;
     text-align: center;
 }

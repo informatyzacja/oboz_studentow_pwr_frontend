@@ -1,21 +1,31 @@
 <script setup>
-import GenericGroupView from '../views/GenericGroupView.vue';
+import TopBar from '../components/navigation/TopBar.vue';
+import ItemBox from '../components/ItemBox.vue';
+import LoadingIndicator from '../components/LoadingIndicator.vue';
 
-import { useApiDataStore } from '../stores/api.js'
-import { mapStores } from 'pinia'
+import rightArrow from '../assets/arrow.svg';
 
 import { API_URL, AUTH_HEADER } from '../config.js'
 </script>
 
-
 <template>
-    <GenericGroupView :title="ready ? data.type.name : 'Grupa'"  :backLink="$router.options.history.state.back || '/skaner/uczestnik'"  mapDescription="Miejsce startu" messengerDescription="Grupa messengerowa" 
-    :ready="ready" 
-    :loading="loading"
-    :error="error"
-    :group="data"
-     ></GenericGroupView>
+    <TopBar title="Frakcje" backLink="/admin-menu"/>
+
+    <div class="padding" v-if="ready && data">
+        <RouterLink :to="frakcjaLink+'/'+data.id"  v-for="(data, index) in data" :key="index">
+            <ItemBox
+            :bigText="data.name"
+            :leftIcon="data.logo"
+            :rightIcon="frakcjaLink ? rightArrow : ''"
+            />
+        </RouterLink>
+    </div>
+
+    <LoadingIndicator v-if="loading" />
+    <p v-if="error" class="error">{{ error }}</p>
+
 </template>
+
 
 
 <script>
@@ -26,11 +36,11 @@ export default {
       ready: false,
       loading: true,
       error: null,
-      timer: null
+      timer: null,
+      frakcjaLink: '/frakcja',
     }
   },
   computed: {
-    ...mapStores(useApiDataStore),
   },
   mounted() {
     this.fetchFractionData()
@@ -38,8 +48,7 @@ export default {
   },
   methods: {
     fetchFractionData() {
-      const params = {'group_id': this.$route.params.id}
-      fetch(API_URL + "../staff-api/get-group/?" + new URLSearchParams(params), {
+      fetch(API_URL + "../staff-api/get-fractions/", {
           headers: AUTH_HEADER,
           method: 'GET'
       })

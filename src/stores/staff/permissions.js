@@ -14,6 +14,8 @@ const permissions = {
   'uczestnik': ['can_view_user_info'],
   'frakcja': ['can_view_fractions'],
   'grupa': ['can_view_groups'],
+  'frakcje': ['can_view_fractions'],
+  'grupy': ['can_view_groups'],
 }
 
 export const usePermissionStore = defineStore('permissions', {

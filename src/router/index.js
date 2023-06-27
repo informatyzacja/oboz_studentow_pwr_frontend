@@ -101,9 +101,19 @@ const router = createRouter({
       component: () => import('../admin-components/FractionView.vue')
     },
     {
+      path: '/frakcje',
+      name: 'frakcje',
+      component: () => import('../admin-components/FractionListView.vue')
+    },
+    {
       path: '/grupa/:id',
       name: 'grupa',
       component: () => import('../admin-components/GroupView.vue')
+    },
+    {
+      path: '/grupy',
+      name: 'grupy',
+      component: () => import('../admin-components/GroupListView.vue')
     },
   ]
 })

@@ -1,21 +1,31 @@
 <script setup>
-import GenericGroupView from '../views/GenericGroupView.vue';
+import TopBar from '../components/navigation/TopBar.vue';
+import ItemBox from '../components/ItemBox.vue';
+import LoadingIndicator from '../components/LoadingIndicator.vue';
 
-import { useApiDataStore } from '../stores/api.js'
-import { mapStores } from 'pinia'
+import rightArrow from '../assets/arrow.svg';
 
 import { API_URL, AUTH_HEADER } from '../config.js'
 </script>
 
-
 <template>
-    <GenericGroupView :title="ready ? data.type.name : 'Grupa'"  :backLink="$router.options.history.state.back || '/skaner/uczestnik'"  mapDescription="Miejsce startu" messengerDescription="Grupa messengerowa" 
-    :ready="ready" 
-    :loading="loading"
-    :error="error"
-    :group="data"
-     ></GenericGroupView>
+    <TopBar title="Grupy" backLink="/admin-menu"/>
+
+    <div class="padding" v-if="ready && data">
+        <RouterLink :to="grupaLink+'/'+data.id"  v-for="(data, index) in data" :key="index">
+            <ItemBox
+            :leftBigText=data.type.name
+            :bigText="data.name"
+            :rightIcon="grupaLink ? rightArrow : ''"
+            />
+        </RouterLink>
+    </div>
+
+    <LoadingIndicator v-if="loading" />
+    <p v-if="error" class="error">{{ error }}</p>
+
 </template>
+
 
 
 <script>
@@ -26,20 +36,19 @@ export default {
       ready: false,
       loading: true,
       error: null,
-      timer: null
+      timer: null,
+      grupaLink: '/grupa',
     }
   },
   computed: {
-    ...mapStores(useApiDataStore),
   },
   mounted() {
-    this.fetchFractionData()
-    this.timer = setInterval(this.fetchFractionData, 300000);
+    this.fetchGroupData()
+    this.timer = setInterval(this.fetchGroupData, 300000);
   },
   methods: {
-    fetchFractionData() {
-      const params = {'group_id': this.$route.params.id}
-      fetch(API_URL + "../staff-api/get-group/?" + new URLSearchParams(params), {
+    fetchGroupData() {
+      fetch(API_URL + "../staff-api/get-groups/", {
           headers: AUTH_HEADER,
           method: 'GET'
       })

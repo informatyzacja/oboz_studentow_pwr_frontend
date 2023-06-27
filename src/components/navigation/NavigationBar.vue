@@ -4,6 +4,7 @@ import MapIcon from '../../assets/icons8-map_marker.png'
 import Logo from '../../assets/The-Hunger-Games-PNG-File.png'
 import HammerIcon from '../../assets/icons8-hammer.png'
 import UserIcon from '../../assets/icons8-male_user.png'
+import MenuIcon from '../../assets/icons8-squared_menu.png'
 
 import ScannerIcon from '../../assets/icons8-barcode_reader.png'
 
@@ -55,13 +56,13 @@ import { mapStores } from 'pinia'
           <p>Skaner</p>
         </div>
       </RouterLink>
-      <RouterLink to="/mapa">
+      <RouterLink to="/admin-menu">
         <div class="navigation_bar__item">
-          <img :src=MapIcon alt="map" />
-          <p>Mapka<br />Harmonogram</p>
+          <img :src=MenuIcon alt="menu" />
+          <p>Menu</p>
         </div>
       </RouterLink>
-      <RouterLink to="/admin-menu">
+      <RouterLink to="/">
         <div class="navigation-bar__logo">
           <img :src=Logo alt="logo" />
         </div>
