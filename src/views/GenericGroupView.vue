@@ -103,7 +103,7 @@ defineProps([
 
 
     <LoadingIndicator v-if="loading" />
-    <p v-if="error" class="error">Błąd wczytywania</p>
+    <p v-if="error" class="error">{{error}}</p>
 
   </div>
 </template>

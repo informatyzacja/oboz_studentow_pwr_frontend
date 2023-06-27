@@ -56,7 +56,7 @@ export default {
           if (data.ok) {
               return data.json()
           }
-          throw new Error('Błąd wczytywania')
+          throw new Error(data.statusText)
       })
       .then((data) => {
           if (data.error) {

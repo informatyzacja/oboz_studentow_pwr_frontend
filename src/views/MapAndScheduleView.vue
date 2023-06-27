@@ -25,7 +25,7 @@ import { mapStores } from 'pinia'
   </div>
 
   <LoadingIndicator v-if="apiDataStore.images.loading" />
-  <p v-if="apiDataStore.images.error" class="error">Błąd wczytywania</p>
+  <p v-if="apiDataStore.images.error" class="error">{{apiDataStore.images.error}}</p>
   <p v-if="apiDataStore.images.ready && !apiDataStore.images.data.length" class="error">Brak danych</p>
 
 </template>

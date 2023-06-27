@@ -31,7 +31,7 @@ import rightArrow from '../assets/arrow.svg'
   </div>
   <p v-if="apiDataStore.faq.ready && !apiDataStore.faq.data.length" class="error">Brak FAQ</p>
   <LoadingIndicator v-if="apiDataStore.faq.loading" />
-  <p v-if="apiDataStore.faq.error" class="error">Błąd wczytywania</p>
+  <p v-if="apiDataStore.faq.error" class="error">{{apiDataStore.faq.error}}</p>
 </template>
 
 <script>

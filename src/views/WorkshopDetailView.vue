@@ -77,7 +77,7 @@ import { getCookie } from '../stores/functions.js'
     </div>
 
     <LoadingIndicator v-if="apiDataStore.workshops.loading" />
-    <p v-if="apiDataStore.workshops.error" class="error">Błąd wczytywania</p>
+    <p v-if="apiDataStore.workshops.error" class="error">{{apiDataStore.workshops.error}}</p>
   </main>
 </template>
 

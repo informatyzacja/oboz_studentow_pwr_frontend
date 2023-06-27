@@ -17,7 +17,7 @@ import { mapStores } from 'pinia'
     <TextBox :content="data.answer" :title="data.question" />
   </div>
   <LoadingIndicator v-if="apiDataStore.faq.loading" />
-  <p v-if="apiDataStore.faq.error" class="error">Błąd wczytywania</p>
+  <p v-if="apiDataStore.faq.error" class="error">{{apiDataStore.faq.error}}</p>
 </template>
 
 <script>

@@ -41,7 +41,7 @@ import phoneIcon from '../assets/phone_icon.svg'
     </p>
 
     <LoadingIndicator v-if="apiDataStore.contacts.loading" />
-    <p v-if="apiDataStore.contacts.error" class="error">Błąd wczytywania</p>
+    <p v-if="apiDataStore.contacts.error" class="error">{{apiDataStore.contacts.error}}</p>
 
     <h3>Obecnie na dyżurze trzeźwości</h3>
     <div v-if="apiDataStore.contacts.ready && apiDataStore.contacts.data.currentSoberDuty.length">
@@ -70,7 +70,7 @@ import phoneIcon from '../assets/phone_icon.svg'
     </p>
 
     <LoadingIndicator v-if="apiDataStore.contacts.loading" />
-    <p v-if="apiDataStore.contacts.error" class="error">Błąd wczytywania</p>
+    <p v-if="apiDataStore.contacts.error" class="error">{{apiDataStore.contacts.error}}</p>
 
     <h3>Sztab</h3>
     <div
@@ -105,7 +105,7 @@ import phoneIcon from '../assets/phone_icon.svg'
     </p>
 
     <LoadingIndicator v-if="apiDataStore.contacts.loading" />
-    <p v-if="apiDataStore.contacts.error" class="error">Błąd wczytywania</p>
+    <p v-if="apiDataStore.contacts.error" class="error">{{apiDataStore.contacts.error}}</p>
 
     <RouterLink to="/faq">
       <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" :rightIcon=rightArrow />
