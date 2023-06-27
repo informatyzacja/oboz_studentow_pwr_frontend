@@ -5,6 +5,12 @@ import QrcodeStream from 'vue-qrcode-reader/src/components/QrcodeStream.vue'
 
 defineProps(['hideScanner', 'codeText', 'codeFrameColor']);
 defineEmits(['error', 'result']);
+
+// interface QrcodeStream {
+//     beforeUnmount?(this: ComponentPublicInstance): {
+//         console.log('beforeDestroy2')
+//     }
+// }
 </script>
 
 
@@ -16,8 +22,8 @@ defineEmits(['error', 'result']);
 
     <div class="scanner">
         <p class="error">{{ qrReaderError }}</p>
-        <div class="scanner-inside" :class="{ hidden: qrScannerLoading || hideScanner }">
-            <QrcodeStream @decode="onDecode" @init="onInit" :track="track" />
+        <div class="scanner-inside" :class="{ hidden: qrScannerLoading || hideScanner }" >
+            <QrcodeStream ref='qrcodestream' @decode="onDecode" @init="onInit" :track="track" :camera="camera" v-if="!disable"/>
         </div>
         <LoadingIndicator v-if="qrScannerLoading" inline />
     </div>
@@ -31,7 +37,13 @@ export default {
             searchQuery: '',
             qrReaderError: '',
             qrScannerLoading: true,
+            disable:false,
+            camera: 'auto'
         }
+    },
+    beforeUnmount() {
+        this.$refs.qrcodestream.beforeResetCamera()
+        this.$refs.qrcodestream.destroyed = true;
     },
     methods: {
         isNumeric(str) {
