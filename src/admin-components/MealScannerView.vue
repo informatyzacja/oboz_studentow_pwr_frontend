@@ -22,8 +22,8 @@ import { getCookie } from '../stores/functions.js'
             <ScannerBaseView 
             @error="(err) => error=err" 
             @result="(res) => {result=res; checkMealValidation()}" :hideScanner="currentMealLoadng || !currentMeal"
-            :codeText="!this.resultLoading ? this.user || this.error : 'Ładowanie...'"
-            :codeFrameColor="this.resultLoading ? 'gray' : (this.success ? 'green' : '#9a2929') "
+            :codeText="!resultLoading ? user || error : 'Ładowanie...'"
+            :codeFrameColor="resultLoading ? 'gray' : (success ? 'green' : '#9a2929') "
              />
             
 
