@@ -14,7 +14,7 @@ import { mapStores } from 'pinia'
 <template>
   <TopBar title="Menu"/>
   <div class="padding cards">
-    <MenuCard title="Skaner" :icon=ScannerIcon link="/skaner" v-if="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_validate_meals')"/>
+    <MenuCard title="Skaner" :icon=ScannerIcon link="/skaner" v-if="apiDataStore.permissions.ready && apiDataStore.permissions.hasOneOfPermissions(['can_validate_meals','can_view_user_info','can_add_points'])"/>
     <MenuCard title="Warsztaty" :icon=HammerIcon link="/warsztaty"/>
     <MenuCard title="Sos" :icon=SosIcon link="/sos"/>
     <MenuCard title="Mapka Harmonogram" :icon=MapIcon link="/mapa"/>

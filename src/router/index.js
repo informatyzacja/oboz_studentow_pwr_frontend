@@ -17,7 +17,7 @@ const router = createRouter({
     {
       path: '/profil',
       name: 'profil',
-      component: () => import('../views/ProfileView.vue')
+      component: () => import('../views/MyProfileView.vue')
     },
     {
       path: '/warsztaty',
@@ -54,14 +54,14 @@ const router = createRouter({
       redirect: { name: 'home' }
     },
     {
-      path: '/moja-frakcja',
+      path: '/moja-frakcja/:id',
       name: 'moja-frakcja',
       component: () => import('../views/MyFractionView.vue')
     },
     {
-      path: '/grupa/:id',
-      name: 'grupa',
-      component: () => import('../views/GroupView.vue')
+      path: '/moja-grupa/:id',
+      name: 'moja-grupa',
+      component: () => import('../views/MyGroupView.vue')
     },
     {
       path: '/:notFound',
@@ -84,7 +84,27 @@ const router = createRouter({
       path: '/skaner/posilki',
       name: 'skaner-posilki',
       component: () => import('../admin-components/MealScannerView.vue')
-    }
+    },
+    {
+      path: '/skaner/uczestnik',
+      name: 'skaner-uczestnik',
+      component: () => import('../admin-components/UserInfoScannerView.vue')
+    },
+    {
+      path: '/uczestnik/:id',
+      name: 'uczestnik',
+      component: () => import('../admin-components/UserInfoView.vue')
+    },
+    {
+      path: '/frakcja/:id',
+      name: 'frakcja',
+      component: () => import('../admin-components/FractionView.vue')
+    },
+    {
+      path: '/grupa/:id',
+      name: 'grupa',
+      component: () => import('../admin-components/GroupView.vue')
+    },
   ]
 })
 

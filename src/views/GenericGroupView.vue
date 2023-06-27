@@ -10,16 +10,16 @@ import rightArrow from '../assets/arrow.svg'
 import messangerIcon from '../assets/icons8-facebook_messenger.png'
 import phoneIcon from '../assets/phone_icon.svg'
 
-defineProps({
-  title: String,
-  backLink: String,
-  mapDescription: String,
-  messengerDescription: String,
-  group: Object,
-  ready: Object,
-  loading: Boolean,
-  error: Boolean,
-});
+defineProps([
+  'title',
+  'backLink',
+  'mapDescription',
+  'messengerDescription',
+  'group',
+  'ready',
+  'loading',
+  'error',
+]);
 
 </script>
 

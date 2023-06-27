@@ -1,20 +1,42 @@
 <script setup>
 import ItemBox from '../components/ItemBox.vue';
 import TopBar from '../components/navigation/TopBar.vue';
+import LoadingIndicator from '../components/LoadingIndicator.vue';
 
 import arrow from '../assets/arrow.svg'
 import mealIcon from '../assets/icons8-cutlery.png'
 import userIcon from '../assets/icons8-male_user.png'
 import pointsIcon from '../assets/icons8-scoreboard.png'
+
+import { useApiDataStore } from '../stores/api.js'
+import { mapStores } from 'pinia'
 </script>
 
 <template>
     <div class="padding">
         <TopBar title="Skaner"/>
-        <RouterLink to="/skaner/posilki">
+        <RouterLink to="/skaner/posilki" v-if="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_validate_meals')">
             <ItemBox bigText="Walidacja posiłków" :leftIcon="mealIcon" :rightIcon="arrow"/>
         </RouterLink>
-        <ItemBox bigText="Dodaj punkty" :leftIcon="pointsIcon" :rightIcon="arrow"/>
-        <ItemBox bigText="Informacje o uczestniku" :leftIcon="userIcon" :rightIcon="arrow"/>
+
+        <RouterLink to="/skaner/punkty" v-if="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_add_points')">
+            <ItemBox bigText="Dodaj punkty" :leftIcon="pointsIcon" :rightIcon="arrow"/>
+        </RouterLink>
+
+        <RouterLink to="/skaner/uczestnik" v-if="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_user_info')">
+            <ItemBox bigText="Informacje o uczestniku" :leftIcon="userIcon" :rightIcon="arrow"/>
+        </RouterLink>
     </div>
+    <LoadingIndicator v-if="!apiDataStore.permissions.ready"/>
 </template>
+
+
+<script>
+export default {
+  computed: {
+    ...mapStores(useApiDataStore)
+  },
+  mounted() {
+  }
+}
+</script>

@@ -6,7 +6,7 @@ export function loadData(item) {
       if (data.ok) {
         return data.json()
       }
-      throw new Error('Request failed!')
+      throw new Error('Błąd wczytywania')
     })
     .then((data) => {
       item.loading = false

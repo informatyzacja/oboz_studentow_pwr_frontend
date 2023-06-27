@@ -7,7 +7,7 @@ import { mapStores } from 'pinia'
 
 
 <template>
-    <GenericGroupView :title="apiDataStore.profile.ready ? apiDataStore.profile.groupWithId($route.params.id).type.name : 'Grupa'" backLink="/profil" mapDescription="Miejsce startu" messengerDescription="Grupa frakcji" 
+    <GenericGroupView :title="apiDataStore.profile.ready ? apiDataStore.profile.groupWithId($route.params.id).type.name : 'Grupa'" backLink="/profil" mapDescription="Miejsce startu" messengerDescription="Grupa messengerowa" 
     :ready="apiDataStore.profile.ready" 
     :loading="apiDataStore.profile.loading"
     :error="apiDataStore.profile.error"
