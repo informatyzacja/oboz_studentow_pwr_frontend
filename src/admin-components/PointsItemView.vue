@@ -1,5 +1,6 @@
 <script setup>
-defineProps(['points', 'date', 'validated', 'points_type', 'description', 'group_name','added_by']);
+defineProps(['points', 'date', 'validated', 'points_type', 'description', 'group_name','added_by',
+'validationDate', 'validatedBy']);
 import moment from 'moment'
 </script>
 
@@ -8,9 +9,13 @@ import moment from 'moment'
         <div class="header">
             <div class="header1">
                 <div class="points">{{ points }} pkt</div>
-                <p class="date">{{ moment(date).format("HH:mm dddd DD.MM") }}</p>
+                <p class="date">{{ moment(date).format("HH:mm ddd. DD.MM") }}</p>
             </div>
-            <div class="validation" :class="{'validation-successful': validated}">{{ validated ? 'Zatwierdzone' : "Nie zatwierdzone" }}</div>
+            <div class="validation" :class="{'validation-successful': validated}">
+                <p>{{ validated ? 'Zatwierdzone' : "Nie zatwierdzone" }}</p>
+                <p>{{ validationDate ? moment(validationDate).format("HH:mm ddd. DD.MM") : "" }}</p>
+                <p>{{ validatedBy }}</p>
+            </div>
         </div>
         <div class="points-type">{{ points_type }}</div>
         <div class="description">{{ description }}</div>
@@ -45,8 +50,14 @@ import moment from 'moment'
 .validation {
     background-color: var(--red);
     border-radius: 20px;
-    padding: 1px 8px;
+    padding: 2px 10px;
     font-size: 12px;
+    text-align: center;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .validation-successful {

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { loadData, ready } from '../functions.js'
 
 
+
 export const usePointStore = defineStore('points', {
   state: () => ({ loading: true, error: null, data: null, url: '../staff-api/get-points/' }),
   getters: {
