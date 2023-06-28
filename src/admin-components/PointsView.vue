@@ -12,8 +12,8 @@ import { mapStores } from 'pinia'
     <TopBar title="Punkty" backLink="/admin-menu"/>
 
     <div class="padding" v-if="apiDataStore.points.ready">
-        <h3>Rodziaj grupy</h3>
-        <select v-model="selectedGroupType">
+        <h3>Rodziaj grup</h3>
+        <select v-model="selectedGroupType" @input="event => {selectedGroup='';selectedPointType='';selectedGroupType=event.target.value}">
             <option value="">Wszystkie</option>
             <option v-for="groupType in apiDataStore.points.groupTypes" :key="groupType" :value="groupType">
                 {{ groupType }}
@@ -21,7 +21,7 @@ import { mapStores } from 'pinia'
         </select>
 
         <div v-if="selectedGroupType != ''">
-            <h3>Rodziaj punktów</h3>
+            <h3>Kategoria punktów</h3>
             <select v-model="selectedPointType">
                 <option value="">Wszystkie</option>
                 <option v-for="pointType in apiDataStore.points.pointTypes(selectedGroupType)" :key="pointType" :value="pointType">
@@ -30,9 +30,20 @@ import { mapStores } from 'pinia'
             </select>
         </div>
 
+        <div class="filters">
+            <p>Filtry:</p>
+            <div class="filterOption" :class="{filterOptionSelected: niezatwierdzoneFilter}" @click="toggleNiezatwierdzoneFilter">Nie zatwierdzone</div>
+            <select v-model="selectedGroup" v-if="selectedGroupType != ''">
+                <option value="">Grupa</option>
+                <option v-for="group in apiDataStore.points.groups(selectedGroupType)" :key="group.id" :value="group.id">
+                    {{ group.name }}
+                </option>
+            </select>
+        </div>
+
 
         <div style="margin-top: 20px;">
-            <PointsItemView v-for="(data, index) in apiDataStore.points.withType(selectedGroupType, selectedPointType)" :key="index" :points="data.numberOfPoints" :date="data.date" :validated="data.validated" :points_type="data.type.name + ' ('+data.type.points_min+' - '+data.type.points_max+' pkt)'" :description="data.description" :group_name="data.group.name" :added_by="data.addedBy.first_name + ' ' + data.addedBy.last_name"/>
+            <PointsItemView v-for="(data, index) in filterNiezatwierdzone(apiDataStore.points.filtered(selectedGroupType, selectedPointType, selectedGroup))" :key="index" :points="data.numberOfPoints" :date="data.date" :validated="data.validated" :points_type="data.type.name + ' ('+data.type.points_min+' - '+data.type.points_max+' pkt)'" :description="data.description" :group_name="data.group.name" :added_by="data.addedBy.first_name + ' ' + data.addedBy.last_name"/>
         </div>
     </div>
 
@@ -48,6 +59,8 @@ export default {
       timer: null,
       selectedGroupType: '',
       selectedPointType: '',
+      selectedGroup: '',
+      niezatwierdzoneFilter: false,
     }
   },
   computed: {
@@ -58,6 +71,16 @@ export default {
     this.timer = setInterval(this.apiDataStore.points.fetchData, 300000)
   },
   methods: {
+    toggleNiezatwierdzoneFilter() {
+      this.niezatwierdzoneFilter = !this.niezatwierdzoneFilter
+    },
+    filterNiezatwierdzone(points) {
+      if (this.niezatwierdzoneFilter) {
+        return points.filter(point => !point.validated)
+      } else {
+        return points
+      }
+    }
   },
   beforeUnmount() {
     clearInterval(this.timer)
@@ -76,7 +99,7 @@ h3 {
 }
 select {
     width: 100%;
-    padding: 10px 15px;
+    padding: 10px 35px 10px 15px;
     border-radius: 20px;
     border: 1px solid var(--text-gray);
     margin-bottom: 10px;
@@ -92,5 +115,34 @@ select {
     background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.66663 5.33337L8.00001 8.66671L11.3333 5.33337' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A") no-repeat;
     background-position: calc(100% - 15px) center !important;
     background-color: var(--bg-light);
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+}
+
+.filters p {
+    color: var(--text-gray);
+}
+
+.filterOption {
+    background: var(--bg-light);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-family: 'Sui Generis';
+    color: white;
+    cursor: pointer;
+}
+.filterOptionSelected {
+    background: var(--radial-gradient);
+}
+
+.filters select {
+    width: auto;
+    margin: 0;
+    font-size: 13px;
 }
 </style>

@@ -31,6 +31,16 @@ import { mapStores } from 'pinia'
       "
     />
     <MenuCard
+      title="Punkty"
+      :icon="PointsIcon"
+      :link="apiDataStore.permissions.ready &&
+        apiDataStore.permissions.hasOneOfPermissions(['can_view_points']) ? '/punkty' : '/punkty/dodaj'"
+      v-if="
+        apiDataStore.permissions.ready &&
+        apiDataStore.permissions.hasOneOfPermissions(['can_add_points','can_view_points'])
+      "
+    />
+    <MenuCard
       title="Frakcje"
       :icon="FractionIcon"
       link="/frakcje"
@@ -46,16 +56,6 @@ import { mapStores } from 'pinia'
       v-if="
         apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_view_groups'])
-      "
-    />
-    <MenuCard
-      title="Punkty"
-      :icon="PointsIcon"
-      :link="apiDataStore.permissions.ready &&
-        apiDataStore.permissions.hasOneOfPermissions(['can_view_points']) ? '/punkty' : '/punkty/dodaj'"
-      v-if="
-        apiDataStore.permissions.ready &&
-        apiDataStore.permissions.hasOneOfPermissions(['can_add_points','can_view_points'])
       "
     />
 

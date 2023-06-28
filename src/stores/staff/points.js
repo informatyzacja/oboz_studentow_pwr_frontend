@@ -19,6 +19,22 @@ export const usePointStore = defineStore('points', {
       }
       return groupTypes
     },
+    groups() {
+      return (groupType) => {
+        var groups = []
+        if (this.data) {
+          for (const point of this.data) {
+            if (groupType === "" || point.group.type.name === groupType) {
+              const group = { name: point.group.name, id: point.group.id }
+              if (!groups.includes(group)) {
+                groups.push(group)
+              }
+            }
+          }
+        }
+        return groups
+      }
+    },
     pointTypes() {
       return (groupType) => {
         var pointTypes = []
@@ -34,18 +50,25 @@ export const usePointStore = defineStore('points', {
         return pointTypes
       }
     },
-    withType() {
-      return (groupType, pointType) => {
-        if (!this.data) {
-          return []
+    filtered() {
+      return (groupType, pointType, groupId) => {
+        const dataDilteredByType = (groupType, pointType) => {
+          if (!this.data) {
+            return []
+          }
+          if (groupType === "") {
+            return this.data
+          }
+          if (pointType === "") {
+            return this.data.filter(point => point.group.type.name === groupType)
+          }
+          return this.data.filter(point => point.type.name === pointType && point.group.type.name === groupType)
         }
-        if (groupType === "") {
-          return this.data
+        if (groupId === "") {
+          return dataDilteredByType(groupType, pointType)
         }
-        if (pointType === "") {
-          return this.data.filter(point => point.group.type.name === groupType)
-        }
-        return this.data.filter(point => point.type.name === pointType && point.group.type.name === groupType)
+        return dataDilteredByType(groupType, pointType).filter(point => point.group.id === groupId)
+        
       }
     }
   },
