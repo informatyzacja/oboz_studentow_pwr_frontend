@@ -100,3 +100,43 @@ export const usePointStore = defineStore('points', {
   }
 })
 
+
+
+export const usePointTypeStore = defineStore('pointTypes', {
+  state: () => ({ loading: true, error: null, data: null, url: '../staff-api/get-point-types/' }),
+  getters: {
+    ready() {
+      return ready(this)
+    },
+    forGroupType() {
+      return (groupType) => {
+        if (!this.data) {
+          return []
+        }
+        return this.data.pointTypes.filter(pointType => pointType.group_type.name === groupType)
+      }
+    },
+    withTypes() {
+      return (groupType, pointTypeId) => {
+        if (!this.data) {
+          return []
+        }
+        return this.data.pointTypes.find(pType => pType.group_type.name === groupType && pType.id === pointTypeId)
+      }
+    },
+    groupsWithGroupType() {
+      return (groupType) => {
+        if (!this.data) {
+          return []
+        }
+        return this.data.groups.filter(group => group.type.name === groupType)
+      }
+    },
+  },
+  actions: {
+    fetchData() {
+      loadData(this)
+    }
+  }
+})
+

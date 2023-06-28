@@ -17,6 +17,7 @@ const permissions = {
   grupy: ['can_view_groups'],
 
   punkty: ['can_view_points'],
+  'punkty-dodaj': ['can_add_points'],
   ranking: ['can_view_points'],
 }
 

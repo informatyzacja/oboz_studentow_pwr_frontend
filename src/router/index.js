@@ -121,6 +121,11 @@ const router = createRouter({
       component: () => import('../admin-components/PointsView.vue')
     },
     {
+      path: '/punkty/dodaj',
+      name: 'punkty-dodaj',
+      component: () => import('../admin-components/AddPointsView.vue')
+    },
+    {
       path: '/ranking',
       name: 'ranking',
       component: () => import('../admin-components/PointsRankingView.vue')

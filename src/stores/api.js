@@ -13,7 +13,7 @@ import { useFaqStore } from './misc.js'
 import { useImageStore } from './images.js'
 
 import { usePermissionStore } from './staff/permissions.js'
-import { usePointStore } from './staff/points.js'
+import { usePointStore, usePointTypeStore } from './staff/points.js'
 
 export const useApiDataStore = defineStore('apiData', {
   state: () => ({
@@ -28,6 +28,7 @@ export const useApiDataStore = defineStore('apiData', {
     dailyQuest: useDailyQuestStore(),
     permissions: usePermissionStore(),
     images: useImageStore(),
-    points: usePointStore()
+    points: usePointStore(),
+    pointTypes: usePointTypeStore(),
   })
 })
