@@ -1,0 +1,96 @@
+<script setup>
+import TopBar from '../components/navigation/TopBar.vue'
+import LoadingIndicator from '../components/LoadingIndicator.vue'
+
+import PointsItemView from './PointsItemView.vue'
+
+import { useApiDataStore } from '../stores/api.js'
+import { mapStores } from 'pinia'
+</script>
+
+<template>
+    <TopBar title="Punkty" backLink="/admin-menu"/>
+
+    <div class="padding" v-if="apiDataStore.points.ready">
+        <h3>Rodziaj grupy</h3>
+        <select v-model="selectedGroupType">
+            <option value="">Wszystkie</option>
+            <option v-for="groupType in apiDataStore.points.groupTypes" :key="groupType" :value="groupType">
+                {{ groupType }}
+            </option>
+        </select>
+
+        <div v-if="selectedGroupType != ''">
+            <h3>Rodziaj punktów</h3>
+            <select v-model="selectedPointType">
+                <option value="">Wszystkie</option>
+                <option v-for="pointType in apiDataStore.points.pointTypes(selectedGroupType)" :key="pointType" :value="pointType">
+                    {{ pointType }}
+                </option>
+            </select>
+        </div>
+
+
+        <div style="margin-top: 20px;">
+            <PointsItemView v-for="(data, index) in apiDataStore.points.withType(selectedGroupType, selectedPointType)" :key="index" :points="data.numberOfPoints" :date="data.date" :validated="data.validated" :points_type="data.type.name + ' ('+data.type.points_min+' - '+data.type.points_max+' pkt)'" :description="data.description" :group_name="data.group.name" :added_by="data.addedBy.first_name + ' ' + data.addedBy.last_name"/>
+        </div>
+    </div>
+
+    <LoadingIndicator v-if="apiDataStore.points.loading"/>
+    <p v-if="apiDataStore.points.error" class="error">{{ apiDataStore.points.error }}</p>
+</template>
+
+
+<script>
+export default {
+  data() {
+    return {
+      timer: null,
+      selectedGroupType: '',
+      selectedPointType: '',
+    }
+  },
+  computed: {
+    ...mapStores(useApiDataStore),
+  },
+  mounted() {
+    this.apiDataStore.points.fetchData()
+    this.timer = setInterval(this.apiDataStore.points.fetchData, 300000)
+  },
+  methods: {
+  },
+  beforeUnmount() {
+    clearInterval(this.timer)
+  }
+}
+</script>
+
+<style scoped>
+h3 {
+  background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding: 5px 2px;
+  font-size: 13px;
+}
+select {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--text-gray);
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-family: 'Sui Generis';
+    border: none;
+    outline: none;
+    color: white;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.66663 5.33337L8.00001 8.66671L11.3333 5.33337' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A") no-repeat;
+    background-position: calc(100% - 15px) center !important;
+    background-color: var(--bg-light);
+}
+</style>

@@ -14,7 +14,9 @@ const permissions = {
   frakcja: ['can_view_fractions'],
   grupa: ['can_view_groups'],
   frakcje: ['can_view_fractions'],
-  grupy: ['can_view_groups']
+  grupy: ['can_view_groups'],
+
+  punkty: ['can_view_points'],
 }
 
 export const usePermissionStore = defineStore('permissions', {

@@ -8,6 +8,7 @@ import HammerIcon from '../assets/icons8-hammer.png'
 import ScannerIcon from '../assets/icons8-barcode_reader.png'
 import GroupIcon from '../assets/icons8-people.png'
 import FractionIcon from '../assets/icons8-meeting_room.png'
+import PointsIcon from '../assets/icons8-scoreboard.png'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
@@ -45,6 +46,16 @@ import { mapStores } from 'pinia'
       v-if="
         apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_view_groups'])
+      "
+    />
+    <MenuCard
+      title="Punkty"
+      :icon="PointsIcon"
+      :link="apiDataStore.permissions.ready &&
+        apiDataStore.permissions.hasOneOfPermissions(['can_view_points']) ? '/punkty' : '/punkty/dodaj'"
+      v-if="
+        apiDataStore.permissions.ready &&
+        apiDataStore.permissions.hasOneOfPermissions(['can_add_points','can_view_points'])
       "
     />
 
