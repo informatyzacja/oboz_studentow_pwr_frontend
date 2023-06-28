@@ -119,6 +119,11 @@ const router = createRouter({
       path: '/punkty',
       name: 'punkty',
       component: () => import('../admin-components/PointsView.vue')
+    },
+    {
+      path: '/ranking',
+      name: 'ranking',
+      component: () => import('../admin-components/PointsRankingView.vue')
     }
   ]
 })

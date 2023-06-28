@@ -16,7 +16,7 @@ import { getCookie } from '../stores/functions.js'
     <TopBar title="Punkty" backLink="/admin-menu" />
 
     <div class="padding" v-if="apiDataStore.points.ready">
-        <h3>Rodziaj grup</h3>
+        <h3>Rodziaj grupy</h3>
         <select v-model="selectedGroupType"
             @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }">
             <option value="">Wszystkie</option>

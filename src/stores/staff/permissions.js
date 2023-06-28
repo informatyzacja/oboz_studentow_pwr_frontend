@@ -17,6 +17,7 @@ const permissions = {
   grupy: ['can_view_groups'],
 
   punkty: ['can_view_points'],
+  ranking: ['can_view_points'],
 }
 
 export const usePermissionStore = defineStore('permissions', {

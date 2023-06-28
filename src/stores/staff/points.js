@@ -71,6 +71,26 @@ export const usePointStore = defineStore('points', {
         return dataDilteredByType(groupType, pointType).filter(point => point.group.id === groupId)
         
       }
+    },
+    ranking() {
+      return (groupType) => {
+        if (!this.data) {
+          return []
+        }
+       const filteredPoints = this.data.filter(point => point.group.type.name === groupType && point.validated);
+       var points = new Object()
+        for (const point of filteredPoints) {
+          if (points[point.group.id]) {
+            points[point.group.id].points += point.numberOfPoints
+          } else {
+            points[point.group.id] = { group: point.group, points: point.numberOfPoints }
+          }
+        }
+        var items = Object.keys(points).map(function(key) {
+          return points[key];
+        });
+        return items.sort((a, b) => b.points - a.points)
+      }
     }
   },
   actions: {
