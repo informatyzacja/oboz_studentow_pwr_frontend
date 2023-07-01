@@ -10,7 +10,7 @@ import { getCookie } from '../stores/functions.js'
 </script>
 
 <template>
-    <TopBar title="Dodaj punkty" backLink="/admin-menu" />
+    <TopBar title="Dodaj punkty" :backLink="$router.options.history.state.back || '/admin-menu'" />
 
     <div class="padding" v-if="apiDataStore.pointTypes.ready">
         <h3>Rodziaj grupy</h3>
@@ -37,13 +37,14 @@ import { getCookie } from '../stores/functions.js'
             <h3>Grupa</h3>
             <select v-model="selectedGroup">
                 <option disabled value="">Wybierz grupę</option>
+                <option value="scan">SKANUJ</option>
                 <option v-for="group in apiDataStore.pointTypes.groupsWithGroupType(selectedGroupType)" :key="group.id" :value="group.id">
                     {{ group.name }}
                 </option>
             </select>
         </div>
         
-        <div  v-if="selectedGroupType && selectedPointType">
+        <div v-if="selectedGroupType && selectedPointType && apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType)">
             <h3>Ile punktów ({{apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_min}} - {{apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_max}})</h3>
             <input type="number" v-model="points" 
             :min="apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_min" 
@@ -58,6 +59,7 @@ import { getCookie } from '../stores/functions.js'
             <p v-if="error" class="error">{{ error }}</p>
             <button v-if="success" class="button" @click="reset">Dodaj kolejne</button>
         </div>
+        <p v-else-if="selectedGroupType && selectedPointType && !apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType)" class="error">Ten rodzaj grupy nie może posiadać podanej kategorii punktów</p>
 
 
 
@@ -86,16 +88,37 @@ export default {
             description: ''
         }
     },
+    watch: {
+        selectedPointType(newPointsType) {
+            this.$route.params.pointTypeId = newPointsType
+            this.$router.replace({ params: this.$route.params })
+        },
+        selectedGroup(newGroup) {
+            if (newGroup == 'scan') {
+                this.$router.push({ name: 'skaner-punkty', params: { pointTypeId: this.selectedPointType } })
+                return
+            }
+            this.$route.params.groupId = newGroup
+            this.$router.replace({ params: this.$route.params })
+        }
+    },
     computed: {
         ...mapStores(useApiDataStore),
     },
     mounted() {
+        if ( this.apiDataStore.pointTypes.ready) {
+            if (this.$route.params.groupId) {
+                this.selectedGroup = parseInt(this.$route.params.groupId)
+                this.selectedGroupType = this.apiDataStore.pointTypes.getGroupById(this.selectedGroup).type.name
+            }
+            this.selectedPointType = parseInt(this.$route.params.pointTypeId) || ''
+        }
+
         this.apiDataStore.pointTypes.fetchData()
         this.timer = setInterval(this.apiDataStore.pointTypes.fetchData, 300000)
     },
     methods: {
         reset() {
-            this.selectedGroup= ''
             this.loading= false
             this.error= null
             this.success= null
@@ -127,11 +150,12 @@ export default {
                     body: JSON.stringify(data)
                 })
                     .then((data) => {
-                        if (data.ok) {
-                            return data.json()
-                        }
                         if (data.status === 403) {
                             window.location.href = '/login'
+                            return
+                        }
+                        if (data.ok) {
+                            return data.json()
                         }
                         this.error = data.status + ' ' + data.statusText
                         this.success = false
@@ -231,5 +255,9 @@ button.success {
 p.success {
     text-align: center;
     color: green;
+}
+
+p {
+    text-align: center;
 }
 </style>

@@ -8,6 +8,7 @@ import ScannerBaseView from './ScannerBaseView.vue'
 
   <div class="padding">
     <div class="center">
+      <p v-if="error" class="error">{{ error }}</p>
       <ScannerBaseView
         @error="(err) => (error = err)"
         @result="

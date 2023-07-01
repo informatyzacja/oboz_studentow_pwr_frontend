@@ -3,11 +3,12 @@ import { API_URL, AUTH_HEADER } from '../config.js'
 export function loadData(item) {
   fetch(API_URL + item.url, { headers: AUTH_HEADER })
     .then((data) => {
-      if (data.ok) {
-        return data.json()
-      }
       if (data.status === 403) {
         window.location.href = '/login'
+        return
+      }
+      if (data.ok) {
+        return data.json()
       }
       throw new Error(data.statusText)
     })

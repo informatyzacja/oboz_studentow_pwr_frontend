@@ -91,6 +91,11 @@ const router = createRouter({
       component: () => import('../admin-components/UserInfoScannerView.vue')
     },
     {
+      path: '/skaner/punkty/:pointTypeId?',
+      name: 'skaner-punkty',
+      component: () => import('../admin-components/AddPointsScannerView.vue')
+    },
+    {
       path: '/uczestnik/:id',
       name: 'uczestnik',
       component: () => import('../admin-components/UserInfoView.vue')
@@ -121,7 +126,7 @@ const router = createRouter({
       component: () => import('../admin-components/PointsView.vue')
     },
     {
-      path: '/punkty/dodaj',
+      path: '/punkty/dodaj/:pointTypeId?/:groupId?',
       name: 'punkty-dodaj',
       component: () => import('../admin-components/AddPointsView.vue')
     },

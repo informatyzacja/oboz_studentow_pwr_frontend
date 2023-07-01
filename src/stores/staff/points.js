@@ -132,6 +132,22 @@ export const usePointTypeStore = defineStore('pointTypes', {
         return this.data.groups.filter(group => group.type.name === groupType)
       }
     },
+    getGroupById() {
+      return (groupId) => {
+        if (!this.data) {
+          return []
+        }
+        return this.data.groups.find(group => group.id === groupId)
+      }
+    },
+    getPointTypeById() {
+      return (pointTypeId) => {
+        if (!this.data) {
+          return []
+        }
+        return this.data.pointTypes.find(pointType => pointType.id === pointTypeId)
+      }
+    }
   },
   actions: {
     fetchData() {
