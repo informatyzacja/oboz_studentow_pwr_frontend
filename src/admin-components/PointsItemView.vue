@@ -8,7 +8,7 @@ import moment from 'moment'
     <div class="box">
         <div class="header">
             <div class="header1">
-                <div class="points">{{ points }} pkt</div>
+                <div class="points"><span class="points-span">{{ points }}</span> pkt</div>
                 <p class="date">{{ moment(date).format("HH:mm ddd. DD.MM") }}</p>
             </div>
             <div class="validation" :class="{'validation-successful': validated}">
@@ -71,9 +71,13 @@ import moment from 'moment'
 .points {
     border-radius: 20px;
     background: #DE7539;
-    padding: 3px 10px;
+    padding: 2px 12px;
+    font-size: 12px
 }
-
+.points-span {
+    font-size: 20px;
+    line-height: 24px;
+}
 .footer {
     display: flex;
     justify-content: space-between;

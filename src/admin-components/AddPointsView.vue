@@ -15,7 +15,9 @@ import { getCookie } from '../stores/functions.js'
     <div class="padding" v-if="apiDataStore.pointTypes.ready">
         <h3>Rodziaj grupy</h3>
         <select v-model="selectedGroupType"
-            @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }">
+            @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }"
+            :disabled="disabled"
+            >
             <option disabled value="">Wybierz rodzaj grupy</option>
             <option v-for="groupType in apiDataStore.pointTypes.data.groupTypes" :key="groupType.id" :value="groupType.name">
                 {{ groupType.name }}
@@ -24,7 +26,9 @@ import { getCookie } from '../stores/functions.js'
 
         <div v-if="selectedGroupType">
             <h3>Kategoria punktów</h3>
-            <select v-model="selectedPointType">
+            <select v-model="selectedPointType"
+            :disabled="disabled"
+            >
                 <option disabled value="">Wybierz kategorię punktów</option>
                 <option v-for="pointType in apiDataStore.pointTypes.forGroupType(selectedGroupType)" :key="pointType.id"
                     :value="pointType.id">
@@ -35,7 +39,9 @@ import { getCookie } from '../stores/functions.js'
 
         <div  v-if="selectedGroupType">
             <h3>Grupa</h3>
-            <select v-model="selectedGroup">
+            <select v-model="selectedGroup"
+            :disabled="disabled"
+            >
                 <option disabled value="">Wybierz grupę</option>
                 <option value="scan">SKANUJ</option>
                 <option v-for="group in apiDataStore.pointTypes.groupsWithGroupType(selectedGroupType)" :key="group.id" :value="group.id">
@@ -48,10 +54,14 @@ import { getCookie } from '../stores/functions.js'
             <h3>Ile punktów ({{apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_min}} - {{apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_max}})</h3>
             <input type="number" v-model="points" 
             :min="apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_min" 
-            :max="apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_max"/>
+            :max="apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_max"
+            :disabled="disabled"
+            />
 
             <h3>Opis</h3>
-            <textarea v-model="description" rows="4" cols="50"></textarea>
+            <textarea v-model="description" rows="4" cols="50"
+            :disabled="disabled"
+            ></textarea>
 
             <button class="button success" @click="addPoints" v-if="points != 0 && selectedGroup && apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_min <= points && points <= apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_max && !loading && !success">Dodaj</button>
             <LoadingIndicator v-if="loading" />
@@ -85,7 +95,9 @@ export default {
             info: '',
 
             points: 0,
-            description: ''
+            description: '',
+
+            disabled: false,
         }
     },
     watch: {
@@ -125,6 +137,7 @@ export default {
             this.info= ''
             this.points= 0
             this.description= ''
+            this.disabled= false
         },
         addPoints() {
             if (this.apiDataStore.permissions.ready && this.apiDataStore.permissions.hasPermission('can_add_points')) {
@@ -132,6 +145,7 @@ export default {
                     alert("Niepoprawna ilość punktów")
                     return
                 }
+                this.disabled = true
                 this.loading = true;
                 const csrftoken = getCookie('csrftoken')
                 const data = {
@@ -159,6 +173,7 @@ export default {
                         }
                         this.error = data.status + ' ' + data.statusText
                         this.success = false
+                        this.disabled = false
                         throw new Error('Request failed!')
                     })
                     .then((data) => {
