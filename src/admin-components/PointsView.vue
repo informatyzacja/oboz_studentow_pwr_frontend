@@ -120,7 +120,7 @@ export default {
     },
     mounted() {
         this.apiDataStore.points.fetchData()
-        this.timer = setInterval(this.apiDataStore.points.fetchData, 300000)
+        this.timer = setInterval(this.apiDataStore.points.fetchData, 100000)
     },
     methods: {
         toggleNiezatwierdzoneFilter() {
