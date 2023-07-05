@@ -25,7 +25,7 @@ defineProps([
   'hideFAQ',
   'frakcjaLink',
   'grupaLink'
-])
+]);
 </script>
 
 <template>
@@ -70,7 +70,7 @@ defineProps([
               whiteMargin="false"
               :margin="0"
               :callback="qrReady"
-              :size="350"
+              :size="700"
             />
           </div>
           <LoadingIndicator v-if="qrLoading" inline />
@@ -307,6 +307,8 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  image-rendering: pixelated;
+
 }
 </style>
 
