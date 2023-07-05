@@ -17,6 +17,7 @@ defineEmits(['error', 'result'])
     type="number"
     pattern="[0-9]*" inputmode="numeric"
     maxLength="5"
+    min="0"
     placeholder="Wpisz kod"
     class="search"
     v-model="searchQuery"

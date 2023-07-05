@@ -42,6 +42,13 @@ import { API_URL, AUTH_HEADER } from '../config.js'
       <p v-if="error" class="error">{{ error }}</p>
     </div>
   </div>
+
+  <RouterLink :to="{ name: 'punkty-dodaj', params: { groupType: selectedGroupType, pointTypeId: selectedPointType } }">
+    <button class="button" v-if="selectedGroupType">
+      Wybierz grupę ręcznie
+    </button>
+  </RouterLink>
+  
   <LoadingIndicator v-if="apiDataStore.pointTypes.loading || loading" />
   <p v-if="apiDataStore.pointTypes.error" class="error">{{ apiDataStore.pointTypes.error }}</p>
 </template>
@@ -67,9 +74,12 @@ export default {
   },
   watch: {
 
-    selectedPointType(newPointsType) {
-      this.$route.params.pointTypeId = newPointsType
-      this.$router.replace({ params: this.$route.params })
+    selectedPointType() {
+      this.$router.replace({ params: { pointTypeId: this.selectedPointType } })
+    },
+
+    selectedGroupType() {
+      this.$router.replace({  params: { groupType: this.selectedGroupType } })
     },
 
   },
@@ -78,6 +88,8 @@ export default {
         if (this.$route.params.pointTypeId) {
             this.selectedPointType = parseInt(this.$route.params.pointTypeId)
             this.selectedGroupType = this.apiDataStore.pointTypes.getPointTypeById(this.selectedPointType).group_type.name
+        } else if (this.$route.params.groupType) {
+            this.selectedGroupType = this.$route.params.groupType
         }
     }
 
@@ -169,4 +181,24 @@ h3 {
   padding: 5px 2px;
   font-size: 13px;
 }
+
+.button {
+  border-radius: 20px;
+  border: none;
+  color: white;
+  padding: 20px 35px;
+  font-size: 17px;
+  line-height: 16px;
+  cursor: pointer;
+  font-family: 'Sui Generis';
+
+  display: flex;
+  justify-content: center;
+
+  margin: 5px auto 12px;
+
+  background-color: var(--bg-light);
+  
+}
+
 </style>
