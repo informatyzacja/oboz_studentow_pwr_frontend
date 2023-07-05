@@ -21,8 +21,8 @@ defineProps(['title', 'icon', 'link'])
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 140px;
-  height: 140px;
+  width: calc((100vw - 66px) / 3);
+  height: calc((100vw - 66px) / 3);
   background-color: var(--color-primary);
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);

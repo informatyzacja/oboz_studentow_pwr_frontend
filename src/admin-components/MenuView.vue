@@ -82,8 +82,8 @@ import { mapStores } from 'pinia'
     <MenuCard title="Sos" :icon="SosIcon" link="/sos" />
     <MenuCard title="Mapka Harmonogram" :icon="MapIcon" link="/mapa" />
 
-    <div style="height: 140px; width: 140px"></div>
-    <div style="height: 140px; width: 140px"></div>
+    <div style="height: calc((100vw - 66px) / 3); width: calc((100vw - 66px) / 3)"></div>
+    <div style="height: calc((100vw - 66px) / 3); width: calc((100vw - 66px) / 3)"></div>
   </div>
 </template>
 
