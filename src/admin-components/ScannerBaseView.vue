@@ -15,6 +15,7 @@ defineEmits(['error', 'result'])
 <template>
   <input
     type="number"
+    pattern="[0-9]*" inputmode="numeric"
     maxLength="5"
     placeholder="Wpisz kod"
     class="search"

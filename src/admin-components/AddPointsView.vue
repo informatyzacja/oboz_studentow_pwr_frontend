@@ -52,7 +52,7 @@ import { getCookie } from '../stores/functions.js'
         
         <div v-if="selectedGroupType && selectedPointType && apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType)">
             <h3>Ile punktów ({{apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_min}} - {{apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_max}})</h3>
-            <input type="number" v-model="points" 
+            <input type="number" pattern="[0-9]*" inputmode="decimal" v-model="points" 
             :min="apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_min" 
             :max="apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_max"
             :disabled="disabled"
@@ -94,7 +94,7 @@ export default {
             success: null,
             info: '',
 
-            points: 0,
+            points: '',
             description: '',
 
             disabled: false,
@@ -135,7 +135,7 @@ export default {
             this.error= null
             this.success= null
             this.info= ''
-            this.points= 0
+            this.points= ''
             this.description= ''
             this.disabled= false
         },
