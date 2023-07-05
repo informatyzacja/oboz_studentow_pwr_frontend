@@ -1,4 +1,11 @@
 <script setup>
+import alcohol1 from "@/assets/icons8-beer_bottle.png";
+import alcohol2 from "@/assets/icons8-cocktail.png";
+import alcohol3 from "@/assets/icons8-white_wine.png";
+import alcohol4 from "@/assets/icons8-wine_bottle.png";
+import alcohol5 from "@/assets/icons8-vodka.png";
+import alcohol6 from "@/assets/icons8-the_toast.png";
+
 defineProps({
   inline: {
     type: Boolean,
@@ -9,14 +16,6 @@ defineProps({
     default: false
   }
 });
-
-import alcohol1 from "@/assets/icons8-beer_bottle.png";
-import alcohol2 from "@/assets/icons8-cocktail.png";
-import alcohol3 from "@/assets/icons8-white_wine.png";
-import alcohol4 from "@/assets/icons8-wine_bottle.png";
-import alcohol5 from "@/assets/icons8-vodka.png";
-import alcohol6 from "@/assets/icons8-the_toast.png";
-
 </script>
 
 <template>
