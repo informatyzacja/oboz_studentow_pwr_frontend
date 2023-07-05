@@ -1,5 +1,5 @@
 <script setup>
-defineProps(['points', 'date', 'validated', 'points_type', 'description', 'group_name','added_by',
+defineProps(['points', 'date', 'validated', 'rejected', 'points_type', 'description', 'group_name','added_by',
 'validationDate', 'validatedBy']);
 import moment from 'moment'
 </script>
@@ -11,8 +11,10 @@ import moment from 'moment'
                 <div class="points"><span class="points-span">{{ points }}</span> pkt</div>
                 <p class="date">{{ moment(date).format("HH:mm ddd. DD.MM") }}</p>
             </div>
-            <div class="validation" :class="{'validation-successful': validated}">
-                <p>{{ validated ? 'Zatwierdzone' : "Nie zatwierdzone" }}</p>
+            <div class="validation" :class="{'validation-successful': validated, 'validation-rejected': rejected}">
+                <p>{{ validated ? 
+                (rejected ? 'Zatw. i Odrzu.' : 'Zatwierdzone') 
+                : (rejected ? 'Odrzucone' : "Nie zatwierdzone") }}</p>
                 <p>{{ validationDate ? moment(validationDate).format("HH:mm ddd. DD.MM") : "" }}</p>
                 <p>{{ validatedBy }}</p>
             </div>
@@ -62,6 +64,9 @@ import moment from 'moment'
 
 .validation-successful {
     background-color: green;
+}
+.validation-rejected {
+    background-color: rgb(167, 0, 78)
 }
 
 .date {
