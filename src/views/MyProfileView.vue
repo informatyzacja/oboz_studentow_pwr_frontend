@@ -13,6 +13,7 @@ import { REULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
+
 </script>
 
 <template>
@@ -54,6 +55,7 @@ import { mapStores } from 'pinia'
       <a href="/logout/">
         <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small />
       </a>
+      <p class="version" v-if="version">v{{version}}</p>
     </template>
   </GenericProfileView>
 </template>
@@ -64,7 +66,10 @@ export default {
     return {
       timer1: null,
       timer2: null,
-      timer3: null
+      timer3: null,
+
+      // eslint-disable-next-line no-undef
+      version: VERSION_NUMBER
     }
   },
   computed: {
@@ -101,5 +106,12 @@ h6 {
   font-size: 10px;
   color: var(--text-gray);
   text-align: center;
+}
+
+.version {
+  font-size: 10px;
+  color: var(--text-gray);
+  text-align: center;
+  margin-bottom: -17px;
 }
 </style>

@@ -25,4 +25,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  define: {
+    VERSION_NUMBER: JSON.stringify(new Date().toISOString().slice(2, 10).replace(/-/g, '.'))
+  }
 })
