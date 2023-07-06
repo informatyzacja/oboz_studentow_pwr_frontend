@@ -5,6 +5,7 @@ import alcohol3 from "@/assets/icons8-white_wine.png";
 import alcohol4 from "@/assets/icons8-wine_bottle.png";
 import alcohol5 from "@/assets/icons8-vodka.png";
 import alcohol6 from "@/assets/icons8-the_toast.png";
+import alcohol7 from "@/assets/icons8-beer.png";
 
 defineProps({
   inline: {
@@ -44,7 +45,8 @@ export default {
       alcohol3,
       alcohol4,
       alcohol5,
-      alcohol6
+      alcohol6,
+      alcohol7
     ];
     const random = Math.floor(Math.random() * alcohols.length);
     this.alcoholSrc = alcohols[random];

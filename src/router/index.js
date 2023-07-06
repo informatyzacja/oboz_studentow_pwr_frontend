@@ -68,6 +68,11 @@ const router = createRouter({
       name: 'notFound',
       component: () => import('../views/NotFoundView.vue')
     },
+    {
+      path: '/zapisy-gra-nocna',
+      name: 'zapisy-gra-nocna',
+      component: () => import('../views/NightGameSignupView.vue')
+    },
 
     // ADMIN ROUTES
     {
@@ -91,7 +96,7 @@ const router = createRouter({
       component: () => import('../admin-components/UserInfoScannerView.vue')
     },
     {
-      path: '/skaner/punkty/:pointTypeId?',
+      path: '/skaner/punkty/:groupType?/:pointTypeId?',
       name: 'skaner-punkty',
       component: () => import('../admin-components/AddPointsScannerView.vue')
     },
@@ -126,7 +131,7 @@ const router = createRouter({
       component: () => import('../admin-components/PointsView.vue')
     },
     {
-      path: '/punkty/dodaj/:pointTypeId?/:groupId?',
+      path: '/punkty/dodaj/:groupType?/:pointTypeId?/:groupId?',
       name: 'punkty-dodaj',
       component: () => import('../admin-components/AddPointsView.vue')
     },

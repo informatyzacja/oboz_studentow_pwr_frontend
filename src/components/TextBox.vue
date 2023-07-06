@@ -2,19 +2,20 @@
 defineProps({
   content: {
     type: String,
-    required: true
+    required: false
   },
   title: {
     type: String,
     required: false
   }
-})
+});
 </script>
 
 <template>
   <div class="textbox">
     <h4 v-if="title">{{ title }}</h4>
     <p>{{ content }}</p>
+    <slot></slot>
   </div>
 </template>
 

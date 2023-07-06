@@ -18,13 +18,14 @@ defineProps([
   'group',
   'ready',
   'loading',
-  'error'
-])
+  'error',
+  'info'
+]);
 </script>
 
 <template>
   <TopBar :title="title" :backLink="$router.options.history.state.back || backLink" />
-  <p v-if="!group">Nie znaleziono grupy</p>
+  <p class="padding" v-if="!group">Nie znaleziono grupy</p>
   <div class="padding" v-if="group">
     <div class="flex">
       <div class="logo" v-if="group.logo">
@@ -82,6 +83,8 @@ defineProps([
         :leftIcon="data.photo"
       />
     </div>
+
+    <h3>{{ info }}</h3>
 
     <LoadingIndicator v-if="loading" />
     <p v-if="error" class="error">{{ error }}</p>

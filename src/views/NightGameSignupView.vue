@@ -1,0 +1,351 @@
+<script setup>
+import TopBar from '../components/navigation/TopBar.vue'
+import LoadingIndicator from '../components/LoadingIndicator.vue'
+
+import TextBox from '../components/TextBox.vue'
+
+import { useApiDataStore } from '../stores/api.js'
+import { mapStores } from 'pinia'
+
+import { API_URL, AUTH_HEADER } from '../config.js'
+import { getCookie } from '../stores/functions.js'
+
+import okIcon from '../assets/icons8-ok.png'
+import cryingIcon from '../assets/icons8-crying.png'
+</script>
+
+<template>
+  <TopBar title="Zapisy na grę nocną" :backLink="$router.options.history.state.back || '/'"/>
+
+  <div class="padding" v-if="!loading && !success && !noFreePlaces && !userInGroup">
+
+    <TextBox>
+        <p>UWAGA! Zapisy wykonuje tylko jedna osoba z grupy.</p>
+        <p>Dla fajnieszej zabawy polecamy, aby w grupie znalazły się zarówno chłopacy, jak i dziewczyny.</p>
+        <p>Liczba osób w grupie: {{ groupMinSize }} - {{ groupMaxSize }}</p>
+    </TextBox>
+
+    <h3 style="margin-top:10px">Nazwa grupy</h3>
+    <input type="text" v-model="groupName" />
+
+    <div v-if="groupSize!==''">
+        <h3>Osoby</h3>
+        <div class="person" v-if="apiDataStore.profile.ready">
+            <div class="index">1.</div>
+            <div>
+                <input type="text" placeholder="Imię" :value="apiDataStore.profile.data[0].first_name" disabled/>
+                <input type="text" placeholder="Nazwisko" :value="apiDataStore.profile.data[0].last_name" disabled/>
+            </div>
+            <input type="number" pattern="[0-9]*" inputmode="numeric" class="bandInput" placeholder="Nr opaski" :value="apiDataStore.profile.data[0].bandId" disabled/>
+        </div>
+        <LoadingIndicator v-else inline small/>
+
+        <div class="person" v-for="(person, index) in people" :key="index">
+            <div class="index">{{ index+2 }}.</div>
+            <div>
+                <input type="text" v-model="person.first_name" placeholder="Imię" :disabled="signupLoading"/>
+                <input type="text" v-model="person.last_name" placeholder="Nazwisko" :disabled="signupLoading"/>
+            </div>
+            <input type="number" pattern="[0-9]*" inputmode="numeric" class="bandInput" v-model="person.band" placeholder="Nr opaski" :disabled="signupLoading"/>
+        </div>
+    </div>
+
+    <div class="change-group-size-buttons">
+        <button class="button" v-if="groupSize < groupMaxSize" @click="groupSize++">Dodaj osobę</button>
+        <button class="button" v-if="groupSize > groupMinSize" @click="groupSize--">Usuń osobę</button>
+    </div>
+
+    <div v-if="groupName && groupSize >= groupMinSize && groupSize <= groupMaxSize && !loading && !success && !signupLoading && peopleValid()">
+        <button class="button success" style="margin-top: 30px" @click="signupGroup" >Zapisz grupę</button>
+        <h3 style="margin-top: 5px;text-align: center;">Upewnij się, że wszystkie informacje zostały poprawnie wprowadzone</h3>
+    </div>
+    <LoadingIndicator v-if="signupLoading" inline/>
+  </div>
+
+  <div class="padding info-screen" v-if="success">
+    <h3>Gratulacje!</h3>
+    <img :src="okIcon" alt="ok" style="width: 100px; margin: 20px auto; display: block;"/>
+    <p>Twoja grupa została zapisana na grę nocną.</p>
+    <p>W razie problemów prosimy o kontakt ze sztabem.</p>
+    <p>Do zobaczenia na grze!</p>
+
+    <p style="margin-top: 20px">Grupę możesz zobaczyć w zakładce <RouterLink to="/profil"><u>profil</u></RouterLink>.</p>
+  </div>
+
+  <div class="padding info-screen" v-if="noFreePlaces && !userInGroup">
+    <h3>Brak miejsc!</h3>
+    <img :src="cryingIcon" alt="crying" style="width: 100px; margin: 20px auto; display: block;"/>
+    <p>Przepraszamy, ale miejsca na grę nocną już się skończyły.</p>
+
+    <RouterLink :to="$router.options.history.state.back || '/'">
+        <button class="button" style="margin-top: 20px">Wróć</button>
+    </RouterLink>
+  </div>
+
+  <div class="padding info-screen" v-if="userInGroup">
+    <h3>Już jesteś zapisany na grę nocną</h3>
+    <img :src="okIcon" alt="ok" style="width: 100px; margin: 20px auto; display: block;"/>
+    <p>Już jesteś zapisany na grę nocną.</p>
+
+    <p style="margin-top: 20px">Grupę możesz zobaczyć w zakładce <RouterLink to="/profil"><u>profil</u></RouterLink>.</p>
+  </div>
+
+
+    <LoadingIndicator v-if="loading" />
+    <!-- <p class="success">{{ info }}</p> -->
+    <p class="error">{{ infoError }}</p>
+    <p class="error">{{ error }}</p>
+    <p class="error">{{ peopleError }}</p>
+
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            groupName: '',
+            groupSize: 0,
+            groupMinSize: 0,
+            groupMaxSize: 0,
+            people: [],
+            
+            loading: true,
+            error: '',
+            infoError: '',
+            peopleError: '',
+
+            signupLoading: false,
+            success: false,
+
+            noFreePlaces: false,
+            userInGroup: false,
+
+        }
+    },
+    watch: {
+        groupSize() {
+            if (this.groupSize > this.groupMaxSize) this.groupSize = this.groupMaxSize
+            if (this.people.length >= this.groupSize) this.people = this.people.slice(0, this.groupSize-1)
+            this.createPeople()
+        }
+    },
+    computed: {
+        ...mapStores(useApiDataStore),
+    },
+    methods: {
+        createPeople() {
+            while (this.people.length+1 < this.groupSize) this.people.push({first_name: '', last_name: '', band: ''})
+        },
+        peopleValid() {
+            for (let person of this.people) {
+                if (!person.first_name || !person.last_name || !person.band) {
+                    this.peopleError = ''
+                    return false
+                }
+                if (person.band.length > 5) {
+                    this.peopleError = 'Numer opaski jest za długi'
+                    return false
+                }
+
+                if (this.apiDataStore.profile.ready && this.apiDataStore.profile.data[0].bandId == person.band) {
+                    this.peopleError = 'Dwie osoby mają ten sam numer opaski'
+                    return false
+                }
+
+                for (let person2 of this.people) {
+                    if (person2 !== person && person2.band === person.band) {
+                        this.peopleError = 'Dwie osoby mają ten sam numer opaski'
+                        return false
+                    }
+                }
+            }
+            this.peopleError = ''
+            return true
+        },
+        getGroupSignupInfo() {
+            this.loading = true
+            fetch(API_URL + '../api2/get-group-signup-info/', {
+                headers: AUTH_HEADER,
+                method: 'GET'
+            })
+            .then((data) => {
+            if (data.status === 403) {
+                window.location.href = '/login'
+                return
+            }
+            if (data.ok) {
+                return data.json()
+            }
+            throw new Error('Request failed!')
+            })
+            .then((data) => {
+                if (data) {
+                    this.groupMinSize = data.group_user_min
+                    this.groupMaxSize = data.group_user_max
+                    this.groupSize = this.groupMinSize
+                    this.noFreePlaces = !data.free_places
+                    this.userInGroup = data.user_in_group
+                }
+            })
+            .catch((error) => {
+                console.error('There was an error!', error)
+                this.infoError = error
+            })
+            .finally(() => {
+                this.loading = false
+            })
+        },
+
+
+        signupGroup() {
+            this.signupLoading = true
+            const csrftoken = getCookie('csrftoken')
+            const body = { 
+                group_name: this.groupName,
+                people: this.people,
+             }
+            fetch(API_URL + '../api2/signup-group/', {
+                headers: Object.assign(
+                {},
+                { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken },
+                AUTH_HEADER
+                ),
+                method: 'POST',
+                body: JSON.stringify(body)
+            })
+            .then((data) => {
+                if (data.ok) {
+                    return data.json()
+                }
+                if (data.status === 403) {
+                    window.location.href = '/login'
+                }
+                this.error = data.status + ' ' + data.statusText
+                this.success = false
+                throw new Error('Request failed!')
+            })
+            .then((data) => {
+                this.success = data.success
+                this.error = data.error
+                console.log(this.error)
+
+                if (data.error_code === 1) {
+                    this.noFreePlaces = true
+                } else if (data.error_code === 6) {
+                    this.userInGroup = true
+                }
+            })
+            .catch((error) => {
+                console.error('There was an error!', error)
+            })
+            .finally(() => {
+                this.signupLoading = false
+            })
+        }
+
+
+    },
+    mounted() {
+        this.getGroupSignupInfo()
+        this.createPeople()
+        this.apiDataStore.profile.fetchData()
+
+        //TODO: get group info timer
+    }
+}
+</script>
+
+<style scoped>
+
+h3 {
+    background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    padding: 5px 2px;
+    font-size: 13px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px 15px 10px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--text-gray);
+    margin-bottom: 2px;
+    font-size: 15px;
+    font-family: 'Sui Generis';
+    border: none;
+    outline: none;
+    color: white;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    background-color: var(--bg-light);
+}
+
+.bandInput {
+    width: 120px;
+}
+.index {
+    width: 40px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.person {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 5px;
+}
+
+button {
+    border-radius: 20px;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    line-height: 16px;
+    cursor: pointer;
+    font-family: 'Sui Generis';
+    background-color: var(--bg-light);
+
+    width: 160px;
+    display: flex;
+    justify-content: center;
+
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+button.success {
+    background-color: green;
+}
+
+.change-group-size-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+
+.info-screen {
+    text-align: center;
+}
+.info-screen h3 {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.info-screen p {
+    color: var(--text-gray);
+}
+
+.info-screen p a {
+    color: var(--theme-dark)
+}
+
+
+</style>
