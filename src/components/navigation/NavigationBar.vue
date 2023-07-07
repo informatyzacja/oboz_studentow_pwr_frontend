@@ -13,10 +13,21 @@ import { mapStores } from 'pinia'
 </script>
 
 <template>
+  <div v-if="showIosInstallMessage">
+    <div class="ios-install-message">
+      <p>
+        Aby zainstalować aplikację, kliknij <img src="../../assets/icons8-share_rounded.png" alt="share" /> i wybierz opcję <span style="white-space: nowrap;">"Do ekranu początkowego <img src="../../assets/icons8-add_new.png" alt="icon" style="margin-bottom: -8px"/>"</span>
+      </p>
+      <div class="ios-install-message-close" @click="showIosInstallMessage=false">Może później</div>
+    </div>
+    <div class="ios-install-arrow"></div>
+  </div>
+
   <div
     class="navigation-bar"
     v-if="!apiDataStore.permissions.ready || !apiDataStore.permissions.data.length"
   >
+  
     <div class="navigation-bar__content">
       <RouterLink to="/sos">
         <div class="navigation_bar__item">
@@ -88,11 +99,28 @@ import { mapStores } from 'pinia'
 
 <script>
 export default {
+  data() {
+    return {
+      showIosInstallMessage: false
+    }
+  },
   computed: {
     ...mapStores(useApiDataStore)
   },
   mounted() {
     this.apiDataStore.permissions.fetchData()
+    if (this.isIos() && !this.isInStandaloneMode()) {
+      this.showIosInstallMessage = true
+    }
+  },
+  methods: {
+    isIos() {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /iphone|ipod/.test( userAgent );
+    },
+    isInStandaloneMode() {
+      return ('standalone' in window.navigator) && (window.navigator.standalone);
+    },
   }
 }
 </script>
@@ -159,4 +187,57 @@ export default {
   padding-bottom: 3px;
   line-height: 9px;
 }
+
+
+
+
+.ios-install-message {
+  position: fixed;
+  bottom: 28px;
+  left: 10px;
+  right: 10px;
+  background-color: var(--bg-light);
+  padding: 12px 10px;
+  z-index: 11;
+  border-radius: 20px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.ios-install-message p {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 4px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.ios-install-message img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  margin-bottom: -5px;
+}
+
+.ios-install-arrow {
+  position: fixed;
+  bottom: 18px;
+  left: calc(50% - 20px);
+  width: 40px;
+  height: 40px;
+  rotate: 45deg;
+
+  background-color: var(--bg-light);
+  z-index: 10;
+}
+
+.ios-install-message-close {
+  padding: 0 10px;
+  color: var(--theme-light);
+  text-align: center;
+}
+
 </style>
