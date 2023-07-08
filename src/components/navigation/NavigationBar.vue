@@ -126,7 +126,9 @@ export default {
 <style scoped>
 .navigation-bar {
   height: 82px;
-  background-color: var(--bg-lighter);
+  background-color: #1b1b1bbb;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
 
   position: fixed;
