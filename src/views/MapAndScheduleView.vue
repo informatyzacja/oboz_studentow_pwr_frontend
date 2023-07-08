@@ -16,11 +16,12 @@ import { mapStores } from 'pinia'
       <OverlayView ref="imageOverlay">
         <div class="image_overlay">
           <img :src="data.image" :alt="data.name" />
-          <a class="button" :href="data.image" :download="data.name + '_Obóz_Studentow_PWr_2023'"
-            >Pobierz</a
-          >
+
+          <!-- <button class="button" @click="shareViaWebShare(data.name, data.image)" v-if="webShareApiSupported"><p v-if="!loading">Zapisz</p><LoadingIndicator inline small v-else/></button> -->
+          <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentow_PWr_2023'" target="_blank" rel="nofollow">Pobierz</a>
+
           <button class="red-bg" @click="hideRef('imageOverlay', index)">Zamknij</button>
-        </div>
+        </div>  
       </OverlayView>
     </div>
   </div>
@@ -36,11 +37,15 @@ import { mapStores } from 'pinia'
 export default {
   data() {
     return {
-      timer: null
+      timer: null,
+      loading: false
     }
   },
   computed: {
-    ...mapStores(useApiDataStore)
+    ...mapStores(useApiDataStore),
+    webShareApiSupported() {
+      return navigator.share
+    }
   },
   mounted() {
     this.apiDataStore.images.fetchData()
@@ -55,6 +60,34 @@ export default {
     },
     hideRef(ref, index) {
       this.$refs[ref][index].hide()
+    },
+
+    async shareViaWebShare(name, image) {
+      this.loading = true
+      const response = await fetch(image);
+      const blob = await response.blob();
+      const filesArray = [
+        new File(
+          [blob],
+          name + '_Obóz_Studentow_PWr_2023.' + image.split('.').pop(),
+          {
+            type: "image/jpeg",
+            lastModified: new Date().getTime()
+          }
+      )
+      ];
+      const shareData = {
+        files: filesArray,
+        title: "Images",
+        text: "Beautiful images",
+      };
+      navigator.share(shareData);
+      this.loading = false
+      // navigator.share({
+      //   title: 'Title to be shared',
+      //   text: 'Text to be shared',
+      //   url: 'URL to be shared'
+      // })
     }
   }
 }

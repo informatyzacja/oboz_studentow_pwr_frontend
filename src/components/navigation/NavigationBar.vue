@@ -105,15 +105,7 @@ export default {
     }
   },
   computed: {
-    ...mapStores(useApiDataStore)
-  },
-  mounted() {
-    this.apiDataStore.permissions.fetchData()
-    if (this.isIos() && !this.isInStandaloneMode()) {
-      this.showIosInstallMessage = true
-    }
-  },
-  methods: {
+    ...mapStores(useApiDataStore),
     isIos() {
       const userAgent = window.navigator.userAgent.toLowerCase();
       return /iphone|ipod/.test( userAgent );
@@ -121,7 +113,13 @@ export default {
     isInStandaloneMode() {
       return ('standalone' in window.navigator) && (window.navigator.standalone);
     },
-  }
+  },
+  mounted() {
+    this.apiDataStore.permissions.fetchData()
+    if (this.isIos && !this.isInStandaloneMode) {
+      this.showIosInstallMessage = true
+    }
+  },
 }
 </script>
 
@@ -210,7 +208,7 @@ export default {
 .ios-install-message p {
   margin: 0;
   padding: 0;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
   font-size: 13px;
   text-align: center;
 }
