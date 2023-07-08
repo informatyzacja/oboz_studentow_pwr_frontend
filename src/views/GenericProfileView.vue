@@ -12,6 +12,7 @@ import faqIcon from '../assets/icons8-faq.png'
 import busIcon from '../assets/icons8-bus.png'
 import opaskaIcon from '../assets/icons8-bangles.png'
 import domekIcon from '../assets/icons8-exterior.png'
+import mealIcon from '../assets/icons8-cutlery.png'
 
 defineProps([
   'profileData',
@@ -151,6 +152,12 @@ defineProps([
           v-if="profileData.houseNumber"
           :bigText="'Domek nr ' + profileData.houseNumber"
           :leftIcon="domekIcon"
+          small
+        />
+        <ItemBox
+          v-if="profileData.diet"
+          :bigText="'Dieta ' + profileData.diet.toLowerCase()"
+          :leftIcon="mealIcon"
           small
         />
       </div>
