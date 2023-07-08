@@ -115,6 +115,17 @@ import { mapStores } from 'pinia'
       Brak danych
     </p>
 
+    <div class="partners" v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length">
+      <h3>Partnerzy</h3>
+      <div class="scroll">
+        <img class="partner"
+          v-for="(data, index) in ['perla.png','pasibus.png','grey.jpg']"
+          :key="index"
+          :src="'src/assets/partnerzy/'+data"
+        />
+      </div>
+    </div>
+
     <LoadingIndicator v-if="apiDataStore.schedule.loading" />
     <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
   </main>
@@ -177,6 +188,12 @@ button {
   justify-content: center;
 
   margin-top: 10px;
+}
+
+.partner {
+  height: 130px;
+  margin: 10px;
+  border-radius: 10px;
 }
 </style>
 
