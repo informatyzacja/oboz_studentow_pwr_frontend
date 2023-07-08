@@ -18,7 +18,17 @@ export default defineConfig({
       appleMobileWebAppCapable: 'yes',
       appleMobileWebAppStatusBarStyle: 'black-translucent',
     },
-    registerType: 'autoUpdate'
+    strategies: 'injectManifest',
+    injectRegister: null,
+    registerType: 'autoUpdate',
+    devOptions: {
+      enabled: true,
+      type: 'module',
+      navigateFallback: 'index.html'
+    },
+    workbox: {
+      sourcemap: true
+    }
    })],
   resolve: {
     alias: {

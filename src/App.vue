@@ -11,7 +11,7 @@ moment.locale('pl')
   <div class="wrapper">
     <RouterView />
   </div>
-  <NavigationBar />
+  <NavigationBar ref="navigationBar"/>
 </template>
 
 <style scoped>

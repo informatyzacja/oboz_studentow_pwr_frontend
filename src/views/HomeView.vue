@@ -10,6 +10,16 @@ import OverlayView from '../components/OverlayView.vue'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
+
+import { isSupported } from "firebase/messaging";
+
+import PushNotficationsPopupView from '../components/PushNotficationsPopupView.vue'
+
+import perlaLogo from '../assets/partnerzy/perla.png'
+import pasibusLogo from '../assets/partnerzy/pasibus.png'
+import greyLogo from '../assets/partnerzy/grey.jpg'
+
+import questionMark from '../assets/question-mark.jpg'
 </script>
 
 <template>
@@ -41,6 +51,11 @@ import { mapStores } from 'pinia'
       </div>
     </div>
 
+    <div v-if="showPushNotificationCard && apiDataStore.schedule.ready && apiDataStore.schedule.data.length">
+      <PushNotficationsPopupView
+        @hide="showPushNotificationCard = false" />
+    </div>
+
     <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
       <h3>Twoje dzisiejsze warsztaty</h3>
       <div class="scroll">
@@ -53,7 +68,7 @@ import { mapStores } from 'pinia'
             :name="data.name"
             :location="data.location"
             :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-            :imgSrc="data.photo"
+            :imgSrc="data.photo || questionMark"
           />
         </RouterLink>
       </div>
@@ -68,7 +83,7 @@ import { mapStores } from 'pinia'
           :name="data.name"
           :location="data.location"
           :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-          :imgSrc="data.photo"
+          :imgSrc="data.photo || questionMark"
         />
       </div>
     </div>
@@ -95,7 +110,7 @@ import { mapStores } from 'pinia'
           :name="data.name"
           :location="data.location"
           :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-          :imgSrc="data.photo"
+          :imgSrc="data.photo || questionMark"
         />
       </div>
     </div>
@@ -119,9 +134,9 @@ import { mapStores } from 'pinia'
       <h3>Partnerzy</h3>
       <div class="scroll">
         <img class="partner"
-          v-for="(data, index) in ['perla.png','pasibus.png','grey.jpg']"
+          v-for="(src, index) in [perlaLogo, pasibusLogo, greyLogo]"
           :key="index"
-          :src="'src/assets/partnerzy/'+data"
+          :src="src"
         />
       </div>
     </div>
@@ -130,6 +145,62 @@ import { mapStores } from 'pinia'
     <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
   </main>
 </template>
+
+<script>
+export default {
+  components: {
+    HomeCard,
+    TextBox,
+    LoadingIndicator,
+    OverlayView,
+    DailyQuestView
+  },
+  data() {
+    return {
+      timer1: null,
+      timer2: null,
+      timer3: null,
+      timer4: null,
+
+      showPushNotificationCard: false,
+    }
+  },
+  computed: {
+    ...mapStores(useApiDataStore)
+  },
+  mounted() {
+    this.apiDataStore.userWorkshop.fetchData()
+    this.apiDataStore.schedule.fetchData()
+    this.apiDataStore.announcement.fetchData()
+    this.apiDataStore.dailyQuest.fetchData()
+
+    this.timer1 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000)
+    this.timer2 = setInterval(this.apiDataStore.schedule.fetchData, 300000)
+    this.timer3 = setInterval(this.apiDataStore.announcement.fetchData, 60000)
+    this.timer4 = setInterval(this.apiDataStore.dailyQuest.fetchData, 300000)
+
+    if (isSupported() && ("Notification" in window)) {
+      if (Notification.permission !== "denied" && Notification.permission !== "granted") {
+        this.showPushNotificationCard = true
+      }
+    }
+  },
+  methods: {
+    showRef(ref, index) {
+      this.$refs[ref][index].show()
+    },
+    hideRef(ref, index) {
+      this.$refs[ref][index].hide()
+    }
+  },
+  beforeUnmount() {
+    clearInterval(this.timer1)
+    clearInterval(this.timer2)
+    clearInterval(this.timer3)
+    clearInterval(this.timer4)
+  }
+}
+</script>
 
 <style scoped>
 .loading {
@@ -196,51 +267,3 @@ button {
   border-radius: 10px;
 }
 </style>
-
-<script>
-export default {
-  components: {
-    HomeCard,
-    TextBox,
-    LoadingIndicator,
-    OverlayView,
-    DailyQuestView
-  },
-  data() {
-    return {
-      timer1: null,
-      timer2: null,
-      timer3: null,
-      timer4: null
-    }
-  },
-  computed: {
-    ...mapStores(useApiDataStore)
-  },
-  mounted() {
-    this.apiDataStore.userWorkshop.fetchData()
-    this.apiDataStore.schedule.fetchData()
-    this.apiDataStore.announcement.fetchData()
-    this.apiDataStore.dailyQuest.fetchData()
-
-    this.timer1 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000)
-    this.timer2 = setInterval(this.apiDataStore.schedule.fetchData, 300000)
-    this.timer3 = setInterval(this.apiDataStore.announcement.fetchData, 60000)
-    this.timer4 = setInterval(this.apiDataStore.dailyQuest.fetchData, 300000)
-  },
-  methods: {
-    showRef(ref, index) {
-      this.$refs[ref][index].show()
-    },
-    hideRef(ref, index) {
-      this.$refs[ref][index].hide()
-    }
-  },
-  beforeUnmount() {
-    clearInterval(this.timer1)
-    clearInterval(this.timer2)
-    clearInterval(this.timer3)
-    clearInterval(this.timer4)
-  }
-}
-</script>

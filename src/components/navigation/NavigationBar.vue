@@ -10,6 +10,12 @@ import ScannerIcon from '../../assets/icons8-barcode_reader.png'
 
 import { useApiDataStore } from '../../stores/api.js'
 import { mapStores } from 'pinia'
+
+import OverlayView from '../OverlayView.vue'
+import PushNotficationsPopupView from '../PushNotficationsPopupView.vue'
+
+import { isSupported } from "firebase/messaging";
+import { registerForPushNotifications } from '../../config.js'
 </script>
 
 <template>
@@ -22,6 +28,11 @@ import { mapStores } from 'pinia'
     </div>
     <div class="ios-install-arrow"></div>
   </div>
+
+  
+  <OverlayView ref="pushNotificationsPopup">
+    <PushNotficationsPopupView @hide="$refs.pushNotificationsPopup.hide()" @register="registerForPushNotifications"/>
+  </OverlayView>
 
   <div
     class="navigation-bar"
@@ -113,13 +124,30 @@ export default {
     isInStandaloneMode() {
       return ('standalone' in window.navigator) && (window.navigator.standalone);
     },
+    iOSversion() {
+      const userAgent = window.navigator.userAgent
+      if (/iP(hone|od|ad)/.test(userAgent)) {
+        // supports iOS 2.0 and later: <http://bit.ly/TJjs1V>
+        var v = (userAgent).match(/OS (\d+)_(\d+)_?(\d+)?/);
+        return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
+      }
+      return false;
+    }
   },
   mounted() {
     this.apiDataStore.permissions.fetchData()
+
     if (this.isIos && !this.isInStandaloneMode) {
       this.showIosInstallMessage = true
     }
+
+    if (isSupported() && ("Notification" in window) && Notification.permission === "granted") {
+      registerForPushNotifications()
+    }
   },
+  methods: {
+    
+  }
 }
 </script>
 
