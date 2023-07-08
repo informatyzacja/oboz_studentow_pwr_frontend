@@ -8,6 +8,7 @@ import logoutIcon from '../assets/icons8-logout.png'
 import politykaPrywatnosciIcon from '../assets/icons8-terms_and_conditions.png'
 import regulaminIcon from '../assets/icons8-rules_book.png'
 import refreshIcon from '../assets/icons8-refresh.png'
+import icons8Icon from '../assets/icons8-icons8.png'
 
 import { REULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
 
@@ -50,6 +51,11 @@ import { mapStores } from 'pinia'
       <a :href="POLITYKA_PRYWATNOSCI_LINK" target="_blank">
         <ItemBox big-text="Polityka prywatności" :leftIcon="politykaPrywatnosciIcon" small />
       </a>
+
+      <a href="https://icons8.com" target="_blank">
+        <ItemBox big-text="Ikonki z Icons8" :leftIcon="icons8Icon" small />
+      </a>
+
       <div class="spacer"></div>
       <ItemBox big-text="Odśwież aplikację" :leftIcon="refreshIcon" small @click="refreshApp" />
       <a href="/logout/">
