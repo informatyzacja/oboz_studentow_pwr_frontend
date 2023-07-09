@@ -143,7 +143,7 @@ const router = createRouter({
     {
       path: '/ogloszenia',
       name: 'ogloszenia',
-      // component: () => import('../admin-components/PointsRankingView.vue')
+      component: () => import('../admin-components/Announcements.vue')
     },
     {
       path: '/ogloszenia/dodaj',

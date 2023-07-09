@@ -81,7 +81,7 @@ import { mapStores } from 'pinia'
     <MenuCard
       title="Ogłoszenia"
       :icon="AnnouncementIcon"
-      link="/ogloszenia/dodaj"
+      link="/ogloszenia"
       v-if="
         apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_add_announcement'])

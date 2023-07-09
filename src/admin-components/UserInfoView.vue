@@ -9,11 +9,6 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 </script>
 
-<!-- :linksData="apiDataStore.links.data"
-:linksReady="apiDataStore.links.ready"
-
-:userWorkshopData="apiDataStore.userWorkshop.data"
-:userWorkshopReady="apiDataStore.userWorkshop.ready" -->
 <template>
   <GenericProfileView
     :profileData="profileData"

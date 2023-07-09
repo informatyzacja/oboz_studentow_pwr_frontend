@@ -14,6 +14,7 @@ import { useImageStore } from './images.js'
 
 import { usePermissionStore } from './staff/permissions.js'
 import { usePointStore, usePointTypeStore } from './staff/points.js'
+import { useAnnouncementAllStore } from './staff/announcements.js'
 
 export const useApiDataStore = defineStore('apiData', {
   state: () => ({
@@ -28,7 +29,9 @@ export const useApiDataStore = defineStore('apiData', {
     dailyQuest: useDailyQuestStore(),
     permissions: usePermissionStore(),
     images: useImageStore(),
+
     points: usePointStore(),
     pointTypes: usePointTypeStore(),
+    announcementsAll: useAnnouncementAllStore()
   })
 })

@@ -136,9 +136,7 @@ export default {
                     .then((data) => {
                         this.success = data.success
                         this.error = data.error
-                        if (this.success) {
-                            this.info = 'Dodano ogłoszenie'
-                        }
+                        this.info = data.info
                     })
                     .catch((error) => {
                         console.error('There was an error!', error)
@@ -235,7 +233,7 @@ input[type=checkbox]:checked:after {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-top: 10px;
+    margin: 10px 0;
     gap: 10px;
 }
 
