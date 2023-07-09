@@ -15,7 +15,7 @@ defineEmits(['hide']);
             <p v-else-if="showInstallMessage" style="text-align: center;">Aby włączyć powiadomienia, dodaj aplikację do ekranu początkowego.</p>
 
             <div v-else>
-                <p style="text-align: center;">Otrzymuj powiadomienia o tym co się aktualnie dzieje, o zmianach w harmonogramie i wiele więcej!</p>
+                <p style="text-align: center;">Bądź na bieżąco w każdej chwili, dzięki włączonym powiadomieniom! Będziemy informować Cię o tym, co się aktualnie dzieje, o wszelkich zmianach i wiele więcej!</p>
                 <div class="buttons">
                     <button @click="register" class="button success">Włącz powiadomienia</button>
                     <button class="button red-bg" @click="close">Może później</button>

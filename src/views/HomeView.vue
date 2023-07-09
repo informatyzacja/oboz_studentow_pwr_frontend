@@ -119,9 +119,11 @@ import questionMark from '../assets/question-mark.jpg'
       v-if="
         apiDataStore.userWorkshop.ready &&
         !apiDataStore.userWorkshop.today.length &&
+        
         apiDataStore.schedule.ready &&
         !apiDataStore.schedule.rightNow.length &&
         !apiDataStore.schedule.upNext.length &&
+
         apiDataStore.announcement.ready &&
         !apiDataStore.announcement.data.length
       "
@@ -130,7 +132,7 @@ import questionMark from '../assets/question-mark.jpg'
       Brak danych
     </p>
 
-    <div class="partners" v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length">
+    <div class="partners" v-if="(apiDataStore.schedule.ready && apiDataStore.schedule.upNext.length) || (apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length) || (apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length)">
       <h3>Partnerzy</h3>
       <div class="scroll">
         <img class="partner"

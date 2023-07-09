@@ -19,6 +19,9 @@ const permissions = {
   punkty: ['can_view_points'],
   'punkty-dodaj': ['can_add_points'],
   ranking: ['can_view_points'],
+
+  ogloszenia: ['can_add_announcement'],
+  'ogloszenia-dodaj': ['can_add_announcement'],
 }
 
 export const usePermissionStore = defineStore('permissions', {

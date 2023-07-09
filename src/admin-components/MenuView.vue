@@ -11,6 +11,7 @@ import FractionIcon from '../assets/icons8-meeting_room.png'
 import PointsIcon from '../assets/icons8-scoreboard.png'
 import RankingIcon from '../assets/icons8-leaderboard.png'
 import AddPointsIcon from '../assets/icons8-timezone_+10.png'
+import AnnouncementIcon from '../assets/icons8-commercial.png'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
@@ -75,6 +76,15 @@ import { mapStores } from 'pinia'
       v-if="
         apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_view_groups'])
+      "
+    />
+    <MenuCard
+      title="Ogłoszenia"
+      :icon="AnnouncementIcon"
+      link="/ogloszenia/dodaj"
+      v-if="
+        apiDataStore.permissions.ready &&
+        apiDataStore.permissions.hasOneOfPermissions(['can_add_announcement'])
       "
     />
 
