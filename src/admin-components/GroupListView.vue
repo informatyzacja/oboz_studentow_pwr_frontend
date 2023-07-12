@@ -54,7 +54,7 @@ export default {
           }
 
           if (data.status === 403) {
-            window.location.href = '/login'
+            window.location.href = '/login/?next=' + window.location.pathname
           }
           throw new Error(data.statusText)
         })

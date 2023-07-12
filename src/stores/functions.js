@@ -4,7 +4,7 @@ export function loadData(item) {
   fetch(API_URL + item.url, { headers: AUTH_HEADER })
     .then((data) => {
       if (data.status === 403) {
-        window.location.href = '/login'
+        window.location.href = '/login/?next=' + window.location.pathname
         return
       }
       if (data.ok) {

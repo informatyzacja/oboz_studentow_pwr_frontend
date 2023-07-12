@@ -32,8 +32,8 @@ import moment from 'moment'
       </div>
     </div>
 
-    <LoadingIndicator v-if="apiDataStore.schedule.loading" />
-    <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
+    <LoadingIndicator v-if="apiDataStore.announcementsAll.loading" />
+    <p v-if="apiDataStore.announcementsAll.error" class="error">{{ apiDataStore.announcementsAll.error }}</p>
   </main>
 </template>
 

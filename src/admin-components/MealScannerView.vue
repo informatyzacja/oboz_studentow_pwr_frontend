@@ -114,7 +114,7 @@ export default {
             return data.json()
           }
           if (data.status === 403) {
-            window.location.href = '/login'
+            window.location.href = '/login/?next=' + window.location.pathname
           }
           this.error = data.status + ' ' + data.statusText
           this.success = false
@@ -155,7 +155,7 @@ export default {
             return data.json()
           }
           if (data.status === 403) {
-            window.location.href = '/login'
+            window.location.href = '/login/?next=' + window.location.pathname
           }
           this.error = data.status + ' ' + data.statusText
           this.success = false
@@ -190,7 +190,7 @@ export default {
             return data.json()
           }
           if (data.status === 403) {
-            window.location.href = '/login'
+            window.location.href = '/login/?next=' + window.location.pathname
           }
           throw new Error('Request failed!')
         })
