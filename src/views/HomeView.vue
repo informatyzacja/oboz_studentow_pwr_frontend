@@ -28,6 +28,11 @@ import rightArrow from '../assets/arrow.svg'
 <template>
   <TopBar title="Home" />
   <main>
+    <div class="padding" v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
+        <RouterLink to="/zapisy-gra-nocna">
+          <ItemBox bigText="Zapisz się na grę nocną!" :rightIcon="rightArrow"/>
+        </RouterLink>
+    </div>
     <div
       class="padding"
       v-if="apiDataStore.dailyQuest.ready && apiDataStore.dailyQuest.future.length"
@@ -118,22 +123,7 @@ import rightArrow from '../assets/arrow.svg'
       </div>
     </div>
 
-    <p
-      v-if="
-        apiDataStore.userWorkshop.ready &&
-        !apiDataStore.userWorkshop.today.length &&
-        
-        apiDataStore.schedule.ready &&
-        !apiDataStore.schedule.rightNow.length &&
-        !apiDataStore.schedule.upNext.length &&
-
-        apiDataStore.announcement.ready &&
-        !apiDataStore.announcement.data.length
-      "
-      class="error"
-    >
-      Brak danych
-    </p>
+    <div class="spacer"></div>
 
     <div class="padding">
         <RouterLink to="/frakcje">
@@ -174,6 +164,7 @@ export default {
       timer2: null,
       timer3: null,
       timer4: null,
+      timer5: null,
 
       showPushNotificationCard: false,
     }
@@ -187,11 +178,13 @@ export default {
     this.apiDataStore.announcement.fetchData()
     this.apiDataStore.dailyQuest.fetchData()
     this.apiDataStore.profile.fetchData()
+    this.apiDataStore.nightGameGroupInfo.fetchData()
 
     this.timer1 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000)
     this.timer2 = setInterval(this.apiDataStore.schedule.fetchData, 300000)
     this.timer3 = setInterval(this.apiDataStore.announcement.fetchData, 60000)
     this.timer4 = setInterval(this.apiDataStore.dailyQuest.fetchData, 300000)
+    this.timer5 = setInterval(this.apiDataStore.nightGameGroupInfo.fetchData, 60000)
 
     if (isSupported() && ("Notification" in window)) {
       if (Notification.permission !== "denied" && Notification.permission !== "granted") {
@@ -246,11 +239,12 @@ h3 {
 }
 
 .daily_quest_overlay {
-  padding: 20px;
-  margin: 40px auto;
-  width: 85%;
+  padding: 10px;
+  padding-bottom: 20px;
+  margin: 20px auto;
+  width: 95%;
   background: var(--bg-lighter);
-  border-radius: 35px;
+  border-radius: 28px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
@@ -279,5 +273,9 @@ button {
   height: 130px;
   margin: 10px;
   border-radius: 10px;
+}
+
+.spacer {
+  height: 10px;
 }
 </style>

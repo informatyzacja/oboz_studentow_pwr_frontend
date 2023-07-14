@@ -56,3 +56,17 @@ export const useFaqStore = defineStore('faq', {
     }
   }
 })
+
+export const useNightGameGroupInfoStore = defineStore('nightGameGroupInfo', {
+  state: () => ({ loading: true, error: null, data: null, url: '../api2/get-group-signup-info/' }),
+  getters: {
+    ready() {
+      return ready(this)
+    },
+  },
+  actions: {
+    fetchData() {
+      loadData(this)
+    }
+  }
+})

@@ -26,7 +26,7 @@ defineProps({
         class="loading_indicator__spinner"
         :class="{ loading_indicator__spinner_small: small }"
       ></div>
-      <img class="alcohol" :src="alcoholSrc" alt="alcohol" v-if="!inline"/>
+      <img class="alcohol" :src="alcoholSrc" alt="alcohol" v-if="!small"/>
     </div>
   </div>
 </template>
@@ -57,11 +57,16 @@ export default {
 
 <style scoped>
 
+.spinner_and_img {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
 .alcohol {
   width: 35px;
   position: absolute;
-  top: calc(50% - 17.5px);
-  left: calc(50% - 17.5px);
+  top: calc(50% - 16.5px);
+  left: calc(50% - 16.5px);
   opacity: 0.5;
 }
 

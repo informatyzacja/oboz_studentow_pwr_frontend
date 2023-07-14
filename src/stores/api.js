@@ -7,9 +7,9 @@ import {
   useAnnouncementStore,
   useDailyQuestStore
 } from './home.js'
-import { useProfileStore, useLinkStore } from './misc.js'
+
+import { useProfileStore, useLinkStore, useNightGameGroupInfoStore, useFaqStore } from './misc.js'
 import { useWorkshopStore } from './workshops.js'
-import { useFaqStore } from './misc.js'
 import { useImageStore } from './images.js'
 
 import { usePermissionStore } from './staff/permissions.js'
@@ -32,6 +32,8 @@ export const useApiDataStore = defineStore('apiData', {
 
     points: usePointStore(),
     pointTypes: usePointTypeStore(),
-    announcementsAll: useAnnouncementAllStore()
+    announcementsAll: useAnnouncementAllStore(),
+
+    nightGameGroupInfo: useNightGameGroupInfoStore(),
   })
 })

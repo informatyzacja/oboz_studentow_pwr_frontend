@@ -17,12 +17,12 @@ import cryingIcon from '../assets/icons8-crying.png'
 <template>
   <TopBar title="Zapisy na grę nocną" :backLink="$router.options.history.state.back || '/'"/>
 
-  <div class="padding" v-if="!loading && !success && !noFreePlaces && !userInGroup">
+  <div class="padding" v-if="apiDataStore.nightGameGroupInfo.ready && !success && apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
 
     <TextBox>
         <p>UWAGA! Zapisy wykonuje tylko jedna osoba z grupy.</p>
         <p>Dla fajnieszej zabawy polecamy, aby w grupie znalazły się zarówno chłopacy, jak i dziewczyny.</p>
-        <p>Liczba osób w grupie: {{ groupMinSize }} - {{ groupMaxSize }}</p>
+        <p>Liczba osób w grupie: {{ this.apiDataStore.nightGameGroupInfo.data.group_user_min }} - {{ apiDataStore.nightGameGroupInfo.data.group_user_max }}</p>
     </TextBox>
 
     <h3 style="margin-top:10px">Nazwa grupy</h3>
@@ -51,11 +51,11 @@ import cryingIcon from '../assets/icons8-crying.png'
     </div>
 
     <div class="change-group-size-buttons">
-        <button class="button" v-if="groupSize < groupMaxSize" @click="groupSize++">Dodaj osobę</button>
-        <button class="button" v-if="groupSize > groupMinSize" @click="groupSize--">Usuń osobę</button>
+        <button class="button" v-if="groupSize < apiDataStore.nightGameGroupInfo.data.group_user_max" @click="groupSize++">Dodaj osobę</button>
+        <button class="button" v-if="groupSize > apiDataStore.nightGameGroupInfo.data.group_user_min" @click="groupSize--">Usuń osobę</button>
     </div>
 
-    <div v-if="groupName && groupSize >= groupMinSize && groupSize <= groupMaxSize && !loading && !success && !signupLoading && peopleValid()">
+    <div v-if="groupName && groupSize >= apiDataStore.nightGameGroupInfo.data.group_user_min && groupSize <= apiDataStore.nightGameGroupInfo.data.group_user_max && !apiDataStore.nightGameGroupInfo.loading && !success && !signupLoading && peopleValid()">
         <button class="button success" style="margin-top: 30px" @click="signupGroup" >Zapisz grupę</button>
         <h3 style="margin-top: 5px;text-align: center;">Upewnij się, że wszystkie informacje zostały poprawnie wprowadzone</h3>
     </div>
@@ -72,7 +72,7 @@ import cryingIcon from '../assets/icons8-crying.png'
     <p style="margin-top: 20px">Grupę możesz zobaczyć w zakładce <RouterLink to="/profil"><u>profil</u></RouterLink>.</p>
   </div>
 
-  <div class="padding info-screen" v-if="noFreePlaces && !userInGroup">
+  <div class="padding info-screen" v-if="apiDataStore.nightGameGroupInfo.ready && !apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
     <h3>Brak miejsc!</h3>
     <img :src="cryingIcon" alt="crying" style="width: 100px; margin: 20px auto; display: block;"/>
     <p>Przepraszamy, ale miejsca na grę nocną już się skończyły.</p>
@@ -82,7 +82,7 @@ import cryingIcon from '../assets/icons8-crying.png'
     </RouterLink>
   </div>
 
-  <div class="padding info-screen" v-if="userInGroup">
+  <div class="padding info-screen" v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.user_in_group">
     <h3>Już jesteś zapisany na grę nocną</h3>
     <img :src="okIcon" alt="ok" style="width: 100px; margin: 20px auto; display: block;"/>
     <p>Już jesteś zapisany na grę nocną.</p>
@@ -91,9 +91,8 @@ import cryingIcon from '../assets/icons8-crying.png'
   </div>
 
 
-    <LoadingIndicator v-if="loading" />
-    <!-- <p class="success">{{ info }}</p> -->
-    <p class="error">{{ infoError }}</p>
+    <LoadingIndicator v-if="this.apiDataStore.nightGameGroupInfo.loading" />
+    <p class="error">{{ this.apiDataStore.nightGameGroupInfo.error }}</p>
     <p class="error">{{ error }}</p>
     <p class="error">{{ peopleError }}</p>
 
@@ -104,27 +103,21 @@ export default {
     data() {
         return {
             groupName: '',
-            groupSize: 0,
-            groupMinSize: 0,
-            groupMaxSize: 0,
+            groupSize: 1,
             people: [],
             
-            loading: true,
             error: '',
-            infoError: '',
             peopleError: '',
 
             signupLoading: false,
             success: false,
 
-            noFreePlaces: false,
-            userInGroup: false,
-
+            timer: null
         }
     },
     watch: {
         groupSize() {
-            if (this.groupSize > this.groupMaxSize) this.groupSize = this.groupMaxSize
+            if (this.groupSize > this.apiDataStore.nightGameGroupInfo.data.group_user_max) this.groupSize = this.apiDataStore.nightGameGroupInfo.data.group_user_max
             if (this.people.length >= this.groupSize) this.people = this.people.slice(0, this.groupSize-1)
             this.createPeople()
         }
@@ -162,39 +155,6 @@ export default {
             this.peopleError = ''
             return true
         },
-        getGroupSignupInfo() {
-            this.loading = true
-            fetch(API_URL + '../api2/get-group-signup-info/', {
-                headers: AUTH_HEADER,
-                method: 'GET'
-            })
-            .then((data) => {
-            if (data.status === 403) {
-                window.location.href = '/login/?next=' + window.location.pathname
-                return
-            }
-            if (data.ok) {
-                return data.json()
-            }
-            throw new Error('Request failed!')
-            })
-            .then((data) => {
-                if (data) {
-                    this.groupMinSize = data.group_user_min
-                    this.groupMaxSize = data.group_user_max
-                    this.groupSize = this.groupMinSize
-                    this.noFreePlaces = !data.free_places
-                    this.userInGroup = data.user_in_group
-                }
-            })
-            .catch((error) => {
-                console.error('There was an error!', error)
-                this.infoError = error
-            })
-            .finally(() => {
-                this.loading = false
-            })
-        },
 
 
         signupGroup() {
@@ -230,9 +190,9 @@ export default {
                 console.log(this.error)
 
                 if (data.error_code === 1) {
-                    this.noFreePlaces = true
+                    this.apiDataStore.nightGameGroupInfo.data.free_places = false
                 } else if (data.error_code === 6) {
-                    this.userInGroup = true
+                    this.apiDataStore.nightGameGroupInfo.data.user_in_group = true
                 }
             })
             .catch((error) => {
@@ -246,11 +206,17 @@ export default {
 
     },
     mounted() {
-        this.getGroupSignupInfo()
+        this.apiDataStore.nightGameGroupInfo.fetchData()
+        if (this.groupSize < this.apiDataStore.nightGameGroupInfo.data.group_user_min) {
+            this.groupSize = this.apiDataStore.nightGameGroupInfo.data.group_user_min
+        }
         this.createPeople()
         this.apiDataStore.profile.fetchData()
 
-        //TODO: get group info timer
+        this.timer = setInterval(this.apiDataStore.nightGameGroupInfo.fetchData, 10*1000);
+    },
+    beforeUnmount() {
+        clearInterval(this.timer)
     }
 }
 </script>

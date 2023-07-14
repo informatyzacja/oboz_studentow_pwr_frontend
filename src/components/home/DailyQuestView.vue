@@ -18,7 +18,7 @@ defineProps({
     type: Number,
     required: true
   }
-})
+});
 </script>
 
 <template>
@@ -68,10 +68,10 @@ export default {
 .daily-quest {
   background: radial-gradient(farthest-corner at 90% 90%, #dea766 0%, #de7539 100%);
   border-radius: 20px;
-  padding: 20px;
-  padding-bottom: 5px;
+  padding: 15px 15px 5px 20px;
   margin-bottom: 20px;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  width: 100%
 }
 .header {
   display: flex;
@@ -82,10 +82,11 @@ export default {
 
 .timer {
   background: #fff;
-  border-radius: 20px;
+  border-radius: 15px;
   padding: 12px 20px 10px;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
   color: black;
+  margin-left: 10px;
 }
 .timer p {
   margin: 0;
@@ -102,8 +103,8 @@ export default {
 
 h1 {
   color: black;
-  font-size: 34px;
-  line-height: 34px;
+  font-size: 32px;
+  line-height: 32px;
 }
 h3 {
   font-size: 18px;
