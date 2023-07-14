@@ -7,6 +7,8 @@ import { mapStores } from 'pinia'
 
 import { API_URL, AUTH_HEADER } from '../config.js'
 import { getCookie } from '../stores/functions.js'
+
+import moment from 'moment'
 </script>
 
 <template>
@@ -46,12 +48,16 @@ import { getCookie } from '../stores/functions.js'
             :disabled="disabled"
             ></textarea>
 
+            <h3>Do kiedy ogłoszenie ma być widoczne</h3>
+            <input v-model="hide_date" type="datetime-local" :min="hide_date_min"
+            :disabled="disabled" />
+
             <div class="sendNotif">
                 <h3>Wyślij powiadomienia</h3>
                 <input type="checkbox" v-model="sendNotif" :disabled="disabled"/>
             </div>
 
-            <button class="button success" @click="addAnouncement" v-if="title && content && !loading && !success">Dodaj ogłoszenie</button>
+            <button class="button success" @click="addAnouncement" v-if="title && content && hide_date && !loading && !success">Dodaj ogłoszenie</button>
 
             <LoadingIndicator v-if="loading" />
             <p class="success">{{ info }}</p>
@@ -82,9 +88,11 @@ export default {
 
             title: '',
             content: '',
+            hide_date: null,
             sendNotif: true,
 
             disabled: false,
+            hide_date_min: null
         }
     },
     computed: {
@@ -96,6 +104,8 @@ export default {
         }
     },
     mounted() {
+        this.hide_date_min = moment().format("YYYY-MM-DDThh:mm")
+
         this.apiDataStore.pointTypes.fetchData()
         this.timer = setInterval(this.apiDataStore.pointTypes.fetchData, 300000)
     },
@@ -110,6 +120,7 @@ export default {
                     title: this.title,
                     content: this.content,
                     sendNotif: this.sendNotif,
+                    hide_date: this.hide_date
                 }
                 fetch(API_URL + '../staff-api/add-announcement/', {
                     headers: Object.assign(
@@ -268,4 +279,9 @@ p.success {
 p {
     text-align: center;
 }
+
+input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
 </style>

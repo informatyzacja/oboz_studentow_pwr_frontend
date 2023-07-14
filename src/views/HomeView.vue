@@ -186,6 +186,7 @@ export default {
     this.apiDataStore.schedule.fetchData()
     this.apiDataStore.announcement.fetchData()
     this.apiDataStore.dailyQuest.fetchData()
+    this.apiDataStore.profile.fetchData()
 
     this.timer1 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000)
     this.timer2 = setInterval(this.apiDataStore.schedule.fetchData, 300000)
