@@ -3,6 +3,7 @@ import HomeCard from '../components/home/HomeCard.vue'
 import TextBox from '../components/TextBox.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
 import TopBar from '../components/navigation/TopBar.vue'
+import ItemBox from '../components/ItemBox.vue'
 import moment from 'moment'
 
 import DailyQuestView from '../components/home/DailyQuestView.vue'
@@ -20,6 +21,8 @@ import pasibusLogo from '../assets/partnerzy/pasibus.png'
 import greyLogo from '../assets/partnerzy/grey.jpg'
 
 import questionMark from '../assets/question-mark.jpg'
+
+import rightArrow from '../assets/arrow.svg'
 </script>
 
 <template>
@@ -132,16 +135,24 @@ import questionMark from '../assets/question-mark.jpg'
       Brak danych
     </p>
 
-    <div class="partners" v-if="(apiDataStore.schedule.ready && apiDataStore.schedule.upNext.length) || (apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length) || (apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length)">
-      <h3>Partnerzy</h3>
-      <div class="scroll">
-        <img class="partner"
-          v-for="(src, index) in [perlaLogo, pasibusLogo, greyLogo]"
-          :key="index"
-          :src="src"
-        />
+    <div class="padding">
+        <RouterLink to="/frakcje">
+          <ItemBox bigText="Zobacz frakcje" :rightIcon="rightArrow" :leftIcon=" apiDataStore.profile.data && apiDataStore.profile.data.length && apiDataStore.profile.data[0].fraction ? apiDataStore.profile.data[0].fraction.logo : '' "/>
+        </RouterLink>
       </div>
-    </div>
+
+      
+      <div class="partners">
+        <h3>Partnerzy</h3>
+        <div class="scroll">
+          <img class="partner"
+            v-for="(src, index) in [perlaLogo, pasibusLogo, greyLogo]"
+            :key="index"
+            :src="src"
+          />
+        </div>
+      </div>
+    
 
     <LoadingIndicator v-if="apiDataStore.schedule.loading" />
     <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>

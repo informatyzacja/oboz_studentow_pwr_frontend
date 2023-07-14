@@ -11,8 +11,8 @@ const permissions = {
   'skaner-punkty': ['can_add_points'],
 
   uczestnik: ['can_view_user_info'],
-  frakcja: ['can_view_fractions'],
-  frakcje: ['can_view_fractions'],
+  // frakcja: ['can_view_fractions'],
+  // frakcje: ['can_view_fractions'],
   grupa: ['can_view_groups'],
   grupy: ['can_view_groups'],
 

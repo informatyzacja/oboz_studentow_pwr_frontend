@@ -64,10 +64,6 @@ import { mapStores } from 'pinia'
       title="Frakcje"
       :icon="FractionIcon"
       link="/frakcje"
-      v-if="
-        apiDataStore.permissions.ready &&
-        apiDataStore.permissions.hasOneOfPermissions(['can_view_fractions'])
-      "
     />
     <MenuCard
       title="Grupy"

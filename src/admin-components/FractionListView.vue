@@ -9,7 +9,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
 </script>
 
 <template>
-  <TopBar title="Frakcje" backLink="/admin-menu" />
+  <TopBar title="Frakcje" :backLink="$router.options.history.state.back ||  '/profil'" />
 
   <div class="padding" v-if="ready && data">
     <RouterLink :to="frakcjaLink + '/' + data.id" v-for="(data, index) in data" :key="index">

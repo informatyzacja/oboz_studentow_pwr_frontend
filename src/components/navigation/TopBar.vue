@@ -10,17 +10,22 @@ defineProps({
     type: Boolean,
     default: false
   }
-})
+});
 </script>
 
 <template>
   <div class="header" :class="{ header_absolute: absolute }">
-    <RouterLink v-if="backLink" :to="backLink">
-      <div class="arrow-circle">
-        <div class="arrow"></div>
-      </div>
-    </RouterLink>
-    <h1>{{ title }}</h1>
+    <div class="header-left">
+      <RouterLink v-if="backLink" :to="backLink">
+        <div class="arrow-circle">
+          <div class="arrow"></div>
+        </div>
+      </RouterLink>
+      <h1>{{ title }}</h1>
+    </div>
+
+    <slot></slot>
+
   </div>
 </template>
 
@@ -29,6 +34,7 @@ defineProps({
   padding: 20px 20px 5px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .header_absolute {
   position: absolute;
@@ -73,5 +79,10 @@ h1 {
 .header_absolute .arrow {
   border-image: none;
   border-color: black;
+}
+
+.header-left {
+  display: flex;
+
 }
 </style>

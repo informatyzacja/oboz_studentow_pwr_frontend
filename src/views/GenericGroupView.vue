@@ -19,12 +19,24 @@ defineProps([
   'ready',
   'loading',
   'error',
-  'info'
+  'info',
+
+  'topRightButtonText',
+  'topRightButtonUrl'
 ]);
 </script>
 
 <template>
-  <TopBar :title="title" :backLink="$router.options.history.state.back || backLink" />
+  <TopBar :title="title" :backLink="$router.options.history.state.back || backLink" >
+    <RouterLink v-if="topRightButtonText && topRightButtonUrl" :to="topRightButtonUrl">
+      <p class="topRightButton">
+        {{ topRightButtonText }}
+      </p>
+    </RouterLink>
+  </TopBar>
+
+ 
+
   <p class="padding" v-if="!group">Nie znaleziono grupy</p>
   <div class="padding" v-if="group">
     <div class="flex">
@@ -227,5 +239,14 @@ a.button {
 
 .red-bg {
   background-color: var(--red);
+}
+
+.topRightButton {
+  text-align: right;
+  padding: 10px;
+  background: var(--radial-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 </style>
