@@ -23,7 +23,6 @@ import { mapStores } from 'pinia'
     :loading="apiDataStore.profile.loading"
     :error="apiDataStore.profile.error"
     :group="apiDataStore.profile.ready ? apiDataStore.profile.groupWithId($route.params.id) : {}"
-    info="Jeżeli w grupie brakuje uczestnika, to znaczy, że podane zostały złe dane przy zapisach. Poczekaj na weryfikację. Jeżeli dane nie będą się zgadzać w ciągu 30 min, skontaktuj się ze sztabem."
   ></GenericGroupView>
 </template>
 
