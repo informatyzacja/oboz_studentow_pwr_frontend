@@ -13,6 +13,7 @@ import { getCookie } from '../stores/functions.js'
 </script>
 
 <template>
+    <main>
     <TopBar title="Punkty" backLink="/admin-menu" />
 
     <div class="padding" v-if="apiDataStore.points.ready">
@@ -93,6 +94,7 @@ import { getCookie } from '../stores/functions.js'
 
     <LoadingIndicator v-if="apiDataStore.points.loading" />
     <p v-if="apiDataStore.points.error" class="error">{{ apiDataStore.points.error }}</p>
+</main>
 </template>
 
 

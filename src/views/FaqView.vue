@@ -10,6 +10,7 @@ import rightArrow from '../assets/arrow.svg'
 </script>
 
 <template>
+  <main>
   <TopBar
     title="FAQ"
     :backLink="
@@ -32,6 +33,7 @@ import rightArrow from '../assets/arrow.svg'
   <p v-if="apiDataStore.faq.ready && !apiDataStore.faq.data.length" class="error">Brak FAQ</p>
   <LoadingIndicator v-if="apiDataStore.faq.loading" />
   <p v-if="apiDataStore.faq.error" class="error">{{ apiDataStore.faq.error }}</p>
+  </main>
 </template>
 
 <script>

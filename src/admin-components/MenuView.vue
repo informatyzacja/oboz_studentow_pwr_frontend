@@ -18,6 +18,7 @@ import { mapStores } from 'pinia'
 </script>
 
 <template>
+  <main>
   <TopBar title="Menu" />
   <div class="padding cards">
     <MenuCard
@@ -91,6 +92,7 @@ import { mapStores } from 'pinia'
     <div style="height: calc((100vw - 66px) / 3); width: calc((100vw - 66px) / 3)"></div>
     <div style="height: calc((100vw - 66px) / 3); width: calc((100vw - 66px) / 3)"></div>
   </div>
+</main>
 </template>
 
 <style scoped>

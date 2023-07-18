@@ -11,6 +11,7 @@ import phoneIcon from '../assets/phone_icon.svg'
 </script>
 
 <template>
+  <main>
   <TopBar title="SOS" />
   <div class="sos">
     <h3>Ratownicy</h3>
@@ -111,6 +112,7 @@ import phoneIcon from '../assets/phone_icon.svg'
       <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" :rightIcon="rightArrow" />
     </RouterLink>
   </div>
+</main>
 </template>
 
 <style scoped>

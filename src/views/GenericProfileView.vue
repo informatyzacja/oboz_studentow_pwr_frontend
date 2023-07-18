@@ -30,6 +30,7 @@ defineProps([
 </script>
 
 <template>
+  <main>
   <slot name="topBar"></slot>
   <div class="padding">
     <div class="flex" v-if="ready && profileData">
@@ -192,6 +193,7 @@ defineProps([
       <p>Made with 🍺 by Marvin</p>
     </div>
   </div>
+</main>
 </template>
 
 <style scoped>

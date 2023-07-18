@@ -3,13 +3,7 @@ import LoadingIndicator from '../components/LoadingIndicator.vue'
 import QrcodeStream from 'vue-qrcode-reader/src/components/QrcodeStream.vue'
 
 defineProps(['hideScanner', 'codeText', 'codeFrameColor'])
-defineEmits(['error', 'result'])
-
-// interface QrcodeStream {
-//     beforeUnmount?(this: ComponentPublicInstance): {
-//         console.log('beforeDestroy2')
-//     }
-// }
+defineEmits(['error', 'result']);
 </script>
 
 <template>

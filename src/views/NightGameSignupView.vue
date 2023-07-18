@@ -15,6 +15,7 @@ import cryingIcon from '../assets/icons8-crying.png'
 </script>
 
 <template>
+<main>
   <TopBar title="Zapisy na grę nocną" :backLink="$router.options.history.state.back || '/'"/>
 
   <div class="padding" v-if="apiDataStore.nightGameGroupInfo.ready && !success && apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
@@ -95,7 +96,7 @@ import cryingIcon from '../assets/icons8-crying.png'
     <p class="error">{{ this.apiDataStore.nightGameGroupInfo.error }}</p>
     <p class="error">{{ error }}</p>
     <p class="error">{{ peopleError }}</p>
-
+</main>
 </template>
 
 <script>

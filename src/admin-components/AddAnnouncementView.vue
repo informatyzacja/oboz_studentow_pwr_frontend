@@ -12,6 +12,7 @@ import moment from 'moment'
 </script>
 
 <template>
+    <main>
     <TopBar title="Dodaj ogłoszenie" :backLink="$router.options.history.state.back || '/admin-menu'" />
 
     <div class="padding" v-if="apiDataStore.pointTypes.ready">
@@ -70,6 +71,7 @@ import moment from 'moment'
 
     <LoadingIndicator v-if="apiDataStore.pointTypes.loading" />
     <p v-if="apiDataStore.pointTypes.error" class="error">{{ apiDataStore.pointTypes.error }}</p>
+</main>
 </template>
 
 

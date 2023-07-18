@@ -10,6 +10,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
 </script>
 
 <template>
+  <main>
   <TopBar title="Dodaj punkty" backLink="/skaner" />
 
   <div class="padding" v-if="apiDataStore.pointTypes.ready">
@@ -51,6 +52,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
   
   <LoadingIndicator v-if="apiDataStore.pointTypes.loading || loading" />
   <p v-if="apiDataStore.pointTypes.error" class="error">{{ apiDataStore.pointTypes.error }}</p>
+</main>
 </template>
 
 <script>

@@ -4,6 +4,7 @@ import ScannerBaseView from './ScannerBaseView.vue'
 </script>
 
 <template>
+  <main>
   <TopBar title="Informacje o uczestniku" backLink="/skaner" />
 
   <div class="padding">
@@ -20,6 +21,7 @@ import ScannerBaseView from './ScannerBaseView.vue'
       />
     </div>
   </div>
+</main>
 </template>
 
 <script>

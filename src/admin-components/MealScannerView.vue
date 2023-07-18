@@ -10,6 +10,7 @@ import { getCookie } from '../stores/functions.js'
 </script>
 
 <template>
+  <main>
   <TopBar title="Walidacja posiłków" backLink="/skaner" />
 
   <div class="padding">
@@ -68,6 +69,7 @@ import { getCookie } from '../stores/functions.js'
       </div>
     </div>
   </div>
+</main>
 </template>
 
 <script>

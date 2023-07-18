@@ -7,42 +7,49 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      meta: { type: 'main' },
     },
     {
       path: '/sos',
       name: 'sos',
-      component: () => import('../views/SosView.vue')
+      component: () => import('../views/SosView.vue'),
+      meta: { type: 'main' },
     },
     {
       path: '/profil',
       name: 'profil',
-      component: () => import('../views/MyProfileView.vue')
+      component: () => import('../views/MyProfileView.vue'),
+      meta: { type: 'main' },
     },
     {
       path: '/warsztaty',
       name: 'warsztaty',
-      component: () => import('../views/WorkshopsView.vue')
+      component: () => import('../views/WorkshopsView.vue'),
+      meta: { type: 'main' },
     },
     {
       path: '/warsztaty/:day',
       name: 'warsztatyDay',
-      component: () => import('../views/WorkshopsView.vue')
+      component: () => import('../views/WorkshopsView.vue'),
+      meta: { transition: 'fade' },
     },
     {
       path: '/warsztaty/info/:id',
       name: 'warsztatyDetail',
-      component: () => import('../views/WorkshopDetailView.vue')
+      component: () => import('../views/WorkshopDetailView.vue'),
+      meta: { transition: 'workshop' },
     },
     {
       path: '/mapa',
       name: 'mapa',
-      component: () => import('../views/MapAndScheduleView.vue')
+      component: () => import('../views/MapAndScheduleView.vue'),
+      meta: { type: 'main' },
     },
     {
       path: '/faq',
       name: 'faq',
-      component: () => import('../views/FaqView.vue')
+      component: () => import('../views/FaqView.vue'),
     },
     {
       path: '/faq/:id',
@@ -78,12 +85,14 @@ const router = createRouter({
     {
       path: '/admin-menu',
       name: 'admin-menu',
-      component: () => import('../admin-components/MenuView.vue')
+      component: () => import('../admin-components/MenuView.vue'),
+      meta: { type: 'main' },
     },
     {
       path: '/skaner',
       name: 'skaner',
-      component: () => import('../admin-components/ScannerMenuView.vue')
+      component: () => import('../admin-components/ScannerMenuView.vue'),
+      meta: { type: 'main' },
     },
     {
       path: '/skaner/posilki',
@@ -155,6 +164,7 @@ const router = createRouter({
 
 import { useApiDataStore } from '../stores/api.js'
 
+// permission check
 router.beforeEach((to, from, next) => {
   const apiDataStore = useApiDataStore()
   if (!apiDataStore.permissions.hasPermissionsNeeded(to)) {
@@ -162,6 +172,15 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+})
+
+// transition
+router.afterEach((to, from) => {
+  if (to.meta.transition) return
+  const toDepth = to.path.split('/').length
+  const fromDepth = from.path.split('/').length
+  to.meta.transition = to.meta.type === 'main' && from.meta.type === 'main' || from.name === undefined ? 'fade' : 
+  (to.meta.type === 'main' || toDepth < fromDepth ? 'slide-right' : 'slide-left')
 })
 
 export default router

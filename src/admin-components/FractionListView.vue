@@ -9,6 +9,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
 </script>
 
 <template>
+  <main>
   <TopBar title="Frakcje" :backLink="$router.options.history.state.back ||  '/profil'" />
 
   <div class="padding" v-if="ready && data">
@@ -23,6 +24,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
 
   <LoadingIndicator v-if="loading" />
   <p v-if="error" class="error">{{ error }}</p>
+</main>
 </template>
 
 <script>

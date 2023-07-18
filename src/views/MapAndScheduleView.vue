@@ -8,6 +8,7 @@ import { mapStores } from 'pinia'
 </script>
 
 <template>
+  <main>
   <div v-for="(data, index) in apiDataStore.images.data" :key="index">
     <TopBar :title="data.name" />
     <div class="padding">
@@ -31,6 +32,7 @@ import { mapStores } from 'pinia'
   <p v-if="apiDataStore.images.ready && !apiDataStore.images.data.length" class="error">
     Brak danych
   </p>
+</main>
 </template>
 
 <script>

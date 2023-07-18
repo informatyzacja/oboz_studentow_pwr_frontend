@@ -10,6 +10,7 @@ import { getCookie } from '../stores/functions.js'
 </script>
 
 <template>
+    <main>
     <TopBar title="Dodaj punkty" :backLink="$router.options.history.state.back || '/admin-menu'" />
 
     <div class="padding" v-if="apiDataStore.pointTypes.ready">
@@ -77,6 +78,8 @@ import { getCookie } from '../stores/functions.js'
 
     <LoadingIndicator v-if="apiDataStore.pointTypes.loading" />
     <p v-if="apiDataStore.pointTypes.error" class="error">{{ apiDataStore.pointTypes.error }}</p>
+
+</main>
 </template>
 
 

@@ -13,6 +13,7 @@ import { mapStores } from 'pinia'
 </script>
 
 <template>
+  <main>
   <TopBar title="Skaner" />
   <div class="padding">
     <RouterLink
@@ -45,6 +46,7 @@ import { mapStores } from 'pinia'
     </RouterLink>
   </div>
   <LoadingIndicator v-if="!apiDataStore.permissions.ready" />
+  </main> 
 </template>
 
 <script>

@@ -10,6 +10,7 @@ import { mapStores } from 'pinia'
 </script>
 
 <template>
+    <main>
     <TopBar title="Ranking" backLink="/admin-menu" />
 
     <div class="padding" v-if="apiDataStore.points.ready">
@@ -33,6 +34,7 @@ import { mapStores } from 'pinia'
 
     <LoadingIndicator v-if="apiDataStore.points.loading" />
     <p v-if="apiDataStore.points.error" class="error">{{ apiDataStore.points.error }}</p>
+</main>
 </template>
 
 

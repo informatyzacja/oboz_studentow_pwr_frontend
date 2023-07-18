@@ -25,12 +25,12 @@ defineProps({
     type: Boolean,
     default: false
   }
-})
+});
 </script>
 
 <template>
   <div class="card" :class="{ big: big }">
-    <img class="bg" :src="imgSrc" />
+    <img class="bg" :src="imgSrc"/>
     <div class="time">
       <p>{{ time }}</p>
     </div>

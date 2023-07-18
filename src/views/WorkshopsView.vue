@@ -6,12 +6,14 @@ import moment from 'moment'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
+
+import questionMark from '../assets/question-mark.jpg'
 </script>
 
 <template>
-  <TopBar title="Warsztaty" />
   <main>
-    <div v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length">
+  <TopBar title="Warsztaty" />
+    <div class="padding" v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length">
       <div class="day-changer">
         <RouterLink v-if="currentDay > 0" :to="'/warsztaty/' + (currentDay - 1)">
           <div class="arrow-circle arrow-circle-left">
@@ -39,12 +41,13 @@ import { mapStores } from 'pinia'
           apiDataStore.workshops.futureDates[currentDay]
         )"
         :key="index"
+        @click="addAnmateClass($event)"
       >
         <HomeCard
           :name="data.name"
           :location="data.location"
           :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-          :imgSrc="data.photo"
+          :imgSrc="data.photo || questionMark"
           :userCount="data.userCount + '/' + data.userLimit"
           big
         />
@@ -103,10 +106,6 @@ import { mapStores } from 'pinia'
   margin-top: -8px;
 }
 
-main {
-  padding: 0px 20px;
-}
-
 .day-changer h5 {
   background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%);
   -webkit-background-clip: text;
@@ -158,6 +157,19 @@ export default {
   },
   beforeUnmount() {
     clearInterval(this.timer)
+  },
+  methods: {
+    addAnmateClass(event) {
+      var card = event.target.parentNode.parentNode
+      if (card && card.classList.contains('card')) {
+        card.id = 'animate'
+        return
+      }
+      card = card.querySelector('.card')
+      if (card) {
+        card.id = 'animate'
+      }
+    }
   }
 }
 </script>

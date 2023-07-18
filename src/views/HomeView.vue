@@ -26,8 +26,8 @@ import rightArrow from '../assets/arrow.svg'
 </script>
 
 <template>
-  <TopBar title="Home" />
   <main>
+  <TopBar title="Home" />
     <div class="padding" v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
         <RouterLink to="/zapisy-gra-nocna">
           <ItemBox bigText="Zapisz się na grę nocną!" :rightIcon="rightArrow"/>

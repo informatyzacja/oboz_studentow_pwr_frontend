@@ -27,6 +27,7 @@ defineProps([
 </script>
 
 <template>
+  <main>
   <TopBar :title="title" :backLink="$router.options.history.state.back || backLink" >
     <RouterLink v-if="topRightButtonText && topRightButtonUrl" :to="topRightButtonUrl">
       <p class="topRightButton">
@@ -101,6 +102,7 @@ defineProps([
     <LoadingIndicator v-if="loading" />
     <p v-if="error" class="error">{{ error }}</p>
   </div>
+</main>
 </template>
 
 <style scoped>

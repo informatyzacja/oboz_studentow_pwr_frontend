@@ -11,17 +11,19 @@ import { mapStores } from 'pinia'
 
 import { API_URL, AUTH_HEADER } from '../config.js'
 import { getCookie } from '../stores/functions.js'
+
+import questionMark from '../assets/question-mark.jpg'
 </script>
 
 <template>
-  <TopBar :backLink="$router.options.history.state.back || '/warsztaty'" absolute />
   <main>
+  <TopBar :backLink="$router.options.history.state.back || '/warsztaty'" absolute />
     <div
       v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length"
       :set="(data = apiDataStore.workshops.withId(parseInt($route.params.id)))"
     >
       <div class="card">
-        <img class="bg" :src="data.photo" />
+        <img class="bg" :src="data.photo || questionMark" />
         <div class="time">
           <p>{{ moment(data.start).format('dd. DD.MM') }}</p>
           <p>{{ moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm') }}</p>
@@ -248,6 +250,8 @@ export default {
   mounted() {
     this.apiDataStore.workshops.fetchData()
     this.timer = setInterval(this.apiDataStore.workshops.fetchData, 5 * 1000) // co 5 sekund
+
+    window.scrollTo(0, 0)
   },
   methods: {
     signUp(workshopId) {

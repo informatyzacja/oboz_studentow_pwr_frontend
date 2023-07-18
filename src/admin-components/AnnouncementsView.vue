@@ -10,8 +10,8 @@ import moment from 'moment'
 </script>
 
 <template>
-  <TopBar title="Widoczne ogłoszenia" backLink="/admin-menu"/>
   <main>
+  <TopBar title="Widoczne ogłoszenia" backLink="/admin-menu"/>
     <RouterLink to="/ogloszenia/dodaj">
       <button class="button success">Dodaj ogłoszenie</button>
     </RouterLink>

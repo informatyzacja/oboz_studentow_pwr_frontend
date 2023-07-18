@@ -164,6 +164,8 @@ export default {
   width: 100%;
   left: 0;
   right: 0;
+
+  z-index: 5;
 }
 .navigation-bar__content {
   display: grid;

@@ -9,6 +9,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
 </script>
 
 <template>
+  <main>
   <TopBar title="Grupy" backLink="/admin-menu" />
 
   <div class="padding" v-if="ready && data">
@@ -23,6 +24,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
 
   <LoadingIndicator v-if="loading" />
   <p v-if="error" class="error">{{ error }}</p>
+</main>
 </template>
 
 <script>
