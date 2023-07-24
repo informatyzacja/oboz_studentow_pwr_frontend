@@ -9,6 +9,8 @@ import politykaPrywatnosciIcon from '../assets/icons8-terms_and_conditions.png'
 import regulaminIcon from '../assets/icons8-rules_book.png'
 import refreshIcon from '../assets/icons8-refresh.png'
 import icons8Icon from '../assets/icons8-icons8.png'
+import rightArrow from '../assets/arrow.svg'
+import adminPanelIcon from '../assets/icons8-administrative_tools.png'
 
 import { REULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
 
@@ -39,12 +41,23 @@ import { mapStores } from 'pinia'
     </template>
 
     <template #footer>
+
+      <a href="/admin/" v-if="
+        apiDataStore.permissions.ready &&
+        apiDataStore.permissions.hasOneOfPermissions(['is_staff'])
+      ">
+        <div class="spacer"></div>
+        <ItemBox big-text="Panel admina" :leftIcon="adminPanelIcon" :rightIcon="rightArrow" />
+        <div class="spacer"></div>
+      </a>
+
       <h6 v-if="apiDataStore.profile.ready">
         W przypadku błędnych danych prosimy o kontakt ze sztabem
       </h6>
 
       <div class="spacer"></div>
       <div class="spacer"></div>
+
       <a :href="REULAMIN_LINK" target="_blank">
         <ItemBox big-text="Regulamin" :leftIcon="regulaminIcon" small />
       </a>
