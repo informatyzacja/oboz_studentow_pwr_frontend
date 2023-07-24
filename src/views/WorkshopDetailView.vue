@@ -96,6 +96,11 @@ import questionMark from '../assets/question-mark.jpg'
 
         <TextBox :content="data.description" />
 
+        <div v-if="data && data.itemsToTake">
+          <h3>Co zabrać ze sobą?</h3>
+          <TextBox :content="data.itemsToTake" />
+        </div>
+
         <h3 v-if="data.workshopleaders && data.workshopleaders.length">Prowadzący</h3>
         <ItemBox
           v-for="(data, index) in data.workshopleaders"
