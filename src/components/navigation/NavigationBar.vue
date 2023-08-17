@@ -2,7 +2,8 @@
 import SosIcon from '../../assets/icons8-sos.png'
 import MapIcon from '../../assets/icons8-map_marker.png'
 import Logo from '../../assets/logo na dół apki1.svg'
-import HammerIcon from '../../assets/icons8-hammer.png'
+// import HammerIcon from '../../assets/icons8-hammer.png'
+import WorkshopIcon from '../../assets/warsztaty.svg'
 import UserIcon from '../../assets/icons8-male_user.png'
 import MenuIcon from '../../assets/icons8-squared_menu.png'
 
@@ -59,7 +60,7 @@ import { registerForPushNotifications } from '../../config.js'
       </RouterLink>
       <RouterLink to="/warsztaty">
         <div class="navigation_bar__item">
-          <img :src="HammerIcon" alt="hammer" />
+          <img :src="WorkshopIcon" alt="warsztaty" />
           <p>Warsztaty</p>
         </div>
       </RouterLink>
@@ -94,7 +95,7 @@ import { registerForPushNotifications } from '../../config.js'
       </RouterLink>
       <RouterLink to="/warsztaty">
         <div class="navigation_bar__item">
-          <img :src="HammerIcon" alt="hammer" />
+          <img :src="WorkshopIcon" alt="warsztaty" />
           <p>Warsztaty</p>
         </div>
       </RouterLink>
@@ -210,6 +211,7 @@ export default {
   margin-bottom: 2px;
   width: 24px;
   object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(62%) sepia(45%) saturate(1866%) hue-rotate(342deg) brightness(90%) contrast(91%);
 }
 
 .navigation_bar__item p {

@@ -258,6 +258,7 @@ h3 {
 
 .itemBoxContainer {
   width: 100%;
+  z-index: 1;
 }
 
 .spacer {
