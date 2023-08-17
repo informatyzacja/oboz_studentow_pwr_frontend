@@ -1,7 +1,7 @@
 <script setup>
 import SosIcon from '../../assets/icons8-sos.png'
 import MapIcon from '../../assets/icons8-map_marker.png'
-import Logo from '../../assets/logo na dół apki1.svg'
+import Logo from '../../assets/logo na dol apki1.svg'
 // import HammerIcon from '../../assets/icons8-hammer.png'
 import WorkshopIcon from '../../assets/warsztaty.svg'
 import UserIcon from '../../assets/icons8-male_user.png'

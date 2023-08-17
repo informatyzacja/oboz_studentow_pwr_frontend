@@ -15,8 +15,8 @@ import domekIcon from '../assets/icons8-exterior.png'
 import mealIcon from '../assets/icons8-cutlery.png'
 
 import qrBg from '../assets/pod QRsvg- profil.svg'
-import backArrow from '../assets/strzała- do qr.svg'
-import hand from '../assets/ręka-do qr.svg'
+import backArrow from '../assets/strzala- do qr.svg'
+import hand from '../assets/reka-do qr.svg'
 
 defineProps([
   'profileData',
