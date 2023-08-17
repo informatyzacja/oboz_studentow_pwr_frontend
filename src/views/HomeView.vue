@@ -3,7 +3,6 @@ import HomeCard from '../components/home/HomeCard.vue'
 import TextBox from '../components/TextBox.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
 import TopBar from '../components/navigation/TopBar.vue'
-import ItemBox from '../components/ItemBox.vue'
 import moment from 'moment'
 
 import DailyQuestView from '../components/home/DailyQuestView.vue'
@@ -23,6 +22,9 @@ import greyLogo from '../assets/partnerzy/grey.jpg'
 import questionMark from '../assets/question-mark.jpg'
 
 import rightArrow from '../assets/arrow.svg'
+
+import zobaczFrakcje from '../assets/zobacz frakcje.png'
+import graNocna from '../assets/gra nocna.png'
 </script>
 
 <template>
@@ -30,7 +32,10 @@ import rightArrow from '../assets/arrow.svg'
   <TopBar title="Home" />
     <div class="padding" v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
         <RouterLink to="/zapisy-gra-nocna">
-          <ItemBox bigText="Zapisz się na grę nocną!" :rightIcon="rightArrow"/>
+          <div class="image_link_container">
+            <img :src="graNocna" class="image_link"/>
+            <img :src="rightArrow" class="image_link_arrow"/>
+          </div>
         </RouterLink>
     </div>
     <div
@@ -127,7 +132,10 @@ import rightArrow from '../assets/arrow.svg'
 
     <div class="padding">
         <RouterLink to="/frakcje">
-          <ItemBox bigText="Zobacz frakcje" :rightIcon="rightArrow" :leftIcon=" apiDataStore.profile.data && apiDataStore.profile.data.length && apiDataStore.profile.data[0].fraction ? apiDataStore.profile.data[0].fraction.logo : '' "/>
+          <div class="image_link_container">
+            <img :src="zobaczFrakcje" class="image_link"/>
+            <img :src="rightArrow" class="image_link_arrow"/>
+          </div>
         </RouterLink>
       </div>
 
@@ -277,5 +285,23 @@ button {
 
 .spacer {
   height: 10px;
+}
+
+.image_link_container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.image_link {
+  width: 100%;
+  border-radius: 20px;
+}
+
+.image_link_arrow {
+  width: 10px;
+  height: 100%;
+  right: 15px;
+  position: absolute;
 }
 </style>
