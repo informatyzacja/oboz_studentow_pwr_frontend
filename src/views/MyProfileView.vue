@@ -42,7 +42,7 @@ import { mapStores } from 'pinia'
 
     <template #footer>
 
-      <a href="/admin/" v-if="
+      <a href="/admin/" target="_blank" v-if="
         apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['is_staff'])
       ">

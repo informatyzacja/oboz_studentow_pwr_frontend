@@ -116,15 +116,15 @@ export default {
             timer: null
         }
     },
+    computed: {
+        ...mapStores(useApiDataStore),
+    },
     watch: {
         groupSize() {
             if (this.groupSize > this.apiDataStore.nightGameGroupInfo.data.group_user_max) this.groupSize = this.apiDataStore.nightGameGroupInfo.data.group_user_max
             if (this.people.length >= this.groupSize) this.people = this.people.slice(0, this.groupSize-1)
             this.createPeople()
         }
-    },
-    computed: {
-        ...mapStores(useApiDataStore),
     },
     methods: {
         createPeople() {
@@ -208,7 +208,8 @@ export default {
     },
     mounted() {
         this.apiDataStore.nightGameGroupInfo.fetchData()
-        if (this.groupSize < this.apiDataStore.nightGameGroupInfo.data.group_user_min) {
+        
+        if (this.apiDataStore.nightGameGroupInfo.ready && this.groupSize < this.apiDataStore.nightGameGroupInfo.data.group_user_min) {
             this.groupSize = this.apiDataStore.nightGameGroupInfo.data.group_user_min
         }
         this.createPeople()
