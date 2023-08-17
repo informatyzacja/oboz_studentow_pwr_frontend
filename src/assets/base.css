@@ -19,16 +19,24 @@
   --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64); */
+  --bg-gradient: linear-gradient(180deg, #761500 22.92%, #751500 22.93%, #2F0A01 100%);
+  --red: #751500;
+  --orange: #DC7D28;
+
+  --red-dark: #5F1404;
 
   --bg: #131313;
   --bg-lighter: #1b1b1b;
   --bg-light: #292929;
+  --bg-light-transusent: rgba(217, 217, 217, 0.11);
+
   --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #dea766 0%, #de7539 100%);
   --radial-gradient-circle: radial-gradient(circle, #dea766 0%, #de7539 80%);
   --theme-dark: #de7539;
   --theme-light: #dea766;
   --text-gray: #8d8d8d;
-  --red: #6a2323;
+  
+  /* --red: #6a2323; */
   --red-action: #9a2929;
 }
 

@@ -15,7 +15,7 @@ defineProps({
   bgColor: {
     type: String,
     required: false,
-    default: 'var(--bg-light)'
+    default: 'var(--bg-light-transusent)'
   },
   leftIcon: {
     type: String,
@@ -30,7 +30,7 @@ defineProps({
     required: false,
     default: false
   }
-})
+});
 </script>
 
 <template>

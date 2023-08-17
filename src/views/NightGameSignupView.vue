@@ -16,17 +16,20 @@ import cryingIcon from '../assets/icons8-crying.png'
 
 <template>
 <main>
-  <TopBar title="Zapisy na grę nocną" :backLink="$router.options.history.state.back || '/'"/>
+  <TopBar title="Zapisy na grę nocną" :backLink="$router.options.history.state.back || '/'" s/>
 
   <div class="padding" v-if="apiDataStore.nightGameGroupInfo.ready && !success && apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
 
     <TextBox>
         <p>UWAGA! Zapisy wykonuje tylko jedna osoba z grupy.</p>
         <p>Dla fajnieszej zabawy polecamy, aby w grupie znalazły się zarówno chłopacy, jak i dziewczyny.</p>
-        <p>Liczba osób w grupie: {{ this.apiDataStore.nightGameGroupInfo.data.group_user_min }} - {{ apiDataStore.nightGameGroupInfo.data.group_user_max }}</p>
+        <p v-if="this.apiDataStore.nightGameGroupInfo.data.group_user_min === this.apiDataStore.nightGameGroupInfo.data.group_user_max">
+            Grupa musi mieć dokładnie {{ this.apiDataStore.nightGameGroupInfo.data.group_user_min }} osób.
+        </p>
+        <p v-else>Liczba osób w grupie: {{ this.apiDataStore.nightGameGroupInfo.data.group_user_min }} - {{ apiDataStore.nightGameGroupInfo.data.group_user_max }} </p>
     </TextBox>
 
-    <h3 style="margin-top:10px">Nazwa grupy</h3>
+    <h3 style="margin-top:10px"> Nazwa grupy </h3>
     <input type="text" v-model="groupName" />
 
     <div v-if="groupSize!==''">

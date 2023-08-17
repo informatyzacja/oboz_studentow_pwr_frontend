@@ -3,7 +3,7 @@ import ItemBox from '../components/ItemBox.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
 import moment from 'moment'
 
-import Logo from '../assets/The-Hunger-Games-PNG-File.png'
+import Logo from '../assets/logowanie logo obozu.svg'
 import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 import OverlayView from '../components/OverlayView.vue'
 
@@ -13,6 +13,10 @@ import busIcon from '../assets/icons8-bus.png'
 import opaskaIcon from '../assets/icons8-bangles.png'
 import domekIcon from '../assets/icons8-exterior.png'
 import mealIcon from '../assets/icons8-cutlery.png'
+
+import qrBg from '../assets/pod QRsvg- profil.svg'
+import backArrow from '../assets/strzała- do qr.svg'
+import hand from '../assets/ręka-do qr.svg'
 
 defineProps([
   'profileData',
@@ -34,29 +38,40 @@ defineProps([
   <slot name="topBar"></slot>
   <div class="padding">
     <div class="flex" v-if="ready && profileData">
+
       <div class="qr_card" @click="$refs.qrOverlay.show">
-        <div class="qr">
-          <div class="qr_div" :class="{ hidden: qrLoading }">
-            <VueQr
-              :text="getOrigin + '/app/' + profileData.id"
-              :logoSrc="Logo"
-              :logoScale="0.15"
-              :dotScale="0.8"
-              colorDark="black"
-              colorLight="transparent"
-              whiteMargin="false"
-              :margin="0"
-              :callback="qrReady"
-              :size="250"
-            />
+        <img class="qr_card_bg" :src="qrBg" /> 
+        
+        <div class="qr_content">
+          <div class="qr">
+            <div class="qr_div" :class="{ hidden: qrLoading }">
+              <VueQr
+                :text="getOrigin + '/app/' + profileData.id"
+                :logoSrc="Logo"
+                :logoScale="0.15"
+                :dotScale="0.8"
+                colorDark="black"
+                colorLight="transparent"
+                whiteMargin="false"
+                :margin="0"
+                :callback="qrReady"
+                :size="250"
+              />
+            </div>
+            <LoadingIndicator v-if="qrLoading" inline />
           </div>
-          <LoadingIndicator v-if="qrLoading" inline />
+          {{ profileData.id }}
         </div>
-        Kod: {{ profileData.id }}
       </div>
 
       <OverlayView ref="qrOverlay">
         <div class="qr_overlay">
+          <div class="qr_overlay_inner">
+          
+          <div style="width:100%;">
+            <img @click="$refs.qrOverlay.hide" :src="backArrow" class="qr_back_arrow" />
+          </div>
+
           <h6 style="margin-bottom: 15px">
             Twój indyfidualny kod QR używany jest do potwierdzania Twojej tożsamości np. podczas
             wydawania posiłków
@@ -77,12 +92,15 @@ defineProps([
           </div>
           <LoadingIndicator v-if="qrLoading" inline />
           <p>Kod: {{ profileData.id }}</p>
-          <button @click="$refs.qrOverlay.hide">Zamknij</button>
+        </div>
+
+        <img :src="hand" class="qr_hand" />
+
         </div>
       </OverlayView>
 
       <p class="name">{{ profileData.first_name }} {{ profileData.last_name }}</p>
-      {{ profileData.title }}
+      <span class="title">{{ profileData.title }}</span>
       <p class="email">{{ profileData.email }}</p>
 
       <div class="spacer"></div>
@@ -197,6 +215,10 @@ defineProps([
 </template>
 
 <style scoped>
+
+main {
+  background: var(--bg-gradient);
+}
 .disabled {
   pointer-events: none;
 }
@@ -221,11 +243,17 @@ h3 {
   font-size: 23px;
   line-height: 25px;
   margin-top: 15px;
+  z-index: 1;
+}
+
+.title {
+  z-index: 1;
 }
 
 .email {
   font-size: 13px;
   color: var(--text-gray);
+  z-index: 1;
 }
 
 .itemBoxContainer {
@@ -269,40 +297,77 @@ button {
   margin-top: 20px;
 }
 .qr {
-  width: 140px;
-  height: 140px;
+  width: 110px;
+  height: 110px;
   margin-top: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  z-index: 2;
 }
 
 .qr_card {
-  /* background-color: var(--theme-dark); */
-  background: var(--radial-gradient);
   text-align: center;
   padding: 10px 20px;
-  border-radius: 5px 25px;
   color: black;
+  position: relative;
+  width: 450px;
 }
 
-.qr_overlay {
-  box-sizing: content-box;
-  width: 350px;
-  max-width: 80%;
-  /* height: 240px; */
+.qr_card_bg {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  width: 100%;
+}
+
+.qr_content {
+  transform: translateZ(1px);
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: 40px auto;
 
-  background: var(--bg);
+  height: 218px;
+}
+
+.qr_overlay {
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+
+  background: var(--orange);
   padding: 30px 40px;
-  border-radius: 5px 25px;
-  background: var(--radial-gradient);
   text-align: center;
   color: black;
+
+  overflow: hidden;
+}
+
+.qr_overlay_inner{
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+
+.qr_back_arrow {
+  height: 33px;
+  width: 100px !important;
+  object-fit: cover !important;
+  object-position: bottom;
+  float: left;
+}
+
+.qr_hand {
+  margin-top: -170px;
 }
 
 .qr_overlay p {
@@ -314,10 +379,8 @@ button {
 .qr .qr_div,
 .qr_overlay .qr_div {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   image-rendering: pixelated;
-
 }
 </style>
 
@@ -333,7 +396,12 @@ export default {
       return location.origin
     }
   },
-  mounted() {},
+  mounted() {
+    document.body.style.background = 'var(--bg-gradient)'
+  },
+  beforeUnmount() {
+    document.body.style.background = 'var(--bg)'
+  },
   methods: {
     qrReady() {
       this.qrLoading = false

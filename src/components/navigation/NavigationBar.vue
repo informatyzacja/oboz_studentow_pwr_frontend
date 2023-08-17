@@ -1,7 +1,7 @@
 <script setup>
 import SosIcon from '../../assets/icons8-sos.png'
 import MapIcon from '../../assets/icons8-map_marker.png'
-import Logo from '../../assets/The-Hunger-Games-PNG-File.png'
+import Logo from '../../assets/logo na dół apki1.svg'
 import HammerIcon from '../../assets/icons8-hammer.png'
 import UserIcon from '../../assets/icons8-male_user.png'
 import MenuIcon from '../../assets/icons8-squared_menu.png'
@@ -185,8 +185,8 @@ export default {
 }
 
 .navigation-bar__logo img {
-  width: 80%;
-  height: 80%;
+  width: 120%;
+  height: 120%;
 }
 
 .navigation_bar__item {

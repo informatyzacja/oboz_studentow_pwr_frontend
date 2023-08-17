@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Warstwa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 900 1600" style="enable-background:new 0 0 900 1600;" xml:space="preserve">
+<style type="text/css">
+	.Dodaj_x0020_cień{fill:none;}
+	.Blask_x0020_zewnętrzny_x0020__x0028_5_x0020_pkt_x002E__x0029_{fill:none;}
+	.Niebieski_x0020_neon{fill:none;stroke:#8AACDA;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;}
+	.Podświetlenie_x0020_Chrom{fill:url(#SVGID_1_);stroke:#FFFFFF;stroke-width:0.3629;stroke-miterlimit:1;}
+	.Jive_GS{fill:#FFDD00;}
+	.Alyssa_GS{fill:#A6D0E4;}
+</style>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="6.123234e-17" y2="-1">
+	<stop  offset="0" style="stop-color:#656565"/>
+	<stop  offset="0.618" style="stop-color:#1B1B1B"/>
+	<stop  offset="0.6292" style="stop-color:#545454"/>
+	<stop  offset="0.9831" style="stop-color:#3E3E3E"/>
+</linearGradient>
+<g>
+	<g>
+		<path d="M157.36,1365.39l18.77-55.02l-130.84,63.19l124.48,60.15l-12.22-52.31l-39.85,0.76c-1.92,0.04-8.39-3-20.81-8.77
+			c0,0,18.64-9.04,20.51-8.99L157.36,1365.39z"/>
+		<path d="M668.03,1366.7l-280.28,0.25l0.21,0.21l-215.04,0.35c-3.25-0.04-5.88,3.17-5.85,7.12l0.02,1.88
+			c0.04,3.84,2.59,6.95,5.75,6.98l495.26-2.68c2.99-0.02,5.47-2.81,5.73-6.44C674.11,1370.24,671.43,1366.69,668.03,1366.7z"/>
+		<path d="M829.35,1365.73l39.63,1.43c4.12-0.01,7.37,3.53,7.01,7.66l0,0c-0.31,3.63-3.31,6.42-6.93,6.44l-38.53,0.42
+			c-2.51,0.03-5.03-0.83-6.77-2.65C818.27,1373.29,825.1,1365.75,829.35,1365.73z"/>
+		<path d="M727.53,1398.74l7.45,0.06l20.29,26.7c8.12,1.14,17.15,2.4,26.43,3.7l-22.34-30.05l7.45,0.06l23.73,31.23
+			c8.37,1.17,16.75,2.35,24.65,3.46l-25.6-34.43l7.45,0.06l27.07,35.62c19.8,2.79,34.85,4.92,35.89,5.11
+			c-0.02-0.05-46.44-60.74-46.44-60.74l-128.86,0.84l37.74,40.53c1.43,0.21,10.82,1.52,24.08,3.38L727.53,1398.74z"/>
+		<path d="M726.9,1347.44l7.45-0.16l19.91-26.98c8.1-1.25,17.12-2.64,26.37-4.08l-21.92,30.36l7.45-0.16l23.29-31.56
+			c8.35-1.29,16.72-2.59,24.6-3.81l-25.11,34.79l7.45-0.16l26.56-36c19.76-3.07,40.97-5.65,42.01-5.85
+			c-0.02,0.05-51.78,61.63-51.78,61.63l-128.86,0.98l37.16-41.06c1.43-0.23,10.8-1.68,24.03-3.72L726.9,1347.44z"/>
+	</g>
+</g>
+</svg>
