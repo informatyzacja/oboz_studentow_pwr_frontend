@@ -11,37 +11,40 @@ export default defineConfig({
     manifest: {
       name: 'Obóz Studentów PWr',
       short_name: 'Obóz PWR',
-      themeColor: '#de7539',
+      theme_color: '#de7539',
       msTileColor: '#3e0e09',
+      background_color: '#131313',
       orientation: "portrait-primary",
       lang: 'pl',
       description: "Aplikacja mobilna Obóz Studentów PWr",
       appleMobileWebAppCapable: 'yes',
       appleMobileWebAppStatusBarStyle: 'black-translucent',
+      id: '/app/',
       icons: [
         {
-          "src": "/android-chrome-192x192.png",
+          "src": "/app/android-chrome-192x192.png",
           "sizes": "192x192",
           "type": "image/png"
         },
         {
-            "src": "/android-chrome-512x512.png",
+            "src": "/app/android-chrome-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
       ]
     },
     // strategies: 'injectManifest',
-    // injectRegister: null,
-    // registerType: 'autoUpdate',
-    // devOptions: {
-    //   enabled: true,
-    //   type: 'module',
-    //   navigateFallback: 'index.html'
-    // },
-    // workbox: {
-    //   sourcemap: true
-    // }
+    injectRegister: null,
+    // injectRegister: 'auto',
+    registerType: 'autoUpdate',
+    devOptions: {
+      enabled: true,
+      type: 'module',
+      navigateFallback: 'index.html'
+    },
+    workbox: {
+      sourcemap: true
+    }
    })],
   resolve: {
     alias: {
