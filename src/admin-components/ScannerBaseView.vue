@@ -70,7 +70,7 @@ export default {
       if (this.currentMealLoadng) return
       this.originalResult = result
       this.result = result.substring(result.lastIndexOf('/') + 1)
-      if (this.result.length > 5 || !this.isNumeric(this.result)) {
+      if (this.result.length > 6 || !this.isNumeric(this.result)) {
         this.result = ''
         this.error = 'Błędny kod'
         this.$emit('error', this.error)

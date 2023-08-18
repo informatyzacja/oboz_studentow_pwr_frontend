@@ -39,10 +39,10 @@ defineProps([
   <div class="padding">
     <div class="flex" v-if="ready && profileData">
 
-      <div class="qr_card" @click="$refs.qrOverlay.show">
+      <div class="qr_card" @click="$refs.qrOverlay.show" >
         <img class="qr_card_bg" :src="qrBg" /> 
         
-        <div class="qr_content">
+        <div class="qr_content" v-if="profileData.bandId">
           <div class="qr">
             <div class="qr_div" :class="{ hidden: qrLoading }">
               <VueQr
@@ -62,9 +62,12 @@ defineProps([
           </div>
           {{ profileData.bandId }}
         </div>
+        <div v-else class="qr_content">
+          
+        </div>
       </div>
 
-      <OverlayView ref="qrOverlay">
+      <OverlayView ref="qrOverlay" v-if="profileData.bandId">
         <div class="qr_overlay">
           <div class="qr_overlay_inner">
           
