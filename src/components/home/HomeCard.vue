@@ -8,7 +8,7 @@ defineProps({
   },
   location: {
     type: String,
-    required: true
+    required: false
   },
   time: {
     type: String,
@@ -36,7 +36,7 @@ defineProps({
     </div>
     <div class="overlay"></div>
     <div class="description">
-      <h2><IconLocation class="icon" /> {{ location }}</h2>
+      <h2 v-if="location"><IconLocation class="icon" /> <p>{{ location }}</p> </h2>
       <h1>{{ name }}</h1>
       <h3 v-if="userCount">{{ userCount }} osób</h3>
     </div>
@@ -96,22 +96,44 @@ defineProps({
   position: absolute;
   bottom: 0;
   padding: 15px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
+
 .description h1 {
-  font-size: 20px;
-  line-height: 20px;
+  font-size: 18px;
+  line-height: 18px;
   padding: 5px 0 0;
   white-space: normal;
+  word-break: break-word;
+}
+
+.card.big .description h1 {
+  font-size: 20px;
+  line-height: 20px;
 }
 
 .description h2 {
-  font-size: 14px;
-  line-height: 14px;
+  font-size: 12px;
+  line-height: 12px;
   color: var(--text-gray);
   display: flex;
   align-items: center;
   gap: 5px;
+}
+
+.card.big .description h2 {
+  font-size: 15px;
+  line-height: 15px;
+}
+
+.description h2 p {
+  display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
 }
 
 .description h3 {
@@ -124,5 +146,6 @@ defineProps({
 .description .icon {
   height: 16px;
   padding-bottom: 1px;
+  flex-shrink: 0;
 }
 </style>

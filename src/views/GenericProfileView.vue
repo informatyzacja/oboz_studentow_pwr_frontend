@@ -263,6 +263,7 @@ h3 {
 
 .zindex {
   z-index: 1;
+  position: relative;
 }
 
 .spacer {

@@ -140,6 +140,7 @@ h6 {
 
 .zindex {
   z-index: 1;
+  position: relative;
 }
 
 </style>

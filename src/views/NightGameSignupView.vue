@@ -23,10 +23,10 @@ import cryingIcon from '../assets/icons8-crying.png'
     <TextBox>
         <p>UWAGA! Zapisy wykonuje tylko jedna osoba z grupy.</p>
         <p>Dla fajnieszej zabawy polecamy, aby w grupie znalazły się zarówno chłopacy, jak i dziewczyny.</p>
-        <p v-if="this.apiDataStore.nightGameGroupInfo.data.group_user_min === this.apiDataStore.nightGameGroupInfo.data.group_user_max">
-            Grupa musi mieć dokładnie {{ this.apiDataStore.nightGameGroupInfo.data.group_user_min }} osób.
+        <p v-if="apiDataStore.nightGameGroupInfo.data.group_user_min === apiDataStore.nightGameGroupInfo.data.group_user_max">
+            Grupa musi mieć dokładnie {{ apiDataStore.nightGameGroupInfo.data.group_user_min }} osób.
         </p>
-        <p v-else>Liczba osób w grupie: {{ this.apiDataStore.nightGameGroupInfo.data.group_user_min }} - {{ apiDataStore.nightGameGroupInfo.data.group_user_max }} </p>
+        <p v-else>Liczba osób w grupie: {{ apiDataStore.nightGameGroupInfo.data.group_user_min }} - {{ apiDataStore.nightGameGroupInfo.data.group_user_max }} </p>
     </TextBox>
 
     <h3 style="margin-top:10px"> Nazwa grupy </h3>
@@ -95,8 +95,8 @@ import cryingIcon from '../assets/icons8-crying.png'
   </div>
 
 
-    <LoadingIndicator v-if="this.apiDataStore.nightGameGroupInfo.loading" />
-    <p class="error">{{ this.apiDataStore.nightGameGroupInfo.error }}</p>
+    <LoadingIndicator v-if="apiDataStore.nightGameGroupInfo.loading" />
+    <p class="error">{{ apiDataStore.nightGameGroupInfo.error }}</p>
     <p class="error">{{ error }}</p>
     <p class="error">{{ peopleError }}</p>
 </main>
