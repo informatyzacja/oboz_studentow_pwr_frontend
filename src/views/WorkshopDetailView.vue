@@ -66,15 +66,20 @@ import questionMark from '../assets/question-mark.jpg'
               Brak miejsc
             </button>
             <button class="button" v-else @click="signUp($route.params.id)">Zapisz się</button>
+
+            <p v-if="!loading && !data.loader && data.userSignUpId"
+            class="signupsOpenTime">
+              Jesteś zapisany/a
+            </p>
             <p
               class="signupsOpenTime"
-              v-if="
+              v-else-if="
                 data.signupsOpenTime &&
                 moment(data.signupsOpenTime).isSame(moment(), 'day') &&
                 moment(data.signupsOpenTime).isAfter(moment())
               "
             >
-              Otwierają się o {{ moment(data.signupsOpenTime).format('H:mm') }}
+              Otwierają się dzisiaj o {{ moment(data.signupsOpenTime).format('H:mm') }}
             </p>
           </div>
         </div>
@@ -170,6 +175,7 @@ h3 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 
 .time {

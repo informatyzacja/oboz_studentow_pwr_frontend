@@ -42,39 +42,42 @@ import { mapStores } from 'pinia'
 
     <template #footer>
 
-      <a href="/admin/" target="_blank" v-if="
-        apiDataStore.permissions.ready &&
-        apiDataStore.permissions.hasOneOfPermissions(['is_staff'])
-      ">
+      <div class="zindex">
+
+        <a href="/admin/" target="_blank" v-if="
+          apiDataStore.permissions.ready &&
+          apiDataStore.permissions.hasOneOfPermissions(['is_staff'])
+        ">
+          <div class="spacer"></div>
+          <ItemBox big-text="Panel admina" :leftIcon="adminPanelIcon" :rightIcon="rightArrow" />
+          <div class="spacer"></div>
+        </a>
+
+        <h6 v-if="apiDataStore.profile.ready">
+          W przypadku błędnych danych prosimy o kontakt ze sztabem
+        </h6>
+
         <div class="spacer"></div>
-        <ItemBox big-text="Panel admina" :leftIcon="adminPanelIcon" :rightIcon="rightArrow" />
         <div class="spacer"></div>
-      </a>
 
-      <h6 v-if="apiDataStore.profile.ready">
-        W przypadku błędnych danych prosimy o kontakt ze sztabem
-      </h6>
+        <a :href="REULAMIN_LINK" target="_blank">
+          <ItemBox big-text="Regulamin" :leftIcon="regulaminIcon" small />
+        </a>
+        <a :href="POLITYKA_PRYWATNOSCI_LINK" target="_blank">
+          <ItemBox big-text="Polityka prywatności" :leftIcon="politykaPrywatnosciIcon" small />
+        </a>
 
-      <div class="spacer"></div>
-      <div class="spacer"></div>
+        <a href="https://icons8.com" target="_blank">
+          <ItemBox big-text="Ikonki z Icons8" :leftIcon="icons8Icon" small />
+        </a>
 
-      <a :href="REULAMIN_LINK" target="_blank">
-        <ItemBox big-text="Regulamin" :leftIcon="regulaminIcon" small />
-      </a>
-      <a :href="POLITYKA_PRYWATNOSCI_LINK" target="_blank">
-        <ItemBox big-text="Polityka prywatności" :leftIcon="politykaPrywatnosciIcon" small />
-      </a>
-
-      <a href="https://icons8.com" target="_blank">
-        <ItemBox big-text="Ikonki z Icons8" :leftIcon="icons8Icon" small />
-      </a>
-
-      <div class="spacer"></div>
-      <ItemBox big-text="Odśwież aplikację" :leftIcon="refreshIcon" small @click="refreshApp" />
-      <a href="/logout/">
-        <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small />
-      </a>
-      <p class="version" v-if="version">v{{version}}</p>
+        <div class="spacer"></div>
+        <ItemBox big-text="Odśwież aplikację" :leftIcon="refreshIcon" small @click="refreshApp" />
+        <a href="/logout/">
+          <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small />
+        </a>
+        <p class="version" v-if="version">v{{version}}</p>
+      </div>
     </template>
   </GenericProfileView>
 </template>
@@ -133,4 +136,10 @@ h6 {
   text-align: center;
   margin-bottom: -17px;
 }
+
+
+.zindex {
+  z-index: 1;
+}
+
 </style>

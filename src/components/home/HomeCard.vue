@@ -68,6 +68,7 @@ defineProps({
   height: 100%;
   object-fit: cover;
   border-radius: 20px;
+  object-position: center;
 }
 
 .time {

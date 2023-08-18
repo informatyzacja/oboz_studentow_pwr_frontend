@@ -14,6 +14,8 @@ export const useWorkshopStore = defineStore('workshop', {
       }
       return this.data.filter((item) => {
         return moment(item.start).isSame(moment(), 'day')
+      }).sort((a, b) => {
+        return a.start - b.start
       })
     },
     future() {
@@ -22,12 +24,17 @@ export const useWorkshopStore = defineStore('workshop', {
       }
       return this.data.filter((item) => {
         return moment(item.end).isAfter(moment())
+      }).sort((a, b) => {
+        return moment(a.start) - moment(b.start) || a.name.localeCompare(b.name)
       })
+      
     },
     withDate() {
       return (date) =>
         this.data.filter((item) => {
           return moment(item.start).isSame(date, 'day')
+        }).sort((a, b) => {
+          return a.start.localeCompare(b.start) || a.name.localeCompare(b.name)
         })
     },
 

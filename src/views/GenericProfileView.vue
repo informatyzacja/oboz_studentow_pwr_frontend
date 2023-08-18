@@ -186,7 +186,7 @@ defineProps([
     <p v-if="error" class="error">{{ error }}</p>
 
     <!-- warsztaty -->
-    <div v-if="userWorkshopReady && userWorkshopData.length">
+    <div v-if="userWorkshopReady && userWorkshopData.length" class="zindex">
       <h3>Twoje warsztaty</h3>
       <div class="scroll">
         <RouterLink
@@ -258,6 +258,10 @@ h3 {
 
 .itemBoxContainer {
   width: 100%;
+  z-index: 1;
+}
+
+.zindex {
   z-index: 1;
 }
 

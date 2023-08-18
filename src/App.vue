@@ -28,6 +28,7 @@ export default {
     onLeave(el, done, route) {
       if (route.meta.transition != 'workshop') return
       const animate = el.querySelector('#animate')
+      if (animate == null) return
       animate.style.transform = 'translateY(-' + ((animate.getBoundingClientRect().top+window.scrollY)*0.92 - 10) + 'px)'
     }
   }
