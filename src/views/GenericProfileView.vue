@@ -3,7 +3,9 @@ import ItemBox from '../components/ItemBox.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
 import moment from 'moment'
 
-import Logo from '../assets/logowanie logo obozu.svg'
+import Logo from '../assets/ikona kolor rounded.svg'
+import BlackLogo from '../assets/ikona czarny.svg'
+
 import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 import OverlayView from '../components/OverlayView.vue'
 
@@ -63,7 +65,7 @@ defineProps([
           {{ profileData.bandId }}
         </div>
         <div v-else class="qr_content">
-          
+          <img :src="BlackLogo" class="qr_placeholder_logo"/>
         </div>
       </div>
 
@@ -240,6 +242,11 @@ h3 {
   background-clip: text;
   padding: 5px 2px;
   font-size: 13px;
+}
+
+.qr_placeholder_logo {
+  width: 110px;
+  margin-top: -25px;
 }
 
 .name {
