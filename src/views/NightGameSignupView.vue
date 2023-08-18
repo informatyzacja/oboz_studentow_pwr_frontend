@@ -12,6 +12,8 @@ import { getCookie } from '../stores/functions.js'
 
 import okIcon from '../assets/icons8-ok.png'
 import cryingIcon from '../assets/icons8-crying.png'
+
+import moment from 'moment'
 </script>
 
 <template>
@@ -22,9 +24,14 @@ import cryingIcon from '../assets/icons8-crying.png'
 
     <TextBox>
         <p>UWAGA! Zapisy wykonuje tylko jedna osoba z grupy.</p>
-        <p>Dla fajnieszej zabawy polecamy, aby w grupie znalazły się zarówno chłopacy, jak i dziewczyny.</p>
+        <p>Dla fajnieszej zabawy polecamy, aby w grupie znalazły się zarówno <span class="bold">chłopacy, jak i dziewczyny</span>.</p>
+
+        <p>Wszystkie osoby w grupie muszą mieć <span class="bold">ukończone 18 lat</span> w dniu gry<span v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.night_game_date"> ({{ moment(apiDataStore.nightGameGroupInfo.data.night_game_date).format('DD.MM.YYYY') }})</span>.</p>
+
+        <div class="spacer"></div>
+
         <p v-if="apiDataStore.nightGameGroupInfo.data.group_user_min === apiDataStore.nightGameGroupInfo.data.group_user_max">
-            Grupa musi mieć dokładnie {{ apiDataStore.nightGameGroupInfo.data.group_user_min }} osób.
+            Grupa musi liczyć dokładnie <span class="bold">{{ apiDataStore.nightGameGroupInfo.data.group_user_min }} osób</span>.
         </p>
         <p v-else>Liczba osób w grupie: {{ apiDataStore.nightGameGroupInfo.data.group_user_min }} - {{ apiDataStore.nightGameGroupInfo.data.group_user_max }} </p>
     </TextBox>
@@ -50,7 +57,7 @@ import cryingIcon from '../assets/icons8-crying.png'
                 <input type="text" v-model="person.first_name" placeholder="Imię" :disabled="signupLoading"/>
                 <input type="text" v-model="person.last_name" placeholder="Nazwisko" :disabled="signupLoading"/>
             </div>
-            <input type="number" pattern="[0-9]*" inputmode="numeric" class="bandInput" v-model="person.band" placeholder="Nr opaski" :disabled="signupLoading"/>
+            <input type="text" pattern="[0-9]*" inputmode="numeric" class="bandInput" v-model="person.band" placeholder="Nr opaski" :disabled="signupLoading" maxlength="6"/>
         </div>
     </div>
 
@@ -318,5 +325,11 @@ button.success {
     color: var(--theme-dark)
 }
 
+.bold {
+    font-weight: bold;
+}
+.spacer {
+    height: 15px;
+}
 
 </style>

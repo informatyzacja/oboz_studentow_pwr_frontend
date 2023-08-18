@@ -35,6 +35,8 @@ defineProps({
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  z-index: 2;
 }
 .header_absolute {
   position: absolute;

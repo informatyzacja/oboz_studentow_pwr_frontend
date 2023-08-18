@@ -8,10 +8,9 @@ defineEmits(['error', 'result']);
 
 <template>
   <input
-    type="number"
+    type="text"
     pattern="[0-9]*" inputmode="numeric"
-    maxLength="5"
-    min="0"
+    maxLength="6"
     placeholder="Wpisz kod"
     class="search"
     v-model="searchQuery"
@@ -80,9 +79,12 @@ export default {
       }
       this.userRead(this.result)
     },
+    fillWithZeros(bandId) {
+      return bandId.padStart(6, '0')
+    },
     search() {
       if (this.currentMealLoadng) return
-      this.result = this.searchQuery
+      this.result = this.fillWithZeros(this.searchQuery)
       this.userRead(this.result)
       this.searchQuery = ''
     },

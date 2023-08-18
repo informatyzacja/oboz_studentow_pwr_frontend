@@ -46,7 +46,7 @@ defineProps([
           <div class="qr">
             <div class="qr_div" :class="{ hidden: qrLoading }">
               <VueQr
-                :text="getOrigin + '/app/' + profileData.id"
+                :text="getOrigin + '/app/' + profileData.bandId"
                 :logoSrc="Logo"
                 :logoScale="0.15"
                 :dotScale="0.8"
@@ -60,7 +60,7 @@ defineProps([
             </div>
             <LoadingIndicator v-if="qrLoading" inline />
           </div>
-          {{ profileData.id }}
+          {{ profileData.bandId }}
         </div>
       </div>
 
@@ -78,7 +78,7 @@ defineProps([
           </h6>
           <div class="qr_div" :class="{ hidden: qrLoading }">
             <VueQr
-              :text="getOrigin + '/app/' + profileData.id"
+              :text="getOrigin + '/app/' + profileData.bandId"
               :logoSrc="Logo"
               :logoScale="0.15"
               :dotScale="0.8"
@@ -91,7 +91,7 @@ defineProps([
             />
           </div>
           <LoadingIndicator v-if="qrLoading" inline />
-          <p>Kod: {{ profileData.id }}</p>
+          <p>Kod: {{ profileData.bandId }}</p>
         </div>
 
         <img :src="hand" class="qr_hand" />
