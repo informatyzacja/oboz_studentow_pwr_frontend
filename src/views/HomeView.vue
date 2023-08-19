@@ -23,6 +23,7 @@ import greyLogo from '../assets/partnerzy/grey.jpg'
 import questionMark from '../assets/question-mark.jpg'
 
 import rightArrow from '../assets/arrow.svg'
+import microphoneIcon from '../assets/ogloszenia.svg'
 
 import zobaczFrakcje from '../assets/zobacz frakcje.png'
 import graNocna from '../assets/gra nocna.png'
@@ -116,6 +117,7 @@ import graNocna from '../assets/gra nocna.png'
           :key="index"
           :title="data.title"
           :content="data.content"
+          :image = "microphoneIcon"
           style="margin-bottom: 10px"
         />
       </div>

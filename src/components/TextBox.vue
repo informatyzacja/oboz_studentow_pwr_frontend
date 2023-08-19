@@ -7,13 +7,20 @@ defineProps({
   title: {
     type: String,
     required: false
+  },
+  image: {
+    type: String,
+    required: false
   }
 });
 </script>
 
 <template>
   <div class="textbox">
-    <h4 v-if="title">{{ title }}</h4>
+    <div class="textbox-header">
+      <img v-if="image" :src="image"/>
+      <h4 v-if="title">{{ title }}</h4>
+    </div>
     <p>{{ content }}</p>
     <slot></slot>
   </div>
@@ -28,11 +35,22 @@ defineProps({
   /* margin: 0px 20px 10px; */
 }
 
+.textbox-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.textbox-header img {
+  width: 35px; 
+  height: 35px;
+  margin-right: 10px;
+}
+
 h4 {
   font-size: 18px;
   line-height: 21px;
   /* font-weight: 600; */
-  margin-bottom: 10px;
 }
 
 p {
