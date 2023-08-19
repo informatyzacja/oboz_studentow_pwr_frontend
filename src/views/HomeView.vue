@@ -30,7 +30,7 @@ import graNocna from '../assets/gra nocna.png'
 </script>
 
 <template>
-  <main class="padding-main">
+  <main>
   <TopBar title="Home" />
     <div class="padding" v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
         <RouterLink to="/zapisy-gra-nocna">
@@ -234,6 +234,10 @@ export default {
 </script>
 
 <style scoped>
+
+main {
+  padding-bottom: 100px;
+}
 .loading {
   display: flex;
   justify-content: center;
