@@ -38,7 +38,7 @@ const router = createRouter({
       path: '/warsztaty/info/:id',
       name: 'warsztatyDetail',
       component: () => import('../views/WorkshopDetailView.vue'),
-      meta: { transition: 'workshop' },
+      // meta: { transition: 'workshop' },
     },
     {
       path: '/mapa',

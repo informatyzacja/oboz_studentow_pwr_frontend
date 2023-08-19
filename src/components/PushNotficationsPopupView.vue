@@ -8,11 +8,11 @@ defineEmits(['hide']);
 
 <template>
     <div class="padding">
-        <div class="overlay">
+        <div class="overlay-card">
             
             <p v-if="iOSversionTooLow" style="text-align: center;">Twoja wersja iOS jest za niska, aby obsługiwać powiadomienia. Zaktualizuj system do wersji iOS 16.4 lub wyższej.</p>
 
-            <p v-else-if="showInstallMessage" style="text-align: center;">Aby włączyć powiadomienia, dodaj aplikację do ekranu początkowego.</p>
+            <p v-else-if="showInstallMessage" style="text-align: center;">Aby włączyć powiadomienia, zainstaluj aplikację.</p>
 
             <div v-else>
                 <p style="text-align: center;">Bądź na bieżąco w każdej chwili, dzięki włączonym powiadomieniom! Będziemy informować Cię o tym, co się aktualnie dzieje, o wszelkich zmianach i wiele więcej!</p>
@@ -33,8 +33,6 @@ export default {
             iOSversionTooLow: false,
             showInstallMessage: false
         }
-    },
-    onMounted() { 
     },
 
   computed: {
@@ -80,7 +78,7 @@ export default {
 </script>
 
 <style scoped>
-.overlay {
+.overlay-card {
   box-sizing: border-box;
   /* width: 100%; */
   display: flex;

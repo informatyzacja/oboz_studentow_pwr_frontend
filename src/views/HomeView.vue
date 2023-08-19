@@ -14,6 +14,7 @@ import { mapStores } from 'pinia'
 import { isSupported } from "firebase/messaging";
 
 import PushNotficationsPopupView from '../components/PushNotficationsPopupView.vue'
+import InstallAppView from '../components/InstallAppView.vue'
 
 import perlaLogo from '../assets/partnerzy/perla.png'
 import pasibusLogo from '../assets/partnerzy/pasibus.png'
@@ -64,10 +65,12 @@ import graNocna from '../assets/gra nocna.png'
       </div>
     </div>
 
-    <div v-if="showPushNotificationCard && apiDataStore.schedule.ready && apiDataStore.schedule.data.length">
+    <div v-if="showPushNotificationCard">
       <PushNotficationsPopupView
         @hide="showPushNotificationCard = false" />
     </div>
+
+    <InstallAppView />
 
     <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
       <h3>Twoje dzisiejsze warsztaty</h3>
@@ -178,7 +181,11 @@ export default {
     }
   },
   computed: {
-    ...mapStores(useApiDataStore)
+    ...mapStores(useApiDataStore),
+    isIos() {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /iphone|ipod/.test( userAgent );
+    },
   },
   mounted() {
     this.apiDataStore.userWorkshop.fetchData()
@@ -194,10 +201,13 @@ export default {
     this.timer4 = setInterval(this.apiDataStore.dailyQuest.fetchData, 300000)
     this.timer5 = setInterval(this.apiDataStore.nightGameGroupInfo.fetchData, 60000)
 
+
     if (isSupported() && ("Notification" in window)) {
       if (Notification.permission !== "denied" && Notification.permission !== "granted") {
         this.showPushNotificationCard = true
       }
+    } else if (this.isIos) {
+      this.showPushNotificationCard = true
     }
   },
   methods: {
