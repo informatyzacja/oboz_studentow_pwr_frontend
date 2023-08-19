@@ -21,6 +21,11 @@ defineProps({
     type: String,
     required: false
   },
+  'no-round-icon': {
+    type: Boolean,
+    required: false,
+    default: false
+  },
   rightIcon: {
     type: String,
     required: false
@@ -36,7 +41,7 @@ defineProps({
 <template>
   <div class="item" :style="{ backgroundColor: bgColor }" :class="{ small: small }">
     <div class="itemLeft">
-      <div v-if="leftIcon" class="leftIcon">
+      <div v-if="leftIcon" class="leftIcon" :class="{'no-round-icon': 'no-round-icon'}">
         <img :src="leftIcon" />
       </div>
       <h6>{{ leftBigText }}</h6>
@@ -112,6 +117,10 @@ p {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.no-round-icon img {
+  border-radius: 0;
 }
 
 img {

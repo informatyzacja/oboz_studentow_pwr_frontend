@@ -12,6 +12,9 @@ import icons8Icon from '../assets/icons8-icons8.png'
 import rightArrow from '../assets/arrow.svg'
 import adminPanelIcon from '../assets/icons8-administrative_tools.png'
 
+import taxiIcon from '../assets/icons8-taxi_mobile_payment.png'
+import copyIcon from '../assets/icons8-copy.png'
+
 import { REULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
 
 import { useApiDataStore } from '../stores/api.js'
@@ -43,6 +46,12 @@ import { mapStores } from 'pinia'
     <template #footer>
 
       <div class="zindex">
+
+        <div v-if="apiDataStore.profile.ready && apiDataStore.profile.data[0].freenow_code">
+          <h3>Twój kod zniżkowy FREENOW 40%</h3>
+          <h5>Ważny do 31.10.2023</h5>
+          <ItemBox :big-text="apiDataStore.profile.data[0].freenow_code.toUpperCase()" small-text="Naciśnij, aby skopiować kod" :leftIcon="taxiIcon" :rightIcon="copyIcon" no-round-icon @click="copyFreenowCode"/>
+        </div>
 
         <a href="/admin/" target="_blank" v-if="
           apiDataStore.permissions.ready &&
@@ -109,6 +118,9 @@ export default {
   methods: {
     refreshApp() {
       location.reload()
+    },
+    copyFreenowCode() {
+      navigator.clipboard.writeText(this.apiDataStore.profile.data[0].freenow_code.toUpperCase());
     }
   },
   beforeUnmount() {
@@ -122,6 +134,13 @@ export default {
 <style scoped>
 .spacer {
   height: 15px;
+}
+
+h5 {
+  font-size: 11px;
+  color: var(--light-text);
+  padding: 0 0 8px;
+  margin-top: -10px;
 }
 
 h6 {
