@@ -15,7 +15,7 @@ import { mapStores } from 'pinia'
 <template>
   <main>
   <TopBar title="Skaner" />
-  <div class="padding">
+  <div class="padding-main">
     <RouterLink
       to="/skaner/posilki"
       v-if="

@@ -1,5 +1,5 @@
 <template>
-  <div class="padding">
+  <div class="padding-main">
     <div class="center">
       <h1>Podana strona nie została znaleziona</h1>
       <RouterLink :to="$router.options.history.state.back || '/'">

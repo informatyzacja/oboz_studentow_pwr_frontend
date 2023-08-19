@@ -38,8 +38,8 @@ defineProps([
 
  
 
-  <p class="padding" v-if="!group">Nie znaleziono grupy</p>
-  <div class="padding" v-if="group">
+  <p class="padding-main" v-if="!group">Nie znaleziono grupy</p>
+  <div class="padding-main" v-if="group">
     <div class="flex">
       <div class="logo" v-if="group.logo">
         <img :src="group.logo" />
@@ -106,20 +106,15 @@ defineProps([
 </template>
 
 <style scoped>
+main {
+  background: var(--bg-gradient);
+}
+
 h1 {
   background: var(--radial-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
-
-h3 {
-  background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  padding: 5px 2px;
-  font-size: 13px;
 }
 
 h6 {

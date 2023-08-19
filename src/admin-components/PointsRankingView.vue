@@ -13,7 +13,7 @@ import { mapStores } from 'pinia'
     <main>
     <TopBar title="Ranking" backLink="/admin-menu" />
 
-    <div class="padding" v-if="apiDataStore.points.ready">
+    <div class="padding-main" v-if="apiDataStore.points.ready">
         <h3>Rodziaj grupy</h3>
         <select v-model="selectedGroupType">
             <option v-for="groupType in apiDataStore.points.groupTypes" :key="groupType" :value="groupType">
@@ -63,14 +63,7 @@ export default {
 </script>
 
 <style scoped>
-h3 {
-    background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    padding: 5px 2px;
-    font-size: 13px;
-}
+
 
 select {
     width: 100%;

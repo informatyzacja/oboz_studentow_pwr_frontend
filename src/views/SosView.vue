@@ -121,11 +121,6 @@ import phoneIcon from '../assets/phone_icon.svg'
 }
 
 h3 {
-  background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%)
-    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   padding: 5px 2px;
   font-size: 12px;
 }

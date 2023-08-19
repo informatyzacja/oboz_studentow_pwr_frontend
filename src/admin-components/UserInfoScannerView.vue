@@ -7,7 +7,7 @@ import ScannerBaseView from './ScannerBaseView.vue'
   <main>
   <TopBar title="Informacje o uczestniku" backLink="/skaner" />
 
-  <div class="padding">
+  <div class="padding-main">
     <div class="center">
       <p v-if="error" class="error">{{ error }}</p>
       <ScannerBaseView

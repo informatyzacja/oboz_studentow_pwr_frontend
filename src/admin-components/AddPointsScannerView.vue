@@ -13,7 +13,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
   <main>
   <TopBar title="Dodaj punkty" backLink="/skaner" />
 
-  <div class="padding" v-if="apiDataStore.pointTypes.ready">
+  <div class="padding-main" v-if="apiDataStore.pointTypes.ready">
     <h3>Rodziaj grupy</h3>
     <select v-model="selectedGroupType"
       @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }">
@@ -173,15 +173,6 @@ select {
   background: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.66663 5.33337L8.00001 8.66671L11.3333 5.33337' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A") no-repeat;
   background-position: calc(100% - 15px) center !important;
   background-color: var(--bg-light);
-}
-
-h3 {
-  background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  padding: 5px 2px;
-  font-size: 13px;
 }
 
 .button {

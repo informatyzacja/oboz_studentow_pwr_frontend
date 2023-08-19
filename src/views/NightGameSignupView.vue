@@ -20,7 +20,7 @@ import moment from 'moment'
 <main>
   <TopBar title="Zapisy na grę nocną" :backLink="$router.options.history.state.back || '/'" s/>
 
-  <div class="padding" v-if="apiDataStore.nightGameGroupInfo.ready && !success && apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
+  <div class="padding-main" v-if="apiDataStore.nightGameGroupInfo.ready && !success && apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
 
     <TextBox>
         <p>UWAGA! Zapisy wykonuje tylko jedna osoba z grupy.</p>
@@ -235,14 +235,6 @@ export default {
 
 <style scoped>
 
-h3 {
-    background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    padding: 5px 2px;
-    font-size: 13px;
-}
 
 input, select, textarea {
     width: 100%;

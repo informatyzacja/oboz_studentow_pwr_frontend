@@ -12,7 +12,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
   <main>
   <TopBar title="Grupy" backLink="/admin-menu" />
 
-  <div class="padding" v-if="ready && data">
+  <div class="padding-main" v-if="ready && data">
     <RouterLink :to="grupaLink + '/' + data.id" v-for="(data, index) in data" :key="index">
       <ItemBox
         :leftBigText="data.type.name"

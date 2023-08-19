@@ -13,7 +13,7 @@ import { getCookie } from '../stores/functions.js'
   <main>
   <TopBar title="Walidacja posiłków" backLink="/skaner" />
 
-  <div class="padding">
+  <div class="padding-main">
     <!-- <h3>Tryb skanowania</h3>
         <ItemBox bigText="Walidacja posiłków" small/> -->
     <!-- <h3>Posiłek</h3> -->
@@ -215,14 +215,6 @@ export default {
 </script>
 
 <style scoped>
-h3 {
-  background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  padding: 5px 2px;
-  font-size: 13px;
-}
 
 .center {
   display: flex;

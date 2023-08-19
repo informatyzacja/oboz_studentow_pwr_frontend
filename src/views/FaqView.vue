@@ -19,7 +19,7 @@ import rightArrow from '../assets/arrow.svg'
         : '/profil'
     "
   />
-  <div v-if="apiDataStore.faq.ready" class="padding">
+  <div v-if="apiDataStore.faq.ready" class="padding-main">
     <RouterLink :to="'/faq/' + data.id" v-for="(data, index) in apiDataStore.faq.data" :key="index">
       <ItemBox
         :bigText="data.question"

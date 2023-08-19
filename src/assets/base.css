@@ -35,6 +35,8 @@
   --theme-dark: #de7539;
   --theme-light: #dea766;
   --text-gray: #8d8d8d;
+
+  --light-text: #ededed79;
   
   /* --red: #6a2323; */
   --red-action: #9a2929;
@@ -70,6 +72,11 @@ body {
   padding: 0 20px;
 }
 
+.padding-main {
+  padding: 0 20px;
+  padding-bottom: 100px;
+}
+
 .error {
   display: flex;
   justify-content: center;
@@ -80,4 +87,11 @@ body {
 
 .hidden {
   display: none;
+}
+
+h3 {
+  color: var(--light-text);
+  background-clip: text;
+  padding: 5px 2px;
+  font-size: 13px;
 }

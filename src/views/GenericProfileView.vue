@@ -38,7 +38,7 @@ defineProps([
 <template>
   <main>
   <slot name="topBar"></slot>
-  <div class="padding">
+  <div class="padding-main">
     <div class="flex" v-if="ready && profileData">
 
       <div class="qr_card" @click="$refs.qrOverlay.show" >
@@ -235,14 +235,6 @@ h1 {
   background-clip: text;
 }
 
-h3 {
-  background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  padding: 5px 2px;
-  font-size: 13px;
-}
 
 .qr_placeholder_logo {
   width: 110px;
@@ -411,12 +403,6 @@ export default {
     getOrigin() {
       return location.origin
     }
-  },
-  mounted() {
-    document.body.style.background = 'var(--bg-gradient)'
-  },
-  beforeUnmount() {
-    document.body.style.background = 'var(--bg)'
   },
   methods: {
     qrReady() {

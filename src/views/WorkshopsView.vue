@@ -13,7 +13,7 @@ import questionMark from '../assets/question-mark.jpg'
 <template>
   <main>
   <TopBar title="Warsztaty" />
-    <div class="padding" v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length">
+    <div class="padding-main" v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length">
       <div class="day-changer">
         <RouterLink v-if="currentDay > 0" :to="'/warsztaty/' + (currentDay - 1)">
           <div class="arrow-circle arrow-circle-left">

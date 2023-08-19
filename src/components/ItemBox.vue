@@ -84,7 +84,7 @@ h6 {
   padding: 1px;
   font-size: 12px;
   line-height: 13px;
-  color: var(--text-gray);
+  color: var(--light-text);
 }
 
 p {
@@ -92,7 +92,7 @@ p {
   padding: 1px;
   font-size: 11px;
   line-height: 11px;
-  color: var(--text-gray);
+  color: var(--light-text);
 }
 
 .rightIcon {
