@@ -15,7 +15,7 @@ defineProps({
   bgColor: {
     type: String,
     required: false,
-    default: 'var(--bg-light-transusent)'
+    default: 'var(--bg-light-translusent)'
   },
   leftIcon: {
     type: String,
@@ -67,6 +67,10 @@ defineProps({
   margin-bottom: 10px;
 
   min-height: 60px;
+}
+
+.item:hover {
+  background-color: var(--bg-light-translusent-hover) !important;
 }
 
 .itemLeft {

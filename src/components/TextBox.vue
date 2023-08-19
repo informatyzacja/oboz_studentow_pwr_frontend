@@ -28,7 +28,7 @@ defineProps({
 
 <style scoped>
 .textbox {
-  background-color: var(--bg-light-transusent);
+  background-color: var(--bg-light-translusent);
   border-radius: 20px;
   position: relative;
   padding: 20px;

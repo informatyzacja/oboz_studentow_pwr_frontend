@@ -28,7 +28,8 @@
   --bg: #131313;
   --bg-lighter: #1b1b1b;
   --bg-light: #292929;
-  --bg-light-transusent: rgba(217, 217, 217, 0.11);
+  --bg-light-translusent: rgba(217, 217, 217, 0.11);
+  --bg-light-translusent-hover: rgba(217, 217, 217, 0.177);
 
   --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #dea766 0%, #de7539 100%);
   --radial-gradient-circle: radial-gradient(circle, #dea766 0%, #de7539 80%);
