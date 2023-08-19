@@ -41,6 +41,11 @@ const router = createRouter({
       // meta: { transition: 'workshop' },
     },
     {
+      path: '/harmonogram/info/:id',
+      name: 'harmonogramDetail',
+      component: () => import('../views/HarmonogramDetailView.vue'),
+    },
+    {
       path: '/mapa',
       name: 'mapa',
       component: () => import('../views/MapAndScheduleView.vue'),

@@ -61,7 +61,13 @@ export const useScheduleStore = defineStore('schedule', {
       return this.data.filter((item) => {
         return moment(item.start).isSame(moment(), 'day')
       })
-    }
+    },
+    withId() {
+      return (id) =>
+        this.data.find((item) => {
+          return item.id === id
+        })
+    },
   },
   actions: {
     fetchData() {

@@ -93,14 +93,18 @@ import graNocna from '../assets/gra nocna.png'
     <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length">
       <h3>Co się teraz dzieje?</h3>
       <div class="scroll">
-        <HomeCard
+        <RouterLink 
           v-for="(data, index) in apiDataStore.schedule.rightNow"
           :key="index"
-          :name="data.name"
-          :location="data.location"
-          :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-          :imgSrc="data.photo || questionMark"
-        />
+          :to="'/harmonogram/info/' + data.id"
+        >
+          <HomeCard
+            :name="data.name"
+            :location="data.location"
+            :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
+            :imgSrc="data.photo || questionMark"
+          />
+        </RouterLink>
       </div>
     </div>
 
