@@ -53,11 +53,16 @@ import { getCookie } from '../stores/functions.js'
         
         <div v-if="selectedGroupType && selectedPointType && selectedGroup && apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType)">
             <h3>Ile punktów ({{apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_min}} - {{apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_max}})</h3>
-            <input type="number" pattern="[0-9]*" inputmode="decimal" v-model="points" 
-            :min="apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_min" 
-            :max="apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_max"
-            :disabled="disabled"
-            />
+            <div class="points-input-div">
+                <button class="plus-minus-button" @click="plusMinus" v-if="apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_min < 0">
+                    +/-
+                </button>
+                <input type="number" pattern="[0-9]*" inputmode="decimal" v-model="points" 
+                :min="apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_min" 
+                :max="apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType).points_max"
+                :disabled="disabled"
+                />
+            </div>
 
             <h3>Opis</h3>
             <textarea v-model="description" rows="4" cols="50"
@@ -142,6 +147,13 @@ export default {
             this.points= ''
             this.description= ''
             this.disabled= false
+        },
+        plusMinus() {
+            if (this.points == '' || this.points == 0) {
+                this.points = '-0'
+            } else {
+                this.points = -this.points;
+            }
         },
         addPoints() {
             if (this.apiDataStore.permissions.ready && this.apiDataStore.permissions.hasPermission('can_add_points')) {
@@ -278,5 +290,16 @@ p.success {
 
 p {
     text-align: center;
+}
+
+.points-input-div {
+    display: flex;
+    align-items: center;
+}
+
+.plus-minus-button {
+    width: 20px;
+    margin: 0;
+    margin-right: 5px;
 }
 </style>
