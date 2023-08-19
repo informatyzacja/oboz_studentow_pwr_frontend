@@ -29,7 +29,7 @@ defineProps(['title', 'icon', 'link']);
   background-color: var(--bg-light);
 }
 .card__icon img {
-  filter: grayscale(100%) brightness(10);
+  filter: brightness(0) invert(1);
   width: 70px;
 }
 .card__title p {
