@@ -121,6 +121,7 @@ export default {
     },
     copyFreenowCode() {
       navigator.clipboard.writeText(this.apiDataStore.profile.data[0].freenow_code.toUpperCase());
+      alert('Skopiowano kod zniżkowy do schowka')
     }
   },
   beforeUnmount() {

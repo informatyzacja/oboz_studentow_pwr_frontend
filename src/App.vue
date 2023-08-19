@@ -148,7 +148,7 @@ export default {
 
 
 .wrapper {
-  max-width: 500px;
+  max-width: 550px;
   margin: 0 auto;
   /* padding-bottom: 100px; */
 }
