@@ -9,7 +9,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
 
 <template>
   <GenericGroupView
-    title="Frakcja"
+    title="Dystrykt"
     :backLink="$router.options.history.state.back || '/skaner/uczestnik'"
     mapDescription="Miejsce spotkań"
     messengerDescription="Grupa frakcji"

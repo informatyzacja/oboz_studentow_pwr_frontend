@@ -7,7 +7,7 @@ import { mapStores } from 'pinia'
 
 <template>
   <GenericGroupView
-    title="Frakcja"
+    title="Dystrykt"
     backLink="/profil"
     mapDescription="Miejsce spotkań"
     messengerDescription="Grupa frakcji"

@@ -10,7 +10,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
 
 <template>
   <main>
-  <TopBar title="Frakcje" backLink="/" />
+  <TopBar title="Dystrykty" backLink="/" />
 
   <div class="padding-main" v-if="ready && data">
     <RouterLink :to="frakcjaLink + '/' + data.id" v-for="(data, index) in data" :key="index">

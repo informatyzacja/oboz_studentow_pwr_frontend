@@ -62,7 +62,7 @@ import { mapStores } from 'pinia'
       "
     />
     <MenuCard
-      title="Frakcje"
+      title="Dystrykty"
       :icon="FractionIcon"
       link="/frakcje"
     />
