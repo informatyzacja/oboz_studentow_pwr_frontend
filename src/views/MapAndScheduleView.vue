@@ -11,7 +11,7 @@ import { mapStores } from 'pinia'
   <main>
   <div v-for="(data, index) in apiDataStore.images.data" :key="index">
     <TopBar :title="data.name" />
-    <div class="padding-main">
+    <div class="padding">
       <img :src="data.image" :alt="data.name" @click="showRef('imageOverlay', index)" />
 
       <OverlayView ref="imageOverlay">
