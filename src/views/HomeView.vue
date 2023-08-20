@@ -16,10 +16,6 @@ import { isSupported } from "firebase/messaging";
 import PushNotficationsPopupView from '../components/PushNotficationsPopupView.vue'
 import InstallAppView from '../components/InstallAppView.vue'
 
-import perlaLogo from '../assets/partnerzy/perla.png'
-import pasibusLogo from '../assets/partnerzy/pasibus.png'
-import greyLogo from '../assets/partnerzy/grey.jpg'
-
 import questionMark from '../assets/question-mark.jpg'
 
 import rightArrow from '../assets/arrow.svg'
