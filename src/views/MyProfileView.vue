@@ -120,8 +120,14 @@ export default {
       location.reload()
     },
     copyFreenowCode() {
-      navigator.clipboard.writeText(this.apiDataStore.profile.data[0].freenow_code.toUpperCase());
-      alert('Skopiowano kod zniżkowy do schowka')
+      navigator.clipboard.writeText(this.apiDataStore.profile.data[0].freenow_code.toUpperCase()).then(
+      () => {
+        alert('Skopiowano kod zniżkowy do schowka')
+      },
+      () => {
+        alert('Błąd kopiowania kodu zniżkowego')
+      },
+    );
     }
   },
   beforeUnmount() {
