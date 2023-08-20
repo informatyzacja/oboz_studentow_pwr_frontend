@@ -152,7 +152,7 @@ h6 {
 
 .version {
   font-size: 10px;
-  color: var(--text-gray);
+  color: var(--light-text);
   text-align: center;
   margin-bottom: -17px;
 }

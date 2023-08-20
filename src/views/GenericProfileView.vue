@@ -255,7 +255,7 @@ h1 {
 
 .email {
   font-size: 13px;
-  color: var(--text-gray);
+  color: var(--light-text);
   z-index: 1;
 }
 
@@ -284,7 +284,7 @@ h1 {
 .credits {
   margin-top: 20px;
   font-size: 10px;
-  color: var(--text-gray);
+  color: var(--light-text);
   text-align: center;
 }
 
