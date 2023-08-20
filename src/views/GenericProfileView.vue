@@ -214,7 +214,7 @@ defineProps([
 
     <div class="credits">
       <p>© Obóz Studentow PWr 2023</p>
-      <p>Made with 🍺 by Marvin</p>
+      <p>Made with 🍺 by <a href="https://www.facebook.com/Marvin.Ruc/" target="_blank"><u>Marvin</u></a></p>
     </div>
   </div>
 </main>
