@@ -17,7 +17,7 @@ defineProps({
 
 <template>
   <div class="textbox">
-    <div class="textbox-header">
+    <div class="textbox-header" v-if="image || title">
       <img v-if="image" :src="image"/>
       <h4 v-if="title">{{ title }}</h4>
     </div>
