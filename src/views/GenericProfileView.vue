@@ -122,6 +122,7 @@ defineProps([
             :bigText="profileData.fraction.name"
             :leftIcon="profileData.fraction.logo"
             :rightIcon="frakcjaLink ? rightArrow : ''"
+            leftIconWhite
           />
         </RouterLink>
         <!-- grupy -->

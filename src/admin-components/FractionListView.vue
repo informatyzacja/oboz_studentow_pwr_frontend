@@ -18,6 +18,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
         :bigText="data.name"
         :leftIcon="data.logo"
         :rightIcon="frakcjaLink ? rightArrow : ''"
+        leftIconWhite
       />
     </RouterLink>
   </div>

@@ -21,6 +21,11 @@ defineProps({
     type: String,
     required: false
   },
+  leftIconWhite: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
   'no-round-icon': {
     type: Boolean,
     required: false,
@@ -42,7 +47,7 @@ defineProps({
   <div class="item" :style="{ backgroundColor: bgColor }" :class="{ small: small }">
     <div class="itemLeft">
       <div v-if="leftIcon" class="leftIcon" :class="{'no-round-icon': 'no-round-icon'}">
-        <img :src="leftIcon" />
+        <img :src="leftIcon" :class="{'white-icon': leftIconWhite}"/>
       </div>
       <h6>{{ leftBigText }}</h6>
       <div class="text">
@@ -104,6 +109,9 @@ p {
   color: var(--light-text);
 }
 
+.white-icon {
+  filter: brightness(0) invert(1);
+}
 .rightIcon {
   max-height: 30px;
   max-width: 30px;

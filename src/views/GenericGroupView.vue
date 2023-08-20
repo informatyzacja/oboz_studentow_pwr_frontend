@@ -140,8 +140,8 @@ button {
   margin-top: 20px;
 }
 .logo {
-  width: 140px;
-  height: 140px;
+  width: 180px;
+  height: 180px;
   margin-top: 10px;
   display: flex;
   justify-content: center;
@@ -152,6 +152,7 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: brightness(0) invert(1);
 }
 
 .map {
