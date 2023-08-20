@@ -111,3 +111,18 @@ export const useDailyQuestStore = defineStore('dailyQuest', {
     }
   }
 })
+
+
+export const usePartnerStore = defineStore('partner', {
+  state: () => ({ loading: true, error: null, data: null, url: 'partners/' }),
+  getters: {
+    ready() {
+      return ready(this)
+    }
+  },
+  actions: {
+    fetchData() {
+      loadData(this)
+    }
+  }
+})

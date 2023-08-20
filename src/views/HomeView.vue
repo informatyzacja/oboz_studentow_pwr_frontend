@@ -149,14 +149,17 @@ import graNocna from '../assets/gra nocna.png'
       </div>
 
       
-      <div class="partners">
+      <div class="partners" v-if="apiDataStore.partner.ready && apiDataStore.partner.data.length">
         <h3>Partnerzy</h3>
         <div class="scroll">
-          <img class="partner"
-            v-for="(src, index) in [perlaLogo, pasibusLogo, greyLogo]"
-            :key="index"
-            :src="src"
-          />
+          <a :href="data.link" 
+              target="_blank" 
+              :key="index"
+              v-for="(data, index) in apiDataStore.partner.data">
+            <img class="partner"
+              :src="data.logo"
+            />
+          </a>
         </div>
       </div>
     
@@ -182,6 +185,7 @@ export default {
       timer3: null,
       timer4: null,
       timer5: null,
+      timer6: null,
 
       showPushNotificationCard: false,
     }
@@ -200,12 +204,14 @@ export default {
     this.apiDataStore.dailyQuest.fetchData()
     this.apiDataStore.profile.fetchData()
     this.apiDataStore.nightGameGroupInfo.fetchData()
+    this.apiDataStore.partner.fetchData()
 
     this.timer1 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000)
     this.timer2 = setInterval(this.apiDataStore.schedule.fetchData, 300000)
     this.timer3 = setInterval(this.apiDataStore.announcement.fetchData, 60000)
     this.timer4 = setInterval(this.apiDataStore.dailyQuest.fetchData, 300000)
     this.timer5 = setInterval(this.apiDataStore.nightGameGroupInfo.fetchData, 60000)
+    this.timer6 = setInterval(this.apiDataStore.partner.fetchData, 60000)
 
 
     if (isSupported() && ("Notification" in window)) {
@@ -229,6 +235,8 @@ export default {
     clearInterval(this.timer2)
     clearInterval(this.timer3)
     clearInterval(this.timer4)
+    clearInterval(this.timer5)
+    clearInterval(this.timer6)
   }
 }
 </script>
@@ -293,7 +301,7 @@ button {
 }
 
 .partner {
-  height: 130px;
+  height: 100px;
   margin: 10px;
   border-radius: 10px;
 }

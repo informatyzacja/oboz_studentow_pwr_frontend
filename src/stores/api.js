@@ -5,7 +5,8 @@ import {
   useUserWorkshopStore,
   useScheduleStore,
   useAnnouncementStore,
-  useDailyQuestStore
+  useDailyQuestStore,
+  usePartnerStore
 } from './home.js'
 
 import { useProfileStore, useLinkStore, useNightGameGroupInfoStore, useFaqStore } from './misc.js'
@@ -21,6 +22,8 @@ export const useApiDataStore = defineStore('apiData', {
     userWorkshop: useUserWorkshopStore(),
     schedule: useScheduleStore(),
     announcement: useAnnouncementStore(),
+    partner: usePartnerStore(),
+
     profile: useProfileStore(),
     links: useLinkStore(),
     contacts: useContactStore(),
