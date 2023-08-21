@@ -12,7 +12,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
     title="Dystrykt"
     :backLink="$router.options.history.state.back || '/skaner/uczestnik'"
     mapDescription="Miejsce spotkań"
-    messengerDescription="Grupa frakcji"
+    messengerDescription="Grupa dystryktu"
     :ready="ready"
     :loading="loading"
     :error="error"

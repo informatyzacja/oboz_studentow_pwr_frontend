@@ -10,7 +10,7 @@ import { mapStores } from 'pinia'
     title="Dystrykt"
     backLink="/profil"
     mapDescription="Miejsce spotkań"
-    messengerDescription="Grupa frakcji"
+    messengerDescription="Grupa dystryktu"
     :ready="apiDataStore.profile.ready"
     :loading="apiDataStore.profile.loading"
     :error="apiDataStore.profile.error"

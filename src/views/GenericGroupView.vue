@@ -27,7 +27,7 @@ defineProps([
 </script>
 
 <template>
-  <main>
+  <main :style="{ background: group.background ? ('linear-gradient(#00000080, #00000000), url('+group.background+'), var(--bg-gradient)') : '' }">
   <TopBar :title="title" :backLink="$router.options.history.state.back || backLink" >
     <RouterLink v-if="topRightButtonText && topRightButtonUrl" :to="topRightButtonUrl">
       <p class="topRightButton">
