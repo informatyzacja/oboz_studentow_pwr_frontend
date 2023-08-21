@@ -87,7 +87,7 @@ import { mapStores } from 'pinia'
 
     <MenuCard title="Warsztaty" :icon="HammerIcon" link="/warsztaty" />
     <MenuCard title="Sos" :icon="SosIcon" link="/sos" />
-    <MenuCard title="Mapka Harmonogram" :icon="MapIcon" link="/mapa" />
+    <MenuCard title="Mapka" :icon="MapIcon" link="/mapa" />
 
     <div style="height: calc((100vw - 66px) / 3); width: calc((100vw - 66px) / 3)"></div>
     <div style="height: calc((100vw - 66px) / 3); width: calc((100vw - 66px) / 3)"></div>
