@@ -9,7 +9,7 @@ import { mapStores } from 'pinia'
 
 <template>
   <main>
-  <div v-for="(data, index) in apiDataStore.images.data" :key="index">
+  <div v-if="data">
     <TopBar :title="data.name" />
     <div class="padding">
       <img :src="data.image" :alt="data.name" @click="showRef('imageOverlay', index)" />
@@ -47,6 +47,9 @@ export default {
     ...mapStores(useApiDataStore),
     webShareApiSupported() {
       return navigator.share
+    },
+    data() {
+      return this.apiDataStore.images.named("Mapka")
     }
   },
   mounted() {
@@ -99,9 +102,13 @@ export default {
 .padding img {
   width: 100%;
   height: auto;
-  max-height: 60vw;
+  /* max-height: 60vw; */
   object-fit: cover;
   border-radius: 20px;
+}
+
+main {
+  padding-bottom: 100px;
 }
 
 .image_overlay {

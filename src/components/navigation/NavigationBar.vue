@@ -33,7 +33,7 @@ import { registerForPushNotifications } from '../../config.js'
       <RouterLink to="/mapa">
         <div class="navigation_bar__item">
           <img :src="MapIcon" alt="map" />
-          <p>Mapka<br />Harmonogram</p>
+          <p>Mapka</p>
         </div>
       </RouterLink>
       <RouterLink to="/">

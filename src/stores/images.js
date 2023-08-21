@@ -12,7 +12,7 @@ export const useImageStore = defineStore('images', {
         if (!this.ready || !this.data) {
           return []
         }
-        return this.data.filter((item) => {
+        return this.data.find((item) => {
           return item.name === name
         })
       }
