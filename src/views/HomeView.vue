@@ -23,6 +23,7 @@ import microphoneIcon from '../assets/ogloszenia.svg'
 
 import zobaczFrakcje from '../assets/zobacz frakcje.png'
 import graNocna from '../assets/gra nocna.png'
+import ItemBox from '../components/ItemBox.vue'
 </script>
 
 <template>
@@ -103,6 +104,12 @@ import graNocna from '../assets/gra nocna.png'
           />
         </RouterLink>
       </div>
+    </div>
+
+    <div class="padding">
+      <RouterLink to="/harmonogram">
+        <ItemBox :bigText="apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length ? 'Pełny harmonogram' : 'Harmonogram'" :rightIcon="rightArrow"/>
+      </RouterLink>
     </div>
 
     <div v-if="apiDataStore.announcement.ready && apiDataStore.announcement.data.length">

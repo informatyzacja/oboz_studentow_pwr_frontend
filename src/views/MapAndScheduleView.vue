@@ -1,6 +1,5 @@
 <script setup>
 import TopBar from '../components/navigation/TopBar.vue'
-import OverlayView from '../components/OverlayView.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
 
 import { useApiDataStore } from '../stores/api.js'
@@ -12,18 +11,9 @@ import { mapStores } from 'pinia'
   <div v-if="data">
     <TopBar :title="data.name" />
     <div class="padding">
-      <img :src="data.image" :alt="data.name" @click="showRef('imageOverlay', index)" />
-
-      <OverlayView ref="imageOverlay">
-        <div class="image_overlay">
-          <img :src="data.image" :alt="data.name" />
-
-          <!-- <button class="button" @click="shareViaWebShare(data.name, data.image)" v-if="webShareApiSupported"><p v-if="!loading">Zapisz</p><LoadingIndicator inline small v-else/></button> -->
-          <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentow_PWr_2023'" target="_blank" rel="nofollow">Pobierz</a>
-
-          <button class="red-bg" @click="hideRef('imageOverlay', index)">Zamknij</button>
-        </div>  
-      </OverlayView>
+      <img :src="data.image" :alt="data.name" />
+      <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentow_PWr_2023'" target="_blank" rel="nofollow">Pobierz 1</a>
+      <button class="button" @click="shareViaWebShare(data.name, data.image)" v-if="webShareApiSupported"><p v-if="!loading">Pobierz 2</p><LoadingIndicator inline small v-else/></button>
     </div>
   </div>
 
@@ -60,12 +50,6 @@ export default {
     clearInterval(this.timer)
   },
   methods: {
-    showRef(ref, index) {
-      this.$refs[ref][index].show()
-    },
-    hideRef(ref, index) {
-      this.$refs[ref][index].hide()
-    },
 
     async shareViaWebShare(name, image) {
       this.loading = true
@@ -76,7 +60,7 @@ export default {
           [blob],
           name + '_Obóz_Studentow_PWr_2023.' + image.split('.').pop(),
           {
-            type: "image/jpeg",
+            type: "image/png",
             lastModified: new Date().getTime()
           }
       )

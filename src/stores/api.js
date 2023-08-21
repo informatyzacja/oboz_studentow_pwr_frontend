@@ -3,7 +3,6 @@ import { defineStore } from 'pinia'
 import { useContactStore } from './contacts.js'
 import {
   useUserWorkshopStore,
-  useScheduleStore,
   useAnnouncementStore,
   useDailyQuestStore,
   usePartnerStore
@@ -16,6 +15,7 @@ import { useImageStore } from './images.js'
 import { usePermissionStore } from './staff/permissions.js'
 import { usePointStore, usePointTypeStore } from './staff/points.js'
 import { useAnnouncementAllStore } from './staff/announcements.js'
+import { useScheduleStore } from './schedule.js'
 
 export const useApiDataStore = defineStore('apiData', {
   state: () => ({

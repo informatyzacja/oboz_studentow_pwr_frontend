@@ -24,58 +24,6 @@ export const useUserWorkshopStore = defineStore('userWorkshop', {
   }
 })
 
-export const useScheduleStore = defineStore('schedule', {
-  state: () => ({ loading: true, error: null, data: null, url: 'schedule/' }),
-  getters: {
-    ready() {
-      return ready(this)
-    },
-    rightNow() {
-      if (!this.ready || !this.data) {
-        return []
-      }
-      return this.data.filter((item) => {
-        return moment(item.start).isBefore(moment()) && moment(item.end).isAfter(moment())
-      })
-    },
-    upNext() {
-      if (!this.ready || !this.data) {
-        return []
-      }
-      return this.data
-        .filter((item) => {
-          return moment(item.start).isAfter(moment())
-        })
-        .sort((a, b) => {
-          return moment(a.start).diff(moment(b.start))
-        })
-        .slice(0, 5)
-        .filter((item) => {
-          return moment(item.start).isSame(moment(), 'day')
-        })
-    },
-    today() {
-      if (!this.ready || !this.data) {
-        return []
-      }
-      return this.data.filter((item) => {
-        return moment(item.start).isSame(moment(), 'day')
-      })
-    },
-    withId() {
-      return (id) =>
-        this.data.find((item) => {
-          return item.id === id
-        })
-    },
-  },
-  actions: {
-    fetchData() {
-      loadData(this)
-    }
-  }
-})
-
 export const useAnnouncementStore = defineStore('announcement', {
   state: () => ({ loading: true, error: null, data: null, url: 'announcement/' }),
   getters: {

@@ -39,11 +39,23 @@ const router = createRouter({
       name: 'warsztatyDetail',
       component: () => import('../views/WorkshopDetailView.vue'),
       // meta: { transition: 'workshop' },
+      
+    },
+    {
+      path: '/harmonogram',
+      name: 'schedule',
+      component: () => import('../views/ScheduleView.vue'),
+    },
+    {
+      path: '/harmonogram/:day',
+      name: 'scheduleDay',
+      component: () => import('../views/ScheduleView.vue'),
+      meta: { transition: 'fade' },
     },
     {
       path: '/harmonogram/info/:id',
-      name: 'harmonogramDetail',
-      component: () => import('../views/HarmonogramDetailView.vue'),
+      name: 'scheduleDetail',
+      component: () => import('../views/ScheduleDetailView.vue'),
     },
     {
       path: '/mapa',
