@@ -53,8 +53,7 @@ import questionMark from '../assets/question-mark.jpg'
           :location="data.location"
           :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
           :imgSrc="data.photo || questionMark"
-          :userCount="data.userCount + '/' + data.userLimit"
-          big
+          big wide
         />
       </RouterLink>
     </div>

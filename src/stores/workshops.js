@@ -51,7 +51,9 @@ export const useWorkshopStore = defineStore('workshop', {
       }
       return [
         ...new Set(
-          this.data.map((item) => {
+          this.data.sort((a, b) => {
+            return moment(a.start) - moment(b.start) || a.name.localeCompare(b.name)
+          }).map((item) => {
             return moment(item.start).format('YYYY-MM-DD')
           })
         )

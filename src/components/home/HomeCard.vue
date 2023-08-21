@@ -24,12 +24,16 @@ defineProps({
   big: {
     type: Boolean,
     default: false
+  },
+  wide: {
+    type: Boolean,
+    default: false
   }
 });
 </script>
 
 <template>
-  <div class="card" :class="{ big: big }">
+  <div class="card" :class="{ big: big, wide: wide }">
     <img class="bg" :src="imgSrc"/>
     <div class="time">
       <p>{{ time }}</p>
@@ -62,6 +66,10 @@ defineProps({
   margin: 0 0 10px;
 }
 
+.card.wide {
+  aspect-ratio: 1.7;
+}
+
 .bg {
   position: absolute;
   width: 100%;
@@ -90,6 +98,10 @@ defineProps({
   height: 100%;
   border-radius: 20px;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0) 44.08%, var(--bg-lighter) 73.74%);
+}
+
+.card.wide .overlay {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 54.08%, var(--bg-lighter) 83.74%);
 }
 
 .description {
