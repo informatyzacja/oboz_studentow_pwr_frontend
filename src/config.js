@@ -1,8 +1,8 @@
 export const API_URL = import.meta.env.VITE_API_URL || '/api/'
 export const AUTH_HEADER = JSON.parse(import.meta.env.VITE_AUTH_HEADER || '{}')
 
-export const REULAMIN_LINK = 'https://obozstudentowpwr.com'
-export const POLITYKA_PRYWATNOSCI_LINK = 'https://obozstudentowpwr.com'
+export const REULAMIN_LINK = 'https://e-2-e.eu/pl_pl/terms-and-conditions/'
+export const POLITYKA_PRYWATNOSCI_LINK = 'https://e-2-e.eu/pl_pl/privacy-policy/'
 
 
 import { getToken, isSupported } from "firebase/messaging";
