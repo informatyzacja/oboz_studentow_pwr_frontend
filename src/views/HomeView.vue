@@ -20,6 +20,7 @@ import questionMark from '../assets/question-mark.jpg'
 
 import rightArrow from '../assets/arrow.svg'
 import microphoneIcon from '../assets/ogloszenia.svg'
+import scheduleIcon from '../assets/icons8-schedule.png'
 
 import zobaczFrakcje from '../assets/zobacz frakcje.png'
 import graNocna from '../assets/gra nocna.png'
@@ -108,7 +109,7 @@ import ItemBox from '../components/ItemBox.vue'
 
     <div class="padding">
       <RouterLink to="/harmonogram">
-        <ItemBox :bigText="apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length ? 'Pełny harmonogram' : 'Harmonogram'" :rightIcon="rightArrow"/>
+        <ItemBox :bigText="apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length ? 'Pełny harmonogram' : 'Harmonogram'" :rightIcon="rightArrow" :leftIcon="scheduleIcon"/>
       </RouterLink>
     </div>
 

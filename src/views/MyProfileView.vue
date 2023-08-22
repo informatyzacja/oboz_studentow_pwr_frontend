@@ -63,7 +63,7 @@ import { mapStores } from 'pinia'
         </a>
 
         <h6 v-if="apiDataStore.profile.ready">
-          W przypadku błędnych danych prosimy o kontakt ze sztabem
+          W przypadku błędnych danych prosimy o natychmiastowy kontakt ze sztabem
         </h6>
 
         <div class="spacer"></div>

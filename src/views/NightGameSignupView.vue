@@ -77,7 +77,7 @@ import moment from 'moment'
     <h3>Gratulacje!</h3>
     <img :src="okIcon" alt="ok" style="width: 100px; margin: 20px auto; display: block;"/>
     <p>Twoja grupa została zapisana na grę nocną.</p>
-    <p>W razie problemów prosimy o kontakt ze sztabem.</p>
+    <p>W razie problemów prosimy o natychmiastowy kontakt ze sztabem.</p>
     <p>Do zobaczenia na grze!</p>
 
     <p style="margin-top: 20px">Grupę możesz zobaczyć w zakładce <RouterLink to="/profil"><u>profil</u></RouterLink>.</p>
