@@ -19,26 +19,28 @@ import { getCookie } from '../stores/functions.js'
       <button class="button success">Dodaj ogłoszenie</button>
     </RouterLink>
 
-    <div v-if="apiDataStore.announcementsAll.ready && apiDataStore.announcementsAll.data.length">
-      <div class="padding">
-        <div class="announcementView" v-for="(data, index) in apiDataStore.announcementsAll.data" :key="index">
-          <TextBox
-            :title="data.title"
-            :content="data.content"
-            style="margin-bottom: 10px"
-          >
-            <p style="font-size: 10px;">Dodane przez: {{ data.addedBy.first_name }} {{ data.addedBy.last_name }}</p>
-            <p style="font-size: 10px;" v-if="data.group.name">Grupa: {{ data.group.type.name }} - {{ data.group.name }}</p>
-            <p style="font-size: 10px;">Data dodania: {{ moment(data.date).format('DD.MM.YYYY HH:mm') }}</p>
-            <p style="font-size: 10px;">Data ukrycia: {{ moment(data.hide_date).format('DD.MM.YYYY HH:mm') }}</p>
-          </TextBox> 
-          <button class="button danger deleteButton" @click="hideAnnouncement(data.id)">Ukryj</button>
+    <div class="padding-main">
+      <div v-if="apiDataStore.announcementsAll.ready && apiDataStore.announcementsAll.data.length">
+        <div class="padding">
+          <div class="announcementView" v-for="(data, index) in apiDataStore.announcementsAll.data" :key="index">
+            <TextBox
+              :title="data.title"
+              :content="data.content"
+              style="margin-bottom: 10px"
+            >
+              <p style="font-size: 10px;">Dodane przez: {{ data.addedBy.first_name }} {{ data.addedBy.last_name }}</p>
+              <p style="font-size: 10px;" v-if="data.group.name">Grupa: {{ data.group.type.name }} - {{ data.group.name }}</p>
+              <p style="font-size: 10px;">Data dodania: {{ moment(data.date).format('DD.MM.YYYY HH:mm') }}</p>
+              <p style="font-size: 10px;">Data ukrycia: {{ moment(data.hide_date).format('DD.MM.YYYY HH:mm') }}</p>
+            </TextBox> 
+            <button class="button danger deleteButton" @click="hideAnnouncement(data.id)">Ukryj</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <LoadingIndicator v-if="apiDataStore.announcementsAll.loading" />
-    <p v-if="apiDataStore.announcementsAll.error" class="error">{{ apiDataStore.announcementsAll.error }}</p>
+      <LoadingIndicator v-if="apiDataStore.announcementsAll.loading" />
+      <p v-if="apiDataStore.announcementsAll.error" class="error">{{ apiDataStore.announcementsAll.error }}</p>
+    </div>
   </main>
 </template>
 

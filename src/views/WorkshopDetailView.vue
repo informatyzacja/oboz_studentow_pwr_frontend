@@ -123,6 +123,10 @@ import questionMark from '../assets/question-mark.jpg'
 </template>
 
 <style scoped>
+
+main {
+  padding-bottom: 100px;
+}
 .button {
   border-radius: 10px;
   border: none;
