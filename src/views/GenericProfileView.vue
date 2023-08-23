@@ -398,18 +398,19 @@ button {
 .qr_div img {
   
   --border-size: calc(2% + 3px);
-  --border-angle: 0turn;
+  /* --border-angle: 0turn; */
   padding: calc(var(--border-size) + 2%);
   /* width: 60vmin;
   height: 50vmin; */
-  background-image: conic-gradient(
-      var(--orange) ,
-      var(--orange)
-    ),
-    conic-gradient(from var(--border-angle), transparent 15%, var(--red) 25%, transparent 35%, transparent 65%, var(--red) 75%, transparent 85%);
   background-size: calc(100% - (var(--border-size) * 2))
       calc(100% - (var(--border-size) * 2)),
     cover;
+    background-image: conic-gradient(
+          var(--orange) ,
+          var(--orange)
+        ),
+        conic-gradient(from 0turn, transparent 15%, var(--red) 25%, transparent 35%, transparent 65%, var(--red) 75%, transparent 85%);
+   
   /* background-size: 100% 100%, cover; */
   background-position: center center;
   background-repeat: no-repeat;
@@ -423,15 +424,20 @@ button {
 }
   @keyframes bg-spin {
     to {
-      --border-angle: 1turn;
+      background-image: conic-gradient(
+          var(--orange) ,
+          var(--orange)
+        ),
+        conic-gradient(from 1turn, transparent 15%, var(--red) 25%, transparent 35%, transparent 65%, var(--red) 75%, transparent 85%);
     }
   }
 
-@property --border-angle {
+
+/* @property --border-angle {
   syntax: "<angle>";
   inherits: true;
   initial-value: 0turn;
-}
+} */
 
 </style>
 
