@@ -60,6 +60,10 @@ defineProps([
                 :callback="qrReady"
                 :size="250"
               />
+      <span class="top"></span>
+      <span class="right"></span>
+      <span class="bottom"></span>
+      <span class="left"></span>
             </div>
             <LoadingIndicator v-if="qrLoading" inline />
           </div>
@@ -95,6 +99,10 @@ defineProps([
               :callback="qrReady"
               :size="700"
             />
+      <span class="top"></span>
+      <span class="right"></span>
+      <span class="bottom"></span>
+      <span class="left"></span>
           </div>
           <LoadingIndicator v-if="qrLoading" inline />
           <p>Kod: {{ profileData.bandId }}</p>
@@ -395,49 +403,171 @@ button {
 
 
 
-.qr_div img {
-  
-  --border-size: calc(2% + 3px);
-  /* --border-angle: 0turn; */
-  padding: calc(var(--border-size) + 2%);
-  /* width: 60vmin;
-  height: 50vmin; */
-  background-size: calc(100% - (var(--border-size) * 2))
-      calc(100% - (var(--border-size) * 2)),
-    cover;
-    background-image: conic-gradient(
-          var(--orange) ,
-          var(--orange)
-        ),
-        conic-gradient(from 0turn, transparent 15%, var(--red) 25%, transparent 35%, transparent 65%, var(--red) 75%, transparent 85%);
-   
-  /* background-size: 100% 100%, cover; */
-  background-position: center center;
-  background-repeat: no-repeat;
-  border-radius: 2%;
-
-  animation: bg-spin 2.5s linear infinite;
-
-  /* &:hover {
-    animation-play-state: paused;
-  } */
+span, div {
+  --border-width: calc(2% + 3px);
 }
-  @keyframes bg-spin {
-    to {
-      background-image: conic-gradient(
-          var(--orange) ,
-          var(--orange)
-        ),
-        conic-gradient(from 1turn, transparent 15%, var(--red) 25%, transparent 35%, transparent 65%, var(--red) 75%, transparent 85%);
-    }
+.qr_div {
+  position: relative;
+  color: #fff;
+  background: transparent;
+  overflow: hidden;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: calc(var(--border-width) + 2%);
+}
+
+span {
+  position: absolute;
+  border-radius: 100vmax;
+}
+
+.top {
+  top: 0;
+  left: 0;
+  width: 0;
+  height: var(--border-width);
+  background: linear-gradient(
+    90deg,
+    transparent 30%,
+    var(--red),
+    var(--red)
+  );
+}
+
+.bottom {
+  right: 0;
+  bottom: 0;
+  height: var(--border-width);
+  background: linear-gradient(
+    90deg,
+    var(--red),
+    var(--red),
+    transparent 70%
+  );
+}
+
+.right {
+  top: 0;
+  right: 0;
+  width: var(--border-width);
+  height: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 30%,
+    var(--red),
+    var(--red)
+  );
+}
+
+.left {
+  left: 0;
+  bottom: 0;
+  width: var(--border-width);
+  height: 0;
+  background: linear-gradient(
+    180deg,
+    var(--red),
+    var(--red),
+    transparent 70%
+  );
+}
+
+.top {
+  animation: animateTop 1s linear infinite;
+}
+
+.bottom {
+  animation: animateBottom 1s linear infinite;
+}
+
+.right {
+  animation: animateRight 1s linear infinite;
+}
+
+.left {
+  animation: animateLeft 1s linear infinite;
+}
+
+
+
+@keyframes animateTop {
+  0%
+  {
+    opacity: 0;
+    width: 0;
+  }
+  50% {
+    width: 100%;
+    opacity: 1;
   }
 
+  60%,
+  100% {
+    width: 100%;
+    opacity: 0;
+  }
+}
 
-/* @property --border-angle {
-  syntax: "<angle>";
-  inherits: true;
-  initial-value: 0turn;
-} */
+@keyframes animateBottom {
+  0%
+  {
+    opacity: 0;
+    width: 0;
+  }
+  50% {
+    width: 100%;
+    opacity: 1;
+  }
+
+  60%,
+  100% {
+    width: 100%;
+    opacity: 0;
+  }
+
+}
+
+@keyframes animateRight {
+  0%,
+  50% {
+    opacity: 0;
+    bottom: 0;
+    height: 0;
+  }
+
+  90% {
+    opacity: 1;
+    height: 100%;
+  }
+
+  100% {
+    opacity: 0;
+    height: 100%;
+  }
+}
+
+@keyframes animateLeft {
+  0%,
+  50% {
+    opacity: 0;
+    bottom: 0;
+    height: 0;
+  }
+
+  90% {
+    opacity: 1;
+    height: 100%;
+  }
+
+  100% {
+    opacity: 0;
+    height: 100%;
+  }
+}
+
 
 </style>
 
