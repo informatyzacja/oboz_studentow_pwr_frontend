@@ -7,6 +7,9 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import moment from 'moment'
+
+import { API_URL, AUTH_HEADER } from '../config.js'
+import { getCookie } from '../stores/functions.js'
 </script>
 
 <template>
@@ -18,17 +21,19 @@ import moment from 'moment'
 
     <div v-if="apiDataStore.announcementsAll.ready && apiDataStore.announcementsAll.data.length">
       <div class="padding">
-        <TextBox
-          v-for="(data, index) in apiDataStore.announcementsAll.data"
-          :key="index"
-          :title="data.title"
-          :content="data.content"
-          style="margin-bottom: 10px"
-        >
-          <p style="font-size: 10px;">Dodane przez: {{ data.addedBy.first_name }} {{ data.addedBy.last_name }}</p>
-          <p style="font-size: 10px;" v-if="data.group.name">Grupa: {{ data.group.type.name }} - {{ data.group.name }}</p>
-          <p style="font-size: 10px;">Data dodania: {{ moment(data.date).format('DD.MM.YYYY HH:mm') }}</p>
-      </TextBox> 
+        <div class="announcementView" v-for="(data, index) in apiDataStore.announcementsAll.data" :key="index">
+          <TextBox
+            :title="data.title"
+            :content="data.content"
+            style="margin-bottom: 10px"
+          >
+            <p style="font-size: 10px;">Dodane przez: {{ data.addedBy.first_name }} {{ data.addedBy.last_name }}</p>
+            <p style="font-size: 10px;" v-if="data.group.name">Grupa: {{ data.group.type.name }} - {{ data.group.name }}</p>
+            <p style="font-size: 10px;">Data dodania: {{ moment(data.date).format('DD.MM.YYYY HH:mm') }}</p>
+            <p style="font-size: 10px;">Data ukrycia: {{ moment(data.hide_date).format('DD.MM.YYYY HH:mm') }}</p>
+          </TextBox> 
+          <button class="button danger deleteButton" @click="hideAnnouncement(data.id)">Ukryj</button>
+        </div>
       </div>
     </div>
 
@@ -54,11 +59,34 @@ export default {
 
   },
   methods: {
-    showRef(ref, index) {
-      this.$refs[ref][index].show()
+    signOut(userSignUpId) {
+      this.apiDataStore.workshops.addLoaderSignup(userSignUpId)
     },
-    hideRef(ref, index) {
-      this.$refs[ref][index].hide()
+    hideAnnouncement(id) {
+      this.loading = true
+      const csrftoken = getCookie('csrftoken')
+      fetch(API_URL + '../staff-api/hide-announcement/' + id + '/', {
+        headers: Object.assign(
+          {},
+          { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken },
+          AUTH_HEADER
+        ),
+        method: 'PUT'
+      })
+        .then((data) => {
+          if (data.ok) {
+            return data
+          }
+          throw new Error('Request failed!')
+        })
+        .then(() => {})
+        .catch((error) => {
+          console.error('There was an error!', error)
+        })
+        .finally(() => {
+          this.apiDataStore.announcementsAll.fetchData()
+          this.loading = false
+        })
     }
   },
   beforeUnmount() {
@@ -89,5 +117,26 @@ button {
 
 button.success {
   background-color: green;
+}
+
+button.danger {
+  background-color: var(--red);
+}
+
+.deleteButton {
+  margin: 5px;
+  width: auto;
+}
+
+.announcementView {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.announcementView div {
+  width: 100%;
 }
 </style>
