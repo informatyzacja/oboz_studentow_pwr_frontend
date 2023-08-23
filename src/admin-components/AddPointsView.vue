@@ -75,7 +75,7 @@ import { getCookie } from '../stores/functions.js'
             <p v-if="error" class="error">{{ error }}</p>
             <button v-if="success" class="button" @click="reset">Dodaj kolejne</button>
         </div>
-        <p v-else-if="selectedGroupType && selectedPointType && !apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType)" class="error">Ten rodzaj grupy nie może posiadać podanej kategorii punktów</p>
+        <p v-else-if="selectedGroupType && selectedPointType && !apiDataStore.pointTypes.withTypes(selectedGroupType,selectedPointType)" class="error">Grupa typu "{{selectedGroupType}}" nie może posiadać podanej kategorii punktów</p>
 
 
 
@@ -131,8 +131,10 @@ export default {
                 this.selectedGroup = parseInt(this.$route.params.groupId)
                 this.selectedGroupType = this.apiDataStore.pointTypes.getGroupById(this.selectedGroup).type.name
             }
-            this.selectedGroupType = this.$route.params.groupType || this.selectedGroupType
             this.selectedPointType = parseInt(this.$route.params.pointTypeId) || ''
+            if (this.selectedPointType) {
+                this.selectedGroupType = this.apiDataStore.pointTypes.getPointTypeById(this.selectedPointType).group_type.name
+            }
         }
 
         this.apiDataStore.pointTypes.fetchData()
