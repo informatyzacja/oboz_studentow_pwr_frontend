@@ -114,7 +114,7 @@ defineProps([
       </OverlayView>
 
       <p class="name">{{ profileData.first_name }} {{ profileData.last_name }}</p>
-      <span class="title">{{ profileData.title }}</span>
+      <p class="title">{{ profileData.title }}</p>
       <p class="email">{{ profileData.email }}</p>
 
       <div class="spacer"></div>
