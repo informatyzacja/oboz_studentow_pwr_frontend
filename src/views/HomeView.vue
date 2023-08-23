@@ -64,12 +64,13 @@ import ItemBox from '../components/ItemBox.vue'
       </div>
     </div>
 
+    <InstallAppView />
+    
     <div v-if="showPushNotificationCard">
       <PushNotficationsPopupView
         @hide="showPushNotificationCard = false" />
     </div>
 
-    <InstallAppView />
 
     <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
       <h3>Twoje dzisiejsze warsztaty</h3>
