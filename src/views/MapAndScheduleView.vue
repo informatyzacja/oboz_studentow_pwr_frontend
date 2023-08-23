@@ -12,8 +12,7 @@ import { mapStores } from 'pinia'
     <TopBar :title="data.name" />
     <div class="padding">
       <img :src="data.image" :alt="data.name" />
-      <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentow_PWr_2023'" target="_blank" rel="nofollow">Pobierz 1</a>
-      <button class="button" @click="shareViaWebShare(data.name, data.image)" v-if="webShareApiSupported"><p v-if="!loading">Pobierz 2</p><LoadingIndicator inline small v-else/></button>
+      <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentow_PWr_2023'" target="_blank" rel="nofollow">Pobierz</a>
     </div>
   </div>
 
@@ -35,9 +34,6 @@ export default {
   },
   computed: {
     ...mapStores(useApiDataStore),
-    webShareApiSupported() {
-      return navigator.share
-    },
     data() {
       return this.apiDataStore.images.named("Mapka")
     }
@@ -51,33 +47,6 @@ export default {
   },
   methods: {
 
-    async shareViaWebShare(name, image) {
-      this.loading = true
-      const response = await fetch(image);
-      const blob = await response.blob();
-      const filesArray = [
-        new File(
-          [blob],
-          name + '_Obóz_Studentow_PWr_2023.' + image.split('.').pop(),
-          {
-            type: "image/png",
-            lastModified: new Date().getTime()
-          }
-      )
-      ];
-      const shareData = {
-        files: filesArray,
-        title: "Images",
-        text: "Beautiful images",
-      };
-      navigator.share(shareData);
-      this.loading = false
-      // navigator.share({
-      //   title: 'Title to be shared',
-      //   text: 'Text to be shared',
-      //   url: 'URL to be shared'
-      // })
-    }
   }
 }
 </script>
