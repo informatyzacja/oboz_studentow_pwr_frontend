@@ -15,7 +15,7 @@ import { mapStores } from 'pinia'
     :loading="loading"
     :ready="ready"
     :error="error"
-    :hideFAQ="true"
+    :hideFAQ="true" :hideQR="true"
     :frakcjaLink="
       apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_fractions')
         ? '/frakcja'

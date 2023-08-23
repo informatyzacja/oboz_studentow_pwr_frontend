@@ -30,6 +30,7 @@ defineProps([
   'userWorkshopData',
   'userWorkshopReady',
   'hideFAQ',
+  'hideQR',
   'frakcjaLink',
   'grupaLink'
 ]);
@@ -41,7 +42,7 @@ defineProps([
   <div class="padding-main">
     <div class="flex" v-if="ready && profileData">
 
-      <div class="qr_card" @click="$refs.qrOverlay.show" >
+      <div class="qr_card" @click="$refs.qrOverlay.show" v-if="!hideQR">
         <img class="qr_card_bg" :src="qrBg" /> 
         
         <div class="qr_content" v-if="profileData.bandId">
