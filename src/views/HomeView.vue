@@ -224,7 +224,13 @@ export default {
         this.showPushNotificationCard = true
       }
     } else if (this.isIos) {
-      this.showPushNotificationCard = true
+      if ("Notification" in window) {
+          if (Notification.permission !== "granted") {
+            this.showPushNotificationCard = true
+          }
+      } else {
+        this.showPushNotificationCard = true
+      }
     }
   },
   methods: {
