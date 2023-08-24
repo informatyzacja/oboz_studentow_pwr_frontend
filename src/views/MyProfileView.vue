@@ -77,7 +77,7 @@ import { mapStores } from 'pinia'
         </a>
 
         <a href="https://icons8.com" target="_blank">
-          <ItemBox big-text="Ikonki z Icons8" :leftIcon="icons8Icon" small />
+          <ItemBox big-text="Użyte ikonki pochodzą z Icons8" :leftIcon="icons8Icon" small />
         </a>
 
         <div class="spacer"></div>
