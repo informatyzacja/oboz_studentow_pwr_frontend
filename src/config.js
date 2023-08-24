@@ -51,6 +51,7 @@ export function registerForPushNotifications() {
             }
         }).catch((err) => {
             console.log('An error occurred while retrieving token. ', err);
+            alert('Pojawił się error podczas włączania powiadomień')
             return err;
             // ...
         });
