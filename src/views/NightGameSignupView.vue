@@ -45,7 +45,6 @@ import moment from 'moment'
             <div class="index">1.</div>
             <div>
                 <input type="text" placeholder="Imię" :value="apiDataStore.profile.data[0].first_name" disabled/>
-                <input type="text" placeholder="Nazwisko" :value="apiDataStore.profile.data[0].last_name" disabled/>
             </div>
             <input type="number" pattern="[0-9]*" inputmode="numeric" class="bandInput" placeholder="Nr opaski" :value="apiDataStore.profile.data[0].bandId" disabled/>
         </div>
@@ -55,7 +54,6 @@ import moment from 'moment'
             <div class="index">{{ index+2 }}.</div>
             <div>
                 <input type="text" v-model="person.first_name" placeholder="Imię" :disabled="signupLoading"/>
-                <input type="text" v-model="person.last_name" placeholder="Nazwisko" :disabled="signupLoading"/>
             </div>
             <input type="text" pattern="[0-9]*" inputmode="numeric" class="bandInput" v-model="person.band" placeholder="Nr opaski" :disabled="signupLoading" maxlength="6"/>
         </div>
@@ -138,15 +136,15 @@ export default {
     },
     methods: {
         createPeople() {
-            while (this.people.length+1 < this.groupSize) this.people.push({first_name: '', last_name: '', band: ''})
+            while (this.people.length+1 < this.groupSize) this.people.push({first_name: '', band: ''})
         },
         peopleValid() {
             for (let person of this.people) {
-                if (!person.first_name || !person.last_name || !person.band) {
+                if (!person.first_name || !person.band) {
                     this.peopleError = ''
                     return false
                 }
-                if (person.band.length > 5) {
+                if (person.band.length > 6) {
                     this.peopleError = 'Numer opaski jest za długi'
                     return false
                 }
