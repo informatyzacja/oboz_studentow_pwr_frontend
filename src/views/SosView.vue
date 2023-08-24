@@ -44,31 +44,23 @@ import phoneIcon from '../assets/phone_icon.svg'
     <LoadingIndicator v-if="apiDataStore.contacts.loading" />
     <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
 
-    <h3>Obecnie na dyżurze trzeźwości</h3>
     <div v-if="apiDataStore.contacts.ready && apiDataStore.contacts.data.currentSoberDuty.length">
-      <a
-        v-for="(data, index) in apiDataStore.contacts.data.currentSoberDuty"
-        :key="index"
-        :href="'tel:' + data.phoneNumber"
-      >
-        <ItemBox
-          :bigText="data.first_name + ' ' + data.last_name"
-          :smallText="data.title"
-          :leftIcon="data.photo"
-          :rightIcon="phoneIcon"
-        />
-      </a>
+      <h3>Obecnie na dyżurze trzeźwości</h3>
+      <div>
+        <a
+          v-for="(data, index) in apiDataStore.contacts.data.currentSoberDuty"
+          :key="index"
+          :href="'tel:' + data.phoneNumber"
+        >
+          <ItemBox
+            :bigText="data.first_name + ' ' + data.last_name"
+            :smallText="data.title"
+            :leftIcon="data.photo"
+            :rightIcon="phoneIcon"
+          />
+        </a>
+      </div>
     </div>
-    <p
-      v-if="
-        apiDataStore.contacts.ready &&
-        apiDataStore.contacts.data.currentSoberDuty &&
-        !apiDataStore.contacts.data.currentSoberDuty.length
-      "
-      class="error"
-    >
-      Nikt nie jest na dyżurze trzeźwości
-    </p>
 
     <LoadingIndicator v-if="apiDataStore.contacts.loading" />
     <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
