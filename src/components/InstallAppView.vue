@@ -64,8 +64,10 @@ export default {
         
         if (outcome === 'accepted') {
           console.log('😀 User accepted the install prompt.');
+          alert('Zainstalowano aplikację, uruchom ją ze swojego ekranu startowego')
           this.close()
         } else if (outcome === 'dismissed') {
+          alert('Nie udało się zainstalować aplikacji')
           console.log('😟 User dismissed the install prompt');
         }
 
