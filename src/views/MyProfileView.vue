@@ -50,7 +50,7 @@ import { mapStores } from 'pinia'
         <div v-if="apiDataStore.profile.ready && apiDataStore.profile.data[0].freenow_code">
           <h3>Twój kod zniżkowy FREENOW 40%</h3>
           <h5>Ważny na terenie Wrocławia do końca października</h5>
-          <ItemBox :big-text="apiDataStore.profile.data[0].freenow_code.toUpperCase()" small-text="Naciśnij, aby skopiować" :leftIcon="taxiIcon" :rightIcon="copyIcon" no-round-icon @click="copyFreenowCode"/>
+          <ItemBox :big-text="apiDataStore.profile.data[0].freenow_code.toUpperCase()" small-text="Naciśnij, aby skopiować" :leftIcon="taxiIcon" :rightIcon="copyIcon" noRoundIcon @click="copyFreenowCode"/>
         </div>
 
         <a href="/admin/" target="_blank" v-if="
