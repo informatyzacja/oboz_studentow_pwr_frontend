@@ -60,10 +60,10 @@ defineProps([
                 :callback="qrReady"
                 :size="250"
               />
-      <span class="top"></span>
-      <span class="right"></span>
-      <span class="bottom"></span>
-      <span class="left"></span>
+              <span class="top"></span>
+              <span class="right"></span>
+              <span class="bottom"></span>
+              <span class="left"></span>
             </div>
             <LoadingIndicator v-if="qrLoading" inline />
           </div>
@@ -99,10 +99,10 @@ defineProps([
               :callback="qrReady"
               :size="700"
             />
-      <span class="top"></span>
-      <span class="right"></span>
-      <span class="bottom"></span>
-      <span class="left"></span>
+            <span class="top"></span>
+            <span class="right"></span>
+            <span class="bottom"></span>
+            <span class="left"></span>
           </div>
           <LoadingIndicator v-if="qrLoading" inline />
           <p>Kod: {{ profileData.bandId }}</p>
@@ -476,24 +476,24 @@ span {
 }
 
 .top {
-  animation: animateTop 1s linear infinite;
+  animation: animateTopBottom 1s linear infinite;
 }
 
 .bottom {
-  animation: animateBottom 1s linear infinite;
+  animation: animateTopBottom 1s linear infinite;
 }
 
 .right {
-  animation: animateRight 1s linear infinite;
+  animation: animateRightLeft 1s linear infinite;
 }
 
 .left {
-  animation: animateLeft 1s linear infinite;
+  animation: animateRightLeft 1s linear infinite;
 }
 
 
 
-@keyframes animateTop {
+@keyframes animateTopBottom {
   0%
   {
     opacity: 0;
@@ -504,69 +504,37 @@ span {
     opacity: 1;
   }
 
-  60%,
+  70%,
   100% {
     width: 100%;
     opacity: 0;
   }
 }
 
-@keyframes animateBottom {
-  0%
-  {
-    opacity: 0;
-    width: 0;
-  }
-  50% {
-    width: 100%;
+@keyframes animateRightLeft {
+  0% {
     opacity: 1;
+    height: 100%;
   }
-
-  60%,
-  100% {
-    width: 100%;
+  
+  20% {
     opacity: 0;
+    height: 100%;
   }
 
-}
-
-@keyframes animateRight {
-  0%,
   50% {
     opacity: 0;
     bottom: 0;
     height: 0;
   }
 
-  90% {
+  100% {
     opacity: 1;
     height: 100%;
   }
 
-  100% {
-    opacity: 0;
-    height: 100%;
-  }
 }
 
-@keyframes animateLeft {
-  0%,
-  50% {
-    opacity: 0;
-    bottom: 0;
-    height: 0;
-  }
-
-  90% {
-    opacity: 1;
-    height: 100%;
-  }
-
-  100% {
-    opacity: 0;
-    height: 100%;
-  }
-}
 
 
 </style>
