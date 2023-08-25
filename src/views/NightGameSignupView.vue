@@ -66,7 +66,7 @@ import moment from 'moment'
 
     <div v-if="groupName && groupSize >= apiDataStore.nightGameGroupInfo.data.group_user_min && groupSize <= apiDataStore.nightGameGroupInfo.data.group_user_max && !apiDataStore.nightGameGroupInfo.loading && !success && !signupLoading && peopleValid()">
         <button class="button success" style="margin-top: 30px" @click="signupGroup" >Zapisz grupę</button>
-        <h3 style="margin-top: 5px;text-align: center;">Upewnij się, że wszystkie informacje zostały poprawnie wprowadzone</h3>
+        <h3 style="margin-top: 5px;text-align: center;">Upewnij się, że wpisane imiona są takie same jak imię wyświetlające się w zakładce "profil" każdego uczestnika</h3>
     </div>
     <LoadingIndicator v-if="signupLoading" inline/>
   </div>
