@@ -30,7 +30,7 @@ import ItemBox from '../components/ItemBox.vue'
 <template>
   <main>
   <TopBar title="Home" />
-    <div class="padding" v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
+    <div class="padding" v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.night_game_signup_active">
         <RouterLink to="/zapisy-gra-nocna">
           <div class="image_link_container">
             <img :src="graNocna" class="image_link"/>
