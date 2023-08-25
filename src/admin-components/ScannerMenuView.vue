@@ -23,7 +23,7 @@ import { mapStores } from 'pinia'
         apiDataStore.permissions.hasPermission('can_validate_meals')
       "
     >
-      <ItemBox bigText="Walidacja posiłków" :leftIcon="mealIcon" :rightIcon="arrow" />
+      <ItemBox bigText="Walidacja posiłków" :leftIcon="mealIcon" :rightIcon="arrow" noRoundIcon leftIconWhite/>
     </RouterLink>
 
     <RouterLink
@@ -32,7 +32,7 @@ import { mapStores } from 'pinia'
         apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_add_points')
       "
     >
-      <ItemBox bigText="Dodaj punkty" :leftIcon="pointsIcon" :rightIcon="arrow" />
+      <ItemBox bigText="Dodaj punkty" :leftIcon="pointsIcon" :rightIcon="arrow"  noRoundIcon leftIconWhite/>
     </RouterLink>
 
     <RouterLink
@@ -42,7 +42,7 @@ import { mapStores } from 'pinia'
         apiDataStore.permissions.hasPermission('can_view_user_info')
       "
     >
-      <ItemBox bigText="Informacje o uczestniku" :leftIcon="userIcon" :rightIcon="arrow" />
+      <ItemBox bigText="Informacje o uczestniku" :leftIcon="userIcon" :rightIcon="arrow"  noRoundIcon leftIconWhite/>
     </RouterLink>
   </div>
   <LoadingIndicator v-if="!apiDataStore.permissions.ready" />
