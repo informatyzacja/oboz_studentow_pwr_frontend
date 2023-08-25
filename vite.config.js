@@ -22,14 +22,39 @@ export default defineConfig({
       id: '/app/',
       icons: [
         {
-          "src": "/app/android-chrome-192x192.png",
+          "src": "/android-chrome-192x192.png",
           "sizes": "192x192",
           "type": "image/png"
         },
         {
-            "src": "/app/android-chrome-512x512.png",
+            "src": "/android-chrome-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
+        },
+        {
+              "src": "/favicon-32x32.png",
+              "sizes": "32x32",
+              "type": "image/png"
+        },
+        {
+              "src": "/favicon-16x16.png",
+              "sizes": "16x16",
+              "type": "image/png"
+        },
+        {
+              "src": "/apple-touch-icon.png",
+              "sizes": "180x180",
+              "type": "image/png"
+        },
+        {
+              "src": "/safari-pinned-tab.svg",
+              "sizes": "180x180",
+              "type": "image/svg+xml"
+        },
+        {
+              "src": "/mstile-150x150.png",
+              "sizes": "150x150",
+              "type": "image/png"
         }
       ]
     },
