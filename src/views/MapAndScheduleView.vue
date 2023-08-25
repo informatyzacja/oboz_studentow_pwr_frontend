@@ -11,8 +11,8 @@ import { mapStores } from 'pinia'
   <div v-if="data">
     <TopBar :title="data.name" />
     <div class="padding">
+      <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentow_PWr_2023'" target="_blank" rel="nofollow">Pobierz mapkę</a>
       <img :src="data.image" :alt="data.name" />
-      <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentow_PWr_2023'" target="_blank" rel="nofollow">Pobierz</a>
     </div>
   </div>
 
@@ -62,6 +62,7 @@ export default {
 
 main {
   padding-bottom: 100px;
+  text-align: center;
 }
 
 .image_overlay {
@@ -90,11 +91,12 @@ a.button {
   font-family: 'Sui Generis';
   background-color: var(--bg-light);
 
-  width: 130px;
-  display: flex;
+  width: auto;
+  display: inline-block;
   justify-content: center;
 
-  margin-top: 20px;
+  margin: 0 auto;
+  margin-bottom: 20px;
 }
 
 .red-bg {
