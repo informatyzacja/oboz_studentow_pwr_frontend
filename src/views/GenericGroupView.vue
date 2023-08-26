@@ -9,6 +9,7 @@ import OverlayView from '../components/OverlayView.vue'
 import rightArrow from '../assets/arrow.svg'
 import messangerIcon from '../assets/icons8-facebook_messenger.png'
 import phoneIcon from '../assets/phone_icon.svg'
+import mapIcon from '../assets/icons8-map_marker.png'
 
 defineProps([
   'title',
@@ -55,9 +56,10 @@ defineProps([
     <TextBox v-if="group.description" :content="group.description" />
     <div class="spacer" v-if="group.description"></div>
 
-    <h3 v-if="group.map">{{ mapDescription }}</h3>
+    <!-- <h3 v-if="group.map">{{ mapDescription }}</h3> -->
     <div class="map" @click="$refs.mapOverlay.show">
-      <img v-if="group.map" :src="group.map" />
+      <!-- <img v-if="group.map" :src="group.map" /> -->
+      <ItemBox :bigText="mapDescription" :rightIcon="rightArrow" :leftIcon="mapIcon" left-icon-white no-round-icon />
     </div>
 
     <OverlayView ref="mapOverlay">
@@ -165,6 +167,7 @@ button {
   height: auto;
   max-height: 200px;
   object-fit: cover;
+  object-position: top;
   border-radius: 20px;
 }
 
@@ -198,7 +201,7 @@ button {
 .image_overlay img {
   width: 100%;
   height: auto;
-  max-height: 60vw;
+  /* max-height: 60vw; */
   object-fit: cover;
   border-radius: 20px;
 }
