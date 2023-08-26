@@ -8,7 +8,13 @@ import {
   usePartnerStore
 } from './home.js'
 
-import { useProfileStore, useLinkStore, useNightGameGroupInfoStore, useFaqStore } from './misc.js'
+import { 
+  useProfileStore, 
+  useLinkStore, 
+  useNightGameGroupInfoStore, 
+  useFaqStore,
+  useHomeLinkStore,
+} from './misc.js'
 import { useWorkshopStore } from './workshops.js'
 import { useImageStore } from './images.js'
 
@@ -28,6 +34,7 @@ export const useApiDataStore = defineStore('apiData', {
 
     profile: useProfileStore(),
     links: useLinkStore(),
+    homeLinks: useHomeLinkStore(),
     contacts: useContactStore(),
     workshops: useWorkshopStore(),
     faq: useFaqStore(),

@@ -30,6 +30,8 @@ import ItemBox from '../components/ItemBox.vue'
 <template>
   <main>
   <TopBar title="Home" />
+
+    <!-- Night Game Signup -->
     <div class="padding" v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.night_game_signup_active">
         <RouterLink to="/zapisy-gra-nocna">
           <div class="image_link_container">
@@ -38,6 +40,8 @@ import ItemBox from '../components/ItemBox.vue'
           </div>
         </RouterLink>
     </div>
+
+    <!-- Daily Quest -->
     <div
       class="padding"
       v-if="apiDataStore.dailyQuest.ready && apiDataStore.dailyQuest.future.length"
@@ -64,6 +68,50 @@ import ItemBox from '../components/ItemBox.vue'
       </div>
     </div>
 
+
+    <!-- Home Links -->
+    <div v-if="apiDataStore.homeLinks.ready && apiDataStore.homeLinks.data.length">
+      <!-- <h3>Linki</h3> -->
+      <div class="padding">
+
+        <span
+          v-for="(data, index) in apiDataStore.homeLinks.data"
+          :key="index"
+        >
+
+          <RouterLink v-if="data.url && data.url.startsWith('/')" :to="data.url">
+            <div class="image_link_container" v-if="data.image">
+              <img :src="graNocna" class="image_link"/>
+              <img :src="rightArrow" class="image_link_arrow" v-if="data.url"/>
+            </div>
+            <ItemBox
+              v-if="data.name && data.icon"
+              :bigText="data.name"
+              :rightIcon="data.url ? rightArrow : ''"
+              :leftIcon="data.icon"
+            />
+          </RouterLink>
+          <a v-else :href="data.url" target="_blank">
+            <div class="image_link_container" v-if="data.image">
+              <img :src="graNocna" class="image_link"/>
+              <img :src="rightArrow" class="image_link_arrow" v-if="data.url"/>
+            </div>
+            <ItemBox
+              v-if="data.name && data.icon"
+              :bigText="data.name"
+              :rightIcon="data.url ? rightArrow : ''"
+              :leftIcon="data.icon"
+            />
+          </a>
+
+
+        </span>
+
+
+      </div>
+    </div>
+
+
     <InstallAppView />
     
     <div v-if="showPushNotificationCard">
@@ -71,7 +119,7 @@ import ItemBox from '../components/ItemBox.vue'
         @hide="showPushNotificationCard = false" />
     </div>
 
-
+    <!-- Workshops -->
     <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
       <h3>Twoje dzisiejsze warsztaty</h3>
       <div class="scroll">
@@ -90,6 +138,7 @@ import ItemBox from '../components/ItemBox.vue'
       </div>
     </div>
 
+    <!-- Schedule - now -->
     <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length">
       <h3>Co się teraz dzieje?</h3>
       <div class="scroll">
@@ -114,6 +163,7 @@ import ItemBox from '../components/ItemBox.vue'
       </RouterLink>
     </div>
 
+    <!-- Announcements -->
     <div v-if="apiDataStore.announcement.ready && apiDataStore.announcement.data.length">
       <h3>Ogłoszenia</h3>
       <div class="padding">
@@ -128,6 +178,7 @@ import ItemBox from '../components/ItemBox.vue'
       </div>
     </div>
 
+    <!-- Schedule - up next -->
     <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.upNext.length">
       <h3>Następne</h3>
       <div class="scroll">
@@ -154,6 +205,7 @@ import ItemBox from '../components/ItemBox.vue'
       </div>
 
       
+      <!-- Partners -->
       <div class="partners" v-if="apiDataStore.partner.ready && apiDataStore.partner.data.length">
         <h3>Partnerzy</h3>
         <div class="scroll">
@@ -191,6 +243,7 @@ export default {
       timer4: null,
       timer5: null,
       timer6: null,
+      timer7: null,
 
       showPushNotificationCard: false,
     }
@@ -206,6 +259,7 @@ export default {
     this.apiDataStore.userWorkshop.fetchData()
     this.apiDataStore.schedule.fetchData()
     this.apiDataStore.announcement.fetchData()
+    this.apiDataStore.homeLinks.fetchData()
     this.apiDataStore.dailyQuest.fetchData()
     this.apiDataStore.profile.fetchData()
     this.apiDataStore.nightGameGroupInfo.fetchData()
@@ -217,6 +271,7 @@ export default {
     this.timer4 = setInterval(this.apiDataStore.dailyQuest.fetchData, 300000)
     this.timer5 = setInterval(this.apiDataStore.nightGameGroupInfo.fetchData, 60000)
     this.timer6 = setInterval(this.apiDataStore.partner.fetchData, 60000)
+    this.timer7 = setInterval(this.apiDataStore.homeLinks.fetchData, 60000)
 
 
     if (isSupported() && ("Notification" in window)) {
@@ -248,6 +303,7 @@ export default {
     clearInterval(this.timer4)
     clearInterval(this.timer5)
     clearInterval(this.timer6)
+    clearInterval(this.timer7)
   }
 }
 </script>

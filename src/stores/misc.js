@@ -37,6 +37,21 @@ export const useLinkStore = defineStore('link', {
   }
 })
 
+
+export const useHomeLinkStore = defineStore('home-link', {
+  state: () => ({ loading: true, error: null, data: null, url: 'home-link/' }),
+  getters: {
+    ready() {
+      return ready(this)
+    }
+  },
+  actions: {
+    fetchData() {
+      loadData(this)
+    }
+  }
+})
+
 export const useFaqStore = defineStore('faq', {
   state: () => ({ loading: true, error: null, data: null, url: 'faq/' }),
   getters: {
