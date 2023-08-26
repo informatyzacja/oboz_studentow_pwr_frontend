@@ -56,8 +56,7 @@ defineProps([
     <TextBox v-if="group.description" :content="group.description" />
     <div class="spacer" v-if="group.description"></div>
 
-    <!-- <h3 v-if="group.map">{{ mapDescription }}</h3> -->
-    <div class="map" @click="$refs.mapOverlay.show">
+    <div class="map" @click="$refs.mapOverlay.show" v-if="group.map">
       <!-- <img v-if="group.map" :src="group.map" /> -->
       <ItemBox :bigText="mapDescription" :rightIcon="rightArrow" :leftIcon="mapIcon" left-icon-white no-round-icon />
     </div>
