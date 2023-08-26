@@ -178,6 +178,26 @@ import ItemBox from '../components/ItemBox.vue'
       </div>
     </div>
 
+    <!-- Images -->
+    <div v-for="(data, index) in apiDataStore.images.other" :key="index">
+      <TopBar :title="data.name" />
+      <div class="image-view">
+        <img :src="data.image" :alt="data.name" @click="showRef('imageOverlay', index)" />
+
+        <OverlayView ref="imageOverlay">
+          <div class="image_overlay">
+            <h3>{{ data.name }}</h3>
+            <img :src="data.image" :alt="data.name" />
+
+            <!-- <button class="button" @click="shareViaWebShare(data.name, data.image)" v-if="webShareApiSupported"><p v-if="!loading">Zapisz</p><LoadingIndicator inline small v-else/></button> -->
+            <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentow_PWr_2023'" target="_blank" rel="nofollow">Pobierz</a>
+
+            <button class="red-bg" @click="hideRef('imageOverlay', index)">Zamknij</button>
+          </div>  
+        </OverlayView>
+      </div>
+    </div>
+
     <!-- Schedule - up next -->
     <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.upNext.length">
       <h3>Następne</h3>
@@ -244,6 +264,7 @@ export default {
       timer5: null,
       timer6: null,
       timer7: null,
+      timer8: null,
 
       showPushNotificationCard: false,
     }
@@ -264,6 +285,7 @@ export default {
     this.apiDataStore.profile.fetchData()
     this.apiDataStore.nightGameGroupInfo.fetchData()
     this.apiDataStore.partner.fetchData()
+    this.apiDataStore.images.fetchData()
 
     this.timer1 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000)
     this.timer2 = setInterval(this.apiDataStore.schedule.fetchData, 300000)
@@ -272,6 +294,7 @@ export default {
     this.timer5 = setInterval(this.apiDataStore.nightGameGroupInfo.fetchData, 60000)
     this.timer6 = setInterval(this.apiDataStore.partner.fetchData, 60000)
     this.timer7 = setInterval(this.apiDataStore.homeLinks.fetchData, 60000)
+    this.timer8 = setInterval(this.apiDataStore.images.fetchData, 60000)
 
 
     if (isSupported() && ("Notification" in window)) {
@@ -304,6 +327,7 @@ export default {
     clearInterval(this.timer5)
     clearInterval(this.timer6)
     clearInterval(this.timer7)
+    clearInterval(this.timer8)
   }
 }
 </script>
@@ -393,5 +417,54 @@ button {
   height: 100%;
   right: 15px;
   position: absolute;
+}
+
+
+/* Image */
+.image-view {
+  padding: 0 20px;
+}
+.image-view img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.image_overlay {
+  box-sizing: border-box;
+  /* width: 100%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 30px 10px;
+
+  background: var(--bg);
+  padding: 10px 10px 30px;
+  border-radius: 20px;
+}
+
+
+a.button {
+  border-radius: 10px;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  line-height: 16px;
+  cursor: pointer;
+  font-family: 'Sui Generis';
+  background-color: var(--bg-light);
+
+  width: auto;
+  display: inline-block;
+  justify-content: center;
+
+  margin: 10px auto;
+}
+
+.red-bg {
+  background-color: var(--red);
 }
 </style>

@@ -16,6 +16,14 @@ export const useImageStore = defineStore('images', {
           return item.name === name
         })
       }
+    },
+    other() {
+      if (!this.ready || !this.data) {
+        return []
+      }
+      return this.data.filter((item) => {
+        return ['Mapka', 'Harmonogram'].indexOf(item.name) === -1
+      })
     }
   },
   actions: {
