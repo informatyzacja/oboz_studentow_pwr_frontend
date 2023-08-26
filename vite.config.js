@@ -77,6 +77,7 @@ export default defineConfig({
     }
   },
   define: {
-    VERSION_NUMBER: JSON.stringify(new Date().toISOString().slice(2, 10).replace(/-/g, '.'))
+    VERSION_NUMBER: JSON.stringify(new Date().toISOString().slice(2, 10).replace(/-/g, '.')),
+    BUILD_TIME: JSON.stringify(new Date().toISOString().replace('T', ' ').slice(0, 19))
   }
 })

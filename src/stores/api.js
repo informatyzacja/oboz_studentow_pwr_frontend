@@ -17,6 +17,8 @@ import { usePointStore, usePointTypeStore } from './staff/points.js'
 import { useAnnouncementAllStore } from './staff/announcements.js'
 import { useScheduleStore } from './schedule.js'
 
+import { useVersionStore } from './version.js'
+
 export const useApiDataStore = defineStore('apiData', {
   state: () => ({
     userWorkshop: useUserWorkshopStore(),
@@ -38,5 +40,7 @@ export const useApiDataStore = defineStore('apiData', {
     announcementsAll: useAnnouncementAllStore(),
 
     nightGameGroupInfo: useNightGameGroupInfoStore(),
+
+    version: useVersionStore()
   })
 })

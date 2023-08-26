@@ -96,7 +96,8 @@ import { registerForPushNotifications } from '../../config.js'
 export default {
   data() {
     return {
-      showIosInstallMessage: false
+      showIosInstallMessage: false,
+      versionTimer: null,
     }
   },
   computed: {
@@ -120,18 +121,19 @@ export default {
   },
   mounted() {
     this.apiDataStore.permissions.fetchData()
+    this.apiDataStore.version.checkForUpdate()
 
-    // if (this.isIos && !this.isInStandaloneMode) {
-    //   this.showIosInstallMessage = true
-    // }
+    this.versionTimer = setInterval(() => {
+      this.apiDataStore.version.checkForUpdate()
+    }, 1000 * 60 * 10) // 10 min
 
     if (isSupported() && ("Notification" in window) && Notification.permission === "granted") {
       registerForPushNotifications()
     }
   },
-  methods: {
-    
-  }
+  beforeUnmount() {
+    clearInterval(this.versionTimer)
+  },
 }
 </script>
 
