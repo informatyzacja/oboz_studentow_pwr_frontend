@@ -183,8 +183,9 @@ defineProps([
           small
         />
         <ItemBox
-          v-if="profileData.houseNumber"
-          :bigText="'Domek nr ' + profileData.houseNumber"
+          v-if="profileData.house"
+          :bigText="'Domek nr ' + profileData.house.name"
+          :smallText="profileData.house.key_collected ? 'Klucze odebrane ✅' : 'Klucze nieodebrane ❌'"
           :leftIcon="domekIcon"
           small
         />
