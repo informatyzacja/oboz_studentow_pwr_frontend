@@ -34,11 +34,17 @@ defineEmits(['error', 'result']);
         @init="onInit"
         :track="track"
         :camera="camera"
+        :torch="torch"
+        :constrains="{ focusMode, focusDistance }"
         v-if="!disable"
       />
     </div>
     <LoadingIndicator v-if="qrScannerLoading" inline />
   </div>
+      <button class="button" v-if="torchSupported" @click="torch = !torch" style="margin-top: 5px; 
+  padding: 10px 35px; font-size: 13px; margin: 0;">
+        {{ torch ? 'Wyłącz latarkę' : 'Włącz latarkę' }}
+      </button>
 </template>
 
 <script>
@@ -50,7 +56,12 @@ export default {
       qrReaderError: '',
       qrScannerLoading: true,
       disable: false,
-      camera: 'auto'
+      camera: 'auto',
+      torch: false,
+      torchSupported: false,
+      facingMode: 'user',
+      focusMode: "manual",
+      focusDistance: 0,
     }
   },
   beforeUnmount() {
@@ -95,7 +106,34 @@ export default {
 
     async onInit(promise) {
       try {
-        await promise
+        var capabilities = (await promise).capabilities;
+        this.torchSupported = !!capabilities.torch
+        console.log("Camera capabilities:", capabilities)
+        console.log("Torch supported:", this.torchSupported)
+        console.log("Camera capabilities focusDistance:", capabilities.focusDistance)
+
+        if (capabilities.focusDistance) {
+          try {
+            this.focusDistance = capabilities.focusDistance.min
+
+            const stream = await navigator.mediaDevices.getUserMedia({
+              video: {
+                facingMode: this.facingMode,
+                focusMode: this.focusMode,
+                focusDistance: this.focusDistance,
+                zoom: true
+              }
+            });
+
+            const [track] = stream.getVideoTracks();
+            await track.applyConstraints({
+              focusMode: "manual",
+              focusDistance: capabilities.focusDistance.min
+            });
+          } catch (err) {
+            console.error("applyConstraints() failed: ", err);
+          }
+        }
       } catch (error) {
         if (error.name === 'NotAllowedError') {
           this.error = 'ERROR: musisz dać pozwolenie na dostęp do kamery'
