@@ -505,9 +505,13 @@ span {
     opacity: 1;
   }
 
-  70%,
-  100% {
+  70% {
     width: 100%;
+    opacity: 0;
+  }
+
+  100% {
+    width: 0;
     opacity: 0;
   }
 }
