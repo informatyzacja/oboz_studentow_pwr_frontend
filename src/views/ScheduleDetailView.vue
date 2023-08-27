@@ -39,6 +39,13 @@ import questionMark from '../assets/question-mark.jpg'
         <TextBox v-if="data.description" :content="data.description" />
 
       </div>
+
+      <div v-if="!data.hide_map && data.location && mapData" class="padding">
+        <h3>{{ mapData.name }}</h3>
+        <div class="padding">
+          <img :src="mapData.image" :alt="mapData.name" />
+        </div>
+      </div>
     </div>
 
     <LoadingIndicator v-if="apiDataStore.schedule.loading" />
@@ -47,6 +54,10 @@ import questionMark from '../assets/question-mark.jpg'
 </template>
 
 <style scoped>
+
+main {
+  padding-bottom: 100px;
+}
 .button {
   border-radius: 10px;
   border: none;
@@ -159,6 +170,16 @@ import questionMark from '../assets/question-mark.jpg'
   color: var(--text-gray);
   margin-top: 5px;
 }
+
+/* map */
+.padding img {
+  width: 100%;
+  height: auto;
+  /* max-height: 60vw; */
+  object-fit: cover;
+  border-radius: 20px;
+}
+
 </style>
 
 <script>
@@ -169,10 +190,14 @@ export default {
     }
   },
   computed: {
-    ...mapStores(useApiDataStore)
+    ...mapStores(useApiDataStore),
+    mapData() {
+      return this.apiDataStore.images.named("Mapka")
+    }
   },
   mounted() {
     this.apiDataStore.schedule.fetchData()
+    this.apiDataStore.images.fetchData()
     this.timer = setInterval(this.apiDataStore.schedule.fetchData, 60 * 1000) 
 
     window.scrollTo(0, 0)
