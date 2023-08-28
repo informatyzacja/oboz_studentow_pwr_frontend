@@ -13,22 +13,25 @@ import { WS_API_URL } from '../config'
 <template>
 <main class="padding-main">
     <TopBar :title="apiDataStore.profile.ready ? ('Czat domku nr ' + apiDataStore.profile.data[0].house.name + ' (beta)') : 'Czat domku (beta)'" back-link="/profil" class="top-bar"/>
-    <div v-if="apiDataStore.profile.ready && !loading" >
+    <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading" >
         <div class="chat">
-            <div v-for="(message, index) in messages" class="messageRow" :key="index"  :class="{messageFromMe: message.fromMe}">
+            <div v-for="(message, index) in apiDataStore.chat.data" class="messageRow" :key="index"  :class="{messageFromMe: message.fromMe}">
                 <div style="width: 100%">
 
-                    <p class="datetime" v-if="index-1<0 || Date.parse(message.date) - Date.parse(messages[index-1].date) > 10 * 60 * 1000">
-                        {{ !index-1<0 && moment(messages[index-1].date).isSame(moment(message.date), 'day') ? moment(message.date).format('HH:mm') : moment(message.date).format('DD.MM.YYYY  HH:mm') }}
+                    <p class="datetime" v-if="index==0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.data[index-1].date) > 10 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.data[index-1].date), 'day')">
+                        {{ moment(message.date).isSame(moment(), 'day') ? moment(message.date).format('HH:mm') : moment(message.date).format('DD.MM.YYYY  HH:mm') }}
                     </p>
 
-                    <p class="messageUser" v-if="index-1<0 || messages[index-1].user != message.user">{{ !message.fromMe ? message.user : '' }}</p>
+                    <p class="messageUser" v-if="index==0 || apiDataStore.chat.data[index-1].user_id != message.user_id">{{ !message.fromMe ? message.username : '' }}</p>
 
                     <div class="message" :class="{messageEmoji: message.message.length===2 && /\p{Extended_Pictographic}/u.test(message.message)}">
                         {{ message.message }}
                     </div>
 
                 </div>
+            </div>
+            <div v-if="apiDataStore.chat.data.length === 0" style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
+                Witaj w czacie domku nr {{ apiDataStore.profile.data[0].house.name }}! 🏠<br>Bądź pierwszy i napisz coś! 🏹
             </div>
         </div>
 
@@ -51,38 +54,6 @@ export default {
   data() {
     return {
         currentMessage: '',
-        messages: [
-            {
-                message: 'Hej! To jest wersja testowa czatu domku. Wiadomości się nie zapusują, możesz pisać z kimś jedynie w czasie rzeczywistym.',
-                user: 'Appka obozowa',
-                date: '2023-08-27 19:50',
-                fromMe: false
-            },
-            // {
-            //     message: 'hej!',
-            //     user: 'Krzysztof Kwater',
-            //     date: '2023-08-27 19:50',
-            //     fromMe: false
-            // },
-            // {
-            //     message: 'hej!',
-            //     user: 'Marvin',
-            //     date: '2023-08-27 19:50',
-            //     fromMe: true
-            // },
-            // {
-            //     message: 'hej! asdfas df as dfasdfasdfsagadsfjkh lskdfh sdf sdkalfhk fkjha lfkjhasl kfjh    jksf jk hkj hkjsh fa',
-            //     user: 'Marvin',
-            //     date: '2023-08-27 19:50',
-            //     fromMe: true
-            // },
-            // {
-            //     message: 'hej!',
-            //     user: 'Krzysztof Kwater',
-            //     date: '2023-08-27 19:50',
-            //     fromMe: false
-            // }
-        ],
         chatSocket: null,
         loading: true,
         reconnect: true
@@ -92,6 +63,7 @@ export default {
     ...mapStores(useApiDataStore)
   },
   mounted() {
+    this.apiDataStore.chat.fetchData()
     if (!this.apiDataStore.profile.data) {
         this.apiDataStore.profile.fetchData()
     }
@@ -138,12 +110,19 @@ export default {
     },
 
     receiveMessage(data) {
-        this.messages.push({
+        const scrollToEnd = Math.abs(window.scrollY + window.innerHeight - document.body.scrollHeight) <= 10
+        this.apiDataStore.chat.data.push({
             message: data.message,
-            user: data.username,
-            date: '2023-08-27 19:50',
+            username: data.username,
+            user_id: data.user_id,
+            date: data.date,
             fromMe: data.user_id === this.apiDataStore.profile.data[0].id
         })
+        if (scrollToEnd) {
+            setTimeout(() => {
+                window.scrollTo(0,document.body.scrollHeight);
+            }, 100)
+        }
     },
 
     sendMessage() {
@@ -153,7 +132,7 @@ export default {
         
         window.scrollTo(0,document.body.scrollHeight);
 
-        this.chatSocket.send(JSON.stringify({ message: message, username : "Marvin"}));
+        this.chatSocket.send(JSON.stringify({ message: message }));
     }
 
   }
@@ -209,6 +188,10 @@ export default {
     color: rgba(255, 255, 255, 0.546);
     padding-left: 15px;
     margin-top: 20px;
+}
+
+.datetime ~ .messageUser {
+    margin-top: 0;
 }
 
 
@@ -270,7 +253,6 @@ export default {
 .datetime {
     text-align: center;
     color: rgba(255, 255, 255, 0.546);
-
-    margin-bottom: -20px;
+    margin-top: 5px;
 }
 </style>

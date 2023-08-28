@@ -25,6 +25,8 @@ import { useScheduleStore } from './schedule.js'
 
 import { useVersionStore } from './version.js'
 
+import { useChatStore } from './chat.js'
+
 export const useApiDataStore = defineStore('apiData', {
   state: () => ({
     userWorkshop: useUserWorkshopStore(),
@@ -48,6 +50,8 @@ export const useApiDataStore = defineStore('apiData', {
 
     nightGameGroupInfo: useNightGameGroupInfoStore(),
 
-    version: useVersionStore()
+    version: useVersionStore(),
+
+    chat: useChatStore(),
   })
 })

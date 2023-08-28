@@ -1,5 +1,6 @@
 export const API_URL = import.meta.env.VITE_API_URL || '/api/'
-export const WS_API_URL = import.meta.env.VITE_WS_API_URL || (import.meta.env.VITE_WS_API_PROTOCOL || 'ws') + '://' + window.location.host + '/'
+const WS_API_PROTOCOL = import.meta.env.VITE_WS_API_PROTOCOL || 'wss'
+export const WS_API_URL = import.meta.env.VITE_WS_API_URL || WS_API_PROTOCOL + '://' + window.location.host + '/'
 export const AUTH_HEADER = JSON.parse(import.meta.env.VITE_AUTH_HEADER || '{}')
 
 export const REULAMIN_LINK = 'https://e-2-e.eu/pl_pl/terms-and-conditions/'
