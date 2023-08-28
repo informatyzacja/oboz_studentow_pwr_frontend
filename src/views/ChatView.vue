@@ -18,7 +18,7 @@ import { WS_API_URL } from '../config'
             <div v-for="(message, index) in apiDataStore.chat.data" class="messageRow" :key="index"  :class="{messageFromMe: message.fromMe}">
                 <div style="width: 100%">
 
-                    <p class="datetime" v-if="index==0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.data[index-1].date) > 10 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.data[index-1].date), 'day')">
+                    <p class="datetime" v-if="index==0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.data[index-1].date) > 8 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.data[index-1].date), 'day')">
                         {{ moment(message.date).isSame(moment(), 'day') ? moment(message.date).format('HH:mm') : moment(message.date).format('DD.MM.YYYY  HH:mm') }}
                     </p>
 
@@ -31,7 +31,7 @@ import { WS_API_URL } from '../config'
                 </div>
             </div>
             <div v-if="apiDataStore.chat.data.length === 0" style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
-                Witaj w czacie domku nr {{ apiDataStore.profile.data[0].house.name }}! 🏠<br>Bądź pierwszy i napisz coś! 🏹
+                Witaj w czacie domku nr {{ apiDataStore.profile.data[0].house.name }}! 🏠<br>Bądź pierwszy/a i napisz coś! 🏹
             </div>
         </div>
 
@@ -56,23 +56,49 @@ export default {
         currentMessage: '',
         chatSocket: null,
         loading: true,
-        reconnect: true
+        reconnect: true,
+        timer: null,
+        scrollToEnd: true
     }
   },
   computed: {
     ...mapStores(useApiDataStore)
   },
+  watch: {
+    currentMessage() {
+        window.scrollTo(0,document.body.scrollHeight);
+    },
+    'apiDataStore.chat.data': {
+        handler() {
+            if (this.scrollToEnd) {
+                this.scrollToEnd = false
+                setTimeout(() => {
+                    window.scrollTo(0,document.body.scrollHeight);
+                }, 100)
+            }
+        },
+        deep: true
+    }
+  },
   mounted() {
+    this.scrollToEnd = true
+    window.scrollTo(0,document.body.scrollHeight);
+
     this.apiDataStore.chat.fetchData()
+    this.timer = setInterval(() => {
+        this.apiDataStore.chat.fetchData()
+    }, 1000 * 60) // fetch data every minute
     if (!this.apiDataStore.profile.data) {
         this.apiDataStore.profile.fetchData()
     }
 
     this.reconnect = true
     this.connect()
+    
 
   },
   unmounted() {
+    clearInterval(this.timer)
     this.reconnect = false
     this.chatSocket.onclose = function () {}; // disable onclose handler first
     this.chatSocket.onerror = function () {}; // disable onerror handler first

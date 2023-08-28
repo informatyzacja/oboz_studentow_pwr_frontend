@@ -15,6 +15,7 @@ import busIcon from '../assets/icons8-bus.png'
 import opaskaIcon from '../assets/icons8-bangles.png'
 import domekIcon from '../assets/icons8-exterior.png'
 import mealIcon from '../assets/icons8-cutlery.png'
+import chatIcon from '../assets/icons8-chat.png'
 
 import qrBg from '../assets/pod QRsvg- profil.svg'
 import backArrow from '../assets/strzala- do qr.svg'
@@ -134,6 +135,7 @@ defineProps([
             leftIconWhite
           />
         </RouterLink>
+
         <!-- grupy -->
         <RouterLink
           :to="grupaLink + '/' + data.id"
@@ -167,6 +169,7 @@ defineProps([
         <!-- dane -->
         <h3 v-if="profileData.bus || profileData.bandId || profileData.houseNumber">Dane</h3>
         
+        <!-- House -->
         <RouterLink 
           v-if="profileData.house"
           :to="!hideQR ? '/czat-domku' : ''"
@@ -175,10 +178,11 @@ defineProps([
             :bigText="'Domek nr ' + profileData.house.name"
             :smallText="profileData.house.key_collected ? 'Klucze odebrane ✅' : 'Klucze nieodebrane ❌'"
             :leftIcon="domekIcon"
-            :rightIcon="!hideQR ? rightArrow : ''"
+            :rightIcon="!hideQR ? chatIcon : ''"
           />
         </RouterLink>
 
+        <!-- Bus -->
         <div v-if="profileData.bus">
           <a :href="profileData.bus.location">
             <ItemBox
@@ -190,6 +194,7 @@ defineProps([
           </a>
         </div>
 
+        <!-- Band -->
         <ItemBox
           v-if="profileData.bandId"
           :bigText="'Opaska nr ' + profileData.bandId"
@@ -197,6 +202,7 @@ defineProps([
           small
         />
 
+        <!-- Diet -->
         <ItemBox
           v-if="profileData.diet"
           :bigText="'Dieta ' + profileData.diet.toLowerCase()"
