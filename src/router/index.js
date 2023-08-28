@@ -23,6 +23,11 @@ const router = createRouter({
       meta: { type: 'main' },
     },
     {
+      path: '/czat-domku',
+      name: 'czat-domku',
+      component: () => import('../views/ChatView.vue'),
+    },
+    {
       path: '/warsztaty',
       name: 'warsztaty',
       component: () => import('../views/WorkshopsView.vue'),

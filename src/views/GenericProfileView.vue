@@ -166,6 +166,19 @@ defineProps([
 
         <!-- dane -->
         <h3 v-if="profileData.bus || profileData.bandId || profileData.houseNumber">Dane</h3>
+        
+        <RouterLink 
+          v-if="profileData.house"
+          :to="!hideQR ? '/czat-domku' : ''"
+          >
+          <ItemBox
+            :bigText="'Domek nr ' + profileData.house.name"
+            :smallText="profileData.house.key_collected ? 'Klucze odebrane ✅' : 'Klucze nieodebrane ❌'"
+            :leftIcon="domekIcon"
+            :rightIcon="!hideQR ? rightArrow : ''"
+          />
+        </RouterLink>
+
         <div v-if="profileData.bus">
           <a :href="profileData.bus.location">
             <ItemBox
@@ -176,25 +189,21 @@ defineProps([
             />
           </a>
         </div>
+
         <ItemBox
           v-if="profileData.bandId"
           :bigText="'Opaska nr ' + profileData.bandId"
           :leftIcon="opaskaIcon"
           small
         />
-        <ItemBox
-          v-if="profileData.house"
-          :bigText="'Domek nr ' + profileData.house.name"
-          :smallText="profileData.house.key_collected ? 'Klucze odebrane ✅' : 'Klucze nieodebrane ❌'"
-          :leftIcon="domekIcon"
-          small
-        />
+
         <ItemBox
           v-if="profileData.diet"
           :bigText="'Dieta ' + profileData.diet.toLowerCase()"
           :leftIcon="mealIcon"
           small
         />
+
       </div>
     </div>
 
