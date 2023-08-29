@@ -8,18 +8,20 @@ moment.locale('pl')
 </script>
 
 <template>
-  <div class="wrapper">
-    <router-view v-slot="{ Component }">
-      <transition 
-      :name="$route.meta.transition || 'fade'" 
-      :mode="$route.meta.transition === 'fade' ? 'out-in' : 'default'"
-      @leave="onLeave($event, $done, $route)"
-      >
-          <component :is="Component" :key="$route.path" class="component"/>
-      </transition>
-    </router-view>
+  <div>
+    <div class="wrapper">
+      <router-view v-slot="{ Component }">
+        <transition 
+        :name="$route.meta.transition || 'fade'" 
+        :mode="$route.meta.transition === 'fade' ? 'out-in' : 'default'"
+        @leave="onLeave($event, $done, $route)"
+        >
+            <component :is="Component" :key="$route.path" class="component"/>
+        </transition>
+      </router-view>
+    </div>
+    <NavigationBar ref="navigationBar"/>
   </div>
-  <NavigationBar ref="navigationBar"/>
 </template>
 
 <script>

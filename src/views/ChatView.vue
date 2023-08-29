@@ -7,44 +7,55 @@ import { mapStores } from 'pinia'
 
 import moment from 'moment'
 import { WS_API_URL } from '../config'
+
+import sendIcon from '../assets/icons8-paper_plane.png'
+
+import groupIcon from '../assets/grupa.svg'
 </script>
 
 
 <template>
-<main class="padding-main">
-    <TopBar :title="apiDataStore.profile.ready ? ('Czat domku nr ' + apiDataStore.profile.data[0].house.name + ' (beta)') : 'Czat domku (beta)'" back-link="/profil" class="top-bar"/>
-    <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading" >
-        <div class="chat">
-            <div v-for="(message, index) in apiDataStore.chat.data" class="messageRow" :key="index"  :class="{messageFromMe: message.fromMe}">
-                <div style="width: 100%">
+<div>
+    <div class="statusBar"></div>
+    <TopBar :title="apiDataStore.profile.ready ? ('Czat domku nr ' + apiDataStore.profile.data[0].house.name + ' (beta)') : 'Czat domku (beta)'" back-link="/profil" class="top-bar">
+        <RouterLink v-if="apiDataStore.myHouseMembers.data" to="/moj-domek/info">
+            <img class="topRightButton" :src="groupIcon"/>
+        </RouterLink>
+    </TopBar>
+    <main class="padding-main">
+        <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading" >
+            <div class="chat">
+                <div v-for="(message, index) in apiDataStore.chat.data" class="messageRow" :key="index"  :class="{messageFromMe: message.fromMe}">
+                    <div style="width: 100%">
 
-                    <p class="datetime" v-if="index==0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.data[index-1].date) > 8 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.data[index-1].date), 'day')">
-                        {{ moment(message.date).isSame(moment(), 'day') ? moment(message.date).format('HH:mm') : moment(message.date).format('DD.MM.YYYY  HH:mm') }}
-                    </p>
+                        <p class="datetime" v-if="index==0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.data[index-1].date) > 8 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.data[index-1].date), 'day')">
+                            {{ moment(message.date).isSame(moment(), 'day') ? moment(message.date).format('HH:mm') : moment(message.date).format('DD.MM.YYYY  HH:mm') }}
+                        </p>
 
-                    <p class="messageUser" v-if="index==0 || apiDataStore.chat.data[index-1].user_id != message.user_id">{{ !message.fromMe ? message.username : '' }}</p>
+                        <p class="messageUser" v-if="index==0 || apiDataStore.chat.data[index-1].user_id != message.user_id">{{ !message.fromMe ? message.username : '' }}</p>
 
-                    <div class="message" :class="{messageEmoji: message.message.length===2 && /\p{Extended_Pictographic}/u.test(message.message)}">
-                        {{ message.message }}
+                        <div class="message" :class="{messageEmoji: message.message.length===2 && /\p{Extended_Pictographic}/u.test(message.message)}">
+                            {{ message.message }}
+                        </div>
+
                     </div>
-
+                </div>
+                <div v-if="apiDataStore.chat.data.length === 0" style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
+                    Witaj w czacie domku nr {{ apiDataStore.profile.data[0].house.name }}! 🏠<br>Bądź pierwszy/a i napisz coś! 🏹
                 </div>
             </div>
-            <div v-if="apiDataStore.chat.data.length === 0" style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
-                Witaj w czacie domku nr {{ apiDataStore.profile.data[0].house.name }}! 🏠<br>Bądź pierwszy/a i napisz coś! 🏹
+
+            <div class="textBox">
+                <input type="text" v-on:keyup.enter="sendMessage"  v-model="currentMessage" placeholder="Aa"/>
+
+                <button class="textBoxButton" v-if="currentMessage.trim()===''" @click="currentMessage='🏹'; sendMessage()">🏹</button>
+
+                <button class="textBoxButton" v-else @click="sendMessage"><img :src="sendIcon" class="sendIcon"/></button>
             </div>
         </div>
-
-        <div class="textBox">
-            <input type="text" v-on:keyup.enter="sendMessage"  v-model="currentMessage" placeholder="Aa"/>
-
-            <button class="textBoxButton" v-if="currentMessage.trim()===''" @click="currentMessage='🏹'; sendMessage()">🏹</button>
-
-            <button class="textBoxButton" v-else @click="sendMessage">▶️</button>
-        </div>
-    </div>
-    <LoadingIndicator v-else /> 
-</main>
+        <LoadingIndicator v-else /> 
+    </main>
+</div>
 </template>
 
 
@@ -91,9 +102,16 @@ export default {
     if (!this.apiDataStore.profile.data) {
         this.apiDataStore.profile.fetchData()
     }
+    
 
     this.reconnect = true
     this.connect()
+
+    this.apiDataStore.myHouseMembers.fetchData()
+
+
+    // debug
+    // this.loading = false
     
 
   },
@@ -167,10 +185,21 @@ export default {
 
 
 <style scoped>
+
+.statusBar {
+    width: 100%;
+    background-color: var(--bg);
+    height: 70px;
+    position: fixed;
+    top: -65px;
+    left: 0;
+    right: 0;
+}
 .top-bar {
     position: fixed; 
     background-color: var(--bg);
     width: 100%;
+    left: 0;
 }
 
 
@@ -237,12 +266,13 @@ export default {
 .textBox input {
     width: calc(100% - 50px - 10px - 10px);
     margin: 5px;
+    margin-bottom: 2px;
+    margin-left: 8px;
     min-height: 30px;
 
     padding: 10px 15px 10px 15px;
     border-radius: 20px;
     border: 1px solid var(--text-gray);
-    margin-bottom: 2px;
     font-size: 15px;
     font-family: 'Sui Generis';
     border: none;
@@ -276,9 +306,30 @@ export default {
   
 }
 
+.sendIcon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) saturate(100%) invert(62%) sepia(45%) saturate(1866%) hue-rotate(342deg) brightness(90%) contrast(91%);
+}
+
 .datetime {
     text-align: center;
     color: rgba(255, 255, 255, 0.546);
     margin-top: 5px;
 }
+
+
+
+.topRightButton {
+  box-sizing: content-box;
+  text-align: right;
+  margin-top: 10px;
+  margin-left: 20px;
+  width: 40px;
+  height: 40px;
+    filter: brightness(0) saturate(100%) invert(62%) sepia(45%) saturate(1866%) hue-rotate(342deg) brightness(90%) contrast(91%);
+}
+
+
 </style>

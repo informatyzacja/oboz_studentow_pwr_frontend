@@ -23,6 +23,21 @@ export const useProfileStore = defineStore('profile', {
   }
 })
 
+
+export const useMyHouseMembersStore = defineStore('myHouseMembers', {
+  state: () => ({ loading: true, error: null, data: null, url: 'myHouseMembers/' }),
+  getters: {
+    ready() {
+      return ready(this)
+    },
+  },
+  actions: {
+    fetchData() {
+      loadData(this)
+    }
+  }
+})
+
 export const useLinkStore = defineStore('link', {
   state: () => ({ loading: true, error: null, data: null, url: 'link/' }),
   getters: {
