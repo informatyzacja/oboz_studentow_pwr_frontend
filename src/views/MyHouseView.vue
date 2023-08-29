@@ -86,6 +86,10 @@ export default {
   mounted() {
     this.apiDataStore.myHouseMembers.fetchData()
     this.timer = setInterval(this.apiDataStore.myHouseMembers.fetchData, 1000000)
+
+    if (!this.apiDataStore.profile.data) {
+      this.apiDataStore.profile.fetchData()
+    }
   },
   beforeUnmount() {
     clearInterval(this.timer)
