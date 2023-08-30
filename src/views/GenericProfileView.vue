@@ -39,8 +39,8 @@ defineProps([
 
 <template>
   <main>
-  <slot name="topBar" class="blur-bg"></slot>
-  <div class="padding-main blur-bg">
+  <slot name="topBar"></slot>
+  <div class="padding-main">
     <div class="flex" v-if="ready && profileData">
 
       <div class="qr_card" @click="$refs.qrOverlay.show" v-if="!hideQR">
@@ -268,10 +268,6 @@ main {
   background: var(--bg-gradient);
   background-image: var(--bg-gradient-translusent), url('@/assets/Icon Grid-red.svg'), var(--bg-gradient), linear-gradient(var(--red),var(--red))
   
-}
-.blur-bg {
-  /* backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px); */
 }
 .disabled {
   pointer-events: none;
