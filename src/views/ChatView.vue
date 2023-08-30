@@ -78,22 +78,10 @@ export default {
   watch: {
     currentMessage() {
         window.scrollTo(0,document.body.scrollHeight);
-    },
-    'apiDataStore.chat.data': {
-        handler() {
-            if (this.scrollToEnd) {
-                this.scrollToEnd = false
-                setTimeout(() => {
-                    window.scrollTo(0,document.body.scrollHeight);
-                }, 100)
-            }
-        },
-        deep: true
     }
   },
   mounted() {
     this.scrollToEnd = true
-    window.scrollTo(0,document.body.scrollHeight);
 
     this.apiDataStore.chat.fetchData()
     this.timer = setInterval(() => {
@@ -116,11 +104,21 @@ export default {
 
   },
   unmounted() {
+    this.scrollToEnd = true
     clearInterval(this.timer)
     this.reconnect = false
     this.chatSocket.onclose = function () {}; // disable onclose handler first
     this.chatSocket.onerror = function () {}; // disable onerror handler first
     this.chatSocket.close()
+  },
+  updated() {
+    if (this.scrollToEnd) {
+        this.scrollToEnd = false
+        console.log('scroll')
+        setTimeout(() => {
+            window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+        }, 10)
+    }
   },
   methods: {
 
@@ -174,7 +172,7 @@ export default {
         const message = this.currentMessage.trim()
         this.currentMessage = ''
         
-        window.scrollTo(0,document.body.scrollHeight);
+        window.scrollTo(0, document.body.scrollHeight);
 
         this.chatSocket.send(JSON.stringify({ message: message }));
     }
