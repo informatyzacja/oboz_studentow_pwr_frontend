@@ -19,7 +19,7 @@ import chatIcon from '../assets/icons8-chat.png'
 
 import qrBg from '../assets/pod QRsvg- profil.svg'
 import backArrow from '../assets/strzala- do qr.svg'
-import hand from '../assets/reka-do qr.svg'
+import hand from '../assets/hands.svg'
 
 defineProps([
   'profileData',
@@ -370,6 +370,8 @@ button {
 .qr_overlay {
   width: 100%;
   height: 100vh;
+  max-width: 650px;
+  margin: 0 auto;
 
   display: flex;
   justify-content: space-between;
@@ -382,6 +384,8 @@ button {
   color: black;
 
   overflow: hidden;
+
+  position: relative;
 }
 
 .qr_overlay_inner{
@@ -390,6 +394,8 @@ button {
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
+  z-index: 2;
+  background: var(--orange);
 }
 
 .qr_back_arrow {
@@ -401,7 +407,11 @@ button {
 }
 
 .qr_hand {
-  margin-top: -170px;
+  position: absolute;
+  bottom: 0;
+  z-index: 0;
+  width: auto !important;
+  image-rendering: auto !important;
 }
 
 .qr_overlay p {
