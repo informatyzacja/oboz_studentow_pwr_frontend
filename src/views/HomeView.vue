@@ -20,7 +20,6 @@ import questionMark from '../assets/question-mark.jpg'
 
 import rightArrow from '../assets/arrow.svg'
 import microphoneIcon from '../assets/ogloszenia.svg'
-import scheduleIcon from '../assets/icons8-schedule.png'
 
 import zobaczFrakcje from '../assets/zobacz frakcje.png'
 import zobaczPelnyHarmonogram from '../assets/zobacz-pelny-harmonogram.png'
