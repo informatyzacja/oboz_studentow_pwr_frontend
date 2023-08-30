@@ -108,9 +108,11 @@ h1 {
 }
 h3 {
   font-size: 18px;
+  color: rgba(255, 255, 255, 0.839);
 }
 h6 {
   font-size: 16px;
+  color: rgba(255, 255, 255, 0.571);
 }
 h4 {
   text-align: right;
