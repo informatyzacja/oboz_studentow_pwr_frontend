@@ -418,7 +418,7 @@ button {
 
 .image_link_arrow {
   width: 10px;
-  height: 100%;
+  height: calc(100% - 7px);
   right: 15px;
   position: absolute;
 }
