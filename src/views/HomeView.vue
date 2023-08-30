@@ -23,6 +23,7 @@ import microphoneIcon from '../assets/ogloszenia.svg'
 import scheduleIcon from '../assets/icons8-schedule.png'
 
 import zobaczFrakcje from '../assets/zobacz frakcje.png'
+import zobaczPelnyHarmonogram from '../assets/zobacz-pelny-harmonogram.png'
 import graNocna from '../assets/gra nocna.png'
 import ItemBox from '../components/ItemBox.vue'
 </script>
@@ -159,7 +160,10 @@ import ItemBox from '../components/ItemBox.vue'
 
     <div class="padding">
       <RouterLink to="/harmonogram">
-        <ItemBox :bigText="apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length ? 'Pełny harmonogram' : 'Harmonogram'" :rightIcon="rightArrow" :leftIcon="scheduleIcon"/>
+        <div class="image_link_container">
+          <img :src="zobaczPelnyHarmonogram" class="image_link"/>
+          <img :src="rightArrow" class="image_link_arrow"/>
+        </div>
       </RouterLink>
     </div>
 
@@ -216,13 +220,13 @@ import ItemBox from '../components/ItemBox.vue'
     <div class="spacer"></div>
 
     <div class="padding">
-        <RouterLink to="/frakcje">
-          <div class="image_link_container">
-            <img :src="zobaczFrakcje" class="image_link"/>
-            <img :src="rightArrow" class="image_link_arrow"/>
-          </div>
-        </RouterLink>
-      </div>
+      <RouterLink to="/frakcje">
+        <div class="image_link_container">
+          <img :src="zobaczFrakcje" class="image_link"/>
+          <img :src="rightArrow" class="image_link_arrow"/>
+        </div>
+      </RouterLink>
+    </div>
 
       
       <!-- Partners -->
