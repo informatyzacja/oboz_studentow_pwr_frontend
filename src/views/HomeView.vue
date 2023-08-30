@@ -312,12 +312,20 @@ export default {
       if ("Notification" in window) {
           if (Notification.permission !== "granted") {
             this.showPushNotificationCard = true
+            console.log("Permission not granted", Notification.permission);
           }
       } else {
         this.showPushNotificationCard = true
+        console.log("This browser does not support desktop notification");
       }
     }
 
+    // random partner scroll position
+    setTimeout(() => {
+      this.$refs.partners.scrollLeft = Math.floor(Math.random() * this.$refs.partners.scrollWidth)
+    }, 100)
+
+    // partner autoscroll
     this.partnersScroll = setInterval(() => {
       if (this.$refs.partners) {
         if (this.scrollDirectionLeft) {
