@@ -10,7 +10,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
 
 <template>
   <main>
-  <TopBar title="Grupy" backLink="/admin-menu" />
+  <TopBar title="Gra nocna - grupy" backLink="/admin-menu" />
 
   <div class="padding-main" v-if="ready && data">
     <RouterLink :to="grupaLink + '/' + data.id" v-for="(data, index) in data" :key="index">

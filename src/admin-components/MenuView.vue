@@ -67,7 +67,7 @@ import { mapStores } from 'pinia'
       link="/frakcje"
     />
     <MenuCard
-      title="Grupy"
+      title="Gra nocna"
       :icon="GroupIcon"
       link="/grupy"
       v-if="
