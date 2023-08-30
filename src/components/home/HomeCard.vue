@@ -108,7 +108,7 @@ defineProps({
   position: absolute;
   bottom: 0;
   padding: 15px;
-  max-width: 100%;
+  width: 100%;
   overflow: hidden;
 }
 
