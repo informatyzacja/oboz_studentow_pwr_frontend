@@ -232,7 +232,7 @@ import ItemBox from '../components/ItemBox.vue'
       <!-- Partners -->
       <div class="partners" v-if="apiDataStore.partner.ready && apiDataStore.partner.data.length">
         <h3>Partnerzy</h3>
-        <div class="scroll">
+        <div class="scroll" ref="partners">
           <a :href="data.link" 
               target="_blank" 
               :key="index"
@@ -269,6 +269,9 @@ export default {
       timer6: null,
       timer7: null,
       timer8: null,
+
+      partenrsScroll: null,
+      scrollDirectionLeft: true,
 
       showPushNotificationCard: false,
     }
@@ -314,6 +317,21 @@ export default {
         this.showPushNotificationCard = true
       }
     }
+
+    this.partnersScroll = setInterval(() => {
+      if (this.$refs.partners) {
+        if (this.scrollDirectionLeft) {
+          this.$refs.partners.scrollLeft -= 1
+        } else {
+          this.$refs.partners.scrollLeft += 1
+        }
+        if (this.$refs.partners.scrollLeft === 0) {
+          this.scrollDirectionLeft = false
+        } else if (this.$refs.partners.scrollLeft === this.$refs.partners.scrollWidth - this.$refs.partners.clientWidth) {
+          this.scrollDirectionLeft = true
+        }
+      }
+    }, 50)
   },
   methods: {
     showRef(ref, index) {
@@ -399,6 +417,8 @@ button {
   height: 100px;
   margin: 10px;
   border-radius: 10px;
+  max-width: 200px;
+  object-fit: contain;
 }
 
 .spacer {
