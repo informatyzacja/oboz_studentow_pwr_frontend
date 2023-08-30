@@ -32,6 +32,9 @@ defineProps({
   border-radius: 20px;
   position: relative;
   padding: 20px;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   /* margin: 0px 20px 10px; */
 }
 

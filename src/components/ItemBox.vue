@@ -72,6 +72,9 @@ defineProps({
   margin-bottom: 10px;
 
   min-height: 60px;
+
+  backdrop-filter: blur(15px) !important;
+  -webkit-backdrop-filter: blur(15px) !important;
 }
 
 .item:hover {

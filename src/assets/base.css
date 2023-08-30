@@ -20,6 +20,7 @@
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64); */
   --bg-gradient: linear-gradient(180deg, #761500 22.92%, #751500 22.93%, #2F0A01 100%);
+  --bg-gradient-translusent: linear-gradient(180deg, #76160088 22.92%, #75150088 22.93%, #2F0A01aa 100%);
   --red: #751500;
   --orange: #DC7D28;
   --yellow: rgb(222, 186, 136);
@@ -28,7 +29,7 @@
 
   --bg: #131313;
   --bg-lighter: #1b1b1b;
-  --bg-light: #292929;
+  --bg-light: #010101;
   --bg-light-translusent: rgba(217, 217, 217, 0.172);
   --bg-light-translusent-hover: rgba(217, 217, 217, 0.177);
 
@@ -61,6 +62,7 @@ body {
   min-height: 100vh;
   color: white;
   background: var(--bg);
+  background-image: url('@/assets/Icon Grid.svg'), linear-gradient(var(--bg),var(--bg));
   transition: color 0.5s, background-color 0.5s;
   line-height: 1.6;
   font-family: 'Sui Generis';
