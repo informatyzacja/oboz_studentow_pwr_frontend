@@ -290,6 +290,7 @@ export default {
     border: none;
     color: white;
     /* padding: 20px 35px; */
+    padding: 0;
 
     font-size: 23px;
     line-height: 23px;
