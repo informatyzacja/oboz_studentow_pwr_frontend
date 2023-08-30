@@ -4,6 +4,23 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa';
 
+
+import fs from 'fs';
+
+function getBuildTime() {
+  const date = JSON.stringify(new Date().toISOString().replace('T', ' ').slice(0, 19))
+
+  // const fs = require('fs');
+
+  fs.writeFile('public/version.txt', date, err => {
+    if (err) {
+      console.error(err);
+    }
+    // file written successfully
+  });
+  return date;
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(), VitePWA({ 
@@ -78,6 +95,6 @@ export default defineConfig({
   },
   define: {
     VERSION_NUMBER: JSON.stringify(new Date().toISOString().slice(2, 10).replace(/-/g, '.')),
-    BUILD_TIME: JSON.stringify(new Date().toISOString().replace('T', ' ').slice(0, 19))
+    BUILD_TIME: getBuildTime()
   }
 })

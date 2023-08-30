@@ -18,7 +18,7 @@ export const useVersionStore = defineStore('version', {
           // eslint-disable-next-line no-undef
           if (Math.abs(Date.parse(BUILD_TIME) - Date.parse(data)) > 10 * 60 * 1000) {
             // grater than 10 mins
-            // location.reload()
+            location.reload()
           }
         })
         .catch((error) => {

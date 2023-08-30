@@ -103,3 +103,6 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+
+public/version.txt
