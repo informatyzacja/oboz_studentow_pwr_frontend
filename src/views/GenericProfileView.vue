@@ -216,6 +216,23 @@ defineProps([
     <LoadingIndicator v-if="loading" />
     <p v-if="error" class="error">{{ error }}</p>
 
+    <!-- sober duty -->
+    <div v-if="profileData.sober_duty && profileData.sober_duty.length" class="zindex">
+      <h3>Twoje dyżury trzeźwości</h3>
+      <div class="scroll">
+        <div
+          v-for="(data, index) in profileData.sober_duty"
+          :key="index"
+        >
+          <ItemBox
+            :leftBigText="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')"
+            :bigText="moment(data.start).format('dddd, DD.MM')"
+            small
+          />
+        </div>
+      </div>
+    </div>
+
     <!-- warsztaty -->
     <div v-if="userWorkshopReady && userWorkshopData.length" class="zindex">
       <h3>Twoje warsztaty</h3>

@@ -61,6 +61,7 @@ export default {
   position: relative;
   display: grid;
   place-items: center;
+  z-index: 300;
 }
 .alcohol {
   width: 35px;
