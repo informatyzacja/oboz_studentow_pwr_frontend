@@ -15,7 +15,7 @@ import { mapStores } from 'pinia'
     :loading="apiDataStore.profile.loading"
     :error="apiDataStore.profile.error"
     :group="apiDataStore.profile.ready ? apiDataStore.profile.data[0].fraction : {}"
-    topRightButtonText = "Zobacz inne frakcje"
+    topRightButtonText = "Zobacz wszystkie"
     topRightButtonUrl = "/frakcje"
   ></GenericGroupView>
 </template>
