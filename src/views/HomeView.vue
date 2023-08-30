@@ -81,7 +81,7 @@ import ItemBox from '../components/ItemBox.vue'
 
           <RouterLink v-if="data.url && data.url.startsWith('/')" :to="data.url">
             <div class="image_link_container" v-if="data.image">
-              <img :src="graNocna" class="image_link"/>
+              <img :src="data.image" class="image_link"/>
               <img :src="rightArrow" class="image_link_arrow" v-if="data.url"/>
             </div>
             <ItemBox
@@ -93,7 +93,7 @@ import ItemBox from '../components/ItemBox.vue'
           </RouterLink>
           <a v-else :href="data.url" target="_blank">
             <div class="image_link_container" v-if="data.image">
-              <img :src="graNocna" class="image_link"/>
+              <img :src="data.image" class="image_link"/>
               <img :src="rightArrow" class="image_link_arrow" v-if="data.url"/>
             </div>
             <ItemBox
