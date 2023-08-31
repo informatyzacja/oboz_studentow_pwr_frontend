@@ -25,13 +25,13 @@ import { registerForPushNotifications } from '../../config.js'
   
     <div class="navigation-bar__content">
       <RouterLink to="/sos">
-        <div class="navigation_bar__item">
+        <div class="navigation_bar__item" :class="{selected: $route.path == '/sos' }">
           <img :src="SosIcon" alt="sos" />
           <p>SOS</p>
         </div>
       </RouterLink>
       <RouterLink to="/mapa">
-        <div class="navigation_bar__item">
+        <div class="navigation_bar__item" :class="{selected: $route.path == '/mapa' }">
           <img :src="MapIcon" alt="map" />
           <p>Mapka</p>
         </div>
@@ -42,13 +42,13 @@ import { registerForPushNotifications } from '../../config.js'
         </div>
       </RouterLink>
       <RouterLink to="/warsztaty">
-        <div class="navigation_bar__item">
+        <div class="navigation_bar__item" :class="{selected: $route.path == '/warsztaty' }">
           <img :src="WorkshopIcon" alt="warsztaty" />
           <p>Warsztaty</p>
         </div>
       </RouterLink>
       <RouterLink to="/profil">
-        <div class="navigation_bar__item">
+        <div class="navigation_bar__item" :class="{selected: $route.path == '/profil' }">
           <img :src="UserIcon" alt="user" />
           <p>Profil</p>
         </div>
@@ -60,13 +60,13 @@ import { registerForPushNotifications } from '../../config.js'
   <div class="navigation-bar" v-else>
     <div class="navigation-bar__content">
       <RouterLink to="/skaner">
-        <div class="navigation_bar__item">
+        <div class="navigation_bar__item" :class="{selected: $route.path == '/skaner' }">
           <img :src="ScannerIcon" alt="skaner" />
           <p>Skaner</p>
         </div>
       </RouterLink>
       <RouterLink to="/admin-menu">
-        <div class="navigation_bar__item">
+        <div class="navigation_bar__item" :class="{selected: $route.path == '/admin-menu' }">
           <img :src="MenuIcon" alt="menu" />
           <p>Menu</p>
         </div>
@@ -77,13 +77,13 @@ import { registerForPushNotifications } from '../../config.js'
         </div>
       </RouterLink>
       <RouterLink to="/warsztaty">
-        <div class="navigation_bar__item">
+        <div class="navigation_bar__item" :class="{selected: $route.path == '/warsztaty' }">
           <img :src="WorkshopIcon" alt="warsztaty" />
           <p>Warsztaty</p>
         </div>
       </RouterLink>
       <RouterLink to="/profil">
-        <div class="navigation_bar__item">
+        <div class="navigation_bar__item" :class="{selected: $route.path == '/profil' }">
           <img :src="UserIcon" alt="user" />
           <p>Profil</p>
         </div>
@@ -196,6 +196,12 @@ export default {
   margin-bottom: 2px;
   width: 24px;
   object-fit: contain;
+  /* filter: brightness(0) saturate(100%) invert(62%) sepia(45%) saturate(1866%) hue-rotate(342deg) brightness(90%) contrast(91%); */
+  filter: brightness(0) saturate(100%) invert(57%) sepia(0%) saturate(0%) hue-rotate(164deg) brightness(98%) contrast(89%);
+}
+
+.navigation_bar__item.selected img {
+  /* filter: brightness(0) saturate(100%) invert(22%) sepia(21%) saturate(4532%) hue-rotate(337deg) brightness(102%) contrast(89%); */
   filter: brightness(0) saturate(100%) invert(62%) sepia(45%) saturate(1866%) hue-rotate(342deg) brightness(90%) contrast(91%);
 }
 
