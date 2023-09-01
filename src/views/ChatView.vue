@@ -17,7 +17,7 @@ import groupIcon from '../assets/grupa.svg'
 <template>
 <div>
     <div class="statusBar"></div>
-    <TopBar :title="apiDataStore.profile.ready ? ('Czat domku nr ' + apiDataStore.profile.data[0].house.name + ' (beta)') : 'Czat domku (beta)'" back-link="/profil" class="top-bar">
+    <TopBar :title="apiDataStore.profile.ready ? ('Czat domku nr ' + apiDataStore.profile.data[0].house.name) : 'Czat domku'" back-link="/profil" class="top-bar">
         <RouterLink v-if="apiDataStore.myHouseMembers.data" to="/moj-domek/info">
             <img class="topRightButton" :src="groupIcon"/>
         </RouterLink>
@@ -215,6 +215,8 @@ export default {
     border-radius: 20px 20px 20px 5px;
     width: auto;
     display: inline-block;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 .messageFromMe .message {
     background-color: var(--orange);
