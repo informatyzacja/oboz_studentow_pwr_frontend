@@ -225,7 +225,7 @@ defineProps([
           :key="index"
         >
           <ItemBox
-            :leftBigText="moment(data.start).format('hh:mm') + ' - ' + moment(data.end).format('hh:mm')"
+            :leftBigText="moment(data.start).format('HH:mm') + ' - ' + moment(data.end).format('HH:mm')"
             :bigText="moment(data.start).format('dddd, DD.MM')"
             small
           />
@@ -243,7 +243,7 @@ defineProps([
           :to="`/warsztaty/info/${data.id}`"
         >
           <ItemBox
-            :leftBigText="moment(data.start).format('dd. DD.MM')"
+            :leftBigText="moment(data.start).format('dd. DD.MM, HH:mm')"
             :bigText="data.name"
             :rightIcon="rightArrow"
             small

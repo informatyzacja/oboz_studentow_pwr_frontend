@@ -106,7 +106,7 @@ export default {
         }
     },
     mounted() {
-        this.hide_date_min = moment().format("YYYY-MM-DDThh:mm")
+        this.hide_date_min = moment().format("YYYY-MM-DDTHH:mm")
 
         this.apiDataStore.pointTypes.fetchData()
         this.timer = setInterval(this.apiDataStore.pointTypes.fetchData, 300000)
