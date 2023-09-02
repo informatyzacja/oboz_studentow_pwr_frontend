@@ -129,6 +129,7 @@ import questionMark from '../assets/question-mark.jpg'
 
     <LoadingIndicator v-if="apiDataStore.workshops.loading" />
     <p v-if="apiDataStore.workshops.error" class="error">{{ apiDataStore.workshops.error }}</p>
+    <p v-if="error" class="error">{{ error }}</p>
   </main>
 </template>
 
@@ -257,7 +258,8 @@ export default {
   data() {
     return {
       loading: false,
-      timer: null
+      timer: null,
+      error: null
     }
   },
   computed: {
@@ -292,11 +294,13 @@ export default {
       })
         .then((data) => {
           if (data.ok) {
-            return data
+            return data.json()
           }
           throw new Error('Request failed!')
         })
-        .then(() => {})
+        .then((data) => {
+            this.error = data.error
+        })
         .catch((error) => {
           console.error('There was an error!', error)
         })
