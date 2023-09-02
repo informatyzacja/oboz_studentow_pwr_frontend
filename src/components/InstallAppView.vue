@@ -23,7 +23,7 @@ import OverlayView from './OverlayView.vue';
         <div class="overlay-card">
 
             <div>
-                <p style="text-align: center;">Aby zainstalować aplikację, otwórz tą stronę w Safari</p>
+                <p style="text-align: center;">Aby zainstalować aplikację, otwórz tę stronę w Safari</p>
                 <div class="buttons">
                     <button class="button red-bg" @click="notSafariMessage=false">Może później</button>
                 </div>
