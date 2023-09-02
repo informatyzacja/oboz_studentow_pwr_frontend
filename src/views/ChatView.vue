@@ -192,6 +192,7 @@ export default {
     top: -65px;
     left: 0;
     right: 0;
+    z-index: 1;
 }
 .top-bar {
     position: fixed; 
