@@ -155,13 +155,13 @@ defineProps([
         <!-- linki -->
         <div v-if="linksReady && linksData.length">
           <a v-for="(data, index) in linksData" :key="index" :href="data.url" target="_blank">
-            <ItemBox :bigText="data.name" :leftIcon="data.icon" :rightIcon="rightArrow" />
+            <ItemBox :bigText="data.name" :leftIcon="data.icon" :rightIcon="rightArrow" small/>
           </a>
         </div>
 
         <!-- faq -->
         <RouterLink to="/faq" v-if="!hideFAQ">
-          <ItemBox bigText="Częste pytania" :rightIcon="rightArrow" :leftIcon="faqIcon" />
+          <ItemBox bigText="Częste pytania" :rightIcon="rightArrow" :leftIcon="faqIcon" small/>
         </RouterLink>
 
         <div class="spacer"></div>
@@ -246,7 +246,7 @@ defineProps([
             :leftBigText="moment(data.start).format('dd. DD.MM, HH:mm')"
             :bigText="data.name"
             :rightIcon="rightArrow"
-            small
+            
           />
         </RouterLink>
       </div>
