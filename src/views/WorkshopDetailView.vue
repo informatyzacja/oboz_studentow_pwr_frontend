@@ -114,6 +114,16 @@ import questionMark from '../assets/question-mark.jpg'
           :smallText="data.title"
           :leftIcon="data.photo"
         />
+
+
+        <h3 v-if="data.workshopusers && data.workshopusers.length">Zapisani</h3>
+        <ItemBox
+          v-for="(data, index) in data.workshopusers"
+          :key="index"
+          :bigText="data.first_name + ' ' + data.last_name"
+          :smallText="data.title"
+          :leftIcon="data.photo"
+        />
       </div>
     </div>
 
