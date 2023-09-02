@@ -19,6 +19,18 @@ import OverlayView from './OverlayView.vue';
         </div>
     </div>
 
+    <div class="padding" v-if="notSafariMessage">
+        <div class="overlay-card">
+
+            <div>
+                <p style="text-align: center;">Aby zainstalować aplikację, otwórz tą stronę w Safari</p>
+                <div class="buttons">
+                    <button class="button red-bg" @click="notSafariMessage=false">Może później</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
   <OverlayView ref="iosInstallMessage">
     <div class="ios-install-message">
@@ -40,7 +52,8 @@ export default {
     data() {
         return {
             deferredPrompt: null,
-            showIosInstallMessage: false
+            showIosInstallMessage: false,
+            notSafariMessage: false
         }
     },
 
@@ -48,6 +61,10 @@ export default {
     isIos() {
       const userAgent = window.navigator.userAgent.toLowerCase();
       return /iphone|ipod/.test( userAgent );
+    },
+    isSafari() {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return !(/(CriOS|FxiOS|OPiOS|mercury|FBAN|FBAV)/i.test(userAgent))
     },
     isInStandaloneMode() {
       return ('standalone' in window.navigator) && (window.navigator.standalone);
@@ -72,8 +89,12 @@ export default {
         }
 
       } else if (this.deferredPrompt === 'ios') {
-        this.$refs.iosInstallMessage.show()
         this.deferredPrompt = null
+        if (!this.isSafari) {
+          this.notSafariMessage = true
+          return
+        }
+        this.$refs.iosInstallMessage.show()
       }
     }
   },
