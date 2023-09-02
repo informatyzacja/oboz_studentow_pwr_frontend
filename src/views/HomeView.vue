@@ -332,9 +332,9 @@ export default {
         } else {
           this.$refs.partners.scrollLeft += 1
         }
-        if (this.$refs.partners.scrollLeft === 0) {
+        if (this.$refs.partners.scrollLeft <= 2) {
           this.scrollDirectionLeft = false
-        } else if (this.$refs.partners.scrollLeft === this.$refs.partners.scrollWidth - this.$refs.partners.clientWidth) {
+        } else if (Math.abs(this.$refs.partners.scrollLeft - (this.$refs.partners.scrollWidth - this.$refs.partners.clientWidth)) <= 5) {
           this.scrollDirectionLeft = true
         }
       }
