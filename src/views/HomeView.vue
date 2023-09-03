@@ -205,14 +205,18 @@ import ItemBox from '../components/ItemBox.vue'
     <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.upNext.length">
       <h3>Następne</h3>
       <div class="scroll">
-        <HomeCard
+        <RouterLink 
           v-for="(data, index) in apiDataStore.schedule.upNext"
           :key="index"
-          :name="data.name"
-          :location="data.location"
-          :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-          :imgSrc="data.photo || questionMark"
-        />
+          :to="'/harmonogram/info/' + data.id"
+        >
+          <HomeCard
+            :name="data.name"
+            :location="data.location"
+            :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
+            :imgSrc="data.photo || questionMark"
+          />
+        </RouterLink>
       </div>
     </div>
 
