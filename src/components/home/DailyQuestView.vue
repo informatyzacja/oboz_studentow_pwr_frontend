@@ -35,7 +35,7 @@ defineProps({
     </div>
     <h3>{{ title }}</h3>
     <h6>{{ description }}</h6>
-    <h4>Po odbiór punktów należy sie zgłosić do sztabu</h4>
+    <h4>Zrobione zdjęcie należy przesłać na fanpage obozowy na facebooku i podać nazwę swojego dystryktu</h4>
   </div>
 </template>
 
