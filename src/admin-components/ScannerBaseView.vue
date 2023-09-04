@@ -61,7 +61,7 @@ export default {
       torchSupported: false,
       facingMode: 'user',
       focusMode: "manual",
-      focusDistance: 0,
+      focusDistance: 0
     }
   },
   beforeUnmount() {
@@ -106,6 +106,8 @@ export default {
 
     async onInit(promise) {
       try {
+        this.qrReaderError = null;
+        
         var capabilities = (await promise).capabilities;
         this.torchSupported = !!capabilities.torch
         console.log("Camera capabilities:", capabilities)
@@ -136,21 +138,21 @@ export default {
         }
       } catch (error) {
         if (error.name === 'NotAllowedError') {
-          this.error = 'ERROR: musisz dać pozwolenie na dostęp do kamery'
+          this.qrReaderError = 'ERROR: musisz dać pozwolenie na dostęp do kamery'
         } else if (error.name === 'NotFoundError') {
-          this.error = 'ERROR: brak kamery w tym urządzeniu'
+          this.qrReaderError = 'ERROR: brak kamery w tym urządzeniu'
         } else if (error.name === 'NotSupportedError') {
-          this.error = 'ERROR: potrzebujesz HTTPS'
+          this.qrReaderError = 'ERROR: potrzebujesz HTTPS'
         } else if (error.name === 'NotReadableError') {
-          this.error = 'ERROR: Nie można uzyskać dostępu do kamery. Być może jest ona już używana'
+          this.qrReaderError = 'ERROR: Nie można uzyskać dostępu do kamery. Być może jest ona już używana'
         } else if (error.name === 'OverconstrainedError') {
-          this.error = 'ERROR: Twój sprzęt nie obsługuje wymaganych rozdzielczości'
+          this.qrReaderError = 'ERROR: Twój sprzęt nie obsługuje wymaganych rozdzielczości'
         } else if (error.name === 'StreamApiNotSupportedError') {
-          this.error = 'ERROR: Stream API nie jest obsługiwane w tej przeglądarce'
+          this.qrReaderError = 'ERROR: Stream API nie jest obsługiwane w tej przeglądarce'
         } else if (error.name === 'InsecureContextError') {
-          this.error = 'ERROR: Nie można uzyskać dostępu do kamery z niezabezpieczonej strony'
+          this.qrReaderError = 'ERROR: Nie można uzyskać dostępu do kamery z niezabezpieczonej strony'
         } else {
-          this.error = `ERROR: Error kamery (${error.name})`
+          this.qrReaderError = `ERROR: Error kamery (${error.name})`
         }
       } finally {
         this.qrScannerLoading = false
