@@ -169,7 +169,7 @@ export default {
     }
   },
   created() {
-    this.currentDay = parseInt(this.$route.params.day) || 0
+    this.currentDay = parseInt(this.$route.params.day) || (this.apiDataStore.schedule.ready ? this.apiDataStore.schedule.allDates.findIndex((element) => element === moment().format('YYYY-MM-DD')) : 0)
     this.$watch(
       () => this.$route.params.day,
       (newVal) => {
@@ -187,6 +187,8 @@ export default {
     this.apiDataStore.schedule.fetchData()
     this.apiDataStore.images.fetchData()
     this.timer = setInterval(this.apiDataStore.schedule.fetchData, 60000)
+
+    window.scrollTo(0,0)
   },
   beforeUnmount() {
     clearInterval(this.timer)
