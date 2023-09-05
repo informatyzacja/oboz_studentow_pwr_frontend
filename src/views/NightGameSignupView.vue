@@ -20,7 +20,7 @@ import moment from 'moment'
 <main>
   <TopBar title="Zapisy na grę nocną" :backLink="$router.options.history.state.back || '/'" s/>
 
-  <div class="padding-main" v-if="apiDataStore.nightGameGroupInfo.ready && !success && apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
+  <div class="padding-main" v-if="apiDataStore.nightGameGroupInfo.ready && !success && apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group && apiDataStore.nightGameGroupInfo.data.night_game_signup_active">
 
     <TextBox>
         <p>UWAGA! Zapisy wykonuje tylko jedna osoba z grupy.</p>
@@ -64,6 +64,10 @@ import moment from 'moment'
         <button class="button" v-if="groupSize > apiDataStore.nightGameGroupInfo.data.group_user_min" @click="groupSize--">Usuń osobę</button>
     </div>
 
+    <p class="error">{{ apiDataStore.nightGameGroupInfo.error }}</p>
+    <p class="error">{{ error }}</p>
+    <p class="error">{{ peopleError }}</p>
+
     <div v-if="groupName && groupSize >= apiDataStore.nightGameGroupInfo.data.group_user_min && groupSize <= apiDataStore.nightGameGroupInfo.data.group_user_max && !apiDataStore.nightGameGroupInfo.loading && !success && !signupLoading && peopleValid()">
         <button class="button success" style="margin-top: 30px" @click="signupGroup" >Zapisz grupę</button>
         <h3 style="margin-top: 5px;text-align: center;">Upewnij się, że wpisane imiona są takie same jak imię wyświetlające się w zakładce "profil" każdego uczestnika</h3>
@@ -91,7 +95,17 @@ import moment from 'moment'
     </RouterLink>
   </div>
 
-  <div class="padding info-screen" v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.user_in_group">
+  <div class="padding info-screen" v-else-if="apiDataStore.nightGameGroupInfo.ready && !apiDataStore.nightGameGroupInfo.data.night_game_signup_active && !apiDataStore.nightGameGroupInfo.data.user_in_group">
+    <h3>Zapisy zamknięte!</h3>
+    <img :src="cryingIcon" alt="crying" style="width: 100px; margin: 20px auto; display: block;"/>
+    <p>Przepraszamy, ale zapisy na grę nocną są zamknięte.</p>
+
+    <RouterLink :to="$router.options.history.state.back || '/'">
+        <button class="button" style="margin-top: 20px">Wróć</button>
+    </RouterLink>
+  </div>
+
+  <div class="padding info-screen" v-else-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.user_in_group">
     <h3>Już jesteś zapisany na grę nocną</h3>
     <img :src="okIcon" alt="ok" style="width: 100px; margin: 20px auto; display: block;"/>
     <p>Już jesteś zapisany na grę nocną.</p>
@@ -101,9 +115,6 @@ import moment from 'moment'
 
 
     <LoadingIndicator v-if="apiDataStore.nightGameGroupInfo.loading" />
-    <p class="error">{{ apiDataStore.nightGameGroupInfo.error }}</p>
-    <p class="error">{{ error }}</p>
-    <p class="error">{{ peopleError }}</p>
 </main>
 </template>
 
@@ -223,7 +234,7 @@ export default {
         this.createPeople()
         this.apiDataStore.profile.fetchData()
 
-        this.timer = setInterval(this.apiDataStore.nightGameGroupInfo.fetchData, 10*1000);
+        this.timer = setInterval(this.apiDataStore.nightGameGroupInfo.fetchData, 30*1000);
     },
     beforeUnmount() {
         clearInterval(this.timer)
@@ -232,7 +243,9 @@ export default {
 </script>
 
 <style scoped>
-
+main {
+    padding-bottom: 100px;
+}
 
 input, select, textarea {
     width: 100%;
