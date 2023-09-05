@@ -86,18 +86,6 @@ import questionMark from '../assets/question-mark.jpg'
       </div>
 
       <div class="padding">
-        <p
-          class="signupsOpenTime"
-          style="margin-bottom: 20px"
-          v-if="
-            data.signupsOpenTime &&
-            moment(data.signupsOpenTime).isSame(moment(), 'day') &&
-            moment(data.signupsOpenTime).isAfter(moment()) &&
-            moment(data.signupsOpenTime).diff(moment()) < 120 * 1000
-          "
-        >
-          Zapisy same się uruchomią, nie musisz odświeżać aplikacji
-        </p>
 
         <TextBox :content="data.description" />
 
@@ -267,7 +255,7 @@ export default {
   },
   mounted() {
     this.apiDataStore.workshops.fetchData()
-    this.timer = setInterval(this.apiDataStore.workshops.fetchData, 5 * 1000) // co 5 sekund
+    this.timer = setInterval(this.apiDataStore.workshops.fetchData, 60 * 1000) // co 60 sekund
 
     window.scrollTo(0, 0)
   },
