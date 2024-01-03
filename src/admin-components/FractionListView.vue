@@ -10,22 +10,17 @@ import { API_URL, AUTH_HEADER } from '../config.js'
 
 <template>
   <main>
-  <TopBar title="Dystrykty" backLink="/" />
+    <TopBar title="Frakcje" backLink="/" />
 
-  <div class="padding-main" v-if="ready && data">
-    <RouterLink :to="frakcjaLink + '/' + data.id" v-for="(data, index) in data" :key="index">
-      <ItemBox
-        :bigText="data.name"
-        :leftIcon="data.logo"
-        :rightIcon="frakcjaLink ? rightArrow : ''"
-        leftIconWhite
-      />
-    </RouterLink>
-  </div>
+    <div class="padding-main" v-if="ready && data">
+      <RouterLink :to="frakcjaLink + '/' + data.id" v-for="(data, index) in data" :key="index">
+        <ItemBox :bigText="data.name" :leftIcon="data.logo" :rightIcon="frakcjaLink ? rightArrow : ''" leftIconWhite />
+      </RouterLink>
+    </div>
 
-  <LoadingIndicator v-if="loading" />
-  <p v-if="error" class="error">{{ error }}</p>
-</main>
+    <LoadingIndicator v-if="loading" />
+    <p v-if="error" class="error">{{ error }}</p>
+  </main>
 </template>
 
 <script>

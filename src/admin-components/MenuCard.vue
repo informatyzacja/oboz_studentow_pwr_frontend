@@ -21,17 +21,19 @@ defineProps(['title', 'icon', 'link']);
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: calc((100vw - 66px) / 3);
-  height: calc((100vw - 66px) / 3);
+  width: 150px;
+  height: 150px;
   background-color: var(--color-primary);
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background-color: var(--bg-light);
 }
+
 .card__icon img {
   filter: brightness(0) invert(1);
   width: 70px;
 }
+
 .card__title p {
   font-size: 15px;
   line-height: 19px;

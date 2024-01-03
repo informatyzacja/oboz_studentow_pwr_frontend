@@ -4,6 +4,7 @@ import MapIcon from '../../assets/icons8-map_marker.png'
 import Logo from '../../assets/logo na dol apki1.svg'
 // import HammerIcon from '../../assets/icons8-hammer.png'
 import WorkshopIcon from '../../assets/warsztaty.svg'
+import CalendarIcon from '../../assets/icons8-calendar-100.png'
 import UserIcon from '../../assets/icons8-male_user.png'
 import MenuIcon from '../../assets/icons8-squared_menu.png'
 
@@ -17,21 +18,17 @@ import { registerForPushNotifications } from '../../config.js'
 </script>
 
 <template>
+  <div class="navigation-bar" v-if="true || !apiDataStore.permissions.ready || !apiDataStore.permissions.data.length">
 
-  <div
-    class="navigation-bar"
-    v-if="!apiDataStore.permissions.ready || !apiDataStore.permissions.data.length"
-  >
-  
     <div class="navigation-bar__content">
       <RouterLink to="/sos">
-        <div class="navigation_bar__item" :class="{selected: $route.path == '/sos' }">
+        <div class="navigation_bar__item" :class="{ selected: $route.path == '/sos' }">
           <img :src="SosIcon" alt="sos" />
           <p>SOS</p>
         </div>
       </RouterLink>
       <RouterLink to="/mapa">
-        <div class="navigation_bar__item" :class="{selected: $route.path == '/mapa' }">
+        <div class="navigation_bar__item" :class="{ selected: $route.path == '/mapa' }">
           <img :src="MapIcon" alt="map" />
           <p>Mapka</p>
         </div>
@@ -41,14 +38,14 @@ import { registerForPushNotifications } from '../../config.js'
           <img :src="Logo" alt="logo" />
         </div>
       </RouterLink>
-      <RouterLink to="/warsztaty">
-        <div class="navigation_bar__item" :class="{selected: $route.path == '/warsztaty' }">
-          <img :src="WorkshopIcon" alt="warsztaty" />
-          <p>Warsztaty</p>
+      <RouterLink to="/harmonogram">
+        <div class="navigation_bar__item" :class="{ selected: $route.path == '/harmonogram' }">
+          <img :src="CalendarIcon" alt="harmonogram" />
+          <p>Harmonogram</p>
         </div>
       </RouterLink>
       <RouterLink to="/profil">
-        <div class="navigation_bar__item" :class="{selected: $route.path == '/profil' }">
+        <div class="navigation_bar__item" :class="{ selected: $route.path == '/profil' }">
           <img :src="UserIcon" alt="user" />
           <p>Profil</p>
         </div>
@@ -60,13 +57,13 @@ import { registerForPushNotifications } from '../../config.js'
   <div class="navigation-bar" v-else>
     <div class="navigation-bar__content">
       <RouterLink to="/skaner">
-        <div class="navigation_bar__item" :class="{selected: $route.path == '/skaner' }">
+        <div class="navigation_bar__item" :class="{ selected: $route.path == '/skaner' }">
           <img :src="ScannerIcon" alt="skaner" />
           <p>Skaner</p>
         </div>
       </RouterLink>
       <RouterLink to="/admin-menu">
-        <div class="navigation_bar__item" :class="{selected: $route.path == '/admin-menu' }">
+        <div class="navigation_bar__item" :class="{ selected: $route.path == '/admin-menu' }">
           <img :src="MenuIcon" alt="menu" />
           <p>Menu</p>
         </div>
@@ -76,14 +73,14 @@ import { registerForPushNotifications } from '../../config.js'
           <img :src="Logo" alt="logo" />
         </div>
       </RouterLink>
-      <RouterLink to="/warsztaty">
-        <div class="navigation_bar__item" :class="{selected: $route.path == '/warsztaty' }">
-          <img :src="WorkshopIcon" alt="warsztaty" />
-          <p>Warsztaty</p>
+      <RouterLink to="/harmonogram">
+        <div class="navigation_bar__item" :class="{ selected: $route.path == '/harmonogram' }">
+          <img :src="CalendarIcon" alt="harmonogram" />
+          <p>Harmonogram</p>
         </div>
       </RouterLink>
       <RouterLink to="/profil">
-        <div class="navigation_bar__item" :class="{selected: $route.path == '/profil' }">
+        <div class="navigation_bar__item" :class="{ selected: $route.path == '/profil' }">
           <img :src="UserIcon" alt="user" />
           <p>Profil</p>
         </div>
@@ -104,7 +101,7 @@ export default {
     ...mapStores(useApiDataStore),
     isIos() {
       const userAgent = window.navigator.userAgent.toLowerCase();
-      return /iphone|ipod/.test( userAgent );
+      return /iphone|ipod/.test(userAgent);
     },
     isInStandaloneMode() {
       return ('standalone' in window.navigator) && (window.navigator.standalone);
@@ -140,7 +137,8 @@ export default {
 <style scoped>
 .navigation-bar {
   height: 85px;
-  background-color: #1b1b1bbb;
+  /* background-color: #1b1b1bbb; */
+  background-color: var(--bg-translusent);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
@@ -153,9 +151,12 @@ export default {
 
   z-index: 5;
 }
+
 .navigation-bar__content {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  max-width: 550px;
+  margin: 0 auto;
 }
 
 .navigation-bar__logo {
@@ -197,22 +198,28 @@ export default {
   width: 24px;
   object-fit: contain;
   /* filter: brightness(0) saturate(100%) invert(62%) sepia(45%) saturate(1866%) hue-rotate(342deg) brightness(90%) contrast(91%); */
+
+  /* Gray */
   filter: brightness(0) saturate(100%) invert(57%) sepia(0%) saturate(0%) hue-rotate(164deg) brightness(98%) contrast(89%);
+
+  /* Blue */
+  filter: brightness(0) saturate(100%) invert(59%) sepia(9%) saturate(1049%) hue-rotate(186deg) brightness(84%) contrast(87%);
 }
 
 .navigation_bar__item.selected img {
   /* filter: brightness(0) saturate(100%) invert(22%) sepia(21%) saturate(4532%) hue-rotate(337deg) brightness(102%) contrast(89%); */
-  filter: brightness(0) saturate(100%) invert(62%) sepia(45%) saturate(1866%) hue-rotate(342deg) brightness(90%) contrast(91%);
+
+  /* Orange */
+  /* filter: brightness(0) saturate(100%) invert(62%) sepia(45%) saturate(1866%) hue-rotate(342deg) brightness(90%) contrast(91%); */
+
+  /* BLue */
+  filter: brightness(0) saturate(100%) invert(37%) sepia(47%) saturate(783%) hue-rotate(181deg) brightness(98%) contrast(91%);
 }
+
 
 .navigation_bar__item p {
   margin: 0;
   padding-bottom: 3px;
   line-height: 9px;
 }
-
-
-
-
-
 </style>

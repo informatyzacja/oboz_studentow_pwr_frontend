@@ -1,48 +1,27 @@
-/* color palette from <https://github.com/vuejs/theme> */
 :root {
-  /* --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
-
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
-
-  --vt-c-indigo: #2c3e50;
-
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
-
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64); */
-  --bg-gradient: linear-gradient(180deg, #761500 22.92%, #751500 22.93%, #2F0A01 100%);
-  --bg-gradient-translusent: linear-gradient(180deg, #76160088 22.92%, #75150088 22.93%, #2F0A01aa 100%);
+  --bg-gradient: linear-gradient(180deg, #002d76 22.92%, #002d76 22.93%, #010c2f 100%);
+  --bg-gradient-translusent: linear-gradient(180deg, rgba(28, 86, 179, 0.478) 22.92%, rgba(28, 86, 179, 0.478) 22.93%, #1960abaa 100%);
   --red: #751500;
   --orange: #DC7D28;
   --yellow: rgb(222, 186, 136);
 
   --red-dark: #5F1404;
 
-  --bg: #131313;
-  --bg-translusent: #13131394;
+  --bg: #111e33;
+  --bg-translusent: #0f112194;
   --bg-lighter: #1b1b1b;
-  --bg-light: #010101;
-  --bg-light-translusent: rgba(217, 217, 217, 0.172);
-  --bg-light-translusent-hover: rgba(217, 217, 217, 0.177);
+  --bg-light: #0b0b1a;
+  --bg-light-translusent: rgba(77, 85, 136, 0.172);
+  --bg-light-translusent-hover: rgba(39, 46, 90, 0.177);
 
-  --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #dea766 0%, #de7539 100%);
-  --radial-gradient-circle: radial-gradient(circle, #dea766 0%, #de7539 80%);
-  --theme-dark: #de7539;
-  --theme-light: #dea766;
-  --text-gray: #8d8d8d;
+  --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #84c6e7 0%, #3f6cc0 100%);
+  --radial-gradient-circle: radial-gradient(circle, #84c6e7 0%, #3f6cc0 80%);
+  --theme-dark: #3f6cc0;
+  --theme-light: #84c6e7;
+  --text-gray: #768190;
 
-  --light-text: #ededed79;
-  
-  /* --red: #6a2323; */
+  --light-text: #a6cbec79;
+
   --red-action: #9a2929;
 }
 
@@ -63,7 +42,7 @@ body {
   min-height: 100vh;
   color: white;
   background: var(--bg);
-  background-image: url('@/assets/Icon Grid.svg'), linear-gradient(var(--bg),var(--bg));
+  background-image: url('@/assets/Icon Grid.svg'), linear-gradient(var(--bg), var(--bg));
   transition: color 0.5s, background-color 0.5s;
   line-height: 1.6;
   font-family: 'Sui Generis';

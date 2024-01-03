@@ -11,16 +11,13 @@ moment.locale('pl')
   <div>
     <div class="wrapper">
       <router-view v-slot="{ Component }">
-        <transition 
-        :name="$route.meta.transition || 'fade'" 
-        :mode="$route.meta.transition === 'fade' ? 'out-in' : 'default'"
-        @leave="onLeave($event, $done, $route)"
-        >
-            <component :is="Component" :key="$route.path" class="component"/>
+        <transition :name="$route.meta.transition || 'fade'"
+          :mode="$route.meta.transition === 'fade' ? 'out-in' : 'default'" @leave="onLeave($event, $done, $route)">
+          <component :is="Component" :key="$route.path" class="component" />
         </transition>
       </router-view>
     </div>
-    <NavigationBar ref="navigationBar"/>
+    <NavigationBar ref="navigationBar" />
   </div>
 </template>
 
@@ -31,7 +28,7 @@ export default {
       if (route.meta.transition != 'workshop') return
       const animate = el.querySelector('#animate')
       if (animate == null) return
-      animate.style.transform = 'translateY(-' + ((animate.getBoundingClientRect().top+window.scrollY)*0.92 - 10) + 'px)'
+      animate.style.transform = 'translateY(-' + ((animate.getBoundingClientRect().top + window.scrollY) * 0.92 - 10) + 'px)'
     }
   }
 }
@@ -61,13 +58,16 @@ export default {
   transition: all .35s;
   position: absolute;
 }
+
 .workshop-leave-active #animate {
   transition: transform .2s ease-in-out, scale .2s ease-in;
   z-index: 1;
 }
+
 .workshop-leave-from #animate {
   scale: 1;
 }
+
 .workshop-leave-to #animate {
   scale: 1.1;
 }
@@ -98,6 +98,7 @@ export default {
   transform: translateX(0);
   z-index: -1;
 }
+
 .slide-left-leave-to {
   position: absolute;
   transform: translateX(-30vw);
@@ -129,6 +130,7 @@ export default {
   transform: translateX(0);
   z-index: -1;
 }
+
 .slide-right-enter-from {
   position: absolute;
   transform: translateX(-30vw);

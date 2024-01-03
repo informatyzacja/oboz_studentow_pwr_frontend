@@ -39,11 +39,11 @@ defineProps([
 
 <template>
   <main>
-  <slot name="topBar"></slot>
-  <div class="padding-main">
-    <div class="flex" v-if="ready && profileData">
+    <slot name="topBar"></slot>
+    <div class="padding-main">
+      <div class="flex" v-if="ready && profileData">
 
-      <div class="qr_card" @click="$refs.qrOverlay.show" v-if="!hideQR">
+        <!-- <div class="qr_card" @click="$refs.qrOverlay.show" v-if="!hideQR">
         <img class="qr_card_bg" :src="qrBg" /> 
         
         <div class="qr_content" v-if="profileData.bandId">
@@ -112,163 +112,113 @@ defineProps([
         <img :src="hand" class="qr_hand" />
 
         </div>
-      </OverlayView>
+      </OverlayView> -->
 
-      <p class="name">{{ profileData.first_name }} {{ profileData.last_name }}</p>
-      <p class="title">{{ profileData.title }}</p>
-      <p class="email">{{ profileData.email }}</p>
-
-      <div class="spacer"></div>
-
-      <!-- Frakcja -->
-      <div class="itemBoxContainer">
-        <RouterLink
-          :to="frakcjaLink + '/' + profileData.fraction.id"
-          v-if="profileData.fraction.name"
-          :class="{ disabled: !frakcjaLink }"
-        >
-          <ItemBox
-            v-if="profileData.fraction"
-            :bigText="profileData.fraction.name"
-            :leftIcon="profileData.fraction.logo"
-            :rightIcon="frakcjaLink ? rightArrow : ''"
-            leftIconWhite
-          />
-        </RouterLink>
-
-        <!-- grupy -->
-        <RouterLink
-          :to="grupaLink + '/' + data.id"
-          v-for="(data, index) in profileData.groups"
-          :key="index"
-          :class="{ disabled: !grupaLink }"
-        >
-          <ItemBox
-            :leftBigText="data.type.name"
-            :bigText="data.name"
-            :rightIcon="grupaLink ? rightArrow : ''"
-          />
-        </RouterLink>
+        <p class="name">{{ profileData.first_name }} {{ profileData.last_name }}</p>
+        <p class="title">{{ profileData.title }}</p>
+        <p class="email">{{ profileData.email }}</p>
 
         <div class="spacer"></div>
 
-        <!-- linki -->
-        <div v-if="linksReady && linksData.length">
-          <a v-for="(data, index) in linksData" :key="index" :href="data.url" target="_blank">
-            <ItemBox :bigText="data.name" :leftIcon="data.icon" :rightIcon="rightArrow" small/>
-          </a>
-        </div>
+        <!-- Frakcja -->
+        <div class="itemBoxContainer">
+          <RouterLink :to="frakcjaLink + '/' + profileData.fraction.id" v-if="profileData.fraction.name"
+            :class="{ disabled: !frakcjaLink }">
+            <ItemBox v-if="profileData.fraction" :bigText="profileData.fraction.name"
+              :leftIcon="profileData.fraction.logo" :rightIcon="frakcjaLink ? rightArrow : ''" leftIconWhite />
+          </RouterLink>
 
-        <!-- faq -->
-        <RouterLink to="/faq" v-if="!hideFAQ">
-          <ItemBox bigText="Częste pytania" :rightIcon="rightArrow" :leftIcon="faqIcon" small/>
-        </RouterLink>
+          <!-- grupy -->
+          <RouterLink :to="grupaLink + '/' + data.id" v-for="(data, index) in profileData.groups" :key="index"
+            :class="{ disabled: !grupaLink }">
+            <ItemBox :leftBigText="data.type.name" :bigText="data.name" :rightIcon="grupaLink ? rightArrow : ''" />
+          </RouterLink>
 
-        <div class="spacer"></div>
+          <div class="spacer"></div>
 
-        <!-- dane -->
-        <h3 v-if="profileData.bus || profileData.bandId || profileData.houseNumber">Dane</h3>
-        
-        <!-- House -->
-        <RouterLink 
-          v-if="profileData.house"
-          :to="!hideQR ? '/czat-domku' : ''"
-          >
-          <ItemBox
-            :bigText="'Domek nr ' + profileData.house.name"
-            :smallText="profileData.house.key_collected ? 'Klucze odebrane ✅' : 'Klucze nieodebrane ❌'"
-            :leftIcon="domekIcon"
-            :rightIcon="!hideQR ? chatIcon : ''"
-          />
-        </RouterLink>
+          <!-- linki -->
+          <div v-if="linksReady && linksData.length">
+            <a v-for="(data, index) in linksData" :key="index" :href="data.url" target="_blank">
+              <ItemBox :bigText="data.name" :leftIcon="data.icon" :rightIcon="rightArrow" small />
+            </a>
+          </div>
 
-        <!-- Bus -->
-        <div v-if="profileData.bus">
-          <a :href="profileData.bus.location">
-            <ItemBox
-              :bigText="'Bus nr ' + profileData.bus.description"
-              :leftIcon="busIcon"
-              small
-              :rightIcon="profileData.bus.location ? rightArrow : ''"
-            />
-          </a>
-        </div>
+          <!-- faq -->
+          <RouterLink to="/faq" v-if="!hideFAQ">
+            <ItemBox bigText="Częste pytania" :rightIcon="rightArrow" :leftIcon="faqIcon" small />
+          </RouterLink>
 
-        <!-- Band -->
-        <ItemBox
-          v-if="profileData.bandId"
-          :bigText="'Opaska nr ' + profileData.bandId"
-          :leftIcon="opaskaIcon"
-          small
-        />
+          <div class="spacer"></div>
 
-        <!-- Diet -->
-        <ItemBox
-          v-if="profileData.diet"
-          :bigText="'Dieta ' + profileData.diet.toLowerCase()"
-          :leftIcon="mealIcon"
-          small
-        />
+          <!-- dane -->
+          <h3 v-if="profileData.bus || profileData.bandId || profileData.houseNumber">Dane</h3>
 
-      </div>
-    </div>
+          <!-- House -->
+          <RouterLink v-if="profileData.house" :to="!hideQR ? '/czat-domku' : ''">
+            <ItemBox :bigText="'Domek nr ' + profileData.house.name"
+              :smallText="profileData.house.key_collected ? 'Klucze odebrane ✅' : 'Klucze nieodebrane ❌'"
+              :leftIcon="domekIcon" :rightIcon="!hideQR ? chatIcon : ''" />
+          </RouterLink>
 
-    <LoadingIndicator v-if="loading" />
-    <p v-if="error" class="error">{{ error }}</p>
+          <!-- Bus -->
+          <div v-if="profileData.bus">
+            <a :href="profileData.bus.location">
+              <ItemBox :bigText="'Bus nr ' + profileData.bus.description" :leftIcon="busIcon" small
+                :rightIcon="profileData.bus.location ? rightArrow : ''" />
+            </a>
+          </div>
 
-    <!-- sober duty -->
-    <div v-if="profileData.sober_duty && profileData.sober_duty.length" class="zindex">
-      <h3>Twoje dyżury trzeźwości</h3>
-      <div class="scroll">
-        <div
-          v-for="(data, index) in profileData.sober_duty"
-          :key="index"
-        >
-          <ItemBox
-            :leftBigText="moment(data.start).format('HH:mm') + ' - ' + moment(data.end).format('HH:mm')"
-            :bigText="moment(data.start).format('dddd, DD.MM')"
-            small
-          />
+          <!-- Band -->
+          <ItemBox v-if="profileData.bandId" :bigText="'Opaska nr ' + profileData.bandId" :leftIcon="opaskaIcon" small />
+
+          <!-- Diet -->
+          <ItemBox v-if="profileData.diet" :bigText="'Dieta ' + profileData.diet.toLowerCase()" :leftIcon="mealIcon"
+            small />
+
         </div>
       </div>
-    </div>
 
-    <!-- warsztaty -->
-    <div v-if="userWorkshopReady && userWorkshopData.length" class="zindex">
-      <h3>Twoje warsztaty</h3>
-      <div class="scroll">
-        <RouterLink
-          v-for="(data, index) in userWorkshopData"
-          :key="index"
-          :to="`/warsztaty/info/${data.id}`"
-        >
-          <ItemBox
-            :leftBigText="moment(data.start).format('dd. DD.MM, HH:mm')"
-            :bigText="data.name"
-            :rightIcon="rightArrow"
-            
-          />
-        </RouterLink>
+      <LoadingIndicator v-if="loading" />
+      <p v-if="error" class="error">{{ error }}</p>
+
+      <!-- sober duty -->
+      <div v-if="profileData.sober_duty && profileData.sober_duty.length" class="zindex">
+        <h3>Twoje dyżury trzeźwości</h3>
+        <div class="scroll">
+          <div v-for="(data, index) in profileData.sober_duty" :key="index">
+            <ItemBox :leftBigText="moment(data.start).format('HH:mm') + ' - ' + moment(data.end).format('HH:mm')"
+              :bigText="moment(data.start).format('dddd, DD.MM')" small />
+          </div>
+        </div>
+      </div>
+
+      <!-- warsztaty -->
+      <div v-if="userWorkshopReady && userWorkshopData.length" class="zindex">
+        <h3>Twoje warsztaty</h3>
+        <div class="scroll">
+          <RouterLink v-for="(data, index) in userWorkshopData" :key="index" :to="`/warsztaty/info/${data.id}`">
+            <ItemBox :leftBigText="moment(data.start).format('dd. DD.MM, HH:mm')" :bigText="data.name"
+              :rightIcon="rightArrow" />
+          </RouterLink>
+        </div>
+      </div>
+
+      <slot name="footer"></slot>
+
+      <div class="credits">
+        <p>© Obóz Studentow PWr 2023</p>
+        <p>Made with 🍺 by <a href="https://www.facebook.com/Marvin.Ruc/" target="_blank"><u>Marvin</u></a></p>
       </div>
     </div>
-
-    <slot name="footer"></slot>
-
-    <div class="credits">
-      <p>© Obóz Studentow PWr 2023</p>
-      <p>Made with 🍺 by <a href="https://www.facebook.com/Marvin.Ruc/" target="_blank"><u>Marvin</u></a></p>
-    </div>
-  </div>
-</main>
+  </main>
 </template>
 
 <style scoped>
-
 main {
   background: var(--bg-gradient);
-  background-image: var(--bg-gradient-translusent), url('@/assets/Icon Grid-red.svg'), var(--bg-gradient), linear-gradient(var(--red),var(--red))
-  
+  background-image: var(--bg-gradient-translusent), url('@/assets/Icon Grid.svg'), var(--bg-gradient), linear-gradient(var(--red), var(--red))
 }
+
 .disabled {
   pointer-events: none;
 }
@@ -349,6 +299,7 @@ button {
 
   margin-top: 20px;
 }
+
 .qr {
   width: 110px;
   height: 110px;
@@ -407,7 +358,7 @@ button {
   position: relative;
 }
 
-.qr_overlay_inner{
+.qr_overlay_inner {
 
   display: flex;
   justify-content: flex-start;
@@ -448,9 +399,11 @@ button {
 
 
 
-span, div {
+span,
+div {
   --border-width: calc(2% + 3px);
 }
+
 .qr_div {
   position: relative;
   color: #fff;
@@ -474,24 +427,20 @@ span {
   left: 0;
   width: 0;
   height: var(--border-width);
-  background: linear-gradient(
-    90deg,
-    transparent 30%,
-    var(--red),
-    var(--red)
-  );
+  background: linear-gradient(90deg,
+      transparent 30%,
+      var(--red),
+      var(--red));
 }
 
 .bottom {
   right: 0;
   bottom: 0;
   height: var(--border-width);
-  background: linear-gradient(
-    90deg,
-    var(--red),
-    var(--red),
-    transparent 70%
-  );
+  background: linear-gradient(90deg,
+      var(--red),
+      var(--red),
+      transparent 70%);
 }
 
 .right {
@@ -499,12 +448,10 @@ span {
   right: 0;
   width: var(--border-width);
   height: 0;
-  background: linear-gradient(
-    180deg,
-    transparent 30%,
-    var(--red),
-    var(--red)
-  );
+  background: linear-gradient(180deg,
+      transparent 30%,
+      var(--red),
+      var(--red));
 }
 
 .left {
@@ -512,12 +459,10 @@ span {
   bottom: 0;
   width: var(--border-width);
   height: 0;
-  background: linear-gradient(
-    180deg,
-    var(--red),
-    var(--red),
-    transparent 70%
-  );
+  background: linear-gradient(180deg,
+      var(--red),
+      var(--red),
+      transparent 70%);
 }
 
 .top {
@@ -539,11 +484,11 @@ span {
 
 
 @keyframes animateTopBottom {
-  0%
-  {
+  0% {
     opacity: 0;
     width: 0;
   }
+
   50% {
     width: 100%;
     opacity: 1;
@@ -565,7 +510,7 @@ span {
     opacity: 1;
     height: 100%;
   }
-  
+
   20% {
     opacity: 0;
     height: 100%;
@@ -583,9 +528,6 @@ span {
   }
 
 }
-
-
-
 </style>
 
 <script>

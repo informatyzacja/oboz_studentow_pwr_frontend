@@ -32,25 +32,25 @@ const router = createRouter({
       name: 'moj-domek',
       component: () => import('../views/MyHouseView.vue'),
     },
-    {
-      path: '/warsztaty',
-      name: 'warsztaty',
-      component: () => import('../views/WorkshopsView.vue'),
-      meta: { type: 'main' },
-    },
-    {
-      path: '/warsztaty/:day',
-      name: 'warsztatyDay',
-      component: () => import('../views/WorkshopsView.vue'),
-      meta: { transition: 'fade' },
-    },
-    {
-      path: '/warsztaty/info/:id',
-      name: 'warsztatyDetail',
-      component: () => import('../views/WorkshopDetailView.vue'),
-      // meta: { transition: 'workshop' },
-      
-    },
+    // {
+    //   path: '/warsztaty',
+    //   name: 'warsztaty',
+    //   component: () => import('../views/WorkshopsView.vue'),
+    //   meta: { type: 'main' },
+    // },
+    // {
+    //   path: '/warsztaty/:day',
+    //   name: 'warsztatyDay',
+    //   component: () => import('../views/WorkshopsView.vue'),
+    //   meta: { transition: 'fade' },
+    // },
+    // {
+    //   path: '/warsztaty/info/:id',
+    //   name: 'warsztatyDetail',
+    //   component: () => import('../views/WorkshopDetailView.vue'),
+    //   // meta: { transition: 'workshop' },
+
+    // },
     {
       path: '/harmonogram',
       name: 'schedule',
@@ -102,11 +102,11 @@ const router = createRouter({
       name: 'notFound',
       component: () => import('../views/NotFoundView.vue')
     },
-    {
-      path: '/zapisy-gra-nocna',
-      name: 'zapisy-gra-nocna',
-      component: () => import('../views/NightGameSignupView.vue')
-    },
+    // {
+    //   path: '/zapisy-gra-nocna',
+    //   name: 'zapisy-gra-nocna',
+    //   component: () => import('../views/NightGameSignupView.vue')
+    // },
 
     // ADMIN ROUTES
     {
@@ -206,8 +206,8 @@ router.afterEach((to, from) => {
   if (to.meta.transition) return
   const toDepth = to.path.split('/').length
   const fromDepth = from.path.split('/').length
-  to.meta.transition = to.meta.type === 'main' && from.meta.type === 'main' || from.name === undefined ? 'fade' : 
-  (to.meta.type === 'main' || toDepth < fromDepth ? 'slide-right' : 'slide-left')
+  to.meta.transition = to.meta.type === 'main' && from.meta.type === 'main' || from.name === undefined ? 'fade' :
+    (to.meta.type === 'main' || toDepth < fromDepth ? 'slide-right' : 'slide-left')
 })
 
 export default router

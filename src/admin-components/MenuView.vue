@@ -19,80 +19,40 @@ import { mapStores } from 'pinia'
 
 <template>
   <main>
-  <TopBar title="Menu" />
-  <div class="padding cards">
-    <MenuCard
-      title="Skaner"
-      :icon="ScannerIcon"
-      link="/skaner"
-      v-if="
-        apiDataStore.permissions.ready &&
+    <TopBar title="Menu" />
+    <div class="padding cards">
+      <!-- <MenuCard title="Skaner" :icon="ScannerIcon" link="/skaner" v-if="apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions([
           'can_validate_meals',
           'can_view_user_info',
           'can_add_points'
         ])
-      "
-    />
-    <MenuCard
-      title="Dodaj punkty"
-      :icon="AddPointsIcon"
-      link="/punkty/dodaj"
-      v-if="
-        apiDataStore.permissions.ready &&
+        " /> -->
+      <MenuCard title="Dodaj punkty" :icon="AddPointsIcon" link="/punkty/dodaj" v-if="apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_add_points'])
-      "
-    />
-    <MenuCard
-      title="Punkty"
-      :icon="PointsIcon"
-      link="/punkty"
-      v-if="
-        apiDataStore.permissions.ready &&
+        " />
+      <MenuCard title="Punkty" :icon="PointsIcon" link="/punkty" v-if="apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_view_points'])
-      "
-    />
-    <MenuCard
-      title="Ranking"
-      :icon="RankingIcon"
-      link="/ranking"
-      v-if="
-        apiDataStore.permissions.ready &&
+        " />
+      <MenuCard title="Ranking" :icon="RankingIcon" link="/ranking" v-if="apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_view_points'])
-      "
-    />
-    <MenuCard
-      title="Dystrykty"
-      :icon="FractionIcon"
-      link="/frakcje"
-    />
-    <MenuCard
-      title="Gra nocna"
-      :icon="GroupIcon"
-      link="/grupy"
-      v-if="
-        apiDataStore.permissions.ready &&
+        " />
+      <MenuCard title="Frakcje" :icon="FractionIcon" link="/frakcje" />
+      <MenuCard title="Gra nocna" :icon="GroupIcon" link="/grupy" v-if="apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_view_groups'])
-      "
-    />
-    <MenuCard
-      title="Ogłoszenia"
-      :icon="AnnouncementIcon"
-      link="/ogloszenia"
-      v-if="
-        apiDataStore.permissions.ready &&
+        " />
+      <MenuCard title="Ogłoszenia" :icon="AnnouncementIcon" link="/ogloszenia" v-if="apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_add_announcement'])
-      "
-    />
+        " />
 
-    <MenuCard title="Warsztaty" :icon="HammerIcon" link="/warsztaty" />
-    <MenuCard title="Sos" :icon="SosIcon" link="/sos" />
-    <MenuCard title="Mapka" :icon="MapIcon" link="/mapa" />
+      <!-- <MenuCard title="Warsztaty" :icon="HammerIcon" link="/warsztaty" /> -->
+      <MenuCard title="Sos" :icon="SosIcon" link="/sos" />
+      <MenuCard title="Mapka" :icon="MapIcon" link="/mapa" />
 
-    <div style="height: calc((100vw - 66px) / 3); width: calc((100vw - 66px) / 3)"></div>
-    <div style="height: calc((100vw - 66px) / 3); width: calc((100vw - 66px) / 3)"></div>
-  </div>
-</main>
+      <div style="height: 150px; width: 150px"></div>
+      <div style="height: 150px; width: 150px"></div>
+    </div>
+  </main>
 </template>
 
 <style scoped>
@@ -112,6 +72,6 @@ export default {
   computed: {
     ...mapStores(useApiDataStore)
   },
-  mounted() {}
+  mounted() { }
 }
 </script>

@@ -35,7 +35,7 @@ defineProps({
     </div>
     <h3>{{ title }}</h3>
     <h6>{{ description }}</h6>
-    <h4>Zrobione zdjęcie należy przesłać na fanpage obozowy na facebooku i podać nazwę swojego dystryktu</h4>
+    <h4>Zrobione zdjęcie należy przesłać na fanpage obozowy na facebooku i podać nazwę swojej frakcji</h4>
   </div>
 </template>
 
@@ -73,6 +73,7 @@ export default {
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
   width: 100%
 }
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -88,6 +89,7 @@ export default {
   color: black;
   margin-left: 10px;
 }
+
 .timer p {
   margin: 0;
   margin-bottom: 5px;
@@ -95,6 +97,7 @@ export default {
   line-height: 11px;
   color: var(--text-gray);
 }
+
 .timer h2 {
   margin: 0;
   font-size: 25px;
@@ -106,21 +109,24 @@ h1 {
   font-size: 32px;
   line-height: 32px;
 }
+
 h3 {
   font-size: 18px;
   color: rgba(255, 255, 255, 0.839);
 }
+
 h6 {
   font-size: 16px;
   color: rgba(255, 255, 255, 0.571);
 }
+
 h4 {
   text-align: right;
   font-size: 10px;
   margin-top: 20px;
 }
+
 h5 {
   color: rgb(56, 56, 56);
   font-size: 14px;
-}
-</style>
+}</style>

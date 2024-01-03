@@ -6,18 +6,10 @@ import { mapStores } from 'pinia'
 </script>
 
 <template>
-  <GenericGroupView
-    title="Dystrykt"
-    backLink="/profil"
-    mapDescription="Miejsce spotkań"
-    messengerDescription="Grupa dystryktu"
-    :ready="apiDataStore.profile.ready"
-    :loading="apiDataStore.profile.loading"
-    :error="apiDataStore.profile.error"
-    :group="apiDataStore.profile.ready ? apiDataStore.profile.data[0].fraction : {}"
-    topRightButtonText = "Zobacz wszystkie"
-    topRightButtonUrl = "/frakcje"
-  ></GenericGroupView>
+  <GenericGroupView title="Frakcje" backLink="/profil" mapDescription="Miejsce spotkań"
+    messengerDescription="Grupa frakcji" :ready="apiDataStore.profile.ready" :loading="apiDataStore.profile.loading"
+    :error="apiDataStore.profile.error" :group="apiDataStore.profile.ready ? apiDataStore.profile.data[0].fraction : {}"
+    topRightButtonText="Zobacz wszystkie" topRightButtonUrl="/frakcje"></GenericGroupView>
 </template>
 
 <script>
