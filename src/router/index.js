@@ -32,25 +32,24 @@ const router = createRouter({
       name: 'moj-domek',
       component: () => import('../views/MyHouseView.vue'),
     },
-    // {
-    //   path: '/warsztaty',
-    //   name: 'warsztaty',
-    //   component: () => import('../views/WorkshopsView.vue'),
-    //   meta: { type: 'main' },
-    // },
-    // {
-    //   path: '/warsztaty/:day',
-    //   name: 'warsztatyDay',
-    //   component: () => import('../views/WorkshopsView.vue'),
-    //   meta: { transition: 'fade' },
-    // },
-    // {
-    //   path: '/warsztaty/info/:id',
-    //   name: 'warsztatyDetail',
-    //   component: () => import('../views/WorkshopDetailView.vue'),
-    //   // meta: { transition: 'workshop' },
-
-    // },
+    {
+      path: '/warsztaty',
+      name: 'warsztaty',
+      component: () => import('../views/WorkshopsView.vue'),
+      meta: { type: 'main' },
+    },
+    {
+      path: '/warsztaty/:day',
+      name: 'warsztatyDay',
+      component: () => import('../views/WorkshopsView.vue'),
+      meta: { transition: 'fade' },
+    },
+    {
+      path: '/warsztaty/info/:id',
+      name: 'warsztatyDetail',
+      component: () => import('../views/WorkshopDetailView.vue'),
+      // meta: { transition: 'workshop' },
+    },
     {
       path: '/harmonogram',
       name: 'schedule',

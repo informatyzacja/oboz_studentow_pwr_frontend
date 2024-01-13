@@ -17,11 +17,9 @@ import questionMark from '../assets/question-mark.jpg'
 
 <template>
   <main>
-  <TopBar :backLink="$router.options.history.state.back || '/warsztaty'" absolute />
-    <div
-      v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length"
-      :set="(data = apiDataStore.workshops.withId(parseInt($route.params.id)))"
-    >
+    <TopBar :backLink="$router.options.history.state.back || { name: 'warsztaty' }" absolute />
+    <div v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length"
+      :set="(data = apiDataStore.workshops.withId(parseInt($route.params.id)))">
       <div class="card">
         <img class="bg" :src="data.photo || questionMark" />
         <div class="time">
@@ -31,7 +29,9 @@ import questionMark from '../assets/question-mark.jpg'
         <div class="overlay"></div>
         <div class="description">
           <div>
-            <h2><IconLocation class="icon" /> {{ data.location }}</h2>
+            <h2>
+              <IconLocation class="icon" /> {{ data.location }}
+            </h2>
             <h1>{{ data.name }}</h1>
             <h3>{{ data.userCount + '/' + data.userLimit }} osób</h3>
           </div>
@@ -39,46 +39,28 @@ import questionMark from '../assets/question-mark.jpg'
             <button class="button button_inactive" v-if="loading || data.loader" disabled>
               <LoadingIndicator inline small />
             </button>
-            <button
-              class="button button_signedup"
-              v-else-if="data.userSignUpId"
-              @click="signOut(data.userSignUpId)"
-            >
+            <button class="button button_signedup" v-else-if="data.userSignUpId" @click="signOut(data.userSignUpId)">
               Wypisz się
             </button>
-            <button
-              class="button button_inactive"
-              v-else-if="
-                !(
-                  data.signupsOpen &&
-                  (data.signupsOpenTime == null || moment(data.signupsOpenTime).isBefore(moment()))
-                )
-              "
-              disabled
-            >
+            <button class="button button_inactive" v-else-if="!(
+              data.signupsOpen &&
+              (data.signupsOpenTime == null || moment(data.signupsOpenTime).isBefore(moment()))
+            )
+              " disabled>
               Zapisy nieaktywne
             </button>
-            <button
-              class="button button_inactive"
-              v-else-if="data.userCount >= data.userLimit"
-              disabled
-            >
+            <button class="button button_inactive" v-else-if="data.userCount >= data.userLimit" disabled>
               Brak miejsc
             </button>
             <button class="button" v-else @click="signUp($route.params.id)">Zapisz się</button>
 
-            <p v-if="!loading && !data.loader && data.userSignUpId"
-            class="signupsOpenTime">
+            <p v-if="!loading && !data.loader && data.userSignUpId" class="signupsOpenTime">
               Jesteś zapisany/a
             </p>
-            <p
-              class="signupsOpenTime"
-              v-else-if="
-                data.signupsOpenTime &&
-                moment(data.signupsOpenTime).isSame(moment(), 'day') &&
-                moment(data.signupsOpenTime).isAfter(moment())
-              "
-            >
+            <p class="signupsOpenTime" v-else-if="data.signupsOpenTime &&
+              moment(data.signupsOpenTime).isSame(moment(), 'day') &&
+              moment(data.signupsOpenTime).isAfter(moment())
+              ">
               Otwierają się dzisiaj o {{ moment(data.signupsOpenTime).format('H:mm') }}
             </p>
           </div>
@@ -95,23 +77,13 @@ import questionMark from '../assets/question-mark.jpg'
         </div>
 
         <h3 v-if="data.workshopleaders && data.workshopleaders.length">Prowadzący</h3>
-        <ItemBox
-          v-for="(data, index) in data.workshopleaders"
-          :key="index"
-          :bigText="data.first_name + ' ' + data.last_name"
-          :smallText="data.title"
-          :leftIcon="data.photo"
-        />
+        <ItemBox v-for="( data, index ) in  data.workshopleaders " :key="index"
+          :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo" />
 
 
         <h3 v-if="data.workshopusers && data.workshopusers.length">Zapisani</h3>
-        <ItemBox
-          v-for="(data, index) in data.workshopusers"
-          :key="index"
-          :bigText="data.first_name + ' ' + data.last_name"
-          :smallText="data.title"
-          :leftIcon="data.photo"
-        />
+        <ItemBox v-for="( data, index ) in  data.workshopusers " :key="index"
+          :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo" />
       </div>
     </div>
 
@@ -122,10 +94,10 @@ import questionMark from '../assets/question-mark.jpg'
 </template>
 
 <style scoped>
-
 main {
   padding-bottom: 100px;
 }
+
 .button {
   border-radius: 10px;
   border: none;
@@ -167,7 +139,7 @@ main {
 .bg {
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 80%;
   object-fit: cover;
   object-position: center;
 }
@@ -287,7 +259,7 @@ export default {
           throw new Error('Request failed!')
         })
         .then((data) => {
-            this.error = data.error
+          this.error = data.error
         })
         .catch((error) => {
           console.error('There was an error!', error)

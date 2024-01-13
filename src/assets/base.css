@@ -4,13 +4,14 @@
   --red: #751500;
   --orange: #DC7D28;
   --yellow: rgb(222, 186, 136);
+  --theme-text: #002d76;
 
   --red-dark: #5F1404;
 
   --bg: #111e33;
   --bg-translusent: #0f112194;
-  --bg-lighter: #1b1b1b;
-  --bg-light: #0b0b1a;
+  --bg-lighter: #272e3f;
+  --bg-light: #324a6c;
   --bg-light-translusent: rgba(77, 85, 136, 0.172);
   --bg-light-translusent-hover: rgba(39, 46, 90, 0.177);
 

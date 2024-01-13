@@ -34,13 +34,16 @@ defineProps({
 
 <template>
   <div class="card" :class="{ big: big, wide: wide }">
-    <img class="bg" :src="imgSrc"/>
+    <img class="bg" :src="imgSrc" />
     <div class="time">
       <p>{{ time }}</p>
     </div>
     <div class="overlay"></div>
     <div class="description">
-      <h2 v-if="location"><IconLocation class="icon" /> <p>{{ location }}</p> </h2>
+      <h2 v-if="location">
+        <IconLocation class="icon" />
+        <p>{{ location }}</p>
+      </h2>
       <h1>{{ name }}</h1>
       <h3 v-if="userCount">{{ userCount }} osób</h3>
     </div>
@@ -73,7 +76,7 @@ defineProps({
 .bg {
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 80%;
   object-fit: cover;
   border-radius: 20px;
   object-position: center;
@@ -142,10 +145,10 @@ defineProps({
 
 .description h2 p {
   display: inline-block;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .description h3 {

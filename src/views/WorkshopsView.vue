@@ -12,10 +12,10 @@ import questionMark from '../assets/question-mark.jpg'
 
 <template>
   <main>
-  <TopBar title="Warsztaty" />
+    <TopBar title="Lekcje narciarstwa" backLink="/" />
     <div class="padding-main" v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length">
       <div class="day-changer">
-        <RouterLink v-if="currentDay > 0" :to="'/warsztaty/' + (currentDay - 1)">
+        <RouterLink v-if="currentDay > 0" :to="{ name: 'warsztatyDay', params: { day: currentDay - 1 } }">
           <div class="arrow-circle arrow-circle-left">
             <div class="arrow arrow-left"></div>
           </div>
@@ -25,36 +25,25 @@ import questionMark from '../assets/question-mark.jpg'
           {{ moment(apiDataStore.workshops.futureDates[currentDay]).format('dddd, Do MMMM') }}
         </h5>
 
-        <RouterLink
-          v-if="currentDay < apiDataStore.workshops.futureDates.length - 1"
-          :to="'/warsztaty/' + (currentDay + 1)"
-        >
+        <RouterLink v-if="currentDay < apiDataStore.workshops.futureDates.length - 1"
+          :to="{ name: 'warsztatyDay', params: { day: currentDay + 1 } }">
           <div class="arrow-circle arrow-circle-right">
             <div class="arrow arrow-right"></div>
           </div>
         </RouterLink>
       </div>
 
-      <RouterLink
-        :to="'/warsztaty/info/' + data.id"
-        v-for="(data, index) in apiDataStore.workshops.withDate(
-          apiDataStore.workshops.futureDates[currentDay]
-        )"
-        :key="index"
-        @click="addAnmateClass($event)"
-      >
-        <HomeCard
-          :name="data.name"
-          :location="data.location"
+      <RouterLink :to="{ name: 'warsztatyDetail', params: { id: data.id } }" v-for="( data, index ) in 
+      apiDataStore.workshops.withDate(
+        apiDataStore.workshops.futureDates[currentDay]
+      )" :key="index" @click="addAnmateClass($event)">
+        <HomeCard :name="data.name" :location="data.location"
           :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-          :imgSrc="data.photo || questionMark"
-          :userCount="data.userCount + '/' + data.userLimit"
-          big
-        />
+          :imgSrc="data.photo || questionMark" :userCount="data.userCount + '/' + data.userLimit" big />
       </RouterLink>
     </div>
     <p v-if="apiDataStore.workshops.ready && !apiDataStore.workshops.data.length" class="error">
-      Brak warsztatów
+      Nic tu nie ma
     </p>
 
     <LoadingIndicator v-if="apiDataStore.workshops.loading" />
@@ -98,6 +87,7 @@ import questionMark from '../assets/question-mark.jpg'
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
 }
+
 .day-changer {
   display: flex;
   justify-content: center;

@@ -17,6 +17,7 @@ import PushNotficationsPopupView from '../components/PushNotficationsPopupView.v
 import InstallAppView from '../components/InstallAppView.vue'
 
 import questionMark from '../assets/question-mark.jpg'
+import homeCardLinkBg from '../assets/home-card-link-bg.png'
 
 import rightArrow from '../assets/arrow.svg'
 import microphoneIcon from '../assets/ogloszenia.svg'
@@ -29,39 +30,40 @@ import ItemBox from '../components/ItemBox.vue'
 
 <template>
   <main>
-  <TopBar title="Home" />
+    <TopBar title="Home" />
 
     <!-- Night Game Signup -->
-    <div class="padding" v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.night_game_signup_active">
-        <RouterLink to="/zapisy-gra-nocna">
-          <div class="image_link_container">
-            <img :src="graNocna" class="image_link"/>
-            <img :src="rightArrow" class="image_link_arrow"/>
-          </div>
-        </RouterLink>
+    <div class="padding"
+      v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.night_game_signup_active">
+      <RouterLink to="/zapisy-gra-nocna">
+        <div class="image_link_container">
+          <img :src="graNocna" class="image_link" />
+          <img :src="rightArrow" class="image_link_arrow" />
+        </div>
+      </RouterLink>
     </div>
 
+
+    <!-- Announcements -->
+    <div v-if="apiDataStore.announcement.ready && apiDataStore.announcement.data.length">
+      <h3>Ogłoszenia</h3>
+      <div class="padding">
+        <TextBox v-for="(data, index) in apiDataStore.announcement.data" :key="index" :title="data.title"
+          :content="data.content" :image="microphoneIcon" style="margin-bottom: 10px" />
+      </div>
+    </div>
+
+
     <!-- Daily Quest -->
-    <div
-      class="padding"
-      v-if="apiDataStore.dailyQuest.ready && apiDataStore.dailyQuest.future.length"
-    >
+    <div class="padding" v-if="apiDataStore.dailyQuest.ready && apiDataStore.dailyQuest.future.length">
       <div v-for="(data, index) in apiDataStore.dailyQuest.future" :key="index">
-        <DailyQuestView
-          :finish="data.finish"
-          :title="data.title"
-          :points="data.points"
-          @click="showRef('dailyQuestOverlay', index)"
-        />
+        <DailyQuestView :finish="data.finish" :title="data.title" :points="data.points"
+          @click="showRef('dailyQuestOverlay', index)" />
 
         <OverlayView ref="dailyQuestOverlay">
           <div class="daily_quest_overlay">
-            <DailyQuestView
-              :finish="data.finish"
-              :title="data.title"
-              :description="data.description"
-              :points="data.points"
-            />
+            <DailyQuestView :finish="data.finish" :title="data.title" :description="data.description"
+              :points="data.points" />
             <button @click="hideRef('dailyQuestOverlay', index)">Zamknij</button>
           </div>
         </OverlayView>
@@ -74,34 +76,33 @@ import ItemBox from '../components/ItemBox.vue'
       <!-- <h3>Linki</h3> -->
       <div class="padding">
 
-        <span
-          v-for="(data, index) in apiDataStore.homeLinks.data"
-          :key="index"
-        >
+        <span v-for="(data, index) in apiDataStore.homeLinks.data" :key="index">
 
           <RouterLink v-if="data.url && data.url.startsWith('/')" :to="data.url">
             <div class="image_link_container" v-if="data.image">
-              <img :src="data.image" class="image_link"/>
-              <img :src="rightArrow" class="image_link_arrow" v-if="data.url"/>
+              <img :src="data.image" class="image_link" />
+              <img :src="rightArrow" class="image_link_arrow" v-if="data.url" />
             </div>
-            <ItemBox
-              v-if="data.name && data.icon"
-              :bigText="data.name"
-              :rightIcon="data.url ? rightArrow : ''"
-              :leftIcon="data.icon"
-            />
+            <ItemBox v-else-if="data.name && data.icon" :bigText="data.name" :rightIcon="data.url ? rightArrow : ''"
+              :leftIcon="data.icon" />
+            <div class="image_link_container" v-else-if="data.name">
+              <img :src="homeCardLinkBg" class="image_link" style="max-height: 180px;" />
+              <img :src="rightArrow" class="image_link_arrow dark_filter" v-if="data.url" />
+              <p class="image_link_text">{{ data.name }}</p>
+            </div>
           </RouterLink>
           <a v-else :href="data.url" target="_blank">
             <div class="image_link_container" v-if="data.image">
-              <img :src="data.image" class="image_link"/>
-              <img :src="rightArrow" class="image_link_arrow" v-if="data.url"/>
+              <img :src="data.image" class="image_link" />
+              <img :src="rightArrow" class="image_link_arrow" v-if="data.url" />
             </div>
-            <ItemBox
-              v-if="data.name && data.icon"
-              :bigText="data.name"
-              :rightIcon="data.url ? rightArrow : ''"
-              :leftIcon="data.icon"
-            />
+            <ItemBox v-if="data.name && data.icon" :bigText="data.name" :rightIcon="data.url ? rightArrow : ''"
+              :leftIcon="data.icon" />
+            <div class="image_link_container" v-else-if="data.name">
+              <img :src="homeCardLinkBg" class="image_link" style="max-height: 180px;" />
+              <img :src="rightArrow" class="image_link_arrow dark_filter" v-if="data.url" />
+              <p class="image_link_text">{{ data.name }}</p>
+            </div>
           </a>
 
 
@@ -113,27 +114,20 @@ import ItemBox from '../components/ItemBox.vue'
 
 
     <InstallAppView />
-    
+
     <div v-if="showPushNotificationCard" style="margin-bottom: 5px;">
-      <PushNotficationsPopupView
-        @hide="showPushNotificationCard = false" />
+      <PushNotficationsPopupView @hide="showPushNotificationCard = false" />
     </div>
 
     <!-- Workshops -->
     <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
       <h3>Twoje dzisiejsze warsztaty</h3>
       <div class="scroll">
-        <RouterLink
-          v-for="(data, index) in apiDataStore.userWorkshop.today"
-          :key="index"
-          :to="`/warsztaty/info/${data.id}`"
-        >
-          <HomeCard
-            :name="data.name"
-            :location="data.location"
+        <RouterLink v-for="(data, index) in apiDataStore.userWorkshop.today" :key="index"
+          :to="`/warsztaty/info/${data.id}`">
+          <HomeCard :name="data.name" :location="data.location"
             :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-            :imgSrc="data.photo || questionMark"
-          />
+            :imgSrc="data.photo || questionMark" />
         </RouterLink>
       </div>
     </div>
@@ -142,44 +136,23 @@ import ItemBox from '../components/ItemBox.vue'
     <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length">
       <h3>Co się teraz dzieje?</h3>
       <div class="scroll">
-        <RouterLink 
-          v-for="(data, index) in apiDataStore.schedule.rightNow"
-          :key="index"
-          :to="'/harmonogram/info/' + data.id"
-        >
-          <HomeCard
-            :name="data.name"
-            :location="data.location"
+        <RouterLink v-for="(data, index) in apiDataStore.schedule.rightNow" :key="index"
+          :to="'/harmonogram/info/' + data.id">
+          <HomeCard :name="data.name" :location="data.location"
             :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-            :imgSrc="data.photo || questionMark"
-          />
+            :imgSrc="data.photo || questionMark" />
         </RouterLink>
       </div>
     </div>
 
-    <div class="padding">
+    <!-- <div class="padding">
       <RouterLink to="/harmonogram">
         <div class="image_link_container">
-          <img :src="zobaczPelnyHarmonogram" class="image_link"/>
-          <img :src="rightArrow" class="image_link_arrow"/>
+          <img :src="zobaczPelnyHarmonogram" class="image_link" />
+          <img :src="rightArrow" class="image_link_arrow" />
         </div>
       </RouterLink>
-    </div>
-
-    <!-- Announcements -->
-    <div v-if="apiDataStore.announcement.ready && apiDataStore.announcement.data.length">
-      <h3>Ogłoszenia</h3>
-      <div class="padding">
-        <TextBox
-          v-for="(data, index) in apiDataStore.announcement.data"
-          :key="index"
-          :title="data.title"
-          :content="data.content"
-          :image = "microphoneIcon"
-          style="margin-bottom: 10px"
-        />
-      </div>
-    </div>
+    </div> -->
 
     <!-- Images -->
     <div v-for="(data, index) in apiDataStore.images.other" :key="index">
@@ -193,10 +166,11 @@ import ItemBox from '../components/ItemBox.vue'
             <img :src="data.image" :alt="data.name" />
 
             <!-- <button class="button" @click="shareViaWebShare(data.name, data.image)" v-if="webShareApiSupported"><p v-if="!loading">Zapisz</p><LoadingIndicator inline small v-else/></button> -->
-            <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentow_PWr_2023'" target="_blank" rel="nofollow">Pobierz</a>
+            <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentow_PWr_2023'" target="_blank"
+              rel="nofollow">Pobierz</a>
 
             <button class="red-bg" @click="hideRef('imageOverlay', index)">Zamknij</button>
-          </div>  
+          </div>
         </OverlayView>
       </div>
     </div>
@@ -205,48 +179,37 @@ import ItemBox from '../components/ItemBox.vue'
     <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.upNext.length">
       <h3>Następne</h3>
       <div class="scroll">
-        <RouterLink 
-          v-for="(data, index) in apiDataStore.schedule.upNext"
-          :key="index"
-          :to="'/harmonogram/info/' + data.id"
-        >
-          <HomeCard
-            :name="data.name"
-            :location="data.location"
+        <RouterLink v-for="(data, index) in apiDataStore.schedule.upNext" :key="index"
+          :to="'/harmonogram/info/' + data.id">
+          <HomeCard :name="data.name" :location="data.location"
             :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-            :imgSrc="data.photo || questionMark"
-          />
+            :imgSrc="data.photo || questionMark" />
         </RouterLink>
       </div>
     </div>
 
     <div class="spacer"></div>
 
-    <div class="padding">
+    <!-- <div class="padding">
       <RouterLink to="/frakcje">
         <div class="image_link_container">
-          <img :src="zobaczFrakcje" class="image_link"/>
-          <img :src="rightArrow" class="image_link_arrow"/>
+          <img :src="zobaczFrakcje" class="image_link" />
+          <img :src="rightArrow" class="image_link_arrow" />
         </div>
       </RouterLink>
+    </div> -->
+
+
+    <!-- Partners -->
+    <div class="partners" v-if="apiDataStore.partner.ready && apiDataStore.partner.data.length">
+      <h3>Partnerzy</h3>
+      <div class="scroll" ref="partners">
+        <a :href="data.link" target="_blank" :key="index" v-for="(data, index) in apiDataStore.partner.data">
+          <img class="partner" :src="data.logo" />
+        </a>
+      </div>
     </div>
 
-      
-      <!-- Partners -->
-      <div class="partners" v-if="apiDataStore.partner.ready && apiDataStore.partner.data.length">
-        <h3>Partnerzy</h3>
-        <div class="scroll" ref="partners">
-          <a :href="data.link" 
-              target="_blank" 
-              :key="index"
-              v-for="(data, index) in apiDataStore.partner.data">
-            <img class="partner"
-              :src="data.logo"
-            />
-          </a>
-        </div>
-      </div>
-    
 
     <LoadingIndicator v-if="apiDataStore.schedule.loading" />
     <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
@@ -283,7 +246,7 @@ export default {
     ...mapStores(useApiDataStore),
     isIos() {
       const userAgent = window.navigator.userAgent.toLowerCase();
-      return /iphone|ipod/.test( userAgent );
+      return /iphone|ipod/.test(userAgent);
     },
   },
   mounted() {
@@ -313,10 +276,10 @@ export default {
       }
     } else if (this.isIos) {
       if ("Notification" in window) {
-          if (Notification.permission !== "granted") {
-            this.showPushNotificationCard = true
-            console.log("Permission not granted", Notification.permission);
-          }
+        if (Notification.permission !== "granted") {
+          this.showPushNotificationCard = true
+          console.log("Permission not granted", Notification.permission);
+        }
       } else {
         this.showPushNotificationCard = true
         console.log("This browser does not support desktop notification");
@@ -366,11 +329,11 @@ export default {
 </script>
 
 <style scoped>
-
 main {
   padding-bottom: 100px;
   background: var(--bg);
 }
+
 .loading {
   display: flex;
   justify-content: center;
@@ -387,9 +350,12 @@ h3 {
   overflow-x: auto;
   white-space: nowrap;
   padding: 0 10px;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -446,6 +412,7 @@ button {
 .image_link {
   width: 100%;
   border-radius: 20px;
+  object-fit: cover;
 }
 
 .image_link_arrow {
@@ -455,11 +422,34 @@ button {
   position: absolute;
 }
 
+.dark_filter {
+  filter: brightness(0.3);
+}
+
+.image_link_text {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  right: 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--theme-text);
+  font-size: 30px;
+  font-weight: bold;
+  padding: 0 25px;
+}
+
 
 /* Image */
 .image-view {
   padding: 0 20px;
 }
+
 .image-view img {
   width: 100%;
   height: auto;
