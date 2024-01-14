@@ -155,7 +155,7 @@ defineProps([
 
           <!-- House -->
           <RouterLink v-if="profileData.house" :to="!hideQR ? '/czat-domku' : ''">
-            <ItemBox :bigText="'Domek nr ' + profileData.house.name"
+            <ItemBox :bigText="'Pokój nr ' + profileData.house.name"
               :smallText="profileData.house.key_collected ? 'Klucze odebrane ✅' : 'Klucze nieodebrane ❌'"
               :leftIcon="domekIcon" :rightIcon="!hideQR ? chatIcon : ''" />
           </RouterLink>
@@ -215,8 +215,8 @@ defineProps([
 
 <style scoped>
 main {
-  background: var(--bg-gradient);
-  background-image: var(--bg-gradient-translusent), url('@/assets/Icon Grid.svg'), var(--bg-gradient), linear-gradient(var(--red), var(--red))
+  /* background: var(--bg-gradient); */
+  /* background-image: var(--bg-gradient-translusent), url('@/assets/Icon Grid.svg'), var(--bg-gradient), linear-gradient(var(--red), var(--red)) */
 }
 
 .disabled {
@@ -348,7 +348,7 @@ button {
   align-items: center;
   flex-direction: column;
 
-  background: var(--orange);
+  background: var(--theme-dark);
   padding: 30px 40px;
   text-align: center;
   color: black;
@@ -365,7 +365,7 @@ button {
   align-items: center;
   flex-direction: column;
   z-index: 2;
-  background: var(--orange);
+  background: var(--theme-dark);
 }
 
 .qr_back_arrow {

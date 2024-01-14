@@ -15,175 +15,186 @@ import groupIcon from '../assets/grupa.svg'
 
 
 <template>
-<div>
-    <div class="statusBar"></div>
-    <TopBar :title="apiDataStore.profile.ready ? ('Czat domku nr ' + apiDataStore.profile.data[0].house.name) : 'Czat domku'" back-link="/profil" class="top-bar">
-        <RouterLink v-if="apiDataStore.myHouseMembers.data" to="/moj-domek/info">
-            <img class="topRightButton" :src="groupIcon"/>
-        </RouterLink>
-    </TopBar>
-    <main class="padding-main">
-        <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading" >
-            <div class="chat">
-                <div v-for="(message, index) in apiDataStore.chat.data" class="messageRow" :key="index"  :class="{messageFromMe: message.fromMe}">
-                    <div style="width: 100%">
+    <div>
+        <div class="statusBar"></div>
+        <TopBar
+            :title="apiDataStore.profile.ready ? ('Czat pokoju nr ' + apiDataStore.profile.data[0].house.name) : 'Czat pokoju'"
+            back-link="/profil" class="top-bar">
+            <RouterLink v-if="apiDataStore.myHouseMembers.data" to="/moj-domek/info">
+                <img class="topRightButton" :src="groupIcon" />
+            </RouterLink>
+        </TopBar>
+        <main class="padding-main">
+            <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading">
+                <div class="chat">
+                    <div v-for="(message, index) in apiDataStore.chat.data" class="messageRow" :key="index"
+                        :class="{ messageFromMe: message.fromMe }">
+                        <div style="width: 100%">
 
-                        <p class="datetime" v-if="index==0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.data[index-1].date) > 8 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.data[index-1].date), 'day')">
-                            {{ moment(message.date).isSame(moment(), 'day') ? moment(message.date).format('HH:mm') : moment(message.date).format('DD.MM.YYYY  HH:mm') }}
-                        </p>
+                            <p class="datetime"
+                                v-if="index == 0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.data[index - 1].date) > 8 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.data[index - 1].date), 'day')">
+                                {{ moment(message.date).isSame(moment(), 'day') ? moment(message.date).format('HH:mm') :
+                                    moment(message.date).format('DD.MM.YYYY HH:mm') }}
+                            </p>
 
-                        <p class="messageUser" v-if="index==0 || apiDataStore.chat.data[index-1].user_id != message.user_id">{{ !message.fromMe ? message.username : '' }}</p>
+                            <p class="messageUser"
+                                v-if="index == 0 || apiDataStore.chat.data[index - 1].user_id != message.user_id">{{
+                                    !message.fromMe ? message.username : '' }}</p>
 
-                        <div class="message" :class="{messageEmoji: message.message.length===2 && /\p{Extended_Pictographic}/u.test(message.message)}">
-                            {{ message.message }}
+                            <div class="message"
+                                :class="{ messageEmoji: message.message.length === 2 && /\p{Extended_Pictographic}/u.test(message.message) }">
+                                {{ message.message }}
+                            </div>
+
                         </div>
-
+                    </div>
+                    <div v-if="apiDataStore.chat.data.length === 0"
+                        style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
+                        Witaj w czacie pokoju nr {{ apiDataStore.profile.data[0].house.name }}! 🏠<br>Bądź pierwszy/a i
+                        napisz coś!
                     </div>
                 </div>
-                <div v-if="apiDataStore.chat.data.length === 0" style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
-                    Witaj w czacie domku nr {{ apiDataStore.profile.data[0].house.name }}! 🏠<br>Bądź pierwszy/a i napisz coś! 🏹
+
+                <div class="textBox">
+                    <input type="text" v-on:keyup.enter="sendMessage" v-model="currentMessage" placeholder="Aa" />
+
+                    <button class="textBoxButton" v-if="currentMessage.trim() === ''"
+                        @click="currentMessage = '🏂'; sendMessage()">🏂</button>
+
+                    <button class="textBoxButton" v-else @click="sendMessage"><img :src="sendIcon"
+                            class="sendIcon" /></button>
                 </div>
             </div>
-
-            <div class="textBox">
-                <input type="text" v-on:keyup.enter="sendMessage"  v-model="currentMessage" placeholder="Aa"/>
-
-                <button class="textBoxButton" v-if="currentMessage.trim()===''" @click="currentMessage='🏹'; sendMessage()">🏹</button>
-
-                <button class="textBoxButton" v-else @click="sendMessage"><img :src="sendIcon" class="sendIcon"/></button>
-            </div>
-        </div>
-        <LoadingIndicator v-else /> 
-    </main>
-</div>
+            <LoadingIndicator v-else />
+        </main>
+    </div>
 </template>
 
 
 
 <script>
 export default {
-  data() {
-    return {
-        currentMessage: '',
-        chatSocket: null,
-        loading: true,
-        reconnect: true,
-        timer: null,
-        scrollToEnd: true
-    }
-  },
-  computed: {
-    ...mapStores(useApiDataStore)
-  },
-  watch: {
-    currentMessage() {
-        window.scrollTo(0,document.body.scrollHeight);
-    }
-  },
-  mounted() {
-    this.scrollToEnd = true
-
-    this.apiDataStore.chat.fetchData()
-    this.timer = setInterval(() => {
-        this.apiDataStore.chat.fetchData()
-    }, 1000 * 60) // fetch data every minute
-    if (!this.apiDataStore.profile.data) {
-        this.apiDataStore.profile.fetchData()
-    }
-    
-
-    this.reconnect = true
-    this.connect()
-
-    this.apiDataStore.myHouseMembers.fetchData()
-
-
-    // debug
-    // this.loading = false
-    
-
-  },
-  unmounted() {
-    this.scrollToEnd = true
-    clearInterval(this.timer)
-    this.reconnect = false
-    this.chatSocket.onclose = function () {}; // disable onclose handler first
-    this.chatSocket.onerror = function () {}; // disable onerror handler first
-    this.chatSocket.close()
-  },
-  updated() {
-    if (this.scrollToEnd) {
-        this.scrollToEnd = false
-        console.log('scroll')
-        setTimeout(() => {
-            window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
-        }, 10)
-    }
-  },
-  methods: {
-
-    connect() {
-        this.chatSocket = new WebSocket(WS_API_URL + 'chat/');
-
-        this.chatSocket.onopen = function () {
-            this.loading = false
-            console.log("The connection was setup successfully !");
-        }.bind(this);
-
-        this.chatSocket.onclose = function () {
-            this.loading = true;
-            setTimeout(() => {
-                if (this.reconnect) {
-                    this.connect()
-                }
-            }, 1000) // retry connection after 1 second
-            console.log("Connecion closed");
-        }.bind(this);
-
-        this.chatSocket.onerror = function(err) {
-            console.error('Socket encountered error: ', err.message, 'Closing socket');
-            this.close();
-        };
-
-        this.chatSocket.onmessage = function (e) {
-            const data = JSON.parse(e.data);
-            this.receiveMessage(data)
-        }.bind(this);
-    },
-
-    receiveMessage(data) {
-        const scrollToEnd = Math.abs(window.scrollY + window.innerHeight - document.body.scrollHeight) <= 10
-        this.apiDataStore.chat.data.push({
-            message: data.message,
-            username: data.username,
-            user_id: data.user_id,
-            date: data.date,
-            fromMe: data.user_id === this.apiDataStore.profile.data[0].id
-        })
-        if (scrollToEnd) {
-            setTimeout(() => {
-                window.scrollTo(0,document.body.scrollHeight);
-            }, 100)
+    data() {
+        return {
+            currentMessage: '',
+            chatSocket: null,
+            loading: true,
+            reconnect: true,
+            timer: null,
+            scrollToEnd: true
         }
     },
+    computed: {
+        ...mapStores(useApiDataStore)
+    },
+    watch: {
+        currentMessage() {
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    },
+    mounted() {
+        this.scrollToEnd = true
 
-    sendMessage() {
-        if (this.currentMessage.trim() === '') return
-        const message = this.currentMessage.trim()
-        this.currentMessage = ''
-        
-        window.scrollTo(0, document.body.scrollHeight);
+        this.apiDataStore.chat.fetchData()
+        this.timer = setInterval(() => {
+            this.apiDataStore.chat.fetchData()
+        }, 1000 * 60) // fetch data every minute
+        if (!this.apiDataStore.profile.data) {
+            this.apiDataStore.profile.fetchData()
+        }
 
-        this.chatSocket.send(JSON.stringify({ message: message }));
+
+        this.reconnect = true
+        this.connect()
+
+        this.apiDataStore.myHouseMembers.fetchData()
+
+
+        // debug
+        // this.loading = false
+
+
+    },
+    unmounted() {
+        this.scrollToEnd = true
+        clearInterval(this.timer)
+        this.reconnect = false
+        this.chatSocket.onclose = function () { }; // disable onclose handler first
+        this.chatSocket.onerror = function () { }; // disable onerror handler first
+        this.chatSocket.close()
+    },
+    updated() {
+        if (this.scrollToEnd) {
+            this.scrollToEnd = false
+            console.log('scroll')
+            setTimeout(() => {
+                window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+            }, 10)
+        }
+    },
+    methods: {
+
+        connect() {
+            this.chatSocket = new WebSocket(WS_API_URL + 'chat/');
+
+            this.chatSocket.onopen = function () {
+                this.loading = false
+                console.log("The connection was setup successfully !");
+            }.bind(this);
+
+            this.chatSocket.onclose = function () {
+                this.loading = true;
+                setTimeout(() => {
+                    if (this.reconnect) {
+                        this.connect()
+                    }
+                }, 1000) // retry connection after 1 second
+                console.log("Connecion closed");
+            }.bind(this);
+
+            this.chatSocket.onerror = function (err) {
+                console.error('Socket encountered error: ', err.message, 'Closing socket');
+                this.close();
+            };
+
+            this.chatSocket.onmessage = function (e) {
+                const data = JSON.parse(e.data);
+                this.receiveMessage(data)
+            }.bind(this);
+        },
+
+        receiveMessage(data) {
+            const scrollToEnd = Math.abs(window.scrollY + window.innerHeight - document.body.scrollHeight) <= 10
+            this.apiDataStore.chat.data.push({
+                message: data.message,
+                username: data.username,
+                user_id: data.user_id,
+                date: data.date,
+                fromMe: data.user_id === this.apiDataStore.profile.data[0].id
+            })
+            if (scrollToEnd) {
+                setTimeout(() => {
+                    window.scrollTo(0, document.body.scrollHeight);
+                }, 100)
+            }
+        },
+
+        sendMessage() {
+            if (this.currentMessage.trim() === '') return
+            const message = this.currentMessage.trim()
+            this.currentMessage = ''
+
+            window.scrollTo(0, document.body.scrollHeight);
+
+            this.chatSocket.send(JSON.stringify({ message: message }));
+        }
+
     }
-
-  }
 }
 </script>
 
 
 <style scoped>
-
 .statusBar {
     width: 100%;
     background-color: var(--bg);
@@ -194,8 +205,9 @@ export default {
     right: 0;
     z-index: 1;
 }
+
 .top-bar {
-    position: fixed; 
+    position: fixed;
     background-color: var(--bg);
     width: 100%;
     left: 0;
@@ -216,16 +228,18 @@ export default {
     border-radius: 20px 20px 20px 5px;
     width: auto;
     display: inline-block;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
+
 .messageFromMe .message {
-    background-color: var(--orange);
+    background-color: var(--theme-dark);
     border-radius: 20px 20px 5px 20px;
     margin: 2px;
     margin-left: 35px;
     float: right;
 }
+
 .message.messageEmoji {
     background-color: transparent;
     font-size: 35px;
@@ -235,6 +249,7 @@ export default {
 .messageRow {
     display: flex;
 }
+
 /* .messageRow.messageFromMe {
     flex-direction: row-reverse;
 } */
@@ -246,7 +261,7 @@ export default {
     margin-top: 20px;
 }
 
-.datetime ~ .messageUser {
+.datetime~.messageUser {
     margin-top: 0;
 }
 
@@ -257,13 +272,14 @@ export default {
     left: 0;
     right: 0;
     bottom: 80px;
-    z-index: 100;
+    /* z-index: 100; */
 
     margin: 5px 0;
 
     display: flex;
     background-color: var(--bg-lighter);
 }
+
 .textBox input {
     width: calc(100% - 50px - 10px - 10px);
     margin: 5px;
@@ -286,6 +302,7 @@ export default {
     background-color: var(--bg-light);
 
 }
+
 .textBoxButton {
     /* border-radius: 20px; */
     border: none;
@@ -305,14 +322,19 @@ export default {
     display: inline-block;
 
     background-color: transparent;
-  
+
 }
 
 .sendIcon {
     width: 100%;
     height: 100%;
     object-fit: contain;
+
+    /* orange */
     filter: brightness(0) saturate(100%) invert(62%) sepia(45%) saturate(1866%) hue-rotate(342deg) brightness(90%) contrast(91%);
+
+    /* blue */
+    filter: brightness(0) saturate(100%) invert(37%) sepia(47%) saturate(783%) hue-rotate(181deg) brightness(98%) contrast(91%);
 }
 
 .datetime {
@@ -324,14 +346,17 @@ export default {
 
 
 .topRightButton {
-  box-sizing: content-box;
-  text-align: right;
-  margin-top: 10px;
-  margin-left: 20px;
-  width: 40px;
-  height: 40px;
+    box-sizing: content-box;
+    text-align: right;
+    margin-top: 10px;
+    margin-left: 20px;
+    width: 40px;
+    height: 40px;
+
+    /* orange */
     filter: brightness(0) saturate(100%) invert(62%) sepia(45%) saturate(1866%) hue-rotate(342deg) brightness(90%) contrast(91%);
+
+    /* blue */
+    filter: brightness(0) saturate(100%) invert(37%) sepia(47%) saturate(783%) hue-rotate(181deg) brightness(98%) contrast(91%);
 }
-
-
 </style>
