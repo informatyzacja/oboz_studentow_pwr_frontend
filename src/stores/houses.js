@@ -77,8 +77,13 @@ export const useHouseSignupsStore = defineStore('houseSignups', {
                     this.error = data.message
                 } else if (data.event == 'update') {
                     var house = useHousesStore().houseWithId(data.house);
+                    if (!house) {
+                        useHousesStore().fetchData()
+                        return
+                    }
                     house.locators = data.locators
-                    if (data.progress) house.housesignupprogress = data.progress
+                    if ('progress' in data) house.housesignupprogress = data.progress
+                    if ('locators_data' in data) house.locators_data = data.locators_data
                 }
             }
             this.socket.onclose = () => {

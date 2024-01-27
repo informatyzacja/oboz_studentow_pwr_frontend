@@ -80,3 +80,7 @@ h3 {
   padding: 5px 2px;
   font-size: 14px;
 }
+
+*:disabled {
+  opacity: 1;
+}

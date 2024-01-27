@@ -107,6 +107,7 @@ export default {
 
             refreshTimer: null,
             refreshKey: 0,
+            houseRefreshKey: 0,
             timeLimit: 60
         }
     },
@@ -115,7 +116,7 @@ export default {
         ...mapState(useApiDataStore, ['houses']),
 
         house() {
-            this.apiDataStore.houses.loading;
+            this.houseRefreshKey;
             return this.apiDataStore.houses.houseWithId(this.$route.params.id)
         },
         freePlaces() {
@@ -123,10 +124,10 @@ export default {
         },
         isFreeForSignup() {
             this.refreshKey
-            return !this.house.housesignupprogress || this.timeLimit - (moment() - moment(this.house.housesignupprogress.last_updated)) / 1000 <= 0
+            return this.house && !this.house.housesignupprogress || this.timeLimit - (moment() - moment(this.house.housesignupprogress.last_updated)) / 1000 <= 0
         },
         youAreSigningUp() {
-            return this.freePlaces && !this.isFreeForSignup && this.house.housesignupprogress && this.apiDataStore.profile.ready && this.house.housesignupprogress.user == this.apiDataStore.profile.data[0].id
+            return this.house && this.freePlaces && !this.isFreeForSignup && this.house.housesignupprogress && this.apiDataStore.profile.ready && this.house.housesignupprogress.user == this.apiDataStore.profile.data[0].id
         },
         getSecondsLeft() {
             if (this.isFreeForSignup) {
@@ -155,6 +156,7 @@ export default {
     watch: {
         houses: {
             handler() {
+                this.houseRefreshKey++
                 this.createPeople()
             },
             deep: true
@@ -181,16 +183,22 @@ export default {
     },
     methods: {
         createPeople() {
-            while (this.people.length + this.indexOffset < this.apiDataStore.houses.houseWithId(this.$route.params.id).places) this.people.push({ band: '' })
+            while (this.house && this.people.length + this.indexOffset < this.house.places) this.people.push({ band: '' })
             this.updatePeople()
         },
         updatePeople() {
-            const locators_data = this.apiDataStore.houses.houseWithId(this.$route.params.id).locators_data
+            if (!this.house) return
+            const locators_data = this.house.locators_data
             if (!locators_data || !this.apiDataStore.profile.ready) return
 
             // update people
             locators_data.forEach((locator, index) => {
-                if (this.apiDataStore.profile.data[0].bandId == locator.bandId) return
+                if (this.apiDataStore.profile.data[0].bandId === locator.bandId) {
+                    if (!this.apiDataStore.profile.data[0].house || this.apiDataStore.profile.data[0].house.id !== this.house.id) {
+                        this.apiDataStore.profile.fetchData()
+                    }
+                    return
+                }
                 var person = this.people.find((person) => person.band == locator.bandId)
                 if (person) {
                     person.first_name = locator.first_name
@@ -209,7 +217,9 @@ export default {
             // remove people
             this.people.forEach((person, index) => {
                 if (!locators_data.find((locator) => locator.bandId == person.band)) {
-                    person = { band: '' }
+                    person.first_name = null
+                    person.last_name = null
+                    person.band = ''
                 }
             })
         },
