@@ -12,11 +12,13 @@ import questionMark from '../assets/question-mark.jpg'
 
 <template>
   <main>
-  <TopBar title="Harmonogram" backLink="/"/>
+    <TopBar title="Harmonogram" backLink="/" />
     <div class="padding-main" v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length">
 
       <div v-if="harmonogramImage" class="downloadButtonDiv">
-        <a class="button" :href="harmonogramImage.downloadLink" :download="harmonogramImage.name + '_Obóz_Studentow_PWr_2023'" target="_blank" rel="nofollow">Pobierz harmonogram w formie grafiki</a>
+        <a class="button" :href="harmonogramImage.downloadLink"
+          :download="harmonogramImage.name + '_Obóz_Zimowy_PWr_2024'" target="_blank" rel="nofollow">Pobierz harmonogram w
+          formie grafiki</a>
       </div>
 
       <div class="day-changer">
@@ -30,31 +32,20 @@ import questionMark from '../assets/question-mark.jpg'
           {{ moment(apiDataStore.schedule.allDates[currentDay]).format('dddd, Do MMMM') }}
         </h5>
 
-        <RouterLink
-          v-if="currentDay < apiDataStore.schedule.allDates.length - 1"
-          :to="'/harmonogram/' + (currentDay + 1)"
-        >
+        <RouterLink v-if="currentDay < apiDataStore.schedule.allDates.length - 1"
+          :to="'/harmonogram/' + (currentDay + 1)">
           <div class="arrow-circle arrow-circle-right">
             <div class="arrow arrow-right"></div>
           </div>
         </RouterLink>
       </div>
 
-      <RouterLink
-        :to="'/harmonogram/info/' + data.id"
-        v-for="(data, index) in apiDataStore.schedule.withDate(
-          apiDataStore.schedule.allDates[currentDay]
-        )"
-        :key="index"
-        @click="addAnmateClass($event)"
-      >
-        <HomeCard
-          :name="data.name"
-          :location="data.location"
+      <RouterLink :to="'/harmonogram/info/' + data.id" v-for="(data, index) in apiDataStore.schedule.withDate(
+        apiDataStore.schedule.allDates[currentDay]
+      )" :key="index" @click="addAnmateClass($event)">
+        <HomeCard :name="data.name" :location="data.location"
           :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-          :imgSrc="data.photo || questionMark"
-          big wide
-        />
+          :imgSrc="data.photo || questionMark" big wide />
       </RouterLink>
     </div>
     <p v-if="apiDataStore.schedule.ready && !apiDataStore.schedule.data.length" class="error">
@@ -102,6 +93,7 @@ import questionMark from '../assets/question-mark.jpg'
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
 }
+
 .day-changer {
   display: flex;
   justify-content: center;
@@ -188,7 +180,7 @@ export default {
     this.apiDataStore.images.fetchData()
     this.timer = setInterval(this.apiDataStore.schedule.fetchData, 60000)
 
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0)
   },
   beforeUnmount() {
     clearInterval(this.timer)

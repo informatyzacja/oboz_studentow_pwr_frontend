@@ -13,6 +13,7 @@ import rightArrow from '../assets/arrow.svg'
 import faqIcon from '../assets/icons8-faq.png'
 import busIcon from '../assets/icons8-bus.png'
 import opaskaIcon from '../assets/icons8-bangles.png'
+import codeIcon from '../assets/icons8-redeem-90.png'
 import domekIcon from '../assets/icons8-exterior.png'
 import mealIcon from '../assets/icons8-cutlery.png'
 import chatIcon from '../assets/icons8-chat.png'
@@ -156,8 +157,9 @@ defineProps([
           <!-- House -->
           <RouterLink v-if="profileData.house" :to="!hideQR ? '/czat-domku' : ''">
             <ItemBox :bigText="'Pokój nr ' + profileData.house.name"
-              :smallText="profileData.house.key_collected ? 'Klucze odebrane ✅' : 'Klucze nieodebrane ❌'"
-              :leftIcon="domekIcon" :rightIcon="!hideQR ? chatIcon : ''" />
+              :smallText="profileData.house.floor ? 'Piętro: ' + profileData.house.floor : ''" :leftIcon="domekIcon"
+              :rightIcon="!hideQR ? chatIcon : ''" />
+            <!-- :smallText="profileData.house.key_collected ? 'Klucze odebrane ✅' : 'Klucze nieodebrane ❌'" -->
           </RouterLink>
 
           <!-- Bus -->
@@ -169,7 +171,7 @@ defineProps([
           </div>
 
           <!-- Band -->
-          <ItemBox v-if="profileData.bandId" :bigText="'Opaska nr ' + profileData.bandId" :leftIcon="opaskaIcon" small />
+          <ItemBox v-if="profileData.bandId" :bigText="'Twoje ID: ' + profileData.bandId" :leftIcon="codeIcon" small />
 
           <!-- Diet -->
           <ItemBox v-if="profileData.diet" :bigText="'Dieta ' + profileData.diet.toLowerCase()" :leftIcon="mealIcon"
@@ -206,7 +208,7 @@ defineProps([
       <slot name="footer"></slot>
 
       <div class="credits">
-        <p>© Obóz Studentow PWr 2023</p>
+        <p>© Obóz Zimowy PWr 2024</p>
         <p>Made with 🍺 by <a href="https://www.facebook.com/Marvin.Ruc/" target="_blank"><u>Marvin</u></a></p>
       </div>
     </div>

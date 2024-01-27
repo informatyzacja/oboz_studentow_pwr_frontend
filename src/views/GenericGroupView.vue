@@ -28,82 +28,72 @@ defineProps([
 </script>
 
 <template>
-  <main :style="{ background: group.background ? ('linear-gradient(#00000080, #00000000), url('+group.background+'), var(--bg-gradient)') : '' }">
-  <TopBar :title="title" :backLink="$router.options.history.state.back || backLink" >
-    <RouterLink v-if="topRightButtonText && topRightButtonUrl" :to="topRightButtonUrl">
-      <p class="topRightButton">
-        {{ topRightButtonText }}
-      </p>
-    </RouterLink>
-  </TopBar>
+  <main
+    :style="{ background: group.background ? ('linear-gradient(#00000080, #00000000), url(' + group.background + '), var(--bg-gradient)') : '' }">
+    <TopBar :title="title" :backLink="$router.options.history.state.back || backLink">
+      <RouterLink v-if="topRightButtonText && topRightButtonUrl" :to="topRightButtonUrl">
+        <p class="topRightButton">
+          {{ topRightButtonText }}
+        </p>
+      </RouterLink>
+    </TopBar>
 
- 
 
-  <p class="padding-main" v-if="!group">Nie znaleziono grupy</p>
-  <div class="padding-main" v-if="group">
-    <div class="flex">
-      <div class="logo" v-if="group.logo">
-        <img :src="group.logo" />
+
+    <p class="padding-main" v-if="!group">Nie znaleziono grupy</p>
+    <div class="padding-main" v-if="group">
+      <div class="flex">
+        <div class="logo" v-if="group.logo">
+          <img :src="group.logo" />
+        </div>
+
+        <p class="name">
+          {{ group.name }}
+        </p>
+
+        <div class="spacer"></div>
       </div>
 
-      <p class="name">
-        {{ group.name }}
-      </p>
+      <TextBox v-if="group.description" :content="group.description" />
+      <div class="spacer" v-if="group.description"></div>
 
-      <div class="spacer"></div>
-    </div>
-
-    <TextBox v-if="group.description" :content="group.description" />
-    <div class="spacer" v-if="group.description"></div>
-
-    <div class="map" @click="$refs.mapOverlay.show" v-if="group.map">
-      <!-- <img v-if="group.map" :src="group.map" /> -->
-      <ItemBox :bigText="mapDescription" :rightIcon="rightArrow" :leftIcon="mapIcon" left-icon-white no-round-icon />
-    </div>
-
-    <OverlayView ref="mapOverlay">
-      <div class="image_overlay">
-        <img :src="group.map" alt="mapa" />
-        <a class="button" :href="group.map" :download="group.name + '_Mapa_Obóz_Studentow_PWr_2023'"
-          >Pobierz</a
-        >
-        <button class="red-bg" @click="$refs.mapOverlay.hide">Zamknij</button>
+      <div class="map" @click="$refs.mapOverlay.show" v-if="group.map">
+        <!-- <img v-if="group.map" :src="group.map" /> -->
+        <ItemBox :bigText="mapDescription" :rightIcon="rightArrow" :leftIcon="mapIcon" left-icon-white no-round-icon />
       </div>
-    </OverlayView>
 
-    <a v-if="group.messenger" :href="group.messenger" target="_blank">
-      <ItemBox :bigText="messengerDescription" :leftIcon="messangerIcon" :rightIcon="rightArrow" />
-    </a>
+      <OverlayView ref="mapOverlay">
+        <div class="image_overlay">
+          <img :src="group.map" alt="mapa" />
+          <a class="button" :href="group.map" :download="group.name + '_Mapa_Obóz_Zimowy_PWr_2024'">Pobierz</a>
+          <button class="red-bg" @click="$refs.mapOverlay.hide">Zamknij</button>
+        </div>
+      </OverlayView>
 
-    <div v-if="ready && group.wardens && group.wardens.length">
-      <h3>Mentorzy</h3>
-      <a v-for="(data, index) in group.wardens" :key="index" :href="'tel:' + data.phoneNumber">
-        <ItemBox
-          :bigText="data.first_name + ' ' + data.last_name"
-          :smallText="data.title"
-          :leftIcon="data.photo"
-          :rightIcon="phoneIcon"
-        />
+      <a v-if="group.messenger" :href="group.messenger" target="_blank">
+        <ItemBox :bigText="messengerDescription" :leftIcon="messangerIcon" :rightIcon="rightArrow" />
       </a>
+
+      <div v-if="ready && group.wardens && group.wardens.length">
+        <h3>Mentorzy</h3>
+        <a v-for="(data, index) in group.wardens" :key="index" :href="'tel:' + data.phoneNumber">
+          <ItemBox :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo"
+            :rightIcon="phoneIcon" />
+        </a>
+      </div>
+
+      <div v-if="ready && group.members && group.members.length">
+        <h3>Członkowie</h3>
+        <ItemBox v-for="(data, index) in group.members" :key="index" :bigText="data.first_name + ' ' + data.last_name"
+          :smallText="data.title" :leftIcon="data.photo" />
+      </div>
+
+      <h3>{{ info }}</h3>
+
+      <LoadingIndicator v-if="loading" />
+      <p v-if="error" class="error">{{ error }}</p>
     </div>
-
-    <div v-if="ready && group.members && group.members.length">
-      <h3>Członkowie</h3>
-      <ItemBox
-        v-for="(data, index) in group.members"
-        :key="index"
-        :bigText="data.first_name + ' ' + data.last_name"
-        :smallText="data.title"
-        :leftIcon="data.photo"
-      />
-    </div>
-
-    <h3>{{ info }}</h3>
-
-    <LoadingIndicator v-if="loading" />
-    <p v-if="error" class="error">{{ error }}</p>
-  </div>
-</main>
+  </main>
 </template>
 
 <style scoped>
@@ -140,6 +130,7 @@ button {
 
   margin-top: 20px;
 }
+
 .logo {
   width: 180px;
   height: 180px;
@@ -161,6 +152,7 @@ button {
   height: auto;
   margin-bottom: 10px;
 }
+
 .map img {
   width: 100%;
   height: auto;
@@ -204,6 +196,7 @@ button {
   object-fit: cover;
   border-radius: 20px;
 }
+
 .image_overlay {
   box-sizing: border-box;
   /* width: 100%; */

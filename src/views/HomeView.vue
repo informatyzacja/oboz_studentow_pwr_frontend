@@ -76,7 +76,7 @@ import ItemBox from '../components/ItemBox.vue'
       <!-- <h3>Linki</h3> -->
       <div class="padding">
 
-        <span v-for="(data, index) in apiDataStore.homeLinks.data" :key="index">
+        <span v-for="(data, index) in  apiDataStore.homeLinks.data " :key="index">
 
           <RouterLink v-if="data.url && data.url.startsWith('/')" :to="data.url">
             <div class="image_link_container" v-if="data.image">
@@ -88,7 +88,7 @@ import ItemBox from '../components/ItemBox.vue'
             <div class="image_link_container" v-else-if="data.name">
               <img :src="homeCardLinkBg" class="image_link" style="max-height: 180px;" />
               <img :src="rightArrow" class="image_link_arrow dark_filter" v-if="data.url" />
-              <p class="image_link_text">{{ data.name }}</p>
+              <p class="image_link_text" :style="{ 'font-size': data.font_size }">{{ data.name }}</p>
             </div>
           </RouterLink>
           <a v-else :href="data.url" target="_blank">
@@ -101,7 +101,7 @@ import ItemBox from '../components/ItemBox.vue'
             <div class="image_link_container" v-else-if="data.name">
               <img :src="homeCardLinkBg" class="image_link" style="max-height: 180px;" />
               <img :src="rightArrow" class="image_link_arrow dark_filter" v-if="data.url" />
-              <p class="image_link_text">{{ data.name }}</p>
+              <p class="image_link_text" :style="{ 'font-size': data.font_size }">{{ data.name }}</p>
             </div>
           </a>
 
@@ -123,7 +123,7 @@ import ItemBox from '../components/ItemBox.vue'
     <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
       <h3>Twoje dzisiejsze warsztaty</h3>
       <div class="scroll">
-        <RouterLink v-for="(data, index) in apiDataStore.userWorkshop.today" :key="index"
+        <RouterLink v-for="( data, index ) in  apiDataStore.userWorkshop.today " :key="index"
           :to="`/warsztaty/info/${data.id}`">
           <HomeCard :name="data.name" :location="data.location"
             :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
@@ -136,7 +136,7 @@ import ItemBox from '../components/ItemBox.vue'
     <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length">
       <h3>Co się teraz dzieje?</h3>
       <div class="scroll">
-        <RouterLink v-for="(data, index) in apiDataStore.schedule.rightNow" :key="index"
+        <RouterLink v-for="( data, index ) in  apiDataStore.schedule.rightNow " :key="index"
           :to="'/harmonogram/info/' + data.id">
           <HomeCard :name="data.name" :location="data.location"
             :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
@@ -155,7 +155,7 @@ import ItemBox from '../components/ItemBox.vue'
     </div> -->
 
     <!-- Images -->
-    <div v-for="(data, index) in apiDataStore.images.other" :key="index">
+    <div v-for="( data, index ) in  apiDataStore.images.other " :key="index">
       <TopBar :title="data.name" />
       <div class="image-view">
         <img :src="data.image" :alt="data.name" @click="showRef('imageOverlay', index)" />
@@ -166,7 +166,7 @@ import ItemBox from '../components/ItemBox.vue'
             <img :src="data.image" :alt="data.name" />
 
             <!-- <button class="button" @click="shareViaWebShare(data.name, data.image)" v-if="webShareApiSupported"><p v-if="!loading">Zapisz</p><LoadingIndicator inline small v-else/></button> -->
-            <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentow_PWr_2023'" target="_blank"
+            <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Zimowy_PWr_2024'" target="_blank"
               rel="nofollow">Pobierz</a>
 
             <button class="red-bg" @click="hideRef('imageOverlay', index)">Zamknij</button>
@@ -179,7 +179,7 @@ import ItemBox from '../components/ItemBox.vue'
     <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.upNext.length">
       <h3>Następne</h3>
       <div class="scroll">
-        <RouterLink v-for="(data, index) in apiDataStore.schedule.upNext" :key="index"
+        <RouterLink v-for="( data, index ) in  apiDataStore.schedule.upNext " :key="index"
           :to="'/harmonogram/info/' + data.id">
           <HomeCard :name="data.name" :location="data.location"
             :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
@@ -204,7 +204,7 @@ import ItemBox from '../components/ItemBox.vue'
     <div class="partners" v-if="apiDataStore.partner.ready && apiDataStore.partner.data.length">
       <h3>Partnerzy</h3>
       <div class="scroll" ref="partners">
-        <a :href="data.link" target="_blank" :key="index" v-for="(data, index) in apiDataStore.partner.data">
+        <a :href="data.link" target="_blank" :key="index" v-for="( data, index ) in  apiDataStore.partner.data ">
           <img class="partner" :src="data.logo" />
         </a>
       </div>

@@ -106,6 +106,16 @@ const router = createRouter({
     //   name: 'zapisy-gra-nocna',
     //   component: () => import('../views/NightGameSignupView.vue')
     // },
+    {
+      path: '/zapisy-na-domki',
+      name: 'zapisy-na-domki',
+      component: () => import('../views/HouseSignupView.vue')
+    },
+    {
+      path: '/zapisy-na-domki/:id',
+      name: 'zapisy-na-domki-detail',
+      component: () => import('../views/HouseSignupDetailView.vue')
+    },
 
     // ADMIN ROUTES
     {

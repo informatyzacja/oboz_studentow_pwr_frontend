@@ -44,6 +44,8 @@ export default {
   /* Hidden by default */
   opacity: 0;
   width: 100%;
+  max-width: 550px;
+  margin: 0 auto;
   /* Full width (cover the whole page) */
   height: 100%;
   /* Full height (cover the whole page) */
@@ -68,6 +70,7 @@ export default {
   -webkit-animation: scale-up-top 0.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   animation: scale-up-top 0.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
+
 @keyframes scale-up-top {
   0% {
     -webkit-transform: scale(0.5);

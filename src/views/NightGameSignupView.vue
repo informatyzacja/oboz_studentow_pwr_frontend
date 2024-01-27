@@ -17,105 +17,124 @@ import moment from 'moment'
 </script>
 
 <template>
-<main>
-  <TopBar title="Zapisy na grę nocną" :backLink="$router.options.history.state.back || '/'" s/>
+    <main>
+        <TopBar title="Zapisy na grę nocną" :backLink="$router.options.history.state.back || '/'" />
 
-  <div class="padding-main" v-if="apiDataStore.nightGameGroupInfo.ready && !success && apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group && apiDataStore.nightGameGroupInfo.data.night_game_signup_active">
+        <div class="padding-main"
+            v-if="apiDataStore.nightGameGroupInfo.ready && !success && apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group && apiDataStore.nightGameGroupInfo.data.night_game_signup_active">
 
-    <TextBox>
-        <p>UWAGA! Zapisy wykonuje tylko jedna osoba z grupy.</p>
-        <p>Dla fajnieszej zabawy polecamy, aby w grupie znalazły się zarówno <span class="bold">chłopacy, jak i dziewczyny</span>.</p>
+            <TextBox>
+                <p>UWAGA! Zapisy wykonuje tylko jedna osoba z grupy.</p>
+                <p>Dla fajnieszej zabawy polecamy, aby w grupie znalazły się zarówno <span class="bold">chłopacy, jak i
+                        dziewczyny</span>.</p>
 
-        <p>Wszystkie osoby w grupie muszą mieć <span class="bold">ukończone 18 lat</span> w dniu gry<span v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.night_game_date"> ({{ moment(apiDataStore.nightGameGroupInfo.data.night_game_date).format('DD.MM.YYYY') }})</span>.</p>
+                <p>Wszystkie osoby w grupie muszą mieć <span class="bold">ukończone 18 lat</span> w dniu gry<span
+                        v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.night_game_date">
+                        ({{ moment(apiDataStore.nightGameGroupInfo.data.night_game_date).format('DD.MM.YYYY') }})</span>.
+                </p>
 
-        <div class="spacer"></div>
+                <div class="spacer"></div>
 
-        <p v-if="apiDataStore.nightGameGroupInfo.data.group_user_min === apiDataStore.nightGameGroupInfo.data.group_user_max">
-            Grupa musi liczyć dokładnie <span class="bold">{{ apiDataStore.nightGameGroupInfo.data.group_user_min }} osób</span>.
-        </p>
-        <p v-else>Liczba osób w grupie: {{ apiDataStore.nightGameGroupInfo.data.group_user_min }} - {{ apiDataStore.nightGameGroupInfo.data.group_user_max }} </p>
-    </TextBox>
+                <p
+                    v-if="apiDataStore.nightGameGroupInfo.data.group_user_min === apiDataStore.nightGameGroupInfo.data.group_user_max">
+                    Grupa musi liczyć dokładnie <span class="bold">{{ apiDataStore.nightGameGroupInfo.data.group_user_min }}
+                        osób</span>.
+                </p>
+                <p v-else>Liczba osób w grupie: {{ apiDataStore.nightGameGroupInfo.data.group_user_min }} - {{
+                    apiDataStore.nightGameGroupInfo.data.group_user_max }} </p>
+            </TextBox>
 
-    <h3 style="margin-top:10px"> Nazwa grupy </h3>
-    <input type="text" v-model="groupName" />
+            <h3 style="margin-top:10px"> Nazwa grupy </h3>
+            <input type="text" v-model="groupName" />
 
-    <div v-if="groupSize!==''">
-        <h3>Osoby</h3>
-        <div class="person" v-if="apiDataStore.profile.ready">
-            <div class="index">1.</div>
-            <div>
-                <input type="text" placeholder="Imię" :value="apiDataStore.profile.data[0].first_name" disabled/>
+            <div v-if="groupSize !== ''">
+                <h3>Osoby</h3>
+                <div class="person" v-if="apiDataStore.profile.ready">
+                    <div class="index">1.</div>
+                    <div>
+                        <input type="text" placeholder="Imię" :value="apiDataStore.profile.data[0].first_name" disabled />
+                    </div>
+                    <input type="number" pattern="[0-9]*" inputmode="numeric" class="bandInput" placeholder="Nr opaski"
+                        :value="apiDataStore.profile.data[0].bandId" disabled />
+                </div>
+                <LoadingIndicator v-else inline small />
+
+                <div class="person" v-for="(person, index) in people" :key="index">
+                    <div class="index">{{ index + 2 }}.</div>
+                    <div>
+                        <input type="text" v-model="person.first_name" placeholder="Imię" :disabled="signupLoading" />
+                    </div>
+                    <input type="text" pattern="[0-9]*" inputmode="numeric" class="bandInput" v-model="person.band"
+                        placeholder="Nr opaski" :disabled="signupLoading" maxlength="6" />
+                </div>
             </div>
-            <input type="number" pattern="[0-9]*" inputmode="numeric" class="bandInput" placeholder="Nr opaski" :value="apiDataStore.profile.data[0].bandId" disabled/>
-        </div>
-        <LoadingIndicator v-else inline small/>
 
-        <div class="person" v-for="(person, index) in people" :key="index">
-            <div class="index">{{ index+2 }}.</div>
-            <div>
-                <input type="text" v-model="person.first_name" placeholder="Imię" :disabled="signupLoading"/>
+            <div class="change-group-size-buttons">
+                <button class="button" v-if="groupSize < apiDataStore.nightGameGroupInfo.data.group_user_max"
+                    @click="groupSize++">Dodaj osobę</button>
+                <button class="button" v-if="groupSize > apiDataStore.nightGameGroupInfo.data.group_user_min"
+                    @click="groupSize--">Usuń osobę</button>
             </div>
-            <input type="text" pattern="[0-9]*" inputmode="numeric" class="bandInput" v-model="person.band" placeholder="Nr opaski" :disabled="signupLoading" maxlength="6"/>
+
+            <p class="error">{{ apiDataStore.nightGameGroupInfo.error }}</p>
+            <p class="error">{{ error }}</p>
+            <p class="error">{{ peopleError }}</p>
+
+            <div
+                v-if="groupName && groupSize >= apiDataStore.nightGameGroupInfo.data.group_user_min && groupSize <= apiDataStore.nightGameGroupInfo.data.group_user_max && !apiDataStore.nightGameGroupInfo.loading && !success && !signupLoading && peopleValid()">
+                <button class="button success" style="margin-top: 30px" @click="signupGroup">Zapisz grupę</button>
+                <h3 style="margin-top: 5px;text-align: center;">Upewnij się, że wpisane imiona są takie same jak imię
+                    wyświetlające się w zakładce "profil" każdego uczestnika</h3>
+            </div>
+            <LoadingIndicator v-if="signupLoading" inline />
         </div>
-    </div>
 
-    <div class="change-group-size-buttons">
-        <button class="button" v-if="groupSize < apiDataStore.nightGameGroupInfo.data.group_user_max" @click="groupSize++">Dodaj osobę</button>
-        <button class="button" v-if="groupSize > apiDataStore.nightGameGroupInfo.data.group_user_min" @click="groupSize--">Usuń osobę</button>
-    </div>
+        <div class="padding info-screen" v-if="success">
+            <h3>Gratulacje!</h3>
+            <img :src="okIcon" alt="ok" style="width: 100px; margin: 20px auto; display: block;" />
+            <p>Twoja grupa została zapisana na grę nocną.</p>
+            <p>W razie problemów prosimy o natychmiastowy kontakt ze sztabem.</p>
+            <p>Do zobaczenia na grze!</p>
 
-    <p class="error">{{ apiDataStore.nightGameGroupInfo.error }}</p>
-    <p class="error">{{ error }}</p>
-    <p class="error">{{ peopleError }}</p>
+            <p style="margin-top: 20px">Grupę możesz zobaczyć w zakładce <RouterLink to="/profil"><u>profil</u></RouterLink>
+                .</p>
+        </div>
 
-    <div v-if="groupName && groupSize >= apiDataStore.nightGameGroupInfo.data.group_user_min && groupSize <= apiDataStore.nightGameGroupInfo.data.group_user_max && !apiDataStore.nightGameGroupInfo.loading && !success && !signupLoading && peopleValid()">
-        <button class="button success" style="margin-top: 30px" @click="signupGroup" >Zapisz grupę</button>
-        <h3 style="margin-top: 5px;text-align: center;">Upewnij się, że wpisane imiona są takie same jak imię wyświetlające się w zakładce "profil" każdego uczestnika</h3>
-    </div>
-    <LoadingIndicator v-if="signupLoading" inline/>
-  </div>
+        <div class="padding info-screen"
+            v-if="apiDataStore.nightGameGroupInfo.ready && !apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
+            <h3>Brak miejsc!</h3>
+            <img :src="cryingIcon" alt="crying" style="width: 100px; margin: 20px auto; display: block;" />
+            <p>Przepraszamy, ale miejsca na grę nocną już się skończyły.</p>
 
-  <div class="padding info-screen" v-if="success">
-    <h3>Gratulacje!</h3>
-    <img :src="okIcon" alt="ok" style="width: 100px; margin: 20px auto; display: block;"/>
-    <p>Twoja grupa została zapisana na grę nocną.</p>
-    <p>W razie problemów prosimy o natychmiastowy kontakt ze sztabem.</p>
-    <p>Do zobaczenia na grze!</p>
+            <RouterLink :to="$router.options.history.state.back || '/'">
+                <button class="button" style="margin-top: 20px">Wróć</button>
+            </RouterLink>
+        </div>
 
-    <p style="margin-top: 20px">Grupę możesz zobaczyć w zakładce <RouterLink to="/profil"><u>profil</u></RouterLink>.</p>
-  </div>
+        <div class="padding info-screen"
+            v-else-if="apiDataStore.nightGameGroupInfo.ready && !apiDataStore.nightGameGroupInfo.data.night_game_signup_active && !apiDataStore.nightGameGroupInfo.data.user_in_group">
+            <h3>Zapisy zamknięte!</h3>
+            <img :src="cryingIcon" alt="crying" style="width: 100px; margin: 20px auto; display: block;" />
+            <p>Przepraszamy, ale zapisy na grę nocną są zamknięte.</p>
 
-  <div class="padding info-screen" v-if="apiDataStore.nightGameGroupInfo.ready && !apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
-    <h3>Brak miejsc!</h3>
-    <img :src="cryingIcon" alt="crying" style="width: 100px; margin: 20px auto; display: block;"/>
-    <p>Przepraszamy, ale miejsca na grę nocną już się skończyły.</p>
+            <RouterLink :to="$router.options.history.state.back || '/'">
+                <button class="button" style="margin-top: 20px">Wróć</button>
+            </RouterLink>
+        </div>
 
-    <RouterLink :to="$router.options.history.state.back || '/'">
-        <button class="button" style="margin-top: 20px">Wróć</button>
-    </RouterLink>
-  </div>
+        <div class="padding info-screen"
+            v-else-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.user_in_group">
+            <h3>Już jesteś zapisany na grę nocną</h3>
+            <img :src="okIcon" alt="ok" style="width: 100px; margin: 20px auto; display: block;" />
+            <p>Już jesteś zapisany na grę nocną.</p>
 
-  <div class="padding info-screen" v-else-if="apiDataStore.nightGameGroupInfo.ready && !apiDataStore.nightGameGroupInfo.data.night_game_signup_active && !apiDataStore.nightGameGroupInfo.data.user_in_group">
-    <h3>Zapisy zamknięte!</h3>
-    <img :src="cryingIcon" alt="crying" style="width: 100px; margin: 20px auto; display: block;"/>
-    <p>Przepraszamy, ale zapisy na grę nocną są zamknięte.</p>
-
-    <RouterLink :to="$router.options.history.state.back || '/'">
-        <button class="button" style="margin-top: 20px">Wróć</button>
-    </RouterLink>
-  </div>
-
-  <div class="padding info-screen" v-else-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.user_in_group">
-    <h3>Już jesteś zapisany na grę nocną</h3>
-    <img :src="okIcon" alt="ok" style="width: 100px; margin: 20px auto; display: block;"/>
-    <p>Już jesteś zapisany na grę nocną.</p>
-
-    <p style="margin-top: 20px">Grupę możesz zobaczyć w zakładce <RouterLink to="/profil"><u>profil</u></RouterLink>.</p>
-  </div>
+            <p style="margin-top: 20px">Grupę możesz zobaczyć w zakładce <RouterLink to="/profil"><u>profil</u></RouterLink>
+                .</p>
+        </div>
 
 
-    <LoadingIndicator v-if="apiDataStore.nightGameGroupInfo.loading" />
-</main>
+        <LoadingIndicator v-if="apiDataStore.nightGameGroupInfo.loading" />
+    </main>
 </template>
 
 <script>
@@ -125,7 +144,7 @@ export default {
             groupName: '',
             groupSize: 1,
             people: [],
-            
+
             error: '',
             peopleError: '',
 
@@ -141,13 +160,13 @@ export default {
     watch: {
         groupSize() {
             if (this.groupSize > this.apiDataStore.nightGameGroupInfo.data.group_user_max) this.groupSize = this.apiDataStore.nightGameGroupInfo.data.group_user_max
-            if (this.people.length >= this.groupSize) this.people = this.people.slice(0, this.groupSize-1)
+            if (this.people.length >= this.groupSize) this.people = this.people.slice(0, this.groupSize - 1)
             this.createPeople()
         }
     },
     methods: {
         createPeople() {
-            while (this.people.length+1 < this.groupSize) this.people.push({first_name: '', band: ''})
+            while (this.people.length + 1 < this.groupSize) this.people.push({ first_name: '', band: '' })
         },
         peopleValid() {
             for (let person of this.people) {
@@ -180,61 +199,61 @@ export default {
         signupGroup() {
             this.signupLoading = true
             const csrftoken = getCookie('csrftoken')
-            const body = { 
+            const body = {
                 group_name: this.groupName,
                 people: this.people,
-             }
+            }
             fetch(API_URL + '../api2/signup-group/', {
                 headers: Object.assign(
-                {},
-                { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken },
-                AUTH_HEADER
+                    {},
+                    { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken },
+                    AUTH_HEADER
                 ),
                 method: 'POST',
                 body: JSON.stringify(body)
             })
-            .then((data) => {
-                if (data.ok) {
-                    return data.json()
-                }
-                if (data.status === 403) {
-                    window.location.href = '/login/?next=' + window.location.pathname
-                }
-                this.error = data.status + ' ' + data.statusText
-                this.success = false
-                throw new Error('Request failed!')
-            })
-            .then((data) => {
-                this.success = data.success
-                this.error = data.error
-                console.log(this.error)
+                .then((data) => {
+                    if (data.ok) {
+                        return data.json()
+                    }
+                    if (data.status === 403) {
+                        window.location.href = '/login/?next=' + window.location.pathname
+                    }
+                    this.error = data.status + ' ' + data.statusText
+                    this.success = false
+                    throw new Error('Request failed!')
+                })
+                .then((data) => {
+                    this.success = data.success
+                    this.error = data.error
+                    console.log(this.error)
 
-                if (data.error_code === 1) {
-                    this.apiDataStore.nightGameGroupInfo.data.free_places = false
-                } else if (data.error_code === 6) {
-                    this.apiDataStore.nightGameGroupInfo.data.user_in_group = true
-                }
-            })
-            .catch((error) => {
-                console.error('There was an error!', error)
-            })
-            .finally(() => {
-                this.signupLoading = false
-            })
+                    if (data.error_code === 1) {
+                        this.apiDataStore.nightGameGroupInfo.data.free_places = false
+                    } else if (data.error_code === 6) {
+                        this.apiDataStore.nightGameGroupInfo.data.user_in_group = true
+                    }
+                })
+                .catch((error) => {
+                    console.error('There was an error!', error)
+                })
+                .finally(() => {
+                    this.signupLoading = false
+                })
         }
 
 
     },
     mounted() {
         this.apiDataStore.nightGameGroupInfo.fetchData()
-        
+
         if (this.apiDataStore.nightGameGroupInfo.ready && this.groupSize < this.apiDataStore.nightGameGroupInfo.data.group_user_min) {
             this.groupSize = this.apiDataStore.nightGameGroupInfo.data.group_user_min
         }
         this.createPeople()
         this.apiDataStore.profile.fetchData()
 
-        this.timer = setInterval(this.apiDataStore.nightGameGroupInfo.fetchData, 30*1000);
+        this.timer = setInterval(this.apiDataStore.nightGameGroupInfo.fetchData, 30 * 1000);
     },
     beforeUnmount() {
         clearInterval(this.timer)
@@ -247,7 +266,9 @@ main {
     padding-bottom: 100px;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
     width: 100%;
     padding: 10px 15px 10px 15px;
     border-radius: 20px;
@@ -268,6 +289,7 @@ input, select, textarea {
 .bandInput {
     width: 120px;
 }
+
 .index {
     width: 40px;
     text-align: center;
@@ -315,6 +337,7 @@ button.success {
 .info-screen {
     text-align: center;
 }
+
 .info-screen h3 {
     font-size: 25px;
     margin-bottom: 20px;
@@ -331,8 +354,7 @@ button.success {
 .bold {
     font-weight: bold;
 }
+
 .spacer {
     height: 15px;
-}
-
-</style>
+}</style>

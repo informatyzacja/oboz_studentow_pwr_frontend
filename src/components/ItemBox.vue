@@ -46,8 +46,8 @@ defineProps({
 <template>
   <div class="item" :style="{ backgroundColor: bgColor }" :class="{ small: small }">
     <div class="itemLeft">
-      <div v-if="leftIcon" class="leftIcon" :class="{'noRoundIcon': noRoundIcon}">
-        <img :src="leftIcon" :class="{'white-icon': leftIconWhite}"/>
+      <div v-if="leftIcon" class="leftIcon" :class="{ 'noRoundIcon': noRoundIcon }">
+        <img :src="leftIcon" :class="{ 'white-icon': leftIconWhite }" />
       </div>
       <h6>{{ leftBigText }}</h6>
       <div class="text">
@@ -115,6 +115,7 @@ p {
 .white-icon {
   filter: brightness(0) invert(1);
 }
+
 .rightIcon {
   max-height: 30px;
   max-width: 30px;
@@ -132,6 +133,7 @@ p {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  filter: brightness(0) invert(1);
 }
 
 .noRoundIcon img {
@@ -148,6 +150,7 @@ img {
   min-height: 45px;
   padding: 5px 15px;
 }
+
 .small .leftIcon {
   width: 32px;
   height: 32px;

@@ -8,10 +8,10 @@ import {
   usePartnerStore
 } from './home.js'
 
-import { 
-  useProfileStore, 
-  useLinkStore, 
-  useNightGameGroupInfoStore, 
+import {
+  useProfileStore,
+  useLinkStore,
+  useNightGameGroupInfoStore,
   useFaqStore,
   useHomeLinkStore,
   useMyHouseMembersStore,
@@ -27,6 +27,8 @@ import { useScheduleStore } from './schedule.js'
 import { useVersionStore } from './version.js'
 
 import { useChatStore } from './chat.js'
+
+import { useHousesStore, useHouseSignupsStore } from './houses.js'
 
 export const useApiDataStore = defineStore('apiData', {
   state: () => ({
@@ -55,5 +57,8 @@ export const useApiDataStore = defineStore('apiData', {
     version: useVersionStore(),
 
     chat: useChatStore(),
+
+    houses: useHousesStore(),
+    houseSignups: useHouseSignupsStore(),
   })
 })

@@ -6,7 +6,7 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import moment from 'moment'
-import { WS_API_URL } from '../config'
+import { WS_API_URL, AUTH_TOKEN } from '../config'
 
 import sendIcon from '../assets/icons8-paper_plane.png'
 
@@ -135,7 +135,7 @@ export default {
     methods: {
 
         connect() {
-            this.chatSocket = new WebSocket(WS_API_URL + 'chat/');
+            this.chatSocket = new WebSocket(WS_API_URL + 'chat/' + (AUTH_TOKEN ? ('?token=' + AUTH_TOKEN) : ''));
 
             this.chatSocket.onopen = function () {
                 this.loading = false
