@@ -84,3 +84,7 @@ h3 {
 *:disabled {
   opacity: 1;
 }
+
+main {
+  background: var(--bg-translusent);
+}
