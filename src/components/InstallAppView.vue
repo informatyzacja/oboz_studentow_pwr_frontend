@@ -6,65 +6,80 @@ import OverlayView from './OverlayView.vue';
 <template>
   <div>
     <div class="padding" v-if="deferredPrompt">
-        <div class="overlay-card">
+      <div class="overlay-card">
 
-            <div>
-                <p style="text-align: center;">Zainstaluj aplikację, aby mieć do niej dostęp w każdej chwili bezpośrednio z Twojego ekranu początkowego!</p>
-                <div class="buttons">
-                    <button @click="installApp" class="button success">Zainstaluj</button>
-                    <button class="button red-bg" @click="deferredPrompt=null">Może później</button>
-                </div>
-            </div>
-
+        <div>
+          <p style="text-align: center;">Zainstaluj aplikację, aby mieć do niej dostęp w każdej chwili bezpośrednio z
+            Twojego ekranu początkowego!</p>
+          <div class="buttons">
+            <button @click="installApp" class="button success">Zainstaluj</button>
+            <button class="button red-bg" @click="deferredPrompt = null">Może później</button>
+          </div>
         </div>
+
+      </div>
     </div>
 
     <div class="padding" v-if="notSafariMessage">
-        <div class="overlay-card">
+      <div class="overlay-card">
 
-            <div>
-                <p style="text-align: center;">Aby zainstalować aplikację, otwórz tę stronę w Safari</p>
-                <div class="buttons">
-                    <button class="button red-bg" @click="notSafariMessage=false">Może później</button>
-                </div>
-            </div>
-
+        <div>
+          <p style="text-align: center;">Aby zainstalować aplikację, otwórz tę stronę we wspieranej przeglądarce np.
+            Safari lub Chrome</p>
+          <div class="buttons">
+            <button class="button red-bg" @click="notSafariMessage = false">Może później</button>
+          </div>
         </div>
+
+      </div>
     </div>
 
-  <OverlayView ref="iosInstallMessage">
-    <div class="ios-install-message">
-      <p>
-        Aby zainstalować aplikację, kliknij <img src="@/assets/icons8-share_rounded.png" alt="share" /> i wybierz opcję <span style="white-space: nowrap;">"Do ekranu początkowego <img src="@/assets/icons8-add_new.png" alt="icon" style="margin-bottom: -8px"/>"</span>
-      </p>
-      <div class="ios-install-message-close" @click="$refs.iosInstallMessage.hide">Może później</div>
-    </div>
-    <div class="ios-install-arrow"></div>
-  </OverlayView>
+    <OverlayView ref="iosInstallMessage">
+      <div class="ios-install-message"
+        :class="{ 'ios-install-message-chrome': isIosChrome, 'ios-install-message-google': isIosGoogle }">
+        <p>
+          Aby zainstalować aplikację, kliknij <img src="@/assets/icons8-share_rounded.png" alt="share" /> i wybierz opcję
+          <span style="white-space: nowrap;">"Do ekranu początkowego <img src="@/assets/icons8-add_new.png" alt="icon"
+              style="margin-bottom: -8px" />"</span>
+        </p>
+        <div class="ios-install-message-close" @click="$refs.iosInstallMessage.hide">Może później</div>
+      </div>
+      <div class="ios-install-arrow"></div>
+    </OverlayView>
 
 
-</div>
-
+  </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            deferredPrompt: null,
-            showIosInstallMessage: false,
-            notSafariMessage: false
-        }
-    },
+  data() {
+    return {
+      deferredPrompt: null,
+      showIosInstallMessage: false,
+      notSafariMessage: false
+    }
+  },
 
   computed: {
     isIos() {
       const userAgent = window.navigator.userAgent.toLowerCase();
-      return /iphone|ipod/.test( userAgent );
+      return /iphone|ipod/.test(userAgent);
     },
     isSafari() {
       const userAgent = window.navigator.userAgent.toLowerCase();
-      return !(/(CriOS|FxiOS|OPiOS|mercury|FBAN|FBAV)/i.test(userAgent))
+      return !(/(gsa|crios|fxios|opios|mercury|fban|fbav)/i.test(userAgent))
+    },
+    isIosSupportedBrowser() {
+      return this.isSafari || this.isIosChrome || this.isIosGoogle
+    },
+    isIosChrome() {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /crios/.test(userAgent);
+    },
+    isIosGoogle() {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /gsa/.test(userAgent);
     },
     isInStandaloneMode() {
       return ('standalone' in window.navigator) && (window.navigator.standalone);
@@ -74,11 +89,11 @@ export default {
     async installApp() {
       if (this.deferredPrompt && this.deferredPrompt !== 'ios') {
         this.deferredPrompt.prompt();
-        
+
         const { outcome } = await this.deferredPrompt.userChoice;
-        
+
         this.deferredPrompt = null;
-        
+
         if (outcome === 'accepted') {
           console.log('😀 User accepted the install prompt.');
           alert('Zainstalowano aplikację, uruchom ją ze swojego ekranu startowego')
@@ -90,11 +105,13 @@ export default {
 
       } else if (this.deferredPrompt === 'ios') {
         this.deferredPrompt = null
-        if (!this.isSafari) {
+        if (!this.isIosSupportedBrowser) {
           this.notSafariMessage = true
           return
         }
         this.$refs.iosInstallMessage.show()
+        // scroll up
+        window.scrollTo(0, 0)
       }
     }
   },
@@ -106,7 +123,7 @@ export default {
       e.preventDefault();
       this.deferredPrompt = e;
     });
-     
+
   }
 
 }
@@ -152,10 +169,11 @@ a.button {
 .button.success {
   background-color: green;
 }
+
 .buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 
@@ -170,12 +188,18 @@ a.button {
   background-color: var(--bg-light);
   padding: 12px 10px;
   z-index: 11;
-  border-radius: 20px;
-  
+  border-radius: 18px;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
+}
+
+.ios-install-message-chrome,
+.ios-install-message-google {
+  bottom: auto;
+  top: 28px;
 }
 
 .ios-install-message p {
@@ -191,6 +215,7 @@ a.button {
   height: 24px;
   object-fit: contain;
   margin-bottom: -5px;
+  filter: grayscale(100%) brightness(1000%);
 }
 
 .ios-install-arrow {
@@ -209,5 +234,20 @@ a.button {
   padding: 0 10px;
   color: var(--theme-light);
   text-align: center;
+  cursor: pointer;
+}
+
+.ios-install-message-chrome+.ios-install-arrow {
+  bottom: auto;
+  top: 23px;
+  left: auto;
+  right: 20px;
+}
+
+.ios-install-message-google+.ios-install-arrow {
+  bottom: auto;
+  top: 20px;
+  left: auto;
+  right: 67px;
 }
 </style>
