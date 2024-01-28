@@ -164,4 +164,8 @@ export default {
   background: var(--bg);
   background-image: linear-gradient(var(--bg-translusent), var(--bg-translusent)), url('@/assets/Icon Grid.svg'), linear-gradient(var(--bg), var(--bg));
 }
+
+main {
+  min-height: 100vh;
+}
 </style>

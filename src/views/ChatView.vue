@@ -63,7 +63,9 @@ import groupIcon from '../assets/grupa.svg'
 
                     <button class="textBoxButton" v-else @click="sendMessage"><img :src="sendIcon"
                             class="sendIcon" /></button>
+
                 </div>
+                <div class="fake-bg"></div>
             </div>
             <LoadingIndicator v-else />
         </main>
@@ -271,10 +273,10 @@ export default {
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 80px;
+    bottom: 100px;
     /* z-index: 100; */
 
-    margin: 5px 0;
+    /* margin: 5px 0; */
 
     display: flex;
     background-color: var(--bg-lighter);
@@ -283,7 +285,7 @@ export default {
 .textBox input {
     width: calc(100% - 50px - 10px - 10px);
     margin: 5px;
-    margin-bottom: 2px;
+    margin-bottom: 5px;
     margin-left: 8px;
     min-height: 30px;
 
@@ -337,11 +339,23 @@ export default {
     filter: brightness(0) saturate(100%) invert(37%) sepia(47%) saturate(783%) hue-rotate(181deg) brightness(98%) contrast(91%);
 }
 
+.textBox+.fake-bg {
+    width: 100%;
+    height: 20px;
+    position: fixed;
+    left: 0;
+    bottom: 80px;
+    background-color: var(--bg-translusent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
 .datetime {
     text-align: center;
     color: rgba(255, 255, 255, 0.546);
     margin-top: 5px;
 }
+
 
 
 

@@ -169,7 +169,8 @@ defineProps([
           </div>
 
           <!-- Band -->
-          <ItemBox v-if="profileData.bandId" :bigText="'Twoje ID: ' + profileData.bandId" :leftIcon="codeIcon" small />
+          <ItemBox v-if="profileData.bandId" :bigText="'Twoje ID: ' + profileData.bandId" :leftIcon="codeIcon"
+            small-text="Naciśnij, aby skopiować" @click="copyUserId" />
 
           <!-- Diet -->
           <ItemBox v-if="profileData.diet" :bigText="'Dieta ' + profileData.diet.toLowerCase()" :leftIcon="mealIcon"
@@ -545,6 +546,16 @@ export default {
   methods: {
     qrReady() {
       this.qrLoading = false
+    },
+    copyUserId() {
+      navigator.clipboard.writeText(this.profileData.bandId).then(
+        () => {
+          alert('Twoje ID zostało skopiowane do schowka')
+        },
+        () => {
+          alert('Błąd kopiowania Twojego ID')
+        },
+      );
     }
   }
 }

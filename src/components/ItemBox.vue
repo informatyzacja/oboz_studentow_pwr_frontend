@@ -75,11 +75,12 @@ defineProps({
 
   backdrop-filter: blur(15px) !important;
   -webkit-backdrop-filter: blur(15px) !important;
+  cursor: pointer;
 }
 
-.item:hover {
+/* .item:hover {
   background-color: var(--bg-light-translusent-hover) !important;
-}
+} */
 
 .itemLeft {
   display: flex;
