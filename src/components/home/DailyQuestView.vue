@@ -66,7 +66,7 @@ export default {
 
 <style scoped>
 .daily-quest {
-  background: radial-gradient(farthest-corner at 90% 90%, #dea766 0%, #de7539 100%);
+  background: radial-gradient(farthest-corner at 90% 90%, #dea766 0%, #84c6e7 100%);
   border-radius: 20px;
   padding: 15px 15px 5px 20px;
   margin-bottom: 20px;
@@ -129,4 +129,5 @@ h4 {
 h5 {
   color: rgb(56, 56, 56);
   font-size: 14px;
-}</style>
+}
+</style>

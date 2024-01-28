@@ -1,6 +1,6 @@
 <script setup>
-defineProps(['points', 'date', 'validated', 'rejected', 'points_type', 'description', 'group_name','added_by',
-'validationDate', 'validatedBy']);
+defineProps(['points', 'date', 'validated', 'rejected', 'points_type', 'description', 'group_name', 'added_by',
+    'validationDate', 'validatedBy']);
 import moment from 'moment'
 </script>
 
@@ -11,10 +11,10 @@ import moment from 'moment'
                 <div class="points"><span class="points-span">{{ points }}</span> pkt</div>
                 <p class="date">{{ moment(date).format("HH:mm ddd. DD.MM") }}</p>
             </div>
-            <div class="validation" :class="{'validation-successful': validated, 'validation-rejected': rejected}">
-                <p>{{ validated ? 
-                (rejected ? 'Zatw. i Odrzu.' : 'Zatwierdzone') 
-                : (rejected ? 'Odrzucone' : "Nie zatwierdzone") }}</p>
+            <div class="validation" :class="{ 'validation-successful': validated, 'validation-rejected': rejected }">
+                <p>{{ validated ?
+                    (rejected ? 'Zatw. i Odrzu.' : 'Zatwierdzone')
+                    : (rejected ? 'Odrzucone' : "Nie zatwierdzone") }}</p>
                 <p>{{ validationDate ? moment(validationDate).format("HH:mm ddd. DD.MM") : "" }}</p>
                 <p>{{ validatedBy }}</p>
             </div>
@@ -55,7 +55,7 @@ import moment from 'moment'
     padding: 2px 10px;
     font-size: 12px;
     text-align: center;
-    
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -65,6 +65,7 @@ import moment from 'moment'
 .validation-successful {
     background-color: green;
 }
+
 .validation-rejected {
     background-color: rgb(167, 0, 78)
 }
@@ -75,14 +76,16 @@ import moment from 'moment'
 
 .points {
     border-radius: 20px;
-    background: #DE7539;
+    background: var(--theme-light);
     padding: 2px 12px;
     font-size: 12px
 }
+
 .points-span {
     font-size: 20px;
     line-height: 24px;
 }
+
 .footer {
     display: flex;
     justify-content: space-between;
@@ -98,5 +101,4 @@ import moment from 'moment'
 .description {
     font-size: 12px;
 }
-
 </style>

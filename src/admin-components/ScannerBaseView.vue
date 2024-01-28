@@ -7,20 +7,12 @@ defineEmits(['error', 'result']);
 </script>
 
 <template>
-  <input
-    type="text"
-    pattern="[0-9]*" inputmode="numeric"
-    maxLength="6"
-    placeholder="Wpisz kod"
-    class="search"
-    v-model="searchQuery"
-    @input="
-      (event) => {
-        if (event.target.value.length > event.target.maxLength)
-          searchQuery = event.target.value.slice(0, event.target.maxLength)
-      }
-    "
-  />
+  <input type="text" pattern="[0-9]*" inputmode="numeric" maxLength="6" placeholder="Wpisz kod" class="search"
+    v-model="searchQuery" @input="(event) => {
+      if (event.target.value.length > event.target.maxLength)
+        searchQuery = event.target.value.slice(0, event.target.maxLength)
+    }
+      " />
   <button class="button success" @click="search" v-if="searchQuery != '' && !hideScanner">
     Sprawdź
   </button>
@@ -28,23 +20,15 @@ defineEmits(['error', 'result']);
   <div class="scanner">
     <p class="error">{{ qrReaderError }}</p>
     <div class="scanner-inside" :class="{ hidden: qrScannerLoading || hideScanner }">
-      <QrcodeStream
-        ref="qrcodestream"
-        @decode="onDecode"
-        @init="onInit"
-        :track="track"
-        :camera="camera"
-        :torch="torch"
-        :constrains="{ focusMode, focusDistance }"
-        v-if="!disable"
-      />
+      <QrcodeStream ref="qrcodestream" @decode="onDecode" @init="onInit" :track="track" :camera="camera" :torch="torch"
+        :constrains="{ focusMode, focusDistance }" v-if="!disable" />
     </div>
     <LoadingIndicator v-if="qrScannerLoading" inline />
   </div>
-      <button class="button" v-if="torchSupported" @click="torch = !torch" style="margin-top: 5px; 
+  <button class="button" v-if="torchSupported" @click="torch = !torch" style="margin-top: 5px; 
   padding: 10px 35px; font-size: 13px; margin: 0;">
-        {{ torch ? 'Wyłącz latarkę' : 'Włącz latarkę' }}
-      </button>
+    {{ torch ? 'Wyłącz latarkę' : 'Włącz latarkę' }}
+  </button>
 </template>
 
 <script>
@@ -107,7 +91,7 @@ export default {
     async onInit(promise) {
       try {
         this.qrReaderError = null;
-        
+
         var capabilities = (await promise).capabilities;
         this.torchSupported = !!capabilities.torch
         console.log("Camera capabilities:", capabilities)
@@ -164,10 +148,9 @@ export default {
 
         //outline
         const gradient = ctx.createLinearGradient(0, 0, 200, 0)
-        gradient.addColorStop('0', '#de7539')
+        gradient.addColorStop('0', '#84c6e7')
         gradient.addColorStop('1.0', '#dea766')
 
-        // ctx.strokeStyle = "#de7539";
         ctx.strokeStyle =
           this.codeFrameColor && this.originalResult == detectedCode.rawValue
             ? this.codeFrameColor
@@ -223,6 +206,7 @@ export default {
   color: white;
   outline: none;
 }
+
 .scanner {
   width: 80vw;
   height: 80vw;
@@ -256,6 +240,7 @@ export default {
 
   background-color: var(--bg-light);
 }
+
 .success {
   background-color: green;
 }

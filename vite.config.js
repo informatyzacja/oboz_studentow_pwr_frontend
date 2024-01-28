@@ -28,7 +28,7 @@ export default defineConfig({
     manifest: {
       name: 'Obóz Studentów PWr',
       short_name: 'Obóz PWR',
-      theme_color: '#de7539',
+      theme_color: '#84c6e7',
       msTileColor: '#3e0e09',
       background_color: '#131313',
       orientation: "portrait-primary",
