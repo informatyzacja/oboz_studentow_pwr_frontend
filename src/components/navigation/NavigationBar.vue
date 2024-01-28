@@ -1,7 +1,7 @@
 <script setup>
 import SosIcon from '../../assets/icons8-sos.png'
 import MapIcon from '../../assets/icons8-map_marker.png'
-import Logo from '../../assets/logo na dol apki1.svg'
+import Logo from '../../assets/ikona.png'
 // import HammerIcon from '../../assets/icons8-hammer.png'
 import WorkshopIcon from '../../assets/warsztaty.svg'
 import CalendarIcon from '../../assets/icons8-calendar-100.png'
@@ -160,8 +160,8 @@ export default {
 }
 
 .navigation-bar__logo {
-  width: 82px;
-  height: 82px;
+  width: 75px;
+  height: 75px;
   border-radius: 50%;
   background-color: var(--bg-lighter);
   display: flex;

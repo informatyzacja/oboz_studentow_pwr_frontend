@@ -3,8 +3,6 @@ import ItemBox from '../components/ItemBox.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
 import moment from 'moment'
 
-import Logo from '../assets/ikona kolor rounded.svg'
-import BlackLogo from '../assets/ikona czarny.svg'
 
 import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 import OverlayView from '../components/OverlayView.vue'
