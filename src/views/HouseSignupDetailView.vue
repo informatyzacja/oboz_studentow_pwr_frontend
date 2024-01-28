@@ -13,13 +13,17 @@ import { API_URL, AUTH_HEADER } from '../config.js'
 import { getCookie } from '../stores/functions.js'
 
 import OverlayView from '../components/OverlayView.vue'
+import cryingIcon from '../assets/icons8-crying.png'
 
 </script>
 
 <template>
     <main>
-        <TopBar :title="'Pokój nr ' + apiDataStore.houses.houseWithId($route.params.id).name"
-            :backLink="$router.options.history.state.back || '/zapisy-na-domki'" />
+        <TopBar :title="'Pokój' + (house ? ' nr ' + house.name : '')"
+            :backLink="$router.options.history.state.back || '/zapisy'" />
+
+        <p v-if="apiDataStore.houses.ready && !house && apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.house_signups_active"
+            style="text-align: center;">Nie znaleziono domku/pokoju</p>
 
         <OverlayView ref="leaveHouseOverlay">
             <div class="padding leave-house-overlay">
@@ -37,7 +41,7 @@ import OverlayView from '../components/OverlayView.vue'
             </div>
         </OverlayView>
 
-        <div v-if="house">
+        <div v-if="house && apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.house_signups_active">
 
             <div class="my-house">
                 <HouseCard :house="house" noArrow />
@@ -85,6 +89,18 @@ import OverlayView from '../components/OverlayView.vue'
                 </div>
                 <LoadingIndicator v-if="signupLoading" inline />
             </div>
+        </div>
+        <div class="padding info-screen"
+            v-else-if="apiDataStore.houseSignupsInfo.ready && !apiDataStore.houseSignupsInfo.data.house_signups_active">
+            <h3>Zapisy zamknięte!</h3>
+            <img :src="cryingIcon" alt="crying" style="width: 100px; margin: 20px auto; display: block;" />
+            <p>Przepraszamy, ale zapisy na {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoje' : 'domki'
+            }} są
+                zamknięte.</p>
+
+            <RouterLink to="/">
+                <button class="button" style="margin-top: 20px">Wyjdź</button>
+            </RouterLink>
         </div>
         <LoadingIndicator v-if="apiDataStore.houses.loading || apiDataStore.profile.loading" />
         <p v-if="error" class="error">{{ error }}</p>
@@ -163,6 +179,7 @@ export default {
         }
     },
     mounted() {
+        this.apiDataStore.houseSignupsInfo.fetchData()
         this.refreshTimer = setInterval(() => {
             this.refreshKey++
         }, 200)
@@ -499,5 +516,42 @@ button.error {
 
 .my-house>* {
     width: calc(70% - 10px);
+}
+
+/* info screen */
+.info-screen {
+    text-align: center;
+}
+
+.info-screen h3 {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.info-screen p {
+    color: var(--text-gray);
+}
+
+.info-screen p a {
+    color: var(--theme-dark)
+}
+
+button {
+    border-radius: 20px;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    line-height: 16px;
+    cursor: pointer;
+    font-family: 'Sui Generis';
+    background-color: var(--bg-light);
+
+    width: 160px;
+    display: flex;
+    justify-content: center;
+
+    margin: 0 auto;
+    margin-top: 20px;
 }
 </style>

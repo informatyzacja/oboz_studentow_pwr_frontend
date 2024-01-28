@@ -107,12 +107,12 @@ const router = createRouter({
     //   component: () => import('../views/NightGameSignupView.vue')
     // },
     {
-      path: '/zapisy-na-domki',
+      path: '/zapisy',
       name: 'zapisy-na-domki',
       component: () => import('../views/HouseSignupView.vue')
     },
     {
-      path: '/zapisy-na-domki/:id',
+      path: '/zapisy/:id',
       name: 'zapisy-na-domki-detail',
       component: () => import('../views/HouseSignupDetailView.vue')
     },

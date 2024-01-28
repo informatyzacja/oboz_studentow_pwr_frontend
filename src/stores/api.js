@@ -28,7 +28,7 @@ import { useVersionStore } from './version.js'
 
 import { useChatStore } from './chat.js'
 
-import { useHousesStore, useHouseSignupsStore } from './houses.js'
+import { useHousesStore, useHouseSignupsStore, useHouseSignupsInfoStore } from './houses.js'
 
 export const useApiDataStore = defineStore('apiData', {
   state: () => ({
@@ -60,5 +60,6 @@ export const useApiDataStore = defineStore('apiData', {
 
     houses: useHousesStore(),
     houseSignups: useHouseSignupsStore(),
+    houseSignupsInfo: useHouseSignupsInfoStore(),
   })
 })

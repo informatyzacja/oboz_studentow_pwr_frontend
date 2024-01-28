@@ -109,3 +109,18 @@ export const useHouseSignupsStore = defineStore('houseSignups', {
         }
     }
 })
+
+
+export const useHouseSignupsInfoStore = defineStore('houseSignupsInfo', {
+    state: () => ({ loading: true, error: null, data: null, url: '../api2/get-house-signups-info/' }),
+    getters: {
+        ready() {
+            return ready(this)
+        },
+    },
+    actions: {
+        fetchData() {
+            loadData(this)
+        }
+    }
+})
