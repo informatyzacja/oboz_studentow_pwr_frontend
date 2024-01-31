@@ -356,7 +356,7 @@ export default {
 
     clearInterval(this.partnersScroll)
 
-    window.document.removeEventListener(this.visibilityListener)
+    window.document.removeEventListener(this.visibilityListener, () => { })
   },
 
 }

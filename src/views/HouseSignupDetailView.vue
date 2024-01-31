@@ -547,11 +547,11 @@ button {
     font-family: 'Sui Generis';
     background-color: var(--bg-light);
 
-    width: 160px;
+    /* width: 160px; */
     display: flex;
     justify-content: center;
 
     margin: 0 auto;
-    margin-top: 20px;
+    /* margin-top: 20px; */
 }
 </style>
