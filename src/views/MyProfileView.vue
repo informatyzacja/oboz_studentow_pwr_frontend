@@ -15,7 +15,7 @@ import adminPanelIcon from '../assets/icons8-administrative_tools.png'
 import taxiIcon from '../assets/icons8-taxi_mobile_payment.png'
 import copyIcon from '../assets/icons8-copy.png'
 
-import { REULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
+import { REULAMIN_LINK as REGULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
@@ -23,22 +23,13 @@ import { mapStores } from 'pinia'
 </script>
 
 <template>
-  <GenericProfileView
-    :profileData="
-      apiDataStore.profile.data && apiDataStore.profile.data.length
-        ? apiDataStore.profile.data[0]
-        : {}
-    "
-    :loading="apiDataStore.profile.loading"
-    :ready="apiDataStore.profile.ready"
-    :error="apiDataStore.profile.error"
-    :linksData="apiDataStore.links.data"
-    :linksReady="apiDataStore.links.ready"
-    :userWorkshopData="apiDataStore.userWorkshop.data"
-    :userWorkshopReady="apiDataStore.userWorkshop.ready"
-    frakcjaLink="/moja-frakcja"
-    grupaLink="/moja-grupa"
-  >
+  <GenericProfileView :profileData="apiDataStore.profile.data && apiDataStore.profile.data.length
+    ? apiDataStore.profile.data[0]
+    : {}
+    " :loading="apiDataStore.profile.loading" :ready="apiDataStore.profile.ready" :error="apiDataStore.profile.error"
+    :linksData="apiDataStore.links.data" :linksReady="apiDataStore.links.ready"
+    :userWorkshopData="apiDataStore.userWorkshop.data" :userWorkshopReady="apiDataStore.userWorkshop.ready"
+    frakcjaLink="/moja-frakcja" grupaLink="/moja-grupa">
     <template #topBar>
       <TopBar title="Profil" />
     </template>
@@ -50,13 +41,14 @@ import { mapStores } from 'pinia'
         <div v-if="apiDataStore.profile.ready && apiDataStore.profile.data[0].freenow_code">
           <h3>Twój kod zniżkowy FREENOW 40%</h3>
           <h5>Ważny na terenie Wrocławia do końca października</h5>
-          <ItemBox :big-text="apiDataStore.profile.data[0].freenow_code.toUpperCase()" small-text="Naciśnij, aby skopiować" :leftIcon="taxiIcon" :rightIcon="copyIcon" noRoundIcon @click="copyFreenowCode"/>
+          <ItemBox :big-text="apiDataStore.profile.data[0].freenow_code.toUpperCase()"
+            small-text="Naciśnij, aby skopiować" :leftIcon="taxiIcon" :rightIcon="copyIcon" noRoundIcon
+            @click="copyFreenowCode" />
         </div>
 
-        <a href="/admin/" target="_blank" v-if="
-          apiDataStore.permissions.ready &&
+        <a href="/admin/" target="_blank" v-if="apiDataStore.permissions.ready &&
           apiDataStore.permissions.hasOneOfPermissions(['is_staff'])
-        ">
+          ">
           <div class="spacer"></div>
           <ItemBox big-text="Panel admina" :leftIcon="adminPanelIcon" :rightIcon="rightArrow" />
           <div class="spacer"></div>
@@ -69,10 +61,10 @@ import { mapStores } from 'pinia'
         <div class="spacer"></div>
         <div class="spacer"></div>
 
-        <a :href="REULAMIN_LINK" target="_blank">
+        <a :href="REGULAMIN_LINK" target="_blank" v-if="REGULAMIN_LINK">
           <ItemBox big-text="Regulamin" :leftIcon="regulaminIcon" small />
         </a>
-        <a :href="POLITYKA_PRYWATNOSCI_LINK" target="_blank">
+        <a :href="POLITYKA_PRYWATNOSCI_LINK" target="_blank" v-if="POLITYKA_PRYWATNOSCI_LINK">
           <ItemBox big-text="Polityka prywatności" :leftIcon="politykaPrywatnosciIcon" small />
         </a>
 
@@ -85,7 +77,7 @@ import { mapStores } from 'pinia'
         <a href="/logout/">
           <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small />
         </a>
-        <p class="version" v-if="version">v{{version}}</p>
+        <p class="version" v-if="version">v{{ version }}</p>
       </div>
     </template>
   </GenericProfileView>
@@ -121,13 +113,13 @@ export default {
     },
     copyFreenowCode() {
       navigator.clipboard.writeText(this.apiDataStore.profile.data[0].freenow_code.toUpperCase()).then(
-      () => {
-        alert('Skopiowano kod zniżkowy do schowka')
-      },
-      () => {
-        alert('Błąd kopiowania kodu zniżkowego')
-      },
-    );
+        () => {
+          alert('Skopiowano kod zniżkowy do schowka')
+        },
+        () => {
+          alert('Błąd kopiowania kodu zniżkowego')
+        },
+      );
     }
   },
   beforeUnmount() {
@@ -168,5 +160,4 @@ h6 {
   z-index: 1;
   position: relative;
 }
-
 </style>

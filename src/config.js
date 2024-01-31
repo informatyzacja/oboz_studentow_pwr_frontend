@@ -5,8 +5,8 @@ export const WS_API_URL = import.meta.env.VITE_WS_API_URL || WS_API_PROTOCOL + '
 export const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN
 export const AUTH_HEADER = AUTH_TOKEN ? { "Authorization": "Token " + AUTH_TOKEN } : {}
 
-export const REULAMIN_LINK = 'https://e-2-e.eu/pl_pl/terms-and-conditions/'
-export const POLITYKA_PRYWATNOSCI_LINK = 'https://e-2-e.eu/pl_pl/privacy-policy/'
+export const REULAMIN_LINK = 'https://drive.google.com/file/d/1Ptkf7S7XUzlGGz_j3ye1XXhOYSyecanK/view?pli=1'
+export const POLITYKA_PRYWATNOSCI_LINK = null
 
 
 import { getToken, isSupported } from "firebase/messaging";
@@ -55,7 +55,7 @@ export function registerForPushNotifications() {
             }
         }).catch((err) => {
             console.log('An error occurred while retrieving token. ', err);
-            alert('Pojawił się error podczas włączania powiadomień')
+            alert('Pojawił się błąd podczas włączania powiadomień')
             return err;
             // ...
         });

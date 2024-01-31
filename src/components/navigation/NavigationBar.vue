@@ -18,7 +18,7 @@ import { registerForPushNotifications } from '../../config.js'
 </script>
 
 <template>
-  <div class="navigation-bar" v-if="true || !apiDataStore.permissions.ready || !apiDataStore.permissions.data.length">
+  <div class="navigation-bar" v-if="!apiDataStore.permissions.ready || !apiDataStore.permissions.data.length">
 
     <div class="navigation-bar__content">
       <RouterLink to="/sos">
@@ -56,10 +56,16 @@ import { registerForPushNotifications } from '../../config.js'
   <!-- staff -->
   <div class="navigation-bar" v-else>
     <div class="navigation-bar__content">
-      <RouterLink to="/skaner">
+      <!-- <RouterLink to="/skaner">
         <div class="navigation_bar__item" :class="{ selected: $route.path == '/skaner' }">
           <img :src="ScannerIcon" alt="skaner" />
           <p>Skaner</p>
+        </div>
+      </RouterLink> -->
+      <RouterLink to="/sos">
+        <div class="navigation_bar__item" :class="{ selected: $route.path == '/sos' }">
+          <img :src="SosIcon" alt="sos" />
+          <p>SOS</p>
         </div>
       </RouterLink>
       <RouterLink to="/admin-menu">

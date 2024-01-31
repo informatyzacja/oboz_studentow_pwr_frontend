@@ -38,9 +38,9 @@ import { mapStores } from 'pinia'
         apiDataStore.permissions.hasOneOfPermissions(['can_view_points'])
         " />
       <MenuCard title="Frakcje" :icon="FractionIcon" link="/frakcje" />
-      <MenuCard title="Gra nocna" :icon="GroupIcon" link="/grupy" v-if="apiDataStore.permissions.ready &&
+      <!-- <MenuCard title="Gra nocna" :icon="GroupIcon" link="/grupy" v-if="apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_view_groups'])
-        " />
+        " /> -->
       <MenuCard title="Ogłoszenia" :icon="AnnouncementIcon" link="/ogloszenia" v-if="apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_add_announcement'])
         " />

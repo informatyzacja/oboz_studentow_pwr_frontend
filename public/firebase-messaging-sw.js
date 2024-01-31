@@ -22,14 +22,7 @@ messaging.onBackgroundMessage(function (payload) {
   console.log('Received background message ', payload);
 
   if (navigator.setAppBadge) {
-    navigator.setAppBadge(navigator.appBadge + 1);
+    navigator.setAppBadge(1);
   }
 
-  //   const notificationTitle = payload.notification.title;
-  //   const notificationOptions = {
-  //     body: payload.notification.body
-  //   };
-
-  //   self.registration.showNotification(notificationTitle,
-  //     notificationOptions);
 });

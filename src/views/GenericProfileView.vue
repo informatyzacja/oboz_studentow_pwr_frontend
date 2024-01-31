@@ -195,7 +195,7 @@ defineProps([
 
       <!-- warsztaty -->
       <div v-if="userWorkshopReady && userWorkshopData.length" class="zindex">
-        <h3>Twoje warsztaty</h3>
+        <h3>Twoje lekcje narciarstwa</h3>
         <div class="scroll">
           <RouterLink v-for="(data, index) in userWorkshopData" :key="index" :to="`/warsztaty/info/${data.id}`">
             <ItemBox :leftBigText="moment(data.start).format('dd. DD.MM, HH:mm')" :bigText="data.name"

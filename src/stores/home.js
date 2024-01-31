@@ -34,12 +34,7 @@ export const useAnnouncementStore = defineStore('announcement', {
   actions: {
     fetchData() {
       loadData(this)
-    }
-  },
-  // watch for changes
-  watch: {
-    ready() {
-      if (this.ready && navigator.clearAppBadge) {
+      if (navigator.clearAppBadge) {
         navigator.clearAppBadge();
       }
     }

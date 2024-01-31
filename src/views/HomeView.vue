@@ -240,6 +240,8 @@ export default {
       scrollDirectionLeft: true,
 
       showPushNotificationCard: false,
+
+      visibilityListener: null,
     }
   },
   computed: {
@@ -250,15 +252,8 @@ export default {
     },
   },
   mounted() {
-    this.apiDataStore.userWorkshop.fetchData()
-    this.apiDataStore.schedule.fetchData()
-    this.apiDataStore.announcement.fetchData()
-    this.apiDataStore.homeLinks.fetchData()
-    this.apiDataStore.dailyQuest.fetchData()
-    this.apiDataStore.profile.fetchData()
-    this.apiDataStore.nightGameGroupInfo.fetchData()
-    this.apiDataStore.partner.fetchData()
-    this.apiDataStore.images.fetchData()
+    this.loadData()
+    this.registerPageVisibility()
 
     this.timer1 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000)
     this.timer2 = setInterval(this.apiDataStore.schedule.fetchData, 300000)
@@ -270,6 +265,7 @@ export default {
     this.timer8 = setInterval(this.apiDataStore.images.fetchData, 60000)
 
 
+    // push notifications
     if (isSupported() && ("Notification" in window)) {
       if (Notification.permission !== "denied" && Notification.permission !== "granted") {
         this.showPushNotificationCard = true
@@ -286,9 +282,11 @@ export default {
       }
     }
 
-    // random partner scroll position
     setTimeout(() => {
-      this.$refs.partners.scrollLeft = Math.floor(Math.random() * this.$refs.partners.scrollWidth)
+      // random partner scroll position
+      if (this.$refs.partners) {
+        this.$refs.partners.scrollLeft = Math.floor(Math.random() * this.$refs.partners.scrollWidth)
+      }
     }, 100)
 
     // partner autoscroll
@@ -308,6 +306,37 @@ export default {
     }, 50)
   },
   methods: {
+    loadData() {
+      this.apiDataStore.userWorkshop.fetchData()
+      this.apiDataStore.schedule.fetchData()
+      this.apiDataStore.announcement.fetchData()
+      this.apiDataStore.homeLinks.fetchData()
+      this.apiDataStore.dailyQuest.fetchData()
+      this.apiDataStore.profile.fetchData()
+      this.apiDataStore.nightGameGroupInfo.fetchData()
+      this.apiDataStore.partner.fetchData()
+      this.apiDataStore.images.fetchData()
+    },
+    registerPageVisibility() {
+      let hidden;
+      let visibilityChange;
+      if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
+        hidden = 'hidden';
+        visibilityChange = 'visibilitychange';
+      } else if (typeof document.msHidden !== 'undefined') {
+        hidden = 'msHidden';
+        visibilityChange = 'msvisibilitychange';
+      } else if (typeof document.webkitHidden !== 'undefined') {
+        hidden = 'webkitHidden';
+        visibilityChange = 'webkitvisibilitychange';
+      }
+      this.visibilityListener = window.document.addEventListener(visibilityChange, () => {
+        if (!document[hidden]) {
+          //will execute everytime PWA is opened.
+          this.loadData()
+        }
+      });
+    },
     showRef(ref, index) {
       this.$refs[ref][index].show()
     },
@@ -324,7 +353,12 @@ export default {
     clearInterval(this.timer6)
     clearInterval(this.timer7)
     clearInterval(this.timer8)
-  }
+
+    clearInterval(this.partnersScroll)
+
+    window.document.removeEventListener(this.visibilityListener)
+  },
+
 }
 </script>
 
