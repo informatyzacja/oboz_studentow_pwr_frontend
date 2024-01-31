@@ -49,7 +49,7 @@ import questionMark from '../assets/question-mark.jpg'
       </RouterLink>
     </div>
     <p v-if="apiDataStore.schedule.ready && !apiDataStore.schedule.data.length" class="error">
-      Brak rzeczy do wyświtlenia
+      Brak harmonogramu do wyświetlenia
     </p>
 
     <LoadingIndicator v-if="apiDataStore.schedule.loading" />

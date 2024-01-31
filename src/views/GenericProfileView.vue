@@ -170,7 +170,7 @@ defineProps([
 
           <!-- Band -->
           <ItemBox v-if="profileData.bandId" :bigText="'Twoje ID: ' + profileData.bandId" :leftIcon="codeIcon"
-            small-text="Naciśnij, aby skopiować" @click="copyUserId" />
+            small-text="Naciśnij, aby skopiować" @click="copyUserId" leftIconWhite />
 
           <!-- Diet -->
           <ItemBox v-if="profileData.diet" :bigText="'Dieta ' + profileData.diet.toLowerCase()" :leftIcon="mealIcon"

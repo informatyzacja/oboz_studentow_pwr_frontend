@@ -134,7 +134,7 @@ p {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  filter: brightness(0) invert(1);
+  /* filter: brightness(0) invert(1); */
 }
 
 .noRoundIcon img {

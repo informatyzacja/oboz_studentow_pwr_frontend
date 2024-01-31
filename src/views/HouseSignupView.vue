@@ -38,6 +38,10 @@ import cryingIcon from '../assets/icons8-crying.png'
                     v-for="house in apiDataStore.houses.housesWithoutId(apiDataStore.profile.data[0].house ? apiDataStore.profile.data[0].house.id : null)">
                     <HouseCard :key="house.id" :house="house" />
                 </RouterLink>
+                <p
+                    v-if="!apiDataStore.houses.housesWithoutId(apiDataStore.profile.data[0].house ? apiDataStore.profile.data[0].house.id : null).count">
+                    Brak wolnych {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoi' : 'domków'
+                    }}</p>
             </div>
             <p v-if="apiDataStore.houses.error || apiDataStore.profile.error" class="error">{{ apiDataStore.houses.error ||
                 apiDataStore.profile.error }}</p>
