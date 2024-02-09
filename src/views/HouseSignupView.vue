@@ -33,11 +33,13 @@ import cryingIcon from '../assets/icons8-crying.png'
                 <h3>Pozostałe {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoje' : 'domki'
                 }}</h3>
             </div>
-            <div class="houses" v-if="apiDataStore.houses.ready && apiDataStore.profile.ready">
-                <RouterLink :to="{ name: 'zapisy-na-domki-detail', params: { id: house.id } }" :key="house.id"
-                    v-for="house in apiDataStore.houses.housesWithoutId(apiDataStore.profile.data[0].house ? apiDataStore.profile.data[0].house.id : null)">
-                    <HouseCard :key="house.id" :house="house" />
-                </RouterLink>
+            <div v-if="apiDataStore.houses.ready && apiDataStore.profile.ready">
+                <TransitionGroup name="list" tag="div" class="houses" @before-leave="beforeLeave">
+                    <RouterLink :to="{ name: 'zapisy-na-domki-detail', params: { id: house.id } }" :key="house.id"
+                        v-for="house in apiDataStore.houses.housesWithoutId(apiDataStore.profile.data[0].house ? apiDataStore.profile.data[0].house.id : null)">
+                        <HouseCard :key="house.id" :house="house" />
+                    </RouterLink>
+                </TransitionGroup>
                 <p
                     v-if="!apiDataStore.houses.housesWithoutId(apiDataStore.profile.data[0].house ? apiDataStore.profile.data[0].house.id : null).length">
                     Brak wolnych {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoi' : 'domków'
@@ -92,10 +94,24 @@ export default {
             this.apiDataStore.houseSignups.disconnect()
         }
     },
+    methods: {
+        beforeLeave(el) {
+            const { marginLeft, marginTop, width, height } = window.getComputedStyle(el)
+
+            el.style.left = `${el.offsetLeft - parseFloat(marginLeft, 10)}px`
+            el.style.top = `${el.offsetTop - parseFloat(marginTop, 10)}px`
+            el.style.width = width
+            el.style.height = height
+        }
+    }
 }
 </script>
 
 <style scoped>
+main {
+    padding-bottom: 120px;
+}
+
 .houses {
     display: flex;
     flex-direction: row;
@@ -156,5 +172,25 @@ button {
 
     margin: 0 auto;
     margin-top: 20px;
+}
+
+
+.list-move,
+/* apply transition to moving elements */
+.list-enter-active,
+.list-leave-active {
+    transition: all .8s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.list-leave-active {
+    position: absolute;
 }
 </style>

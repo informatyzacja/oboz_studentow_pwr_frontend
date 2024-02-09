@@ -36,6 +36,10 @@ defineProps({
 
         <img v-if="!noArrow" :src="rightArrow" class="link_arrow" />
 
+        <div v-if="house.description" class="description">
+            <p>{{ house.description }}</p>
+        </div>
+
         <div class="progress-info-container">
             <p class="progress-info" v-if="!isFreeForSignup && !youAreSigningUp">Ktoś właśnie się zapisuje</p>
             <p class="progress-info" v-else-if="!isFreeForSignup && youAreSigningUp">Właśnie się zapisujesz</p>
@@ -217,5 +221,13 @@ export default {
     right: 10px;
     position: absolute;
     top: 0;
+}
+
+.description {
+    font-size: .8rem;
+    font-weight: 300;
+    text-align: center;
+    padding: 0 8px;
+    margin-top: 4px;
 }
 </style>

@@ -12,7 +12,7 @@ import questionMark from '../assets/question-mark.jpg'
 
 <template>
   <main>
-    <TopBar title="Harmonogram" backLink="/" />
+    <TopBar title="Harmonogram" />
     <div class="padding-main" v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length">
 
       <div v-if="harmonogramImage" class="downloadButtonDiv">

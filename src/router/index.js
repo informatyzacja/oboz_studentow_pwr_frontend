@@ -36,7 +36,7 @@ const router = createRouter({
       path: '/warsztaty',
       name: 'warsztaty',
       component: () => import('../views/WorkshopsView.vue'),
-      meta: { type: 'main' },
+      // meta: { type: 'main' },
     },
     {
       path: '/warsztaty/:day',
@@ -54,6 +54,7 @@ const router = createRouter({
       path: '/harmonogram',
       name: 'schedule',
       component: () => import('../views/ScheduleView.vue'),
+      meta: { type: 'main' },
     },
     {
       path: '/harmonogram/:day',
