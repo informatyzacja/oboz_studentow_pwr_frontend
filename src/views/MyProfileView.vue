@@ -20,6 +20,9 @@ import { REULAMIN_LINK as REGULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../c
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
+
+import { getCookie } from '../stores/functions.js'
+
 </script>
 
 <template>
@@ -74,9 +77,11 @@ import { mapStores } from 'pinia'
 
         <div class="spacer"></div>
         <ItemBox big-text="Odśwież aplikację" :leftIcon="refreshIcon" small @click="refreshApp" />
-        <a href="/logout/">
-          <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small />
-        </a>
+        <form action="/logout/" method="post" ref="logoutForm">
+          <input type="hidden" name="csrfmiddlewaretoken" :value="getCookie('csrftoken')" />
+          <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small
+            @click="$refs.logoutForm.submit()" />
+        </form>
         <p class="version" v-if="version">v{{ version }}</p>
       </div>
     </template>
