@@ -26,7 +26,7 @@ import cryingIcon from '../assets/icons8-crying.png'
             style="text-align: center;">Nie znaleziono domku/pokoju</p>
 
         <OverlayView ref="leaveHouseOverlay">
-            <div class="padding leave-house-overlay">
+            <div class="padding leave-house-overlay" v-if="house.signout_open">
 
                 <p>Czy napewno chcesz się wypisać z tego pokoju? Jeżeli się wypiszesz ktoś inny będzie mógł
                     zająć Twoje
@@ -37,6 +37,15 @@ import cryingIcon from '../assets/icons8-crying.png'
                         się</button>
 
                     <button class="button" @click="$refs.leaveHouseOverlay.hide">Anuluj</button>
+                </div>
+            </div>
+
+            <div class="padding leave-house-overlay" v-else>
+
+                <p>Wypisywanie się z tego pokoju jest zablokowane.</p>
+
+                <div>
+                    <button class="button" @click="$refs.leaveHouseOverlay.hide">OK</button>
                 </div>
             </div>
         </OverlayView>
@@ -61,8 +70,8 @@ import cryingIcon from '../assets/icons8-crying.png'
                     </div>
                     <!-- <input class="bandInput" placeholder="ID" :value="apiDataStore.profile.data[0].bandId" disabled /> -->
 
-                    <button class="button error" @click="$refs.leaveHouseOverlay.show"
-                        v-if="youAreSignedUpForThisHouse">Wypisz
+                    <button class="button error" @click="$refs.leaveHouseOverlay.show" v-if="youAreSignedUpForThisHouse"
+                        :class="{ 'disabled': !house.signout_open }">Wypisz
                         się</button>
                     <button class="button success" @click="signupSelf"
                         v-else-if="!apiDataStore.profile.data[0].house">Zapisz
@@ -553,5 +562,12 @@ button {
 
     margin: 0 auto;
     /* margin-top: 20px; */
+}
+
+button:disabled,
+button.disabled {
+    background-color: var(--bg-lighter);
+    color: var(--text-gray);
+    cursor: not-allowed;
 }
 </style>

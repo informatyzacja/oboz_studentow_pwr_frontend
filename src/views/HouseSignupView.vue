@@ -19,7 +19,8 @@ import cryingIcon from '../assets/icons8-crying.png'
 
         <div
             v-if="apiDataStore.houses.ready && apiDataStore.profile.ready && apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.house_signups_active">
-            <div v-if="apiDataStore.profile.data[0].house" class="padding">
+            <div v-if="apiDataStore.profile.data[0].house && apiDataStore.houses.houseWithId(apiDataStore.profile.data[0].house.id)"
+                class="padding">
 
                 <h3>Twój pokój</h3>
                 <div class="my-house">

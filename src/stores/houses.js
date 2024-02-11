@@ -15,7 +15,7 @@ export const useHousesStore = defineStore('houses', {
                 }
                 return this.data.find((item) => {
                     return item.id == id
-                })
+                }) || null
             }
         },
         housesWithoutId() {
@@ -34,7 +34,7 @@ export const useHousesStore = defineStore('houses', {
                     return []
                 }
                 return this.data.filter((item) => {
-                    return item.locators < item.places
+                    return item.locators < item.places && item.signup_open
                 })
             }
         }
