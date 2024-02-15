@@ -13,6 +13,7 @@ import { API_URL, AUTH_HEADER } from '../config.js'
 import { getCookie } from '../stores/functions.js'
 
 import questionMark from '../assets/question-mark.jpg'
+import phoneIcon from '../assets/phone_icon.svg'
 </script>
 
 <template>
@@ -77,8 +78,11 @@ import questionMark from '../assets/question-mark.jpg'
         </div>
 
         <h3 v-if="data.workshopleaders && data.workshopleaders.length">Prowadzący</h3>
-        <ItemBox v-for="( data, index ) in  data.workshopleaders " :key="index"
-          :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo" />
+
+        <a v-for="( data, index ) in  data.workshopleaders " :key="index" :href="'tel:' + data.phoneNumber">
+          <ItemBox :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo"
+            :rightIcon="data.phoneNumber ? phoneIcon : null" />
+        </a>
 
 
         <h3 v-if="data.workshopusers && data.workshopusers.length">Zapisani</h3>
