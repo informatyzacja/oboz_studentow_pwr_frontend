@@ -30,7 +30,7 @@ import phoneIcon from '../assets/phone_icon.svg'
         <div class="overlay"></div>
         <div class="description">
           <div>
-            <h2>
+            <h2 v-if="data.location">
               <IconLocation class="icon" /> {{ data.location }}
             </h2>
             <h1>{{ data.name }}</h1>
@@ -70,7 +70,7 @@ import phoneIcon from '../assets/phone_icon.svg'
 
       <div class="padding">
 
-        <TextBox :content="data.description" />
+        <TextBox v-if="data.description" :content="data.description" />
 
         <div v-if="data && data.itemsToTake">
           <h3>Co zabrać ze sobą?</h3>

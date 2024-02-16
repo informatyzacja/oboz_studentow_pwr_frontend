@@ -113,6 +113,12 @@ defineProps({
   padding: 15px;
   width: 100%;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  /* gap: 3px; */
+  align-items: flex-start;
+  justify-content: center;
+  height: 26%;
 }
 
 
