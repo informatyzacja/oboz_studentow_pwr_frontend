@@ -115,7 +115,9 @@ import ItemBox from '../components/ItemBox.vue'
 
     <InstallAppView />
 
-    <div v-if="showPushNotificationCard" style="margin-bottom: 5px;">
+    <div
+      v-if="showPushNotificationCard && (!isIos || (apiDataStore.profile.ready && !apiDataStore.profile.data[0].push_notifications_registered))"
+      style="margin-bottom: 5px;">
       <PushNotficationsPopupView @hide="showPushNotificationCard = false" />
     </div>
 
