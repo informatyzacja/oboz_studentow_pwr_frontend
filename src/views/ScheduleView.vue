@@ -44,7 +44,7 @@ import questionMark from '../assets/question-mark.jpg'
         apiDataStore.schedule.allDates[currentDay]
       )" :key="index" @click="addAnmateClass($event)">
         <HomeCard :name="data.name" :location="data.location"
-          :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
+          :time="moment(data.start).format('H:mm') + (data.end !== data.start ? (' - ' + moment(data.end).format('H:mm')) : '')"
           :imgSrc="data.photo || questionMark" big wide />
       </RouterLink>
     </div>
@@ -160,8 +160,14 @@ export default {
       timer: null
     }
   },
+  watch: {
+    currentDay(newVal) {
+      console.log(newVal)
+      this.$router.push({ name: 'scheduleDay', params: { day: newVal } })
+    }
+  },
   created() {
-    this.currentDay = parseInt(this.$route.params.day) || (this.apiDataStore.schedule.ready ? this.apiDataStore.schedule.allDates.findIndex((element) => element === moment().format('YYYY-MM-DD')) : 0)
+    this.currentDay = parseInt(this.$route.params.day) || (this.apiDataStore.schedule.ready && this.apiDataStore.schedule.allDates.findIndex((element) => element === moment().format('YYYY-MM-DD')) !== -1 ? this.apiDataStore.schedule.allDates.findIndex((element) => element === moment().format('YYYY-MM-DD')) : 0)
     this.$watch(
       () => this.$route.params.day,
       (newVal) => {

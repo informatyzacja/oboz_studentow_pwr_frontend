@@ -13,29 +13,30 @@ import questionMark from '../assets/question-mark.jpg'
 
 <template>
   <main>
-  <TopBar :backLink="$router.options.history.state.back || '/home'" absolute />
-    <div
-      v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length"
-      :set="(data = apiDataStore.schedule.withId(parseInt($route.params.id)))"
-    >
+    <TopBar :backLink="$router.options.history.state.back || '/home'" absolute />
+    <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length"
+      :set="(data = apiDataStore.schedule.withId(parseInt($route.params.id)))">
       <div class="card">
         <img class="bg" :src="data.photo || questionMark" />
         <div class="time">
           <p>{{ moment(data.start).format('dd. DD.MM') }}</p>
-          <p>{{ moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm') }}</p>
+          <p>{{ moment(data.start).format('H:mm') + (data.end !== data.start ? (' - ' + moment(data.end).format('H:mm')) :
+            '') }}</p>
         </div>
         <div class="overlay"></div>
         <div class="description">
           <div>
-            <h2 v-if="data.location"><IconLocation class="icon" /> {{ data.location }}</h2>
+            <h2 v-if="data.location">
+              <IconLocation class="icon" /> {{ data.location }}
+            </h2>
             <h1>{{ data.name }}</h1>
           </div>
-          
+
         </div>
       </div>
 
       <div class="padding">
-       
+
         <TextBox v-if="data.description" :content="data.description" />
 
       </div>
@@ -54,10 +55,10 @@ import questionMark from '../assets/question-mark.jpg'
 </template>
 
 <style scoped>
-
 main {
   padding-bottom: 100px;
 }
+
 .button {
   border-radius: 10px;
   border: none;
@@ -179,7 +180,6 @@ main {
   object-fit: cover;
   border-radius: 20px;
 }
-
 </style>
 
 <script>
@@ -198,7 +198,7 @@ export default {
   mounted() {
     this.apiDataStore.schedule.fetchData()
     this.apiDataStore.images.fetchData()
-    this.timer = setInterval(this.apiDataStore.schedule.fetchData, 60 * 1000) 
+    this.timer = setInterval(this.apiDataStore.schedule.fetchData, 60 * 1000)
 
     window.scrollTo(0, 0)
   },
