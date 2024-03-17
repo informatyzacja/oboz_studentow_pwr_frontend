@@ -15,6 +15,7 @@
   --bg-light-translusent: rgba(150, 154, 185, 0.222);
   --bg-light-translusent-hover: rgba(39, 46, 90, 0.177);
 
+  /* THEME COLORS */
   --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #84c6e7 0%, #3f6cc0 100%);
   --radial-gradient-circle: radial-gradient(circle, #84c6e7 0%, #3f6cc0 80%);
   --theme-dark: #3f6cc0;

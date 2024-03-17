@@ -148,6 +148,7 @@ export default {
 
         //outline
         const gradient = ctx.createLinearGradient(0, 0, 200, 0)
+        /* THEME COLORS */
         gradient.addColorStop('0', '#84c6e7')
         gradient.addColorStop('1.0', '#dea766')
 
