@@ -4,21 +4,23 @@ import NavigationBar from './components/navigation/NavigationBar.vue'
 
 import moment from 'moment'
 import 'moment/dist/locale/pl'
+// import { IonApp, IonRouterOutlet } from '@ionic/vue';
 moment.locale('pl')
+
 </script>
 
 <template>
-  <div>
+  <ion-app>
     <div class="wrapper">
-      <router-view v-slot="{ Component }">
+      <RouterView v-slot="{ Component }">
         <transition :name="$route.meta.transition || 'fade'"
           :mode="$route.meta.transition === 'fade' ? 'out-in' : 'default'" @leave="onLeave($event, $done, $route)">
           <component :is="Component" :key="$route.path" class="component" />
         </transition>
-      </router-view>
+      </RouterView>
     </div>
     <NavigationBar ref="navigationBar" />
-  </div>
+  </ion-app>
 </template>
 
 <script>
@@ -142,7 +144,7 @@ export default {
 /* fade */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity .3s ease;
+  transition: opacity .15s ease;
 }
 
 .fade-enter-from,
@@ -167,5 +169,23 @@ export default {
 
 main {
   min-height: 100vh;
+  padding-top: max(var(--ion-safe-area-top), var(--ion-padding, 16px)) !important;
+}
+
+.page {
+  max-width: 550px;
+  margin: 0 auto;
+  /* border-right: 1px solid #eee;
+  border-left: 1px solid #eee; */
+  overflow: hidden;
+}
+
+html {
+  font-size: 16px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 </style>

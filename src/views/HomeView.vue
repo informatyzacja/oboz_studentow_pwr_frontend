@@ -26,10 +26,14 @@ import zobaczFrakcje from '../assets/zobacz frakcje.png'
 import zobaczPelnyHarmonogram from '../assets/zobacz-pelny-harmonogram.png'
 import graNocna from '../assets/gra nocna.png'
 import ItemBox from '../components/ItemBox.vue'
+
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
-  <main>
+  <ion-page>
+    <ion-content :fullscreen="true">
+      <main>
     <TopBar title="Home" />
 
     <!-- Night Game Signup -->
@@ -216,6 +220,8 @@ import ItemBox from '../components/ItemBox.vue'
     <LoadingIndicator v-if="apiDataStore.schedule.loading" />
     <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
   </main>
+      </ion-content>
+  </ion-page>
 </template>
 
 <script>

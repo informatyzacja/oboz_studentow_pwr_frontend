@@ -1,8 +1,8 @@
-export const API_URL = process.env.VUE_APP_API_URL || '/api/'
-const WS_API_PROTOCOL = process.env.VUE_APP_WS_API_PROTOCOL || 'wss'
-export const WS_API_URL = process.env.VUE_APP_WS_API_URL || WS_API_PROTOCOL + '://' + window.location.host + '/'
+export const API_URL = import.meta.env.VITE_API_URL || '/api/'
+const WS_API_PROTOCOL = import.meta.env.VITE_WS_API_PROTOCOL || 'wss'
+export const WS_API_URL = import.meta.env.VITE_WS_API_URL || WS_API_PROTOCOL + '://' + window.location.host + '/'
 // '{ "Authorization": "Token 67bdbcffd9c883b098da608f57db393c868ef178" }'
-export const AUTH_TOKEN = process.env.VUE_APP_AUTH_TOKEN
+export const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN
 export const AUTH_HEADER = AUTH_TOKEN ? { "Authorization": "Token " + AUTH_TOKEN } : {}
 
 export const REULAMIN_LINK = 'https://drive.google.com/file/d/1Ptkf7S7XUzlGGz_j3ye1XXhOYSyecanK/view?pli=1'

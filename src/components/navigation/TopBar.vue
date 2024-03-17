@@ -31,7 +31,7 @@ defineProps({
 
 <style scoped>
 .header {
-  padding: 20px 20px 5px;
+  padding: 0 20px 5px;
   display: flex;
   align-items: center;
   justify-content: space-between;

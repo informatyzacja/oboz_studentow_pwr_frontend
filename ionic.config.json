@@ -1,7 +1,7 @@
 {
-  "name": "oboz-studentow-pwr",
+  "name": "Obóz PWr",
   "integrations": {
     "capacitor": {}
   },
-  "type": "vue"
+  "type": "vue-vite"
 }
