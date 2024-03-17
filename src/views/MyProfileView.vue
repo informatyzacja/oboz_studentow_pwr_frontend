@@ -82,7 +82,7 @@ import { getCookie } from '../stores/functions.js'
           <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small
             @click="$refs.logoutForm.submit()" />
         </form>
-        <p class="version" v-if="version">v{{ version }}</p>
+        <!-- <p class="version" v-if="version">v{{ version }}</p> -->
       </div>
     </template>
   </GenericProfileView>
@@ -97,7 +97,7 @@ export default {
       timer3: null,
 
       // eslint-disable-next-line no-undef
-      version: VERSION_NUMBER
+      // version: VERSION_NUMBER || null,
     }
   },
   computed: {

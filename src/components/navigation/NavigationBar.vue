@@ -183,6 +183,7 @@ export default {
 .navigation-bar__logo img {
   width: 120%;
   height: 120%;
+  max-width: none;
 }
 
 .navigation_bar__item {
@@ -191,7 +192,7 @@ export default {
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 12px;
+  font-size: 9px;
   text-align: center;
 
   display: flex;

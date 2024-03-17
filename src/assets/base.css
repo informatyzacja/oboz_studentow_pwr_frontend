@@ -34,10 +34,10 @@
   font-weight: normal;
 }
 
-@font-face {
+/* @font-face {
   font-family: 'Sui Generis';
   src: url('/vue-public/sui\ generis\ rg.ttf') format('truetype');
-}
+} */
 
 body {
   min-height: 100vh;

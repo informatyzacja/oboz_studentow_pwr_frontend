@@ -1,0 +1,7 @@
+{
+  "name": "oboz-studentow-pwr",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
