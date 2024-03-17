@@ -231,7 +231,7 @@ export default {
   font-size: 17px;
   line-height: 16px;
   cursor: pointer;
-  font-family: 'Sui Generis';
+  
 
   display: flex;
   justify-content: center;

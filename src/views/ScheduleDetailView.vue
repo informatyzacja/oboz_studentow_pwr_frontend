@@ -67,7 +67,7 @@ main {
   font-size: 14px;
   line-height: 16px;
   cursor: pointer;
-  font-family: 'Sui Generis';
+  
   background-color: green;
 
   width: 130px;

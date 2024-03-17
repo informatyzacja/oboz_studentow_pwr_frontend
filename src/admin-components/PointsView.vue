@@ -253,7 +253,7 @@ select {
     border: 1px solid var(--text-gray);
     margin-bottom: 10px;
     font-size: 15px;
-    font-family: 'Sui Generis';
+    
     border: none;
     outline: none;
     color: white;
@@ -281,7 +281,7 @@ select {
     background: var(--bg-light);
     padding: 8px 15px;
     border-radius: 20px;
-    font-family: 'Sui Generis';
+    
     color: white;
     cursor: pointer;
 }
@@ -304,7 +304,7 @@ button {
     font-size: 14px;
     line-height: 16px;
     cursor: pointer;
-    font-family: 'Sui Generis';
+    
     background-color: var(--bg-light);
 
     width: 130px;

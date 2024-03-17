@@ -293,7 +293,7 @@ export default {
     border-radius: 20px;
     border: 1px solid var(--text-gray);
     font-size: 15px;
-    font-family: 'Sui Generis';
+    
     border: none;
     outline: none;
     color: white;

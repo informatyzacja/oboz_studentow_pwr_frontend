@@ -158,7 +158,7 @@ textarea {
   border: 1px solid var(--text-gray);
   margin-bottom: 2px;
   font-size: 15px;
-  font-family: 'Sui Generis';
+  
   border: none;
   outline: none;
   color: white;
@@ -183,7 +183,7 @@ select {
   font-size: 17px;
   line-height: 16px;
   cursor: pointer;
-  font-family: 'Sui Generis';
+  
 
   display: flex;
   justify-content: center;

@@ -201,7 +201,7 @@ export default {
   margin-bottom: 20px;
   text-align: center;
   font-size: 20px;
-  font-family: 'Sui Generis';
+  
   background-color: var(--bg-light);
   color: white;
   outline: none;
@@ -231,7 +231,7 @@ export default {
   font-size: 17px;
   line-height: 16px;
   cursor: pointer;
-  font-family: 'Sui Generis';
+  
 
   display: flex;
   justify-content: center;

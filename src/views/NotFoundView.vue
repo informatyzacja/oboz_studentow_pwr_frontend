@@ -24,7 +24,7 @@
 
 h1 {
   font-size: 40px;
-  font-family: 'Sui Generis';
+  
   margin-bottom: 20px;
   text-align: center;
   background: var(--radial-gradient);
@@ -40,7 +40,7 @@ h1 {
   font-size: 17px;
   line-height: 16px;
   cursor: pointer;
-  font-family: 'Sui Generis';
+  
 
   display: flex;
   justify-content: center;

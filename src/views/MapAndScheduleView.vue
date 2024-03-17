@@ -89,7 +89,7 @@ a.button {
   font-size: 14px;
   line-height: 16px;
   cursor: pointer;
-  font-family: 'Sui Generis';
+  
   background-color: var(--bg-light);
 
   width: auto;

@@ -177,7 +177,7 @@ input, select, textarea {
     border: 1px solid var(--text-gray);
     margin-bottom: 2px;
     font-size: 15px;
-    font-family: 'Sui Generis';
+    
     border: none;
     outline: none;
     color: white;
@@ -250,7 +250,7 @@ button {
     font-size: 14px;
     line-height: 16px;
     cursor: pointer;
-    font-family: 'Sui Generis';
+    
     background-color: var(--bg-light);
 
     width: 130px;
