@@ -8,9 +8,12 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import questionMark from '../assets/question-mark.jpg'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
+  <ion-page>
+    <ion-content :fullscreen="true">
   <main>
     <TopBar title="Lekcje narciarstwa" backLink="/" />
     <div class="padding-main" v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length">
@@ -49,6 +52,9 @@ import questionMark from '../assets/question-mark.jpg'
     <LoadingIndicator v-if="apiDataStore.workshops.loading" />
     <p v-if="apiDataStore.workshops.error" class="error">{{ apiDataStore.workshops.error }}</p>
   </main>
+
+    </ion-content>
+  </ion-page>
 </template>
 
 <style scoped>

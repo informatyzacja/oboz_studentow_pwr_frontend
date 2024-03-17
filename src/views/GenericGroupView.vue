@@ -10,6 +10,7 @@ import rightArrow from '../assets/arrow.svg'
 import messangerIcon from '../assets/icons8-facebook_messenger.png'
 import phoneIcon from '../assets/phone_icon.svg'
 import mapIcon from '../assets/icons8-map_marker.png'
+import { IonPage, IonContent } from '@ionic/vue';
 
 defineProps([
   'title',
@@ -28,6 +29,8 @@ defineProps([
 </script>
 
 <template>
+  <ion-page>
+    <ion-content :fullscreen="true">
   <main
     :style="{ background: group.background ? ('linear-gradient(#00000080, #00000000), url(' + group.background + '), var(--bg-gradient)') : '' }">
     <TopBar :title="title" :backLink="$router.options.history.state.back || backLink">
@@ -94,6 +97,8 @@ defineProps([
       <p v-if="error" class="error">{{ error }}</p>
     </div>
   </main>
+  </ion-content>
+  </ion-page>
 </template>
 
 <style scoped>

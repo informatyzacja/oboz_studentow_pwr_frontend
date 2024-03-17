@@ -19,6 +19,7 @@ import chatIcon from '../assets/icons8-chat.png'
 import qrBg from '../assets/pod QRsvg- profil.svg'
 import backArrow from '../assets/strzala- do qr.svg'
 import hand from '../assets/hands.svg'
+import { IonPage, IonContent } from '@ionic/vue';
 
 defineProps([
   'profileData',
@@ -37,6 +38,8 @@ defineProps([
 </script>
 
 <template>
+  <ion-page>
+    <ion-content :fullscreen="true">
   <main>
     <slot name="topBar"></slot>
     <div class="padding-main">
@@ -212,6 +215,8 @@ defineProps([
       </div>
     </div>
   </main>
+</ion-content>
+</ion-page>
 </template>
 
 <style scoped>

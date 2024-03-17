@@ -4,9 +4,12 @@ import LoadingIndicator from '../components/LoadingIndicator.vue'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
+  <ion-page>
+    <ion-content :fullscreen="true">
   <main>
     <div v-if="data">
       <TopBar :title="data.name" />
@@ -23,6 +26,9 @@ import { mapStores } from 'pinia'
       Brak danych
     </p>
   </main>
+
+    </ion-content>
+  </ion-page>
 </template>
 
 <script>

@@ -7,9 +7,12 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import rightArrow from '../assets/arrow.svg'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
+  <ion-page>
+    <ion-content :fullscreen="true">
   <main>
   <TopBar
     title="FAQ"
@@ -34,6 +37,9 @@ import rightArrow from '../assets/arrow.svg'
   <LoadingIndicator v-if="apiDataStore.faq.loading" />
   <p v-if="apiDataStore.faq.error" class="error">{{ apiDataStore.faq.error }}</p>
   </main>
+
+    </ion-content>
+  </ion-page>
 </template>
 
 <script>

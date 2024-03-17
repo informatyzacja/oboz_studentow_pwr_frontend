@@ -15,9 +15,12 @@ import { getCookie } from '../stores/functions.js'
 import OverlayView from '../components/OverlayView.vue'
 import cryingIcon from '../assets/icons8-crying.png'
 
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
+  <ion-page>
+    <ion-content :fullscreen="true">
     <main>
         <TopBar :title="'Pokój' + (house ? ' nr ' + house.name : '')"
             :backLink="$router.options.history.state.back || '/zapisy'" />
@@ -114,6 +117,8 @@ import cryingIcon from '../assets/icons8-crying.png'
         <LoadingIndicator v-if="apiDataStore.houses.loading || apiDataStore.profile.loading" />
         <p v-if="error" class="error">{{ error }}</p>
     </main>
+    </ion-content>
+    </ion-page>
 </template>
 
 <script>

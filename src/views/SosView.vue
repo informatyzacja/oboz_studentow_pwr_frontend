@@ -8,9 +8,12 @@ import { mapStores } from 'pinia'
 
 import rightArrow from '../assets/arrow.svg'
 import phoneIcon from '../assets/phone_icon.svg'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
+  <ion-page>
+    <ion-content :fullscreen="true">
   <main>
   <TopBar title="SOS" />
   <div class="sos">
@@ -105,6 +108,9 @@ import phoneIcon from '../assets/phone_icon.svg'
     </RouterLink>
   </div>
 </main>
+
+    </ion-content>
+  </ion-page>
 </template>
 
 <style scoped>

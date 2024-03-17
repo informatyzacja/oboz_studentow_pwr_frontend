@@ -14,9 +14,12 @@ import { getCookie } from '../stores/functions.js'
 
 import questionMark from '../assets/question-mark.jpg'
 import phoneIcon from '../assets/phone_icon.svg'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
+  <ion-page>
+    <ion-content :fullscreen="true">
   <main>
     <TopBar :backLink="$router.options.history.state.back || { name: 'warsztaty' }" absolute />
     <div v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length"
@@ -95,6 +98,8 @@ import phoneIcon from '../assets/phone_icon.svg'
     <p v-if="apiDataStore.workshops.error" class="error">{{ apiDataStore.workshops.error }}</p>
     <p v-if="error" class="error">{{ error }}</p>
   </main>
+  </ion-content>
+  </ion-page>
 </template>
 
 <style scoped>

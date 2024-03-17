@@ -9,9 +9,12 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import questionMark from '../assets/question-mark.jpg'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
+  <ion-page>
+    <ion-content :fullscreen="true">
   <main>
     <TopBar :backLink="$router.options.history.state.back || '/home'" absolute />
     <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length"
@@ -52,6 +55,9 @@ import questionMark from '../assets/question-mark.jpg'
     <LoadingIndicator v-if="apiDataStore.schedule.loading" />
     <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
   </main>
+
+    </ion-content>
+  </ion-page>
 </template>
 
 <style scoped>

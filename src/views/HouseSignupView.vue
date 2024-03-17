@@ -8,10 +8,13 @@ import { mapStores } from 'pinia'
 import HouseCard from '../components/HouseCard.vue'
 import cryingIcon from '../assets/icons8-crying.png'
 
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 
 <template>
+  <ion-page>
+    <ion-content :fullscreen="true">
     <main>
         <TopBar :title="'Zapisy' + (
             apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.room_instead_of_house ? ' na pokoje' : ' na domki'
@@ -65,6 +68,8 @@ import cryingIcon from '../assets/icons8-crying.png'
 
         <LoadingIndicator v-else />
     </main>
+    </ion-content>
+    </ion-page>
 </template>
 
 <script>

@@ -11,10 +11,14 @@ import { WS_API_URL, AUTH_TOKEN } from '../config'
 import sendIcon from '../assets/icons8-paper_plane.png'
 
 import groupIcon from '../assets/grupa.svg'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 
 <template>
+    
+  <ion-page>
+    <ion-content :fullscreen="true">
     <div>
         <div class="statusBar"></div>
         <TopBar
@@ -70,6 +74,8 @@ import groupIcon from '../assets/grupa.svg'
             <LoadingIndicator v-else />
         </main>
     </div>
+    </ion-content>
+    </ion-page>
 </template>
 
 

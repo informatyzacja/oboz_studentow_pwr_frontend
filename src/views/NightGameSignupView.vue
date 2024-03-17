@@ -14,9 +14,13 @@ import okIcon from '../assets/icons8-ok.png'
 import cryingIcon from '../assets/icons8-crying.png'
 
 import moment from 'moment'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
+
+  <ion-page>
+    <ion-content :fullscreen="true">
     <main>
         <TopBar title="Zapisy na grę nocną" :backLink="$router.options.history.state.back || '/'" />
 
@@ -135,6 +139,8 @@ import moment from 'moment'
 
         <LoadingIndicator v-if="apiDataStore.nightGameGroupInfo.loading" />
     </main>
+    </ion-content>
+    </ion-page>
 </template>
 
 <script>

@@ -7,9 +7,13 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import phoneIcon from '../assets/phone_icon.svg'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
+
+  <ion-page>
+    <ion-content :fullscreen="true">
   <main>
     <TopBar :title="apiDataStore.profile.ready ? ('Pokój nr ' + apiDataStore.profile.data[0].house.name) : 'Mój pokój'"
       backLink="/czat-domku" />
@@ -44,6 +48,9 @@ import phoneIcon from '../assets/phone_icon.svg'
 
     </div>
   </main>
+
+  <ion-page>
+    <ion-content :fullscreen="true">
 </template>
 
 <style scoped>
