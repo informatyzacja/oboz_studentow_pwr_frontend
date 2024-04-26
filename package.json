@@ -12,12 +12,15 @@
   "dependencies": {
     "@capacitor/android": "^6.0.0",
     "@capacitor/app": "^6.0.0",
+    "@capacitor/camera": "^6.0.0",
     "@capacitor/core": "^6.0.0",
     "@capacitor/haptics": "^6.0.0",
     "@capacitor/ios": "6.0.0",
     "@capacitor/keyboard": "^6.0.0",
     "@capacitor/preferences": "^6.0.0",
+    "@capacitor/share": "^6.0.0",
     "@capacitor/status-bar": "^6.0.0",
+    "@ionic/pwa-elements": "^3.2.2",
     "@ionic/vue": "^7.8.0",
     "@ionic/vue-router": "^7.8.0",
     "firebase": "^10.0.0",
@@ -25,7 +28,7 @@
     "pinia": "^2.0.36",
     "vue": "^3.3.2",
     "vue-qr": "^4.0.9",
-    "vue-qrcode-reader": "3.1.7",
+    "vue-qrcode-reader": "^5.5.4",
     "vue-router": "^4.2.0"
   },
   "devDependencies": {

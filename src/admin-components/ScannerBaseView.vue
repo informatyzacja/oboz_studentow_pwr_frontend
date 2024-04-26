@@ -1,6 +1,6 @@
 <script setup>
 import LoadingIndicator from '../components/LoadingIndicator.vue'
-import QrcodeStream from 'vue-qrcode-reader/src/components/QrcodeStream.vue'
+import { QrcodeStream } from 'vue-qrcode-reader'
 
 defineProps(['hideScanner', 'codeText', 'codeFrameColor'])
 defineEmits(['error', 'result']);
@@ -20,8 +20,8 @@ defineEmits(['error', 'result']);
   <div class="scanner">
     <p class="error">{{ qrReaderError }}</p>
     <div class="scanner-inside" :class="{ hidden: qrScannerLoading || hideScanner }">
-      <QrcodeStream ref="qrcodestream" @decode="onDecode" @init="onInit" :track="track" :camera="camera" :torch="torch"
-        :constrains="{ focusMode, focusDistance }" v-if="!disable" />
+      <QrcodeStream ref="qrcodestream" @detect="onDecode" @camera-on="onInit" :track="track" :camera="camera"
+        :torch="torch" :constrains="{ focusMode, focusDistance }" v-if="!disable" />
     </div>
     <LoadingIndicator v-if="qrScannerLoading" inline />
   </div>
@@ -49,8 +49,8 @@ export default {
     }
   },
   beforeUnmount() {
-    this.$refs.qrcodestream.beforeResetCamera()
-    this.$refs.qrcodestream.destroyed = true
+    // this.$refs.qrcodestream.beforeResetCamera()
+    // this.$refs.qrcodestream.destroyed = true
   },
   methods: {
     isNumeric(str) {
@@ -62,9 +62,8 @@ export default {
     },
     onDecode(result) {
       if (result === '') return
-      if (this.currentMealLoadng) return
-      this.originalResult = result
-      this.result = result.substring(result.lastIndexOf('/') + 1)
+      this.originalResult = result[0].rawValue
+      this.result = this.originalResult.substring(result.lastIndexOf('/') + 1)
       if (this.result.length > 6 || !this.isNumeric(this.result)) {
         this.result = ''
         this.error = 'Błędny kod'
@@ -78,7 +77,6 @@ export default {
       return bandId.padStart(6, '0')
     },
     search() {
-      if (this.currentMealLoadng) return
       this.result = this.fillWithZeros(this.searchQuery)
       this.userRead(this.result)
       this.searchQuery = ''
@@ -88,11 +86,10 @@ export default {
       this.$emit('result', user_id)
     },
 
-    async onInit(promise) {
+    async onInit(capabilities) {
       try {
         this.qrReaderError = null;
 
-        var capabilities = (await promise).capabilities;
         this.torchSupported = !!capabilities.torch
         console.log("Camera capabilities:", capabilities)
         console.log("Torch supported:", this.torchSupported)
@@ -202,7 +199,7 @@ export default {
   margin-bottom: 20px;
   text-align: center;
   font-size: 20px;
-  
+
   background-color: var(--bg-light);
   color: white;
   outline: none;
@@ -232,7 +229,7 @@ export default {
   font-size: 17px;
   line-height: 16px;
   cursor: pointer;
-  
+
 
   display: flex;
   justify-content: center;
