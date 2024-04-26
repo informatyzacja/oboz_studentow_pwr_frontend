@@ -19,7 +19,7 @@ export function registerForPushNotifications() {
                 const body = { token: currentToken }
                 apiRequest('../api2/register-fcm-token/',
                     'POST',
-                    JSON.stringify(body)
+                    body
                 )
                     .then((data) => {
                         if (data.ok) {

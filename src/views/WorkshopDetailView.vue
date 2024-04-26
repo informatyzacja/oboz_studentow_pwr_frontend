@@ -105,6 +105,7 @@ import { IonPage, IonContent } from '@ionic/vue';
 <style scoped>
 main {
   padding-bottom: 100px;
+  padding-top: 0 !important;
 }
 
 .button {
@@ -123,7 +124,7 @@ main {
   display: flex;
   justify-content: center;
 
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 
 .button.button_signedup {
@@ -188,14 +189,14 @@ main {
 
 .description h1 {
   font-size: 22px;
-  line-height: 22px;
+  line-height: 22px !important;
   padding: 5px 0 0;
   white-space: normal;
 }
 
 .description h2 {
   font-size: 17px;
-  line-height: 15px;
+  line-height: 15px !important;
   color: var(--text-gray);
   display: flex;
   align-items: center;
@@ -204,7 +205,7 @@ main {
 
 .description h3 {
   font-size: 15px;
-  line-height: 15px;
+  line-height: 15px !important;
   padding: 5px 0 0;
   color: var(--text-gray);
 }
@@ -216,9 +217,10 @@ main {
 
 .signupsOpenTime {
   font-size: 12px;
-  line-height: 12px;
+  line-height: 12px !important;
   color: var(--text-gray);
   margin-top: 5px;
+  text-align: center;
 }
 </style>
 
@@ -243,13 +245,13 @@ export default {
   methods: {
     signUp(workshopId) {
       this.apiDataStore.workshops.addLoader(workshopId)
-      this.workshopApiCall('POST', 'workshopSignUps/', JSON.stringify({ workshop: workshopId }))
+      this.workshopApiCall('workshopSignUps/', 'POST', { workshop: workshopId })
     },
     signOut(userSignUpId) {
       this.apiDataStore.workshops.addLoaderSignup(userSignUpId)
-      this.workshopApiCall('DELETE', 'workshopSignUps/' + userSignUpId + '/', null)
+      this.workshopApiCall('workshopSignUps/' + userSignUpId + '/', 'DELETE', null)
     },
-    workshopApiCall(method, URL, body = {}) {
+    workshopApiCall(URL, method, body = {}) {
       this.loading = true
       apiRequest(URL, method, body)
         .then((data) => {

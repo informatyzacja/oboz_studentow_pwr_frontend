@@ -172,7 +172,7 @@ export default {
                     type: this.selectedPointType
                 }
                 apiRequest('../staff-api/add-points/', 'POST',
-                    JSON.stringify(data)
+                    data
                 )
                     .then((data) => {
                         if (data.status === 403) {

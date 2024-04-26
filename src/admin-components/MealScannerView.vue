@@ -124,7 +124,7 @@ export default {
       const body = { user_id: this.result, meal_id: this.currentMeal.id }
       apiRequest('../staff-api/meal-validation/validate/',
         'PUT',
-        JSON.stringify(body)
+        body
       )
         .then((data) => {
           if (data.ok) {

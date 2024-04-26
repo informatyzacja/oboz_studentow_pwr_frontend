@@ -8,59 +8,59 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import questionMark from '../assets/question-mark.jpg'
-import { IonPage, IonContent } from '@ionic/vue';
+import { IonPage, IonContent, IonNavLink } from '@ionic/vue';
 </script>
 
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-  <main>
-    <TopBar title="Harmonogram" />
-    <div class="padding-main" v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length">
+      <main>
+        <TopBar title="Harmonogram" />
+        <div class="padding-main" v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length">
 
-      <div v-if="harmonogramImage" class="downloadButtonDiv">
-        <a class="button" :href="harmonogramImage.downloadLink"
-          :download="harmonogramImage.name + '_Obóz_Zimowy_PWr_2024'" target="_blank" rel="nofollow">Pobierz harmonogram w
-          formie grafiki</a>
-      </div>
-
-      <div class="day-changer">
-        <RouterLink v-if="currentDay > 0" :to="'/harmonogram/' + (currentDay - 1)">
-          <div class="arrow-circle arrow-circle-left">
-            <div class="arrow arrow-left"></div>
+          <div v-if="harmonogramImage" class="downloadButtonDiv">
+            <a class="button" :href="harmonogramImage.downloadLink"
+              :download="harmonogramImage.name + '_Obóz_Zimowy_PWr_2024'" target="_blank" rel="nofollow">Pobierz
+              harmonogram w
+              formie grafiki</a>
           </div>
-        </RouterLink>
 
-        <h5>
-          {{ moment(apiDataStore.schedule.allDates[currentDay]).format('dddd, Do MMMM') }}
-        </h5>
+          <div class="day-changer">
+            <div v-if="currentDay > 0" @click="currentDay -= 1">
+              <div class="arrow-circle arrow-circle-left">
+                <div class="arrow arrow-left"></div>
+              </div>
+            </div>
 
-        <RouterLink v-if="currentDay < apiDataStore.schedule.allDates.length - 1"
-          :to="'/harmonogram/' + (currentDay + 1)">
-          <div class="arrow-circle arrow-circle-right">
-            <div class="arrow arrow-right"></div>
+            <h5>
+              {{ moment(apiDataStore.schedule.allDates[currentDay]).format('dddd, Do MMMM') }}
+            </h5>
+
+            <div v-if="currentDay < apiDataStore.schedule.allDates.length - 1" @click="currentDay += 1">
+              <div class="arrow-circle arrow-circle-right">
+                <div class="arrow arrow-right"></div>
+              </div>
+            </div>
           </div>
-        </RouterLink>
-      </div>
 
-      <RouterLink :to="'/harmonogram/info/' + data.id" v-for="(data, index) in apiDataStore.schedule.withDate(
-        apiDataStore.schedule.allDates[currentDay]
-      )" :key="index" @click="addAnmateClass($event)">
-        <HomeCard :name="data.name" :location="data.location"
-          :time="moment(data.start).format('H:mm') + (data.end !== data.start ? (' - ' + moment(data.end).format('H:mm')) : '')"
-          :imgSrc="data.photo || questionMark" big wide />
-      </RouterLink>
-    </div>
-    <p v-if="apiDataStore.schedule.ready && !apiDataStore.schedule.data.length" class="error">
-      Brak harmonogramu do wyświetlenia
-    </p>
+          <IonNavLink :router-link="'/harmonogram/info/' + data.id" v-for="(data, index) in apiDataStore.schedule.withDate(
+            apiDataStore.schedule.allDates[currentDay]
+          )" :key="index" @click="addAnmateClass($event)">
+            <HomeCard :name="data.name" :location="data.location"
+              :time="moment(data.start).format('H:mm') + (data.end !== data.start ? (' - ' + moment(data.end).format('H:mm')) : '')"
+              :imgSrc="data.photo || questionMark" big wide />
+          </IonNavLink>
+        </div>
+        <p v-if="apiDataStore.schedule.ready && !apiDataStore.schedule.data.length" class="error">
+          Brak harmonogramu do wyświetlenia
+        </p>
 
-    <LoadingIndicator v-if="apiDataStore.schedule.loading" />
-    <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
-  </main>
-  
-      </ion-content>
-    </ion-page>
+        <LoadingIndicator v-if="apiDataStore.schedule.loading" />
+        <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
+      </main>
+
+    </ion-content>
+  </ion-page>
 </template>
 
 <style scoped>
@@ -147,7 +147,7 @@ a.button {
   font-size: 14px;
   line-height: 16px;
   cursor: pointer;
-  
+
   background-color: var(--bg-light);
 
   width: auto;
@@ -166,20 +166,8 @@ export default {
       timer: null
     }
   },
-  watch: {
-    currentDay(newVal) {
-      console.log(newVal)
-      this.$router.push({ name: 'scheduleDay', params: { day: newVal } })
-    }
-  },
   created() {
     this.currentDay = parseInt(this.$route.params.day) || (this.apiDataStore.schedule.ready && this.apiDataStore.schedule.allDates.findIndex((element) => element === moment().format('YYYY-MM-DD')) !== -1 ? this.apiDataStore.schedule.allDates.findIndex((element) => element === moment().format('YYYY-MM-DD')) : 0)
-    this.$watch(
-      () => this.$route.params.day,
-      (newVal) => {
-        this.currentDay = parseInt(newVal) || 0
-      }
-    )
   },
   computed: {
     ...mapStores(useApiDataStore),

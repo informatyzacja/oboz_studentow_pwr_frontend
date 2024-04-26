@@ -217,7 +217,7 @@ export default {
                 group_name: this.groupName,
                 people: this.people,
             }
-            apiRequest('../api2/signup-group/', 'POST', JSON.stringify(body))
+            apiRequest('../api2/signup-group/', 'POST', body)
                 .then((data) => {
                     if (data.ok) {
                         return data.json()

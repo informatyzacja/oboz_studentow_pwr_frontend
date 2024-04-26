@@ -67,20 +67,17 @@ defineProps({
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
-  padding: 10px 15px;
+  padding: 10px;
+  padding-right: 15px;
   border-radius: 20px;
   margin-bottom: 10px;
 
   min-height: 60px;
 
-  backdrop-filter: blur(15px) !important;
-  -webkit-backdrop-filter: blur(15px) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
   cursor: pointer;
 }
-
-/* .item:hover {
-  background-color: var(--bg-light-translusent-hover) !important;
-} */
 
 .itemLeft {
   display: flex;
@@ -94,14 +91,14 @@ h5 {
   margin: 0;
   padding: 1px;
   font-size: 17px;
-  line-height: 19px;
+  line-height: 19px !important;
 }
 
 h6 {
   margin: 0;
   padding: 1px;
   font-size: 12px;
-  line-height: 13px;
+  line-height: 13px !important;
   color: var(--light-text);
 }
 
@@ -109,7 +106,7 @@ p {
   margin: 0;
   padding: 1px;
   font-size: 11px;
-  line-height: 11px;
+  line-height: 11px !important;
   color: var(--light-text);
 }
 
@@ -118,15 +115,16 @@ p {
 }
 
 .rightIcon {
-  max-height: 30px;
-  max-width: 30px;
+  max-height: 25px;
+  max-width: 25px;
   display: flex;
   margin-left: 10px;
 }
 
 .leftIcon {
-  width: 40px;
-  height: 40px;
+  margin-left: 5px;
+  width: 30px;
+  height: 30px;
 }
 
 .leftIcon img {

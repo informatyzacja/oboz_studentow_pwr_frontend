@@ -1,15 +1,17 @@
 :root {
   /* THEME COLORS */
   --bg-gradient: linear-gradient(180deg, #002d76 22.92%, #002d76 22.93%, #010c2f 100%);
-  --bg-gradient-translusent: linear-gradient(180deg, rgba(28, 86, 179, 0.478) 22.92%, rgba(28, 86, 179, 0.478) 22.93%, #1960abaa 100%);
+  --bg-gradent-translusent: var(--bg-gradient);
+  /* --bg-gradient-translusent: linear-gradient(180deg, rgba(28, 86, 179, 0.478) 22.92%, rgba(28, 86, 179, 0.478) 22.93%, #1960abaa 100%); */
   --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #84c6e7 0%, #3f6cc0 100%);
   --radial-gradient-circle: radial-gradient(circle, #84c6e7 0%, #3f6cc0 80%);
 
   --bg: #111e33;
-  --bg-translusent: #0f112194;
+  --bg-translusent: var(--bg);
+  /* --bg-translusent: #0f112194; */
   --bg-lighter: #272e3f;
   --bg-light: #324a6c;
-  --bg-light-translusent: rgba(150, 154, 185, 0.222);
+  --bg-light-translusent: rgba(111, 115, 148, 0.222);
   --bg-light-translusent-hover: rgba(39, 46, 90, 0.177);
 
   --theme-dark: #3f6cc0;
@@ -78,7 +80,7 @@ h3 {
   color: var(--light-text);
   background-clip: text;
   padding: 5px 2px;
-  font-size: 14px;
+  font-size: 14px !important;
 }
 
 *:disabled {

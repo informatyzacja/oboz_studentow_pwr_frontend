@@ -14,44 +14,44 @@ import { IonPage, IonContent } from '@ionic/vue';
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-  <main>
-    <TopBar title="Lekcje narciarstwa" backLink="/" />
-    <div class="padding-main" v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length">
-      <div class="day-changer">
-        <RouterLink v-if="currentDay > 0" :to="{ name: 'warsztatyDay', params: { day: currentDay - 1 } }">
-          <div class="arrow-circle arrow-circle-left">
-            <div class="arrow arrow-left"></div>
+      <main>
+        <TopBar title="Warsztaty" backLink="/" />
+        <div class="padding-main" v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length">
+          <div class="day-changer">
+            <RouterLink v-if="currentDay > 0" :to="{ name: 'warsztatyDay', params: { day: currentDay - 1 } }">
+              <div class="arrow-circle arrow-circle-left">
+                <div class="arrow arrow-left"></div>
+              </div>
+            </RouterLink>
+
+            <h5>
+              {{ moment(apiDataStore.workshops.futureDates[currentDay]).format('dddd, Do MMMM') }}
+            </h5>
+
+            <RouterLink v-if="currentDay < apiDataStore.workshops.futureDates.length - 1"
+              :to="{ name: 'warsztatyDay', params: { day: currentDay + 1 } }">
+              <div class="arrow-circle arrow-circle-right">
+                <div class="arrow arrow-right"></div>
+              </div>
+            </RouterLink>
           </div>
-        </RouterLink>
 
-        <h5>
-          {{ moment(apiDataStore.workshops.futureDates[currentDay]).format('dddd, Do MMMM') }}
-        </h5>
+          <RouterLink :to="{ name: 'warsztatyDetail', params: { id: data.id } }" v-for="( data, index ) in
+            apiDataStore.workshops.withDate(
+              apiDataStore.workshops.futureDates[currentDay]
+            )" :key="index" @click="addAnmateClass($event)">
+            <HomeCard :name="data.name" :location="data.location"
+              :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
+              :imgSrc="data.photo || questionMark" :userCount="data.userCount + '/' + data.userLimit" big />
+          </RouterLink>
+        </div>
+        <p v-if="apiDataStore.workshops.ready && !apiDataStore.workshops.data.length" class="error">
+          Nic tu nie ma
+        </p>
 
-        <RouterLink v-if="currentDay < apiDataStore.workshops.futureDates.length - 1"
-          :to="{ name: 'warsztatyDay', params: { day: currentDay + 1 } }">
-          <div class="arrow-circle arrow-circle-right">
-            <div class="arrow arrow-right"></div>
-          </div>
-        </RouterLink>
-      </div>
-
-      <RouterLink :to="{ name: 'warsztatyDetail', params: { id: data.id } }" v-for="( data, index ) in 
-      apiDataStore.workshops.withDate(
-        apiDataStore.workshops.futureDates[currentDay]
-      )" :key="index" @click="addAnmateClass($event)">
-        <HomeCard :name="data.name" :location="data.location"
-          :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-          :imgSrc="data.photo || questionMark" :userCount="data.userCount + '/' + data.userLimit" big />
-      </RouterLink>
-    </div>
-    <p v-if="apiDataStore.workshops.ready && !apiDataStore.workshops.data.length" class="error">
-      Nic tu nie ma
-    </p>
-
-    <LoadingIndicator v-if="apiDataStore.workshops.loading" />
-    <p v-if="apiDataStore.workshops.error" class="error">{{ apiDataStore.workshops.error }}</p>
-  </main>
+        <LoadingIndicator v-if="apiDataStore.workshops.loading" />
+        <p v-if="apiDataStore.workshops.error" class="error">{{ apiDataStore.workshops.error }}</p>
+      </main>
 
     </ion-content>
   </ion-page>
@@ -99,7 +99,6 @@ import { IonPage, IonContent } from '@ionic/vue';
   justify-content: center;
   align-items: center;
   padding: 0 0 10px;
-  margin-top: -8px;
 }
 
 .day-changer h5 {

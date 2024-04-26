@@ -11,16 +11,17 @@ defineProps({
     default: false
   }
 });
+import { IonNavLink } from '@ionic/vue';
 </script>
 
 <template>
   <div class="header" :class="{ header_absolute: absolute }">
     <div class="header-left">
-      <RouterLink v-if="backLink" :to="backLink">
+      <IonNavLink v-if="backLink" :router-link="backLink" router-direction="back" class="link">
         <div class="arrow-circle">
           <div class="arrow"></div>
         </div>
-      </RouterLink>
+      </IonNavLink>
       <h1>{{ title }}</h1>
     </div>
 
@@ -31,13 +32,14 @@ defineProps({
 
 <style scoped>
 .header {
-  padding: 0 20px 5px;
+  padding: 0 25px 5px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
   z-index: 2;
 }
+
 .header_absolute {
   position: absolute;
   top: 0;
@@ -45,28 +47,40 @@ defineProps({
   width: 100%;
   padding: 10px 10px 5px;
   z-index: 1;
+  height: 50px;
 }
+
 h1 {
   background: var(--radial-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+.link {
+  padding-right: 15px;
+  margin-left: -15px;
+}
+
+.header_absolute .link {
+  margin-left: 0;
+}
+
 .arrow-circle {
   border-radius: 50%;
-  /* width: 50px; */
-  /* height: 50px; */
+  height: 100%;
+  aspect-ratio: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .header_absolute .arrow-circle {
-  background: radial-gradient(
-    50% 50% at 50% 50%,
-    rgba(255, 255, 255, 0.483) 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: radial-gradient(50% 50% at 50% 50%,
+      rgba(255, 255, 255, 0.483) 0%,
+      rgba(255, 255, 255, 0) 100%);
 }
+
 .arrow {
   border: solid black;
   border-width: 0 4px 4px 0;
@@ -85,6 +99,6 @@ h1 {
 
 .header-left {
   display: flex;
-
+  height: 100%;
 }
 </style>

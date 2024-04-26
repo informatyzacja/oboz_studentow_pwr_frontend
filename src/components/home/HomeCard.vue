@@ -111,6 +111,7 @@ defineProps({
   position: absolute;
   bottom: 0;
   padding: 15px;
+  padding-bottom: 18px;
   width: 100%;
   overflow: hidden;
   display: flex;
@@ -123,21 +124,21 @@ defineProps({
 
 
 .description h1 {
-  font-size: 18px;
-  line-height: 18px;
-  padding: 5px 0 0;
+  font-size: 18px !important;
+  line-height: 18px !important;
+  padding: 0;
   white-space: normal;
   word-break: break-word;
 }
 
 .card.big .description h1 {
-  font-size: 20px;
-  line-height: 20px;
+  font-size: 20px !important;
+  line-height: 20px !important;
 }
 
 .description h2 {
-  font-size: 12px;
-  line-height: 12px;
+  font-size: 12px !important;
+  line-height: 12px !important;
   color: var(--text-gray);
   display: flex;
   align-items: center;
@@ -145,8 +146,8 @@ defineProps({
 }
 
 .card.big .description h2 {
-  font-size: 15px;
-  line-height: 15px;
+  font-size: 15px !important;
+  line-height: 15px !important;
 }
 
 .description h2 p {
@@ -158,8 +159,8 @@ defineProps({
 }
 
 .description h3 {
-  font-size: 13px;
-  line-height: 13px;
+  font-size: 13px !important;
+  line-height: 13px !important;
   padding: 5px 0 0;
   color: var(--text-gray);
 }

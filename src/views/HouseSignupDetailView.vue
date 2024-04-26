@@ -300,7 +300,7 @@ export default {
             }
             apiRequest('../api2/signup-user-for-house/' + this.$route.params.id + '/',
                 'PUT',
-                JSON.stringify(body)
+                body
             )
                 .then((data) => {
                     if (data.ok) {

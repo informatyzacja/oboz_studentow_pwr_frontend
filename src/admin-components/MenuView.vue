@@ -4,9 +4,9 @@ import MenuCard from './MenuCard.vue'
 
 import SosIcon from '../assets/icons8-sos.png'
 import MapIcon from '../assets/icons8-map_marker.png'
-// import HammerIcon from '../assets/warsztaty.svg'
-// import ScannerIcon from '../assets/icons8-barcode_reader.png'
-// import GroupIcon from '../assets/grupa.svg'
+import HammerIcon from '../assets/warsztaty.svg'
+import ScannerIcon from '../assets/icons8-barcode_reader.png'
+import GroupIcon from '../assets/grupa.svg'
 import FractionIcon from '../assets/icons8-meeting_room.png'
 import PointsIcon from '../assets/icons8-scoreboard.png'
 import RankingIcon from '../assets/icons8-leaderboard.png'
@@ -15,44 +15,50 @@ import AnnouncementIcon from '../assets/ogloszenia.svg'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
+
+import { IonPage, IonContent } from '@ionic/vue'
 </script>
 
 <template>
-  <main>
-    <TopBar title="Menu" />
-    <div class="padding cards">
-      <!-- <MenuCard title="Skaner" :icon="ScannerIcon" link="/skaner" v-if="apiDataStore.permissions.ready &&
-        apiDataStore.permissions.hasOneOfPermissions([
-          'can_validate_meals',
-          'can_view_user_info',
-          'can_add_points'
-        ])
-        " /> -->
-      <MenuCard title="Dodaj punkty" :icon="AddPointsIcon" link="/punkty/dodaj" v-if="apiDataStore.permissions.ready &&
-        apiDataStore.permissions.hasOneOfPermissions(['can_add_points'])
-      " />
-      <MenuCard title="Punkty" :icon="PointsIcon" link="/punkty" v-if="apiDataStore.permissions.ready &&
-        apiDataStore.permissions.hasOneOfPermissions(['can_view_points'])
-      " />
-      <MenuCard title="Ranking" :icon="RankingIcon" link="/ranking" v-if="apiDataStore.permissions.ready &&
-        apiDataStore.permissions.hasOneOfPermissions(['can_view_points'])
-      " />
-      <MenuCard title="Frakcje" :icon="FractionIcon" link="/frakcje" />
-      <!-- <MenuCard title="Gra nocna" :icon="GroupIcon" link="/grupy" v-if="apiDataStore.permissions.ready &&
-        apiDataStore.permissions.hasOneOfPermissions(['can_view_groups'])
-        " /> -->
-      <MenuCard title="Ogłoszenia" :icon="AnnouncementIcon" link="/ogloszenia" v-if="apiDataStore.permissions.ready &&
-        apiDataStore.permissions.hasOneOfPermissions(['can_add_announcement'])
-      " />
+  <ion-page>
+    <ion-content :fullscreen="true">
+      <main>
+        <TopBar title="Menu" />
+        <div class="padding cards">
+          <MenuCard title="Skaner" :icon="ScannerIcon" link="/skaner" v-if="apiDataStore.permissions.ready &&
+            apiDataStore.permissions.hasOneOfPermissions([
+              'can_validate_meals',
+              'can_view_user_info',
+              'can_add_points'
+            ])
+          " />
+          <MenuCard title="Dodaj punkty" :icon="AddPointsIcon" link="/punkty/dodaj" v-if="apiDataStore.permissions.ready &&
+            apiDataStore.permissions.hasOneOfPermissions(['can_add_points'])
+          " />
+          <MenuCard title="Punkty" :icon="PointsIcon" link="/punkty" v-if="apiDataStore.permissions.ready &&
+            apiDataStore.permissions.hasOneOfPermissions(['can_view_points'])
+          " />
+          <MenuCard title="Ranking" :icon="RankingIcon" link="/ranking" v-if="apiDataStore.permissions.ready &&
+            apiDataStore.permissions.hasOneOfPermissions(['can_view_points'])
+          " />
+          <MenuCard title="Frakcje" :icon="FractionIcon" link="/frakcje" />
+          <MenuCard title="Gra nocna" :icon="GroupIcon" link="/grupy" v-if="apiDataStore.permissions.ready &&
+            apiDataStore.permissions.hasOneOfPermissions(['can_view_groups'])
+          " />
+          <MenuCard title="Ogłoszenia" :icon="AnnouncementIcon" link="/ogloszenia" v-if="apiDataStore.permissions.ready &&
+            apiDataStore.permissions.hasOneOfPermissions(['can_add_announcement'])
+          " />
 
-      <!-- <MenuCard title="Warsztaty" :icon="HammerIcon" link="/warsztaty" /> -->
-      <MenuCard title="Sos" :icon="SosIcon" link="/sos" />
-      <MenuCard title="Mapka" :icon="MapIcon" link="/mapa" />
+          <MenuCard title="Warsztaty" :icon="HammerIcon" link="/warsztaty" />
+          <MenuCard title="Sos" :icon="SosIcon" link="/sos" />
+          <MenuCard title="Mapka" :icon="MapIcon" link="/mapa" />
 
-      <div style="height: 150px; width: 150px"></div>
-      <div style="height: 150px; width: 150px"></div>
-    </div>
-  </main>
+          <div style="height: 150px; width: 150px"></div>
+          <div style="height: 150px; width: 150px"></div>
+        </div>
+      </main>
+    </ion-content>
+  </ion-page>
 </template>
 
 <style scoped>

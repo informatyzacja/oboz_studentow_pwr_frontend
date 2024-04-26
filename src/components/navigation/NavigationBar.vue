@@ -15,82 +15,83 @@ import { mapStores } from 'pinia'
 
 import { isSupported } from "firebase/messaging";
 import { registerForPushNotifications } from '../../config.js'
+import { IonNavLink } from '@ionic/vue'
 </script>
 
 <template>
   <div class="navigation-bar" v-if="!apiDataStore.permissions.ready || !apiDataStore.permissions.data.length">
 
     <div class="navigation-bar__content">
-      <RouterLink to="/sos">
+      <IonNavLink router-link="/sos" router-direction="none">
         <div class="navigation_bar__item" :class="{ selected: $route.path == '/sos' }">
           <img :src="SosIcon" alt="sos" />
           <p>SOS</p>
         </div>
-      </RouterLink>
-      <RouterLink to="/mapa">
+      </IonNavLink>
+      <IonNavLink router-link="/mapa" router-direction="none">
         <div class="navigation_bar__item" :class="{ selected: $route.path == '/mapa' }">
           <img :src="MapIcon" alt="map" />
           <p>Mapka</p>
         </div>
-      </RouterLink>
-      <RouterLink to="/">
+      </IonNavLink>
+      <IonNavLink router-link="/" router-direction="none">
         <div class="navigation-bar__logo">
           <img :src="Logo" alt="logo" />
         </div>
-      </RouterLink>
-      <RouterLink to="/harmonogram">
+      </IonNavLink>
+      <IonNavLink router-link="/harmonogram" router-direction="none">
         <div class="navigation_bar__item" :class="{ selected: $route.path == '/harmonogram' }">
           <img :src="CalendarIcon" alt="harmonogram" />
           <p>Harmonogram</p>
         </div>
-      </RouterLink>
-      <RouterLink to="/profil">
+      </IonNavLink>
+      <IonNavLink router-link="/profil" router-direction="none">
         <div class="navigation_bar__item" :class="{ selected: $route.path == '/profil' }">
           <img :src="UserIcon" alt="user" />
           <p>Profil</p>
         </div>
-      </RouterLink>
+      </IonNavLink>
     </div>
   </div>
 
   <!-- staff -->
   <div class="navigation-bar" v-else>
     <div class="navigation-bar__content">
-      <!-- <RouterLink to="/skaner">
+      <!-- <IonNavLink router-link="/skaner">
         <div class="navigation_bar__item" :class="{ selected: $route.path == '/skaner' }">
           <img :src="ScannerIcon" alt="skaner" />
           <p>Skaner</p>
         </div>
-      </RouterLink> -->
-      <RouterLink to="/sos">
+      </IonNavLink> -->
+      <IonNavLink router-link="/sos" router-direction="none">
         <div class="navigation_bar__item" :class="{ selected: $route.path == '/sos' }">
           <img :src="SosIcon" alt="sos" />
           <p>SOS</p>
         </div>
-      </RouterLink>
-      <RouterLink to="/admin-menu">
+      </IonNavLink>
+      <IonNavLink router-link="/admin-menu" router-direction="none">
         <div class="navigation_bar__item" :class="{ selected: $route.path == '/admin-menu' }">
           <img :src="MenuIcon" alt="menu" />
           <p>Menu</p>
         </div>
-      </RouterLink>
-      <RouterLink to="/">
+      </IonNavLink>
+      <IonNavLink router-link="/" router-direction="none">
         <div class="navigation-bar__logo">
           <img :src="Logo" alt="logo" />
         </div>
-      </RouterLink>
-      <RouterLink to="/harmonogram">
+      </IonNavLink>
+      <IonNavLink router-link="/harmonogram" router-direction="none">
         <div class="navigation_bar__item" :class="{ selected: $route.path == '/harmonogram' }">
           <img :src="CalendarIcon" alt="harmonogram" />
           <p>Harmonogram</p>
         </div>
-      </RouterLink>
-      <RouterLink to="/profil">
+      </IonNavLink>
+      <IonNavLink router-link="/profil" router-direction="none">
         <div class="navigation_bar__item" :class="{ selected: $route.path == '/profil' }">
           <img :src="UserIcon" alt="user" />
           <p>Profil</p>
         </div>
-      </RouterLink>
+      </IonNavLink>
     </div>
   </div>
 </template>

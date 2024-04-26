@@ -15,46 +15,47 @@ import { IonPage, IonContent } from '@ionic/vue';
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-  <main>
-    <TopBar :backLink="$router.options.history.state.back || '/home'" absolute />
-    <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length"
-      :set="(data = apiDataStore.schedule.withId(parseInt($route.params.id)))">
-      <div class="card">
-        <img class="bg" :src="data.photo || questionMark" />
-        <div class="time">
-          <p>{{ moment(data.start).format('dd. DD.MM') }}</p>
-          <p>{{ moment(data.start).format('H:mm') + (data.end !== data.start ? (' - ' + moment(data.end).format('H:mm')) :
-            '') }}</p>
-        </div>
-        <div class="overlay"></div>
-        <div class="description">
-          <div>
-            <h2 v-if="data.location">
-              <IconLocation class="icon" /> {{ data.location }}
-            </h2>
-            <h1>{{ data.name }}</h1>
+      <main>
+        <TopBar :backLink="$router.options.history.state.back || '/home'" absolute />
+        <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length && scheduleId"
+          :set="data = apiDataStore.schedule.withId(scheduleId)">
+          <div class="card">
+            <img class="bg" :src="data.photo || questionMark" />
+            <div class="time">
+              <p>{{ moment(data.start).format('dd. DD.MM') }}</p>
+              <p>{{ moment(data.start).format('H:mm') + (data.end !== data.start ? (' - ' +
+                moment(data.end).format('H:mm')) :
+                '') }}</p>
+            </div>
+            <div class="overlay"></div>
+            <div class="description">
+              <div>
+                <h2 v-if="data.location">
+                  <IconLocation class="icon" /> {{ data.location }}
+                </h2>
+                <h1>{{ data.name }}</h1>
+              </div>
+
+            </div>
           </div>
 
+          <div class="padding">
+
+            <TextBox v-if="data.description" :content="data.description" />
+
+          </div>
+
+          <div v-if="!data.hide_map && data.location && mapData" class="padding">
+            <h3>{{ mapData.name }}</h3>
+            <div class="padding">
+              <img :src="mapData.image" :alt="mapData.name" />
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="padding">
-
-        <TextBox v-if="data.description" :content="data.description" />
-
-      </div>
-
-      <div v-if="!data.hide_map && data.location && mapData" class="padding">
-        <h3>{{ mapData.name }}</h3>
-        <div class="padding">
-          <img :src="mapData.image" :alt="mapData.name" />
-        </div>
-      </div>
-    </div>
-
-    <LoadingIndicator v-if="apiDataStore.schedule.loading" />
-    <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
-  </main>
+        <LoadingIndicator v-if="apiDataStore.schedule.loading" />
+        <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
+      </main>
 
     </ion-content>
   </ion-page>
@@ -63,6 +64,7 @@ import { IonPage, IonContent } from '@ionic/vue';
 <style scoped>
 main {
   padding-bottom: 100px;
+  padding-top: 0 !important;
 }
 
 .button {
@@ -73,7 +75,7 @@ main {
   font-size: 14px;
   line-height: 16px;
   cursor: pointer;
-  
+
   background-color: green;
 
   width: 130px;
@@ -145,14 +147,14 @@ main {
 
 .description h1 {
   font-size: 22px;
-  line-height: 22px;
+  line-height: 22px !important;
   padding: 5px 0 0;
   white-space: normal;
 }
 
 .description h2 {
   font-size: 17px;
-  line-height: 15px;
+  line-height: 15px !important;
   color: var(--text-gray);
   display: flex;
   align-items: center;
@@ -161,7 +163,7 @@ main {
 
 .description h3 {
   font-size: 15px;
-  line-height: 15px;
+  line-height: 15px !important;
   padding: 5px 0 0;
   color: var(--text-gray);
 }
@@ -173,7 +175,7 @@ main {
 
 .signupsOpenTime {
   font-size: 12px;
-  line-height: 12px;
+  line-height: 12px !important;
   color: var(--text-gray);
   margin-top: 5px;
 }
@@ -192,7 +194,8 @@ main {
 export default {
   data() {
     return {
-      timer: null
+      timer: null,
+      scheduleId: null
     }
   },
   computed: {
@@ -202,6 +205,7 @@ export default {
     }
   },
   mounted() {
+    this.scheduleId = parseInt(this.$route.params.id)
     this.apiDataStore.schedule.fetchData()
     this.apiDataStore.images.fetchData()
     this.timer = setInterval(this.apiDataStore.schedule.fetchData, 60 * 1000)

@@ -120,7 +120,7 @@ export default {
                 }
                 apiRequest('../staff-api/add-announcement/',
                     'POST',
-                    JSON.stringify(data)
+                    data
                 )
                     .then((data) => {
                         if (data.status === 403) {

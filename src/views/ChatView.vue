@@ -16,65 +16,69 @@ import { IonPage, IonContent } from '@ionic/vue';
 
 
 <template>
-    
-  <ion-page>
-    <ion-content :fullscreen="true">
-    <div>
-        <div class="statusBar"></div>
-        <TopBar
-            :title="apiDataStore.profile.ready ? ('Czat pokoju nr ' + apiDataStore.profile.data[0].house.name) : 'Czat pokoju'"
-            back-link="/profil" class="top-bar">
-            <RouterLink v-if="apiDataStore.myHouseMembers.data" to="/moj-domek/info">
-                <img class="topRightButton" :src="groupIcon" />
-            </RouterLink>
-        </TopBar>
-        <main class="padding-main">
-            <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading">
-                <div class="chat">
-                    <div v-for="(message, index) in apiDataStore.chat.data" class="messageRow" :key="index"
-                        :class="{ messageFromMe: message.fromMe }">
-                        <div style="width: 100%">
 
-                            <p class="datetime"
-                                v-if="index == 0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.data[index - 1].date) > 8 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.data[index - 1].date), 'day')">
-                                {{ moment(message.date).isSame(moment(), 'day') ? moment(message.date).format('HH:mm') :
-                                    moment(message.date).format('DD.MM.YYYY HH:mm') }}
-                            </p>
+    <ion-page>
+        <ion-content :fullscreen="true">
+            <div>
+                <div class="statusBar"></div>
+                <TopBar
+                    :title="apiDataStore.profile.ready ? ('Czat pokoju nr ' + apiDataStore.profile.data[0].house.name) : 'Czat pokoju'"
+                    back-link="/profil" class="top-bar">
+                    <RouterLink v-if="apiDataStore.myHouseMembers.data" to="/moj-domek/info">
+                        <img class="topRightButton" :src="groupIcon" />
+                    </RouterLink>
+                </TopBar>
+                <main class="padding-main">
+                    <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading">
+                        <div class="chat">
+                            <div v-for="(message, index) in apiDataStore.chat.data" class="messageRow" :key="index"
+                                :class="{ messageFromMe: message.fromMe }">
+                                <div style="width: 100%">
 
-                            <p class="messageUser"
-                                v-if="index == 0 || apiDataStore.chat.data[index - 1].user_id != message.user_id">{{
-                                    !message.fromMe ? message.username : '' }}</p>
+                                    <p class="datetime"
+                                        v-if="index == 0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.data[index - 1].date) > 8 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.data[index - 1].date), 'day')">
+                                        {{ moment(message.date).isSame(moment(), 'day') ?
+                                            moment(message.date).format('HH:mm') :
+                                            moment(message.date).format('DD.MM.YYYY HH:mm') }}
+                                    </p>
 
-                            <div class="message"
-                                :class="{ messageEmoji: message.message.length === 2 && /\p{Extended_Pictographic}/u.test(message.message) }">
-                                {{ message.message }}
+                                    <p class="messageUser"
+                                        v-if="index == 0 || apiDataStore.chat.data[index - 1].user_id != message.user_id">
+                                        {{
+                                            !message.fromMe ? message.username : '' }}</p>
+
+                                    <div class="message"
+                                        :class="{ messageEmoji: message.message.length === 2 && /\p{Extended_Pictographic}/u.test(message.message) }">
+                                        {{ message.message }}
+                                    </div>
+
+                                </div>
                             </div>
+                            <div v-if="apiDataStore.chat.data.length === 0"
+                                style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
+                                Witaj w czacie pokoju nr {{ apiDataStore.profile.data[0].house.name }}! 🏠<br>Bądź
+                                pierwszy/a i
+                                napisz coś!
+                            </div>
+                        </div>
+
+                        <div class="textBox">
+                            <input type="text" v-on:keyup.enter="sendMessage" v-model="currentMessage"
+                                placeholder="Aa" />
+
+                            <button class="textBoxButton" v-if="currentMessage.trim() === ''"
+                                @click="currentMessage = '🏂'; sendMessage()">🏂</button>
+
+                            <button class="textBoxButton" v-else @click="sendMessage"><img :src="sendIcon"
+                                    class="sendIcon" /></button>
 
                         </div>
+                        <div class="fake-bg"></div>
                     </div>
-                    <div v-if="apiDataStore.chat.data.length === 0"
-                        style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
-                        Witaj w czacie pokoju nr {{ apiDataStore.profile.data[0].house.name }}! 🏠<br>Bądź pierwszy/a i
-                        napisz coś!
-                    </div>
-                </div>
-
-                <div class="textBox">
-                    <input type="text" v-on:keyup.enter="sendMessage" v-model="currentMessage" placeholder="Aa" />
-
-                    <button class="textBoxButton" v-if="currentMessage.trim() === ''"
-                        @click="currentMessage = '🏂'; sendMessage()">🏂</button>
-
-                    <button class="textBoxButton" v-else @click="sendMessage"><img :src="sendIcon"
-                            class="sendIcon" /></button>
-
-                </div>
-                <div class="fake-bg"></div>
+                    <LoadingIndicator v-else />
+                </main>
             </div>
-            <LoadingIndicator v-else />
-        </main>
-    </div>
-    </ion-content>
+        </ion-content>
     </ion-page>
 </template>
 
@@ -194,7 +198,7 @@ export default {
 
             window.scrollTo(0, document.body.scrollHeight);
 
-            this.chatSocket.send(JSON.stringify({ message: message }));
+            this.chatSocket.send(({ message: message }));
         }
 
     }
@@ -299,7 +303,7 @@ export default {
     border-radius: 20px;
     border: 1px solid var(--text-gray);
     font-size: 15px;
-    
+
     border: none;
     outline: none;
     color: white;
