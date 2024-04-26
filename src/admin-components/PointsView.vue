@@ -172,14 +172,6 @@ export default {
                     'PUT'
                 )
                     .then((data) => {
-                        if (data.ok) {
-                            return data.
-                        }
-                        this.error = data.status + ' ' + data.statusText
-                        this.success = false
-                        throw new Error('Request failed!')
-                    })
-                    .then((data) => {
                         this.success = data.success
                         this.error = data.error
                         if (this.success) {
@@ -201,14 +193,6 @@ export default {
                 apiRequest('../staff-api/reject-points/' + data.id + '/',
                     'PUT'
                 )
-                    .then((data) => {
-                        if (data.ok) {
-                            return data
-                        }
-                        this.error = data.status + ' ' + data.statusText
-                        this.success = false
-                        throw new Error('Request failed!')
-                    })
                     .then((data) => {
                         this.success = data.success
                         this.error = data.error

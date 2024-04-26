@@ -14,43 +14,43 @@ import { IonPage, IonContent } from '@ionic/vue';
 
   <ion-page>
     <ion-content :fullscreen="true">
-  <main>
-    <TopBar :title="apiDataStore.profile.ready ? ('Pokój nr ' + apiDataStore.profile.data[0].house.name) : 'Mój pokój'"
-      backLink="/czat-domku" />
+      <main>
+        <TopBar
+          :title="apiDataStore.profile.ready ? ('Pokój nr ' + apiDataStore.profile.data[0].house.name) : 'Mój pokój'"
+          backLink="/czat-domku" />
 
-    <div class="padding-main">
+        <div class="padding-main">
 
-      <h3>Informacje</h3>
-      <ItemBox
-        :bigText="apiDataStore.profile.data[0].house.key_collected ? 'Klucze odebrane ✅' : 'Klucze nieodebrane ❌'">
-      </ItemBox>
+          <h3>Informacje</h3>
+          <ItemBox
+            :bigText="apiDataStore.profile.data[0].house.key_collected ? 'Klucze odebrane ✅' : 'Klucze nieodebrane ❌'">
+          </ItemBox>
 
-      <h3>Lokatorzy</h3>
-      <div v-if="apiDataStore.myHouseMembers.ready &&
-        apiDataStore.myHouseMembers.data &&
-        apiDataStore.myHouseMembers.data.length
-        ">
-        <a v-for="(data, index) in apiDataStore.myHouseMembers.data" :key="index"
-          :href="data.phoneNumber ? ('tel:' + data.phoneNumber) : null">
-          <ItemBox :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo"
-            :rightIcon="data.phoneNumber ? phoneIcon : null" />
-        </a>
-      </div>
-      <p v-if="apiDataStore.myHouseMembers.ready &&
-        apiDataStore.myHouseMembers.data &&
-        !apiDataStore.myHouseMembers.data.length
-        " class="error">
-        Brak lokatorów
-      </p>
+          <h3>Lokatorzy</h3>
+          <div v-if="apiDataStore.myHouseMembers.ready &&
+            apiDataStore.myHouseMembers.data &&
+            apiDataStore.myHouseMembers.data.length
+          ">
+            <a v-for="(data, index) in apiDataStore.myHouseMembers.data" :key="index"
+              :href="data.phoneNumber ? ('tel:' + data.phoneNumber) : null">
+              <ItemBox :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo"
+                :rightIcon="data.phoneNumber ? phoneIcon : null" />
+            </a>
+          </div>
+          <p v-if="apiDataStore.myHouseMembers.ready &&
+            apiDataStore.myHouseMembers.data &&
+            !apiDataStore.myHouseMembers.data.length
+          " class="error">
+            Brak lokatorów
+          </p>
 
-      <LoadingIndicator v-if="apiDataStore.myHouseMembers.loading" />
-      <p v-if="apiDataStore.myHouseMembers.error" class="error">{{ apiDataStore.myHouseMembers.error }}</p>
+          <LoadingIndicator v-if="apiDataStore.myHouseMembers.loading" />
+          <p v-if="apiDataStore.myHouseMembers.error" class="error">{{ apiDataStore.myHouseMembers.error }}</p>
 
-    </div>
-  </main>
-
-  <ion-page>
-    <ion-content :fullscreen="true">
+        </div>
+      </main>
+    </ion-content>
+  </ion-page>
 </template>
 
 <style scoped>

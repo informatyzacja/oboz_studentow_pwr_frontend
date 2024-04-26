@@ -5,7 +5,7 @@ import LoadingIndicator from '../components/LoadingIndicator.vue'
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
-import { apiRequest } from './stores/functions.js'
+import { apiRequest } from '@/stores/functions.js'
 
 import moment from 'moment'
 
