@@ -171,12 +171,12 @@ const router = createRouter({
         {
           path: '/frakcja/:id',
           name: 'frakcja',
-          component: () => import('../admin-components/FractionView.vue')
+          component: () => import('../views/FractionView.vue')
         },
         {
           path: '/frakcje',
           name: 'frakcje',
-          component: () => import('../admin-components/FractionListView.vue')
+          component: () => import('../views/FractionListView.vue')
         },
         {
           path: '/grupa/:id',
