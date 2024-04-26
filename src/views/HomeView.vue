@@ -14,7 +14,6 @@ import { mapStores } from 'pinia'
 import { isSupported } from "firebase/messaging";
 
 import PushNotficationsPopupView from '../components/PushNotficationsPopupView.vue'
-import InstallAppView from '../components/InstallAppView.vue'
 
 import questionMark from '../assets/question-mark.jpg'
 import homeCardLinkBg from '../assets/home-card-link-bg.png'
@@ -22,8 +21,8 @@ import homeCardLinkBg from '../assets/home-card-link-bg.png'
 import rightArrow from '../assets/arrow.svg'
 import microphoneIcon from '../assets/ogloszenia.svg'
 
-import zobaczFrakcje from '../assets/zobacz frakcje.png'
-import zobaczPelnyHarmonogram from '../assets/zobacz-pelny-harmonogram.png'
+// import zobaczFrakcje from '../assets/zobacz frakcje.png'
+// import zobaczPelnyHarmonogram from '../assets/zobacz-pelny-harmonogram.png'
 import graNocna from '../assets/gra nocna.png'
 import ItemBox from '../components/ItemBox.vue'
 
@@ -116,8 +115,6 @@ import { IonPage, IonContent } from '@ionic/vue';
       </div>
     </div>
 
-
-    <InstallAppView />
 
     <div
       v-if="showPushNotificationCard && (!isIos || (apiDataStore.profile.ready && !apiDataStore.profile.data[0].push_notifications_registered))"

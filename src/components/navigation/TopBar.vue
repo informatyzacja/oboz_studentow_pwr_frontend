@@ -54,8 +54,8 @@ h1 {
 }
 .arrow-circle {
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  /* width: 50px; */
+  /* height: 50px; */
   display: flex;
   justify-content: center;
   align-items: center;

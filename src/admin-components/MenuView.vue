@@ -4,9 +4,9 @@ import MenuCard from './MenuCard.vue'
 
 import SosIcon from '../assets/icons8-sos.png'
 import MapIcon from '../assets/icons8-map_marker.png'
-import HammerIcon from '../assets/warsztaty.svg'
-import ScannerIcon from '../assets/icons8-barcode_reader.png'
-import GroupIcon from '../assets/grupa.svg'
+// import HammerIcon from '../assets/warsztaty.svg'
+// import ScannerIcon from '../assets/icons8-barcode_reader.png'
+// import GroupIcon from '../assets/grupa.svg'
 import FractionIcon from '../assets/icons8-meeting_room.png'
 import PointsIcon from '../assets/icons8-scoreboard.png'
 import RankingIcon from '../assets/icons8-leaderboard.png'
@@ -30,20 +30,20 @@ import { mapStores } from 'pinia'
         " /> -->
       <MenuCard title="Dodaj punkty" :icon="AddPointsIcon" link="/punkty/dodaj" v-if="apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_add_points'])
-        " />
+      " />
       <MenuCard title="Punkty" :icon="PointsIcon" link="/punkty" v-if="apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_view_points'])
-        " />
+      " />
       <MenuCard title="Ranking" :icon="RankingIcon" link="/ranking" v-if="apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_view_points'])
-        " />
+      " />
       <MenuCard title="Frakcje" :icon="FractionIcon" link="/frakcje" />
       <!-- <MenuCard title="Gra nocna" :icon="GroupIcon" link="/grupy" v-if="apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_view_groups'])
         " /> -->
       <MenuCard title="Ogłoszenia" :icon="AnnouncementIcon" link="/ogloszenia" v-if="apiDataStore.permissions.ready &&
         apiDataStore.permissions.hasOneOfPermissions(['can_add_announcement'])
-        " />
+      " />
 
       <!-- <MenuCard title="Warsztaty" :icon="HammerIcon" link="/warsztaty" /> -->
       <MenuCard title="Sos" :icon="SosIcon" link="/sos" />

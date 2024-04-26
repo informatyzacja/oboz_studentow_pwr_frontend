@@ -1,17 +1,108 @@
-import { API_URL, AUTH_HEADER } from '../config.js'
+const VITE_API_URL = import.meta.env.VITE_API_URL
+import { getAuthorizationHeader, refreshToken } from '@/functions/login.js'
+import { toastController } from '@ionic/vue';
 
-export function loadData(item) {
-  fetch(API_URL + item.url, { headers: AUTH_HEADER })
-    .then((data) => {
-      if (data.status === 403) {
-        window.location.href = '/login/?next=' + window.location.pathname
-        return
-      }
-      if (data.ok) {
-        return data.json()
-      }
-      throw new Error(data.statusText)
+import { logout } from '@/functions/login.js';
+
+import router from '@/router/index.js';
+
+export async function apiRequest(url, method = 'GET', data = null, retry = false) {
+  const headers = await getAuthorizationHeader()
+  const options = {
+    method: method,
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    }
+  }
+  if (data && method !== 'GET' && method !== 'HEAD') {
+    options.body = JSON.stringify(data)
+  }
+  return fetch(VITE_API_URL + url, options)
+
+    .catch((error) => {
+      toastController.create({
+        message: 'Błąd połączenia z serwerem. Sprawdź połaczenie z internetem.',
+        duration: 1500,
+        position: 'top',
+        color: 'danger'
+      })
+        .then(toast =>
+          toast.present()
+        );
+      throw error
     })
+
+    .then((responseData) => {
+
+      if (responseData.status === 401) {
+        if (!retry) {
+          return responseData.json()
+            .then((responseJson) => {
+              if (responseJson.code === 'token_not_valid') {
+                // console.log('Token not valid')
+                return refreshToken()
+                  .then(() => {
+                    // console.log('Token refreshed')
+                    return apiRequest(url, method, data, retry = true);
+                  })
+                  .catch((response2) => {
+                    console.log('Token refresh failed', response2)
+                    console.log(response2.status)
+                    console.error('Logging out')
+                    router.replace({ name: 'login' })
+                    throw new Error('Token refresh failed')
+                  })
+              } else {
+                console.error('Logging out')
+                logout();
+                router.replace({ name: 'login' })
+                return
+              }
+            })
+        } else {
+          logout();
+        }
+      }
+
+      if (responseData.ok) {
+        if (responseData.status === 204) {
+          return
+        }
+        return responseData.json()
+      }
+
+      responseData.json()
+        .then((data) => {
+          toastController.create({
+            message: 'Błąd: ' + data.error,
+            duration: 1500,
+            position: 'top',
+            color: 'danger'
+          })
+            .then(toast =>
+              toast.present()
+            );
+        })
+        .catch(() => {
+          toastController.create({
+            message: 'Błąd serwera: ' + responseData.status + '. Spróbuj ponownie później.',
+            duration: 1500,
+            position: 'top',
+            color: 'danger'
+          })
+            .then(toast =>
+              toast.present()
+            );
+        })
+
+      throw responseData
+
+    })
+}
+
+export async function loadData(item) {
+  return apiRequest(item.url)
     .then((data) => {
       item.loading = false
       item.data = data
@@ -28,7 +119,7 @@ export function loadData(item) {
 }
 
 export function ready(item) {
-  return !item.loading && item.data
+  return item.data
 }
 
 export function getCookie(name) {

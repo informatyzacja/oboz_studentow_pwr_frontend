@@ -19,105 +19,109 @@ import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
-  <ion-page>
-    <ion-content :fullscreen="true">
-    <main>
-        <TopBar :title="'Pokój' + (house ? ' nr ' + house.name : '')"
-            :backLink="$router.options.history.state.back || '/zapisy'" />
+    <ion-page>
+        <ion-content :fullscreen="true">
+            <main>
+                <TopBar :title="'Pokój' + (house ? ' nr ' + house.name : '')"
+                    :backLink="$router.options.history.state.back || '/zapisy'" />
 
-        <p v-if="apiDataStore.houses.ready && !house && apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.house_signups_active"
-            style="text-align: center;">Nie znaleziono domku/pokoju</p>
+                <p v-if="apiDataStore.houses.ready && !house && apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.house_signups_active"
+                    style="text-align: center;">Nie znaleziono domku/pokoju</p>
 
-        <OverlayView ref="leaveHouseOverlay">
-            <div class="padding leave-house-overlay" v-if="house.signout_open">
+                <OverlayView ref="leaveHouseOverlay">
+                    <div class="padding leave-house-overlay" v-if="house.signout_open">
 
-                <p>Czy napewno chcesz się wypisać z tego pokoju? Jeżeli się wypiszesz ktoś inny będzie mógł
-                    zająć Twoje
-                    miejsce.</p>
+                        <p>Czy napewno chcesz się wypisać z tego pokoju? Jeżeli się wypiszesz ktoś inny będzie mógł
+                            zająć Twoje
+                            miejsce.</p>
 
-                <div>
-                    <button class="button error" @click="leaveHouse" v-if="youAreSignedUpForThisHouse">Wypisz
-                        się</button>
+                        <div>
+                            <button class="button error" @click="leaveHouse" v-if="youAreSignedUpForThisHouse">Wypisz
+                                się</button>
 
-                    <button class="button" @click="$refs.leaveHouseOverlay.hide">Anuluj</button>
-                </div>
-            </div>
+                            <button class="button" @click="$refs.leaveHouseOverlay.hide">Anuluj</button>
+                        </div>
+                    </div>
 
-            <div class="padding leave-house-overlay" v-else>
+                    <div class="padding leave-house-overlay" v-else>
 
-                <p>Wypisywanie się z tego pokoju jest zablokowane.</p>
+                        <p>Wypisywanie się z tego pokoju jest zablokowane.</p>
 
-                <div>
-                    <button class="button" @click="$refs.leaveHouseOverlay.hide">OK</button>
-                </div>
-            </div>
-        </OverlayView>
+                        <div>
+                            <button class="button" @click="$refs.leaveHouseOverlay.hide">OK</button>
+                        </div>
+                    </div>
+                </OverlayView>
 
-        <div v-if="house && apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.house_signups_active">
+                <div
+                    v-if="house && apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.house_signups_active">
 
-            <div class="my-house">
-                <HouseCard :house="house" noArrow />
-            </div>
+                    <div class="my-house">
+                        <HouseCard :house="house" noArrow />
+                    </div>
 
-            <!-- <button class="button success start-signup-button" @click="startSignup"
+                    <!-- <button class="button success start-signup-button" @click="startSignup"
                 v-if="freePlaces && isFreeForSignup && !youAreSigningUp && apiDataStore.profile.ready && apiDataStore.profile.data[0].house && apiDataStore.profile.data[0].house.id == $route.params.id">Kontynuuj
                 zapisywanie</button> -->
 
-            <div class="signup">
-                <div class="person" v-if="youDontHaveAHouseOrYouAreSignedUpForThisHouse">
-                    <div class="index">1.</div>
-                    <div class="names">
-                        <input type="text" placeholder="Imię" :value="apiDataStore.profile.data[0].first_name" disabled />
-                        <input type="text" placeholder="Nazwisko" :value="apiDataStore.profile.data[0].last_name"
-                            disabled />
-                    </div>
-                    <!-- <input class="bandInput" placeholder="ID" :value="apiDataStore.profile.data[0].bandId" disabled /> -->
+                    <div class="signup">
+                        <div class="person" v-if="youDontHaveAHouseOrYouAreSignedUpForThisHouse">
+                            <div class="index">1.</div>
+                            <div class="names">
+                                <input type="text" placeholder="Imię" :value="apiDataStore.profile.data[0].first_name"
+                                    disabled />
+                                <input type="text" placeholder="Nazwisko"
+                                    :value="apiDataStore.profile.data[0].last_name" disabled />
+                            </div>
+                            <!-- <input class="bandInput" placeholder="ID" :value="apiDataStore.profile.data[0].bandId" disabled /> -->
 
-                    <button class="button error" @click="$refs.leaveHouseOverlay.show" v-if="youAreSignedUpForThisHouse"
-                        :class="{ 'disabled': !house.signout_open }">Wypisz
-                        się</button>
-                    <button class="button success" @click="signupSelf"
-                        v-else-if="!apiDataStore.profile.data[0].house">Zapisz
-                        się</button>
-                </div>
-                <p v-else class="info">Jeżeli chcesz się zapisać do tego pokoju, najpierw wypisz się z pokoju, do którego
-                    jesteś
-                    obecnie zapisany/a.</p>
-                <div class="person" v-for="(person, index) in people" :key="index">
-                    <div class="index">{{ index + 1 + indexOffset }}.</div>
-                    <!-- <div>
+                            <button class="button error" @click="$refs.leaveHouseOverlay.show"
+                                v-if="youAreSignedUpForThisHouse" :class="{ 'disabled': !house.signout_open }">Wypisz
+                                się</button>
+                            <button class="button success" @click="signupSelf"
+                                v-else-if="!apiDataStore.profile.data[0].house">Zapisz
+                                się</button>
+                        </div>
+                        <p v-else class="info">Jeżeli chcesz się zapisać do tego pokoju, najpierw wypisz się z pokoju,
+                            do którego
+                            jesteś
+                            obecnie zapisany/a.</p>
+                        <div class="person" v-for="(person, index) in people" :key="index">
+                            <div class="index">{{ index + 1 + indexOffset }}.</div>
+                            <!-- <div>
                         <input type="text" v-model="person.first_name" placeholder="ID" :disabled="signupLoading" />
                     </div> -->
-                    <div v-if="person.first_name" class="names">
-                        <input type="text" placeholder="Imię" :value="person.first_name" disabled />
-                        <input type="text" placeholder="Nazwisko" :value="person.last_name" disabled />
+                            <div v-if="person.first_name" class="names">
+                                <input type="text" placeholder="Imię" :value="person.first_name" disabled />
+                                <input type="text" placeholder="Nazwisko" :value="person.last_name" disabled />
+                            </div>
+                            <input v-else type="text" pattern="[0-9]*" inputmode="numeric" class="bandInput"
+                                v-model="person.band" placeholder="ID"
+                                :disabled="signupLoading || person.first_name || !((isFreeForSignup || youAreSigningUp) && youAreSignedUpForThisHouse)"
+                                maxlength="6" />
+                            <button class="button success" @click="signup(person.band)"
+                                v-if="!person.first_name && (isFreeForSignup || youAreSigningUp) && youAreSignedUpForThisHouse">Zapisz</button>
+                        </div>
+                        <LoadingIndicator v-if="signupLoading" inline />
                     </div>
-                    <input v-else type="text" pattern="[0-9]*" inputmode="numeric" class="bandInput" v-model="person.band"
-                        placeholder="ID"
-                        :disabled="signupLoading || person.first_name || !((isFreeForSignup || youAreSigningUp) && youAreSignedUpForThisHouse)"
-                        maxlength="6" />
-                    <button class="button success" @click="signup(person.band)"
-                        v-if="!person.first_name && (isFreeForSignup || youAreSigningUp) && youAreSignedUpForThisHouse">Zapisz</button>
                 </div>
-                <LoadingIndicator v-if="signupLoading" inline />
-            </div>
-        </div>
-        <div class="padding info-screen"
-            v-else-if="apiDataStore.houseSignupsInfo.ready && !apiDataStore.houseSignupsInfo.data.house_signups_active">
-            <h3>Zapisy zamknięte!</h3>
-            <img :src="cryingIcon" alt="crying" style="width: 100px; margin: 20px auto; display: block;" />
-            <p>Przepraszamy, ale zapisy na {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoje' : 'domki'
-            }} są
-                zamknięte.</p>
+                <div class="padding info-screen"
+                    v-else-if="apiDataStore.houseSignupsInfo.ready && !apiDataStore.houseSignupsInfo.data.house_signups_active">
+                    <h3>Zapisy zamknięte!</h3>
+                    <img :src="cryingIcon" alt="crying" style="width: 100px; margin: 20px auto; display: block;" />
+                    <p>Przepraszamy, ale zapisy na {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ?
+                        'pokoje' : 'domki'
+                        }} są
+                        zamknięte.</p>
 
-            <RouterLink to="/">
-                <button class="button" style="margin-top: 20px">Wyjdź</button>
-            </RouterLink>
-        </div>
-        <LoadingIndicator v-if="apiDataStore.houses.loading || apiDataStore.profile.loading" />
-        <p v-if="error" class="error">{{ error }}</p>
-    </main>
-    </ion-content>
+                    <RouterLink to="/">
+                        <button class="button" style="margin-top: 20px">Wyjdź</button>
+                    </RouterLink>
+                </div>
+                <LoadingIndicator v-if="apiDataStore.houses.loading || apiDataStore.profile.loading" />
+                <p v-if="error" class="error">{{ error }}</p>
+            </main>
+        </ion-content>
     </ion-page>
 </template>
 
@@ -223,7 +227,7 @@ export default {
             if (!locators_data || !this.apiDataStore.profile.ready) return
 
             // update people
-            locators_data.forEach((locator, index) => {
+            locators_data.forEach((locator) => {
                 if (this.apiDataStore.profile.data[0].bandId === locator.bandId) {
                     if (!this.apiDataStore.profile.data[0].house || this.apiDataStore.profile.data[0].house.id !== this.house.id) {
                         this.apiDataStore.profile.fetchData()
@@ -246,7 +250,7 @@ export default {
             })
 
             // remove people
-            this.people.forEach((person, index) => {
+            this.people.forEach((person) => {
                 if (!locators_data.find((locator) => locator.bandId == person.band)) {
                     person.first_name = null
                     person.last_name = null
@@ -408,7 +412,7 @@ textarea {
     border: 1px solid var(--text-gray);
     margin-bottom: 2px;
     font-size: 15px;
-    
+
     border: none;
     outline: none;
     color: white;
@@ -431,7 +435,7 @@ button {
     font-size: 14px;
     line-height: 16px;
     cursor: pointer;
-    
+
     background-color: var(--bg-light);
 
     /* width: 100px; */
@@ -558,7 +562,7 @@ button {
     font-size: 14px;
     line-height: 16px;
     cursor: pointer;
-    
+
     background-color: var(--bg-light);
 
     /* width: 160px; */

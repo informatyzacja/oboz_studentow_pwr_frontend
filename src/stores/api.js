@@ -24,8 +24,6 @@ import { usePointStore, usePointTypeStore } from './staff/points.js'
 import { useAnnouncementAllStore } from './staff/announcements.js'
 import { useScheduleStore } from './schedule.js'
 
-import { useVersionStore } from './version.js'
-
 import { useChatStore } from './chat.js'
 
 import { useHousesStore, useHouseSignupsStore, useHouseSignupsInfoStore } from './houses.js'
@@ -53,8 +51,6 @@ export const useApiDataStore = defineStore('apiData', {
     announcementsAll: useAnnouncementAllStore(),
 
     nightGameGroupInfo: useNightGameGroupInfoStore(),
-
-    version: useVersionStore(),
 
     chat: useChatStore(),
 
