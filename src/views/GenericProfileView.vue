@@ -3,23 +3,27 @@ import ItemBox from '../components/ItemBox.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
 import moment from 'moment'
 
+import { useApiDataStore } from '../stores/api.js'
+import { mapStores } from 'pinia'
 
-// import VueQr from 'vue-qr/src/packages/vue-qr.vue'
-// import OverlayView from '../components/OverlayView.vue'
+import VueQr from 'vue-qr/src/packages/vue-qr.vue'
+import OverlayView from '../components/OverlayView.vue'
 
 import rightArrow from '../assets/arrow.svg'
 import faqIcon from '../assets/icons8-faq.png'
 import busIcon from '../assets/icons8-bus.png'
-// import opaskaIcon from '../assets/icons8-bangles.png'
-import codeIcon from '../assets/icons8-redeem-90.png'
+import opaskaIcon from '../assets/icons8-bangles.png'
+// import codeIcon from '../assets/icons8-redeem-90.png'
 import domekIcon from '../assets/icons8-exterior.png'
 import mealIcon from '../assets/icons8-cutlery.png'
 import chatIcon from '../assets/icons8-chat.png'
 
-// import qrBg from '../assets/pod QRsvg- profil.svg'
-// import backArrow from '../assets/strzala- do qr.svg'
-// import hand from '../assets/hands.svg'
+import qrBg from '../assets/pod QRsvg- profil.svg'
+import backArrow from '../assets/strzala- do qr.svg'
+import hand from '../assets/hands.svg'
 import { IonPage, IonContent } from '@ionic/vue';
+
+import Logo from '../assets/ikona.png'
 
 defineProps([
   'profileData',
@@ -45,76 +49,58 @@ defineProps([
         <div class="padding-main">
           <div class="flex" v-if="ready && profileData">
 
-            <!-- <div class="qr_card" @click="$refs.qrOverlay.show" v-if="!hideQR">
-        <img class="qr_card_bg" :src="qrBg" /> 
-        
-        <div class="qr_content" v-if="profileData.bandId">
-          <div class="qr">
-            <div class="qr_div" :class="{ hidden: qrLoading }">
-              <VueQr
-                :text="getOrigin + '/app/' + profileData.bandId"
-                :logoSrc="Logo"
-                :logoScale="0.15"
-                :dotScale="0.8"
-                colorDark="black"
-                colorLight="transparent"
-                whiteMargin="false"
-                :margin="0"
-                :callback="qrReady"
-                :size="250"
-              />
-              <span class="top"></span>
-              <span class="right"></span>
-              <span class="bottom"></span>
-              <span class="left"></span>
+            <div class="qr_card" @click="$refs.qrOverlay.show" v-if="!hideQR">
+              <img class="qr_card_bg" :src="qrBg" />
+
+              <div class="qr_content" v-if="profileData.bandId">
+                <div class="qr">
+                  <div class="qr_div" :class="{ hidden: qrLoading }">
+                    <VueQr :text="getOrigin + '/app/' + profileData.bandId" :logoSrc="Logo" :logoScale="0.15"
+                      :dotScale="0.8" colorDark="black" colorLight="transparent" whiteMargin="false" :margin="0"
+                      :callback="qrReady" :size="250" />
+                    <span class="top"></span>
+                    <span class="right"></span>
+                    <span class="bottom"></span>
+                    <span class="left"></span>
+                  </div>
+                  <LoadingIndicator v-if="qrLoading" inline />
+                </div>
+                {{ profileData.bandId }}
+              </div>
+              <div v-else class="qr_content">
+                <img :src="BlackLogo" class="qr_placeholder_logo" />
+              </div>
             </div>
-            <LoadingIndicator v-if="qrLoading" inline />
-          </div>
-          {{ profileData.bandId }}
-        </div>
-        <div v-else class="qr_content">
-          <img :src="BlackLogo" class="qr_placeholder_logo"/>
-        </div>
-      </div>
 
-      <OverlayView ref="qrOverlay" v-if="profileData.bandId">
-        <div class="qr_overlay">
-          <div class="qr_overlay_inner">
-          
-          <div style="width:100%;">
-            <img @click="$refs.qrOverlay.hide" :src="backArrow" class="qr_back_arrow" />
-          </div>
+            <OverlayView ref="qrOverlay" v-if="profileData.bandId">
+              <div class="qr_overlay">
+                <div class="qr_overlay_inner">
 
-          <h6 style="margin-bottom: 15px">
-            Twój indyfidualny kod QR używany jest do potwierdzania Twojej tożsamości np. podczas
-            wydawania posiłków
-          </h6>
-          <div class="qr_div" :class="{ hidden: qrLoading }">
-            <VueQr
-              :text="getOrigin + '/app/' + profileData.bandId"
-              :logoSrc="Logo"
-              :logoScale="0.15"
-              :dotScale="0.8"
-              colorDark="black"
-              colorLight="transparent"
-              whiteMargin="false"
-              :margin="0"
-              :callback="qrReady"
-              :size="700"
-            />
-            <span class="top"></span>
-            <span class="right"></span>
-            <span class="bottom"></span>
-            <span class="left"></span>
-          </div>
-          <LoadingIndicator v-if="qrLoading" inline />
-          <p>Kod: {{ profileData.bandId }}</p>
-        </div>
+                  <div style="width:100%;">
+                    <img @click="$refs.qrOverlay.hide" :src="backArrow" class="qr_back_arrow" />
+                  </div>
 
-        <img :src="hand" class="qr_hand" />
+                  <h6 style="margin-bottom: 15px">
+                    Twój indyfidualny kod QR używany jest do potwierdzania Twojej tożsamości np. podczas
+                    wydawania posiłków
+                  </h6>
+                  <div class="qr_div" :class="{ hidden: qrLoading }">
+                    <VueQr :text="getOrigin + '/app/' + profileData.bandId" :logoSrc="Logo" :logoScale="0.15"
+                      :dotScale="0.8" colorDark="black" colorLight="transparent" whiteMargin="false" :margin="0"
+                      :callback="qrReady" :size="700" />
+                    <span class="top"></span>
+                    <span class="right"></span>
+                    <span class="bottom"></span>
+                    <span class="left"></span>
+                  </div>
+                  <LoadingIndicator v-if="qrLoading" inline />
+                  <p>Kod: {{ profileData.bandId }}</p>
+                </div>
 
-        </div>
-      </OverlayView> -->
+                <img :src="hand" class="qr_hand" />
+
+              </div>
+            </OverlayView>
 
             <p class="name">{{ profileData.first_name }} {{ profileData.last_name }}</p>
             <p class="title">{{ profileData.title }}</p>
@@ -157,10 +143,13 @@ defineProps([
 
               <!-- House -->
               <RouterLink v-if="profileData.house" :to="!hideQR ? '/czat-domku' : ''">
-                <ItemBox :bigText="'Pokój nr ' + profileData.house.name"
-                  :smallText="profileData.house.floor ? 'Piętro: ' + profileData.house.floor : ''" :leftIcon="domekIcon"
-                  :rightIcon="!hideQR ? chatIcon : ''" />
-                <!-- :smallText="profileData.house.key_collected ? 'Klucze odebrane ✅' : 'Klucze nieodebrane ❌'" -->
+                <ItemBox
+                  :bigText="(apiDataStore.houseSignupsInfo.ready &&
+                    apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'Pokój' : 'Domek') + ' nr ' + profileData.house.name"
+                  :leftIcon="domekIcon" :rightIcon="!hideQR ? chatIcon : ''"
+                  :smallText="profileData.house.key_collected ? 'Klucze odebrane ✅' : 'Klucze nieodebrane ❌'" />
+                <!-- :smallText="profileData.house.floor ? 'Piętro: ' + profileData.house.floor : ''" -->
+
               </RouterLink>
 
               <!-- Bus -->
@@ -172,7 +161,7 @@ defineProps([
               </div>
 
               <!-- Band -->
-              <ItemBox v-if="profileData.bandId" :bigText="'Twoje ID: ' + profileData.bandId" :leftIcon="codeIcon"
+              <ItemBox v-if="profileData.bandId" :bigText="'Nr opaski: ' + profileData.bandId" :leftIcon="opaskaIcon"
                 small-text="Naciśnij, aby skopiować" @click="copyUserId" leftIconWhite />
 
               <!-- Diet -->
@@ -341,6 +330,7 @@ button {
   flex-direction: column;
 
   height: 218px;
+  font-weight: 600;
 }
 
 .qr_overlay {
@@ -392,6 +382,7 @@ button {
 
 .qr_overlay p {
   font-size: 20px;
+  font-weight: 600;
 }
 
 .qr img,
@@ -544,6 +535,7 @@ export default {
     }
   },
   computed: {
+    ...mapStores(useApiDataStore),
     getOrigin() {
       return location.origin
     }

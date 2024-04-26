@@ -26,13 +26,15 @@ defineProps({
         <div class="header">
             <img :src="domekIcon" alt="domek" />
             <div>
-                <p class="name">Pokój nr {{ house.name }}</p>
+                <p class="name">{{ apiDataStore.houseSignupsInfo.ready &&
+                    apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'Pokój' : 'Domek' }} nr {{ house.name }}
+                </p>
                 <p v-if="house.floor" class="floor">Piętro: {{ house.floor }}</p>
             </div>
         </div>
 
         <p class="places">Wolne miejsca: <span class="places-count">{{ house.places - house.locators }}/{{ house.places
-        }}</span></p>
+                }}</span></p>
 
         <img v-if="!noArrow" :src="rightArrow" class="link_arrow" />
 
@@ -78,6 +80,7 @@ export default {
             return this.freePlaces && !this.isFreeForSignup && this.house.housesignupprogress && this.apiDataStore.profile.ready && this.house.housesignupprogress.user == this.apiDataStore.profile.data[0].id
         },
         getSecondsLeft() {
+            this.refreshKey
             if (this.isFreeForSignup) {
                 return 0
             } else {
@@ -85,6 +88,7 @@ export default {
             }
         },
         getProgress() {
+            this.refreshKey
             if (this.isFreeForSignup) {
                 return 0
             } else {
@@ -94,7 +98,7 @@ export default {
     },
     mounted() {
         this.refreshTimer = setInterval(() => {
-            this.refreshKey++
+            this.refreshKey++;
         }, 200)
     },
     beforeUnmount() {
@@ -129,12 +133,12 @@ export default {
 }
 
 .name {
-    font-size: 1rem;
+    font-size: .9rem;
     font-weight: 600;
 }
 
 .floor {
-    font-size: .7rem;
+    font-size: .8rem;
     font-weight: 300;
     opacity: .7;
     margin: 0;
@@ -142,7 +146,7 @@ export default {
 }
 
 .places {
-    font-size: .8rem;
+    font-size: .7rem;
     font-weight: 300;
     text-align: center;
     padding: 0 8px;
@@ -150,7 +154,7 @@ export default {
 
 .places-count {
     font-weight: 600;
-    font-size: 1rem;
+    font-size: .9rem;
     opacity: 1;
 }
 
@@ -186,7 +190,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: .7rem;
+    font-size: .6rem;
     font-weight: 300;
     opacity: .7;
     padding: 0 5px;

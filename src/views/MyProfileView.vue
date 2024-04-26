@@ -7,7 +7,6 @@ import ItemBox from '../components/ItemBox.vue'
 import logoutIcon from '../assets/icons8-logout.png'
 import politykaPrywatnosciIcon from '../assets/icons8-terms_and_conditions.png'
 import regulaminIcon from '../assets/icons8-rules_book.png'
-import refreshIcon from '../assets/icons8-refresh.png'
 import icons8Icon from '../assets/icons8-icons8.png'
 import rightArrow from '../assets/arrow.svg'
 import adminPanelIcon from '../assets/icons8-administrative_tools.png'
@@ -15,7 +14,7 @@ import adminPanelIcon from '../assets/icons8-administrative_tools.png'
 import taxiIcon from '../assets/icons8-taxi_mobile_payment.png'
 import copyIcon from '../assets/icons8-copy.png'
 
-import { REULAMIN_LINK as REGULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
+import { REGULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
@@ -51,7 +50,7 @@ import { getCookie } from '../stores/functions.js'
 
         <a href="/admin/" target="_blank" v-if="apiDataStore.permissions.ready &&
           apiDataStore.permissions.hasOneOfPermissions(['is_staff'])
-          ">
+        ">
           <div class="spacer"></div>
           <ItemBox big-text="Panel admina" :leftIcon="adminPanelIcon" :rightIcon="rightArrow" />
           <div class="spacer"></div>
@@ -76,7 +75,7 @@ import { getCookie } from '../stores/functions.js'
         </a>
 
         <div class="spacer"></div>
-        <ItemBox big-text="Odśwież aplikację" :leftIcon="refreshIcon" small @click="refreshApp" />
+
         <form action="/logout/" method="post" ref="logoutForm">
           <input type="hidden" name="csrfmiddlewaretoken" :value="getCookie('csrftoken')" />
           <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small
@@ -113,9 +112,6 @@ export default {
     this.timer3 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000)
   },
   methods: {
-    refreshApp() {
-      location.reload()
-    },
     copyFreenowCode() {
       navigator.clipboard.writeText(this.apiDataStore.profile.data[0].freenow_code.toUpperCase()).then(
         () => {

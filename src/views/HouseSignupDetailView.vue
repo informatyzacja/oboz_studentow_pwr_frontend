@@ -21,7 +21,9 @@ import { IonPage, IonContent } from '@ionic/vue';
     <ion-page>
         <ion-content :fullscreen="true">
             <main>
-                <TopBar :title="'Pokój' + (house ? ' nr ' + house.name : '')"
+                <TopBar
+                    :title="(apiDataStore.houseSignupsInfo.ready &&
+                        apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'Pokój' : 'Domek') + (house ? ' nr ' + house.name : '')"
                     :backLink="$router.options.history.state.back || '/zapisy'" />
 
                 <p v-if="apiDataStore.houses.ready && !house && apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.house_signups_active"
@@ -30,7 +32,9 @@ import { IonPage, IonContent } from '@ionic/vue';
                 <OverlayView ref="leaveHouseOverlay">
                     <div class="padding leave-house-overlay" v-if="house.signout_open">
 
-                        <p>Czy napewno chcesz się wypisać z tego pokoju? Jeżeli się wypiszesz ktoś inny będzie mógł
+                        <p>Czy napewno chcesz się wypisać z tego {{ apiDataStore.houseSignupsInfo.ready &&
+                            apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoju' : 'domku' }}? Jeżeli się
+                            wypiszesz ktoś inny będzie mógł
                             zająć Twoje
                             miejsce.</p>
 
@@ -44,7 +48,9 @@ import { IonPage, IonContent } from '@ionic/vue';
 
                     <div class="padding leave-house-overlay" v-else>
 
-                        <p>Wypisywanie się z tego pokoju jest zablokowane.</p>
+                        <p>Wypisywanie się z tego {{ apiDataStore.houseSignupsInfo.ready &&
+                            apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoju' : 'domku' }} jest
+                            zablokowane.</p>
 
                         <div>
                             <button class="button" @click="$refs.leaveHouseOverlay.hide">OK</button>
@@ -81,7 +87,11 @@ import { IonPage, IonContent } from '@ionic/vue';
                                 v-else-if="!apiDataStore.profile.data[0].house">Zapisz
                                 się</button>
                         </div>
-                        <p v-else class="info">Jeżeli chcesz się zapisać do tego pokoju, najpierw wypisz się z pokoju,
+                        <p v-else class="info">Jeżeli chcesz się zapisać do tego {{ apiDataStore.houseSignupsInfo.ready
+                            &&
+                            apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoju' : 'domku' }}, najpierw
+                            wypisz się z {{ apiDataStore.houseSignupsInfo.ready &&
+                                apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoju' : 'domku' }},
                             do którego
                             jesteś
                             obecnie zapisany/a.</p>
@@ -141,7 +151,8 @@ export default {
             refreshTimer: null,
             refreshKey: 0,
             houseRefreshKey: 0,
-            timeLimit: 60
+            timeLimit: 60,
+            id: this.$route.params.id
         }
     },
     computed: {
@@ -150,7 +161,7 @@ export default {
 
         house() {
             this.houseRefreshKey;
-            return this.apiDataStore.houses.houseWithId(this.$route.params.id)
+            return this.apiDataStore.houses.houseWithId(this.id)
         },
         freePlaces() {
             return this.house.locators < this.house.places
@@ -263,14 +274,6 @@ export default {
             this.signupLoading = true
             apiRequest('../api2/leave-house/', 'PUT')
                 .then((data) => {
-                    if (data.ok) {
-                        return data
-                    }
-                    this.error = data.status + ' ' + data.statusText
-                    this.success = false
-                    throw new Error('Request failed!')
-                })
-                .then((data) => {
                     this.success = data.success
                     this.error = data.error
                 })
@@ -299,14 +302,6 @@ export default {
                 'PUT',
                 body
             )
-                .then((data) => {
-                    if (data.ok) {
-                        return data
-                    }
-                    this.error = data.status + ' ' + data.statusText
-                    this.success = false
-                    throw new Error('Request failed!')
-                })
                 .then((data) => {
                     this.success = data.success
                     this.error = data.error

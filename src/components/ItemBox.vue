@@ -49,7 +49,7 @@ defineProps({
       <div v-if="leftIcon" class="leftIcon" :class="{ 'noRoundIcon': noRoundIcon }">
         <img :src="leftIcon" :class="{ 'white-icon': leftIconWhite }" />
       </div>
-      <h6>{{ leftBigText }}</h6>
+      <h6 v-if="leftBigText">{{ leftBigText }}</h6>
       <div class="text">
         <h5>{{ bigText }}</h5>
         <p v-if="smallText">{{ smallText }}</p>
@@ -96,10 +96,15 @@ h5 {
 
 h6 {
   margin: 0;
+  margin-left: 8px;
   padding: 1px;
   font-size: 12px;
   line-height: 13px !important;
   color: var(--light-text);
+}
+
+.small h6 {
+  margin-left: 0;
 }
 
 p {

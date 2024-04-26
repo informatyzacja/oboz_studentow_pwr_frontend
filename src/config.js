@@ -2,7 +2,7 @@ export const API_URL = import.meta.env.VITE_API_URL
 export const WS_API_URL = import.meta.env.VITE_WS_API_URL
 export const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN
 
-export const REULAMIN_LINK = 'https://drive.google.com/file/d/1Ptkf7S7XUzlGGz_j3ye1XXhOYSyecanK/view?pli=1'
+export const REGULAMIN_LINK = 'https://drive.google.com/file/d/1Ptkf7S7XUzlGGz_j3ye1XXhOYSyecanK/view?pli=1'
 export const POLITYKA_PRYWATNOSCI_LINK = null
 
 
