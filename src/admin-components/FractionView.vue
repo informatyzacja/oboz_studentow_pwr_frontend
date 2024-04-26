@@ -36,15 +36,6 @@ export default {
       const params = { group_id: this.$route.params.id }
       apiRequest('../staff-api/get-fraction/?' + new URLSearchParams(params))
         .then((data) => {
-          if (data.ok) {
-            return data.json()
-          }
-          if (data.status === 403) {
-            window.location.href = '/login/?next=' + window.location.pathname
-          }
-          throw new Error(data.statusText)
-        })
-        .then((data) => {
           if (data.error) {
             this.error = data.error
             this.ready = false

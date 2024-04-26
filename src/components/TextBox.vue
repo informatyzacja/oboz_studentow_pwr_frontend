@@ -18,7 +18,7 @@ defineProps({
 <template>
   <div class="textbox">
     <div class="textbox-header" v-if="image || title">
-      <img v-if="image" :src="image"/>
+      <img v-if="image" :src="image" />
       <h4 v-if="title">{{ title }}</h4>
     </div>
     <p>{{ content }}</p>
@@ -45,20 +45,20 @@ defineProps({
 }
 
 .textbox-header img {
-  width: 35px; 
+  width: 35px;
   height: 35px;
   margin-right: 10px;
 }
 
 h4 {
   font-size: 18px;
-  line-height: 21px;
+  line-height: 21px !important;
   /* font-weight: 600; */
 }
 
 p {
   font-size: 13px;
-  line-height: 16px;
+  line-height: 16px !important;
   font-weight: 400;
 }
 </style>

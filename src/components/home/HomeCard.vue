@@ -95,28 +95,32 @@ defineProps({
   box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.25);
 }
 
+.time>p {
+  font-weight: 600 !important;
+}
+
 .overlay {
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 20px;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 44.08%, var(--bg-lighter) 75%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 44.08%, var(--bg-lighter) 72%);
 }
 
 .card.wide .overlay {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 54.08%, var(--bg-lighter) 75%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 54.08%, var(--bg-lighter) 72%);
 }
 
 .description {
   position: absolute;
   bottom: 0;
   padding: 15px;
-  padding-bottom: 18px;
+  padding-bottom: 25px;
   width: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  /* gap: 3px; */
+  gap: 3px;
   align-items: flex-start;
   justify-content: center;
   height: 26%;
@@ -132,8 +136,8 @@ defineProps({
 }
 
 .card.big .description h1 {
-  font-size: 20px !important;
-  line-height: 20px !important;
+  font-size: 19px !important;
+  line-height: 19px !important;
 }
 
 .description h2 {
@@ -146,8 +150,8 @@ defineProps({
 }
 
 .card.big .description h2 {
-  font-size: 15px !important;
-  line-height: 15px !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
 }
 
 .description h2 p {

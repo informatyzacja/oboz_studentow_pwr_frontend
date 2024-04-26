@@ -7,34 +7,38 @@ import rightArrow from '../assets/arrow.svg'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
-    <main>
-    <TopBar title="Ranking" backLink="/admin-menu" />
+    <ion-page>
+        <ion-content :fullscreen="true">
+            <main>
+                <TopBar title="Ranking" backLink="/admin-menu" />
 
-    <div class="padding-main" v-if="apiDataStore.points.ready">
-        <h3>Rodziaj grupy</h3>
-        <select v-model="selectedGroupType">
-            <option v-for="groupType in apiDataStore.points.groupTypes" :key="groupType" :value="groupType">
-                {{ groupType }}
-            </option>
-        </select>
+                <div class="padding-main" v-if="apiDataStore.points.ready">
+                    <h3>Rodziaj grupy</h3>
+                    <select v-model="selectedGroupType">
+                        <option v-for="groupType in apiDataStore.points.groupTypes" :key="groupType" :value="groupType">
+                            {{ groupType }}
+                        </option>
+                    </select>
 
-        <div style="margin-top: 20px;" v-if="selectedGroupType != ''">
-            <h3>Ranking na podstawie zatwierdzonych punktów</h3>
-            <RouterLink 
-                v-for="(data, index) in apiDataStore.points.ranking(selectedGroupType)"
-                :key="index" 
-                :to="(data.group.type.name=='Frakcja' ? '/frakcja/' : '/grupa/') + data.group.id">
-                <ItemBox :bigText="data.group.name" :smallText="data.points + ' pkt'" :rightIcon="rightArrow" />
-            </RouterLink>
-        </div>
-    </div>
+                    <div style="margin-top: 20px;" v-if="selectedGroupType != ''">
+                        <h3>Ranking na podstawie zatwierdzonych punktów</h3>
+                        <RouterLink v-for="(data, index) in apiDataStore.points.ranking(selectedGroupType)" :key="index"
+                            :to="(data.group.type.name == 'Frakcja' ? '/frakcja/' : '/grupa/') + data.group.id">
+                            <ItemBox :bigText="data.group.name" :smallText="data.points + ' pkt'"
+                                :rightIcon="rightArrow" />
+                        </RouterLink>
+                    </div>
+                </div>
 
-    <LoadingIndicator v-if="apiDataStore.points.loading" />
-    <p v-if="apiDataStore.points.error" class="error">{{ apiDataStore.points.error }}</p>
-</main>
+                <LoadingIndicator v-if="apiDataStore.points.loading" />
+                <p v-if="apiDataStore.points.error" class="error">{{ apiDataStore.points.error }}</p>
+            </main>
+        </ion-content>
+    </ion-page>
 </template>
 
 
@@ -54,7 +58,7 @@ export default {
         this.timer = setInterval(this.apiDataStore.points.fetchData, 300000)
     },
     methods: {
-      
+
     },
     beforeUnmount() {
         clearInterval(this.timer)
@@ -63,8 +67,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 select {
     width: 100%;
     padding: 10px 35px 10px 15px;
@@ -72,7 +74,7 @@ select {
     border: 1px solid var(--text-gray);
     margin-bottom: 10px;
     font-size: 15px;
-    
+
     border: none;
     outline: none;
     color: white;
@@ -100,7 +102,7 @@ select {
     background: var(--bg-light);
     padding: 8px 15px;
     border-radius: 20px;
-    
+
     color: white;
     cursor: pointer;
 }
@@ -123,7 +125,7 @@ button {
     font-size: 14px;
     line-height: 16px;
     cursor: pointer;
-    
+
     background-color: var(--bg-light);
 
     width: 130px;
@@ -136,6 +138,7 @@ button {
 button.success {
     background-color: green;
 }
+
 .pointsOverlay {
     margin: 0;
     margin-top: 30px;
@@ -143,5 +146,4 @@ button.success {
     flex-direction: column;
     align-items: center;
 }
-
 </style>

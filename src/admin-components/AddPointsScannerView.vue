@@ -7,54 +7,59 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import { apiRequest } from '../stores/functions.js'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
-  <main>
-    <TopBar title="Dodaj punkty" backLink="/skaner" />
+  <ion-page>
+    <ion-content :fullscreen="true">
+      <main>
+        <TopBar title="Dodaj punkty" backLink="/skaner" />
 
-    <div class="padding-main" v-if="apiDataStore.pointTypes.ready">
-      <h3>Rodziaj grupy</h3>
-      <select v-model="selectedGroupType"
-        @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }">
-        <option disabled value="">Wybierz rodzaj grupy</option>
-        <option v-for="groupType in apiDataStore.pointTypes.data.groupTypes" :key="groupType.id"
-          :value="groupType.name">
-          {{ groupType.name }}
-        </option>
-      </select>
+        <div class="padding-main" v-if="apiDataStore.pointTypes.ready">
+          <h3>Rodziaj grupy</h3>
+          <select v-model="selectedGroupType"
+            @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }">
+            <option disabled value="">Wybierz rodzaj grupy</option>
+            <option v-for="groupType in apiDataStore.pointTypes.data.groupTypes" :key="groupType.id"
+              :value="groupType.name">
+              {{ groupType.name }}
+            </option>
+          </select>
 
-      <div v-if="selectedGroupType">
-        <h3>Kategoria punktów</h3>
-        <select v-model="selectedPointType">
-          <option disabled value="">Wybierz kategorię punktów</option>
-          <option v-for="pointType in apiDataStore.pointTypes.forGroupType(selectedGroupType)" :key="pointType.id"
-            :value="pointType.id">
-            {{ pointType.name }}
-          </option>
-        </select>
-      </div>
+          <div v-if="selectedGroupType">
+            <h3>Kategoria punktów</h3>
+            <select v-model="selectedPointType">
+              <option disabled value="">Wybierz kategorię punktów</option>
+              <option v-for="pointType in apiDataStore.pointTypes.forGroupType(selectedGroupType)" :key="pointType.id"
+                :value="pointType.id">
+                {{ pointType.name }}
+              </option>
+            </select>
+          </div>
 
-      <div class="center">
-        <ScannerBaseView v-if="selectedGroupType && !loading" @error="(err) => (error = err)" @result="(res) => {
-          result = res
-          showAddPointsView()
-        }
-          " />
-        <p v-if="error" class="error">{{ error }}</p>
-      </div>
-    </div>
+          <div class="center">
+            <ScannerBaseView v-if="selectedGroupType && !loading" @error="(err) => (error = err)" @result="(res) => {
+              result = res
+              showAddPointsView()
+            }
+              " />
+            <p v-if="error" class="error">{{ error }}</p>
+          </div>
+        </div>
 
-    <RouterLink
-      :to="{ name: 'punkty-dodaj', params: { groupType: selectedGroupType, pointTypeId: selectedPointType } }">
-      <button class="button" v-if="selectedGroupType">
-        Wybierz grupę ręcznie
-      </button>
-    </RouterLink>
+        <RouterLink
+          :to="{ name: 'punkty-dodaj', params: { groupType: selectedGroupType, pointTypeId: selectedPointType } }">
+          <button class="button" v-if="selectedGroupType">
+            Wybierz grupę ręcznie
+          </button>
+        </RouterLink>
 
-    <LoadingIndicator v-if="apiDataStore.pointTypes.loading || loading" />
-    <p v-if="apiDataStore.pointTypes.error" class="error">{{ apiDataStore.pointTypes.error }}</p>
-  </main>
+        <LoadingIndicator v-if="apiDataStore.pointTypes.loading || loading" />
+        <p v-if="apiDataStore.pointTypes.error" class="error">{{ apiDataStore.pointTypes.error }}</p>
+      </main>
+    </ion-content>
+  </ion-page>
 </template>
 
 <script>
@@ -106,12 +111,8 @@ export default {
       const params = { user_id: this.result, group_type: this.selectedGroupType }
       apiRequest('../staff-api/get-user-group/?' + new URLSearchParams(params))
         .then((data) => {
-          if (data.status === 403) {
-            window.location.href = '/login/?next=' + window.location.pathname
-            return
-          }
           if (data.ok) {
-            return data.json()
+            return data
           }
           throw new Error('Request failed!')
         })

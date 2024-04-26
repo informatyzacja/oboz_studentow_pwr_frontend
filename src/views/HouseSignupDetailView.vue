@@ -264,10 +264,7 @@ export default {
             apiRequest('../api2/leave-house/', 'PUT')
                 .then((data) => {
                     if (data.ok) {
-                        return data.json()
-                    }
-                    if (data.status === 403) {
-                        window.location.href = '/login/?next=' + window.location.pathname
+                        return data
                     }
                     this.error = data.status + ' ' + data.statusText
                     this.success = false
@@ -304,10 +301,7 @@ export default {
             )
                 .then((data) => {
                     if (data.ok) {
-                        return data.json()
-                    }
-                    if (data.status === 403) {
-                        window.location.href = '/login/?next=' + window.location.pathname
+                        return data
                     }
                     this.error = data.status + ' ' + data.statusText
                     this.success = false

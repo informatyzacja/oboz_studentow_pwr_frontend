@@ -6,21 +6,27 @@ import LoadingIndicator from '../components/LoadingIndicator.vue'
 import rightArrow from '../assets/arrow.svg'
 
 import { apiRequest } from '../stores/functions.js'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
-  <main>
-    <TopBar title="Frakcje" backLink="/" />
+  <ion-page>
+    <ion-content :fullscreen="true">
+      <main>
+        <TopBar title="Frakcje" backLink="/" />
 
-    <div class="padding-main" v-if="ready && data">
-      <RouterLink :to="frakcjaLink + '/' + data.id" v-for="(data, index) in data" :key="index">
-        <ItemBox :bigText="data.name" :leftIcon="data.logo" :rightIcon="frakcjaLink ? rightArrow : ''" leftIconWhite />
-      </RouterLink>
-    </div>
+        <div class="padding-main" v-if="ready && data">
+          <RouterLink :to="frakcjaLink + '/' + data.id" v-for="(data, index) in data" :key="index">
+            <ItemBox :bigText="data.name" :leftIcon="data.logo" :rightIcon="frakcjaLink ? rightArrow : ''"
+              leftIconWhite />
+          </RouterLink>
+        </div>
 
-    <LoadingIndicator v-if="loading" />
-    <p v-if="error" class="error">{{ error }}</p>
-  </main>
+        <LoadingIndicator v-if="loading" />
+        <p v-if="error" class="error">{{ error }}</p>
+      </main>
+    </ion-content>
+  </ion-page>
 </template>
 
 <script>
@@ -43,15 +49,6 @@ export default {
   methods: {
     fetchFractionData() {
       apiRequest('../staff-api/get-fractions/')
-        .then((data) => {
-          if (data.ok) {
-            return data.json()
-          }
-          if (data.status === 403) {
-            window.location.href = '/login/?next=' + window.location.pathname
-          }
-          throw new Error(data.statusText)
-        })
         .then((data) => {
           if (data.error) {
             this.error = data.error

@@ -9,94 +9,99 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import { apiRequest } from '../stores/functions.js'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
-    <main>
-        <TopBar title="Punkty" backLink="/admin-menu" />
+    <ion-page>
+        <ion-content :fullscreen="true">
+            <main>
+                <TopBar title="Punkty" backLink="/admin-menu" />
 
-        <div class="padding-main" v-if="apiDataStore.points.ready">
-            <h3>Rodziaj grupy</h3>
-            <select v-model="selectedGroupType"
-                @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }">
-                <option value="">Wszystkie</option>
-                <option v-for="groupType in apiDataStore.points.groupTypes" :key="groupType" :value="groupType">
-                    {{ groupType }}
-                </option>
-            </select>
+                <div class="padding-main" v-if="apiDataStore.points.ready">
+                    <h3>Rodziaj grupy</h3>
+                    <select v-model="selectedGroupType"
+                        @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }">
+                        <option value="">Wszystkie</option>
+                        <option v-for="groupType in apiDataStore.points.groupTypes" :key="groupType" :value="groupType">
+                            {{ groupType }}
+                        </option>
+                    </select>
 
-            <div v-if="selectedGroupType != ''">
-                <h3>Kategoria punktów</h3>
-                <select v-model="selectedPointType">
-                    <option value="">Wszystkie</option>
-                    <option v-for="pointType in apiDataStore.points.pointTypes(selectedGroupType)" :key="pointType"
-                        :value="pointType">
-                        {{ pointType }}
-                    </option>
-                </select>
-            </div>
+                    <div v-if="selectedGroupType != ''">
+                        <h3>Kategoria punktów</h3>
+                        <select v-model="selectedPointType">
+                            <option value="">Wszystkie</option>
+                            <option v-for="pointType in apiDataStore.points.pointTypes(selectedGroupType)"
+                                :key="pointType" :value="pointType">
+                                {{ pointType }}
+                            </option>
+                        </select>
+                    </div>
 
-            <div class="filters">
-                <p>Filtry:</p>
-                <div class="filterOption" :class="{ filterOptionSelected: niezatwierdzoneFilter }"
-                    @click="toggleNiezatwierdzoneFilter">Nie zatwierdzone</div>
+                    <div class="filters">
+                        <p>Filtry:</p>
+                        <div class="filterOption" :class="{ filterOptionSelected: niezatwierdzoneFilter }"
+                            @click="toggleNiezatwierdzoneFilter">Nie zatwierdzone</div>
 
-                <div class="filterOption" :class="{ filterOptionSelected: odrzuconeFilter }"
-                    @click="toggleOdrzuconeFilter">Odrzucone</div>
+                        <div class="filterOption" :class="{ filterOptionSelected: odrzuconeFilter }"
+                            @click="toggleOdrzuconeFilter">Odrzucone</div>
 
-                <select v-model="selectedGroup" v-if="selectedGroupType != ''">
-                    <option value="">Grupa</option>
-                    <option v-for="group in apiDataStore.points.groups(selectedGroupType)" :key="group.id"
-                        :value="group.id">
-                        {{ group.name }}
-                    </option>
-                </select>
-            </div>
+                        <select v-model="selectedGroup" v-if="selectedGroupType != ''">
+                            <option value="">Grupa</option>
+                            <option v-for="group in apiDataStore.points.groups(selectedGroupType)" :key="group.id"
+                                :value="group.id">
+                                {{ group.name }}
+                            </option>
+                        </select>
+                    </div>
 
 
-            <div style="margin-top: 20px;">
-                <div v-for="(data, index) in filterOdrzucone(filterNiezatwierdzone(apiDataStore.points.filtered(selectedGroupType, selectedPointType, selectedGroup)))"
-                    :key="index">
-                    <PointsItemView :points="data.numberOfPoints" :date="data.date" :validated="data.validated"
-                        :rejected="data.rejected"
-                        :points_type="data.type.name + ' (' + data.type.points_min + ' - ' + data.type.points_max + ' pkt)'"
-                        :description="data.description" :group_name="data.group.name"
-                        :added_by="data.addedBy.first_name + ' ' + data.addedBy.last_name"
-                        @click="showPointsOverlay(index)" />
-
-                    <OverlayView ref="pointsOverlay">
-                        <div class="padding pointsOverlay">
-                            <PointsItemView style="width:100%" :points="data.numberOfPoints" :date="data.date"
-                                :validated="data.validated" :rejected="data.rejected"
-                                :validatedBy="data.validatedBy.first_name + ' ' + data.validatedBy.last_name"
-                                :validationDate="data.validationDate"
+                    <div style="margin-top: 20px;">
+                        <div v-for="(data, index) in filterOdrzucone(filterNiezatwierdzone(apiDataStore.points.filtered(selectedGroupType, selectedPointType, selectedGroup)))"
+                            :key="index">
+                            <PointsItemView :points="data.numberOfPoints" :date="data.date" :validated="data.validated"
+                                :rejected="data.rejected"
                                 :points_type="data.type.name + ' (' + data.type.points_min + ' - ' + data.type.points_max + ' pkt)'"
                                 :description="data.description" :group_name="data.group.name"
-                                :added_by="data.addedBy.first_name + ' ' + data.addedBy.last_name" />
+                                :added_by="data.addedBy.first_name + ' ' + data.addedBy.last_name"
+                                @click="showPointsOverlay(index)" />
 
-                            <div class="validation-buttons">
-                                <button class="button success" @click="validatePoints(data)"
-                                    v-if="!data.validated && apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_validate_points') && !success && !loading">
-                                    Zatwierdź
-                                </button>
-                                <button class="button error" @click="rejectPoints(data)"
-                                    v-if="!data.rejected && apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_validate_points') && !success && !loading">
-                                    Odrzuć
-                                </button>
-                            </div>
-                            <LoadingIndicator v-if="loading" inline small />
-                            <p>{{ error }}</p>
+                            <OverlayView ref="pointsOverlay">
+                                <div class="padding pointsOverlay">
+                                    <PointsItemView style="width:100%" :points="data.numberOfPoints" :date="data.date"
+                                        :validated="data.validated" :rejected="data.rejected"
+                                        :validatedBy="data.validatedBy.first_name + ' ' + data.validatedBy.last_name"
+                                        :validationDate="data.validationDate"
+                                        :points_type="data.type.name + ' (' + data.type.points_min + ' - ' + data.type.points_max + ' pkt)'"
+                                        :description="data.description" :group_name="data.group.name"
+                                        :added_by="data.addedBy.first_name + ' ' + data.addedBy.last_name" />
 
-                            <button class="button" @click="hidePointsOverlay(index)">Zamknij</button>
+                                    <div class="validation-buttons">
+                                        <button class="button success" @click="validatePoints(data)"
+                                            v-if="!data.validated && apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_validate_points') && !success && !loading">
+                                            Zatwierdź
+                                        </button>
+                                        <button class="button error" @click="rejectPoints(data)"
+                                            v-if="!data.rejected && apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_validate_points') && !success && !loading">
+                                            Odrzuć
+                                        </button>
+                                    </div>
+                                    <LoadingIndicator v-if="loading" inline small />
+                                    <p>{{ error }}</p>
+
+                                    <button class="button" @click="hidePointsOverlay(index)">Zamknij</button>
+                                </div>
+                            </OverlayView>
                         </div>
-                    </OverlayView>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <LoadingIndicator v-if="apiDataStore.points.loading" />
-        <p v-if="apiDataStore.points.error" class="error">{{ apiDataStore.points.error }}</p>
-    </main>
+                <LoadingIndicator v-if="apiDataStore.points.loading" />
+                <p v-if="apiDataStore.points.error" class="error">{{ apiDataStore.points.error }}</p>
+            </main>
+        </ion-content>
+    </ion-page>
 </template>
 
 
@@ -168,10 +173,7 @@ export default {
                 )
                     .then((data) => {
                         if (data.ok) {
-                            return data.json()
-                        }
-                        if (data.status === 403) {
-                            window.location.href = '/login/?next=' + window.location.pathname
+                            return data.
                         }
                         this.error = data.status + ' ' + data.statusText
                         this.success = false
@@ -201,10 +203,7 @@ export default {
                 )
                     .then((data) => {
                         if (data.ok) {
-                            return data.json()
-                        }
-                        if (data.status === 403) {
-                            window.location.href = '/login/?next=' + window.location.pathname
+                            return data
                         }
                         this.error = data.status + ' ' + data.statusText
                         this.success = false

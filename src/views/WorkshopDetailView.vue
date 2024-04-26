@@ -23,7 +23,7 @@ import { IonPage, IonContent } from '@ionic/vue';
         <TopBar :backLink="$router.options.history.state.back || { name: 'warsztaty' }" absolute />
         <div v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length"
           :set="(data = apiDataStore.workshops.withId(parseInt($route.params.id)))">
-          <div class="card">
+          <div class="card" v-if="data">
             <img class="bg" :src="data.photo || questionMark" />
             <div class="time">
               <p>{{ moment(data.start).format('dd. DD.MM') }}</p>
@@ -256,7 +256,7 @@ export default {
       apiRequest(URL, method, body)
         .then((data) => {
           if (data.ok) {
-            return data.json()
+            return data
           }
           throw new Error('Request failed!')
         })

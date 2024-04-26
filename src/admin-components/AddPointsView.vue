@@ -6,85 +6,94 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import { apiRequest } from '../stores/functions.js'
+import { IonPage, IonContent } from '@ionic/vue';
 
 </script>
 
 <template>
-    <main>
-        <TopBar title="Dodaj punkty" :backLink="$router.options.history.state.back || '/admin-menu'" />
 
-        <div class="padding-main" v-if="apiDataStore.pointTypes.ready">
-            <h3>Rodziaj grupy</h3>
-            <select v-model="selectedGroupType"
-                @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }"
-                :disabled="disabled">
-                <option disabled value="">Wybierz rodzaj grupy</option>
-                <option v-for="groupType in apiDataStore.pointTypes.data.groupTypes" :key="groupType.id"
-                    :value="groupType.name">
-                    {{ groupType.name }}
-                </option>
-            </select>
+    <ion-page>
+        <ion-content :fullscreen="true">
+            <main>
+                <TopBar title="Dodaj punkty" :backLink="$router.options.history.state.back || '/admin-menu'" />
 
-            <div v-if="selectedGroupType">
-                <h3>Kategoria punktów</h3>
-                <select v-model="selectedPointType" :disabled="disabled">
-                    <option disabled value="">Wybierz kategorię punktów</option>
-                    <option v-for="pointType in apiDataStore.pointTypes.forGroupType(selectedGroupType)"
-                        :key="pointType.id" :value="pointType.id">
-                        {{ pointType.name }}
-                    </option>
-                </select>
-            </div>
+                <div class="padding-main" v-if="apiDataStore.pointTypes.ready">
+                    <h3>Rodziaj grupy</h3>
+                    <select v-model="selectedGroupType"
+                        @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }"
+                        :disabled="disabled">
+                        <option disabled value="">Wybierz rodzaj grupy</option>
+                        <option v-for="groupType in apiDataStore.pointTypes.data.groupTypes" :key="groupType.id"
+                            :value="groupType.name">
+                            {{ groupType.name }}
+                        </option>
+                    </select>
 
-            <div v-if="selectedGroupType">
-                <h3>Grupa</h3>
-                <select v-model="selectedGroup" :disabled="disabled">
-                    <option disabled value="">Wybierz grupę</option>
-                    <option value="scan">SKANUJ</option>
-                    <option v-for="group in apiDataStore.pointTypes.groupsWithGroupType(selectedGroupType)"
-                        :key="group.id" :value="group.id">
-                        {{ group.name }}
-                    </option>
-                </select>
-            </div>
+                    <div v-if="selectedGroupType">
+                        <h3>Kategoria punktów</h3>
+                        <select v-model="selectedPointType" :disabled="disabled">
+                            <option disabled value="">Wybierz kategorię punktów</option>
+                            <option v-for="pointType in apiDataStore.pointTypes.forGroupType(selectedGroupType)"
+                                :key="pointType.id" :value="pointType.id">
+                                {{ pointType.name }}
+                            </option>
+                        </select>
+                    </div>
 
-            <div
-                v-if="selectedGroupType && selectedPointType && selectedGroup && apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType)">
-                <h3>Ile punktów ({{ apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_min
-                    }} -
-                    {{ apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_max }})</h3>
-                <div class="points-input-div">
-                    <button class="plus-minus-button" @click="plusMinus"
-                        v-if="apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_min < 0">
-                        +/-
-                    </button>
-                    <input type="number" pattern="[0-9]*" inputmode="decimal" v-model="points"
-                        :min="apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_min"
-                        :max="apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_max"
-                        :disabled="disabled" />
+                    <div v-if="selectedGroupType">
+                        <h3>Grupa</h3>
+                        <select v-model="selectedGroup" :disabled="disabled">
+                            <option disabled value="">Wybierz grupę</option>
+                            <option value="scan">SKANUJ</option>
+                            <option v-for="group in apiDataStore.pointTypes.groupsWithGroupType(selectedGroupType)"
+                                :key="group.id" :value="group.id">
+                                {{ group.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div
+                        v-if="selectedGroupType && selectedPointType && selectedGroup && apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType)">
+                        <h3>Ile punktów ({{ apiDataStore.pointTypes.withTypes(selectedGroupType,
+                            selectedPointType).points_min
+                            }} -
+                            {{ apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_max }})
+                        </h3>
+                        <div class="points-input-div">
+                            <button class="plus-minus-button" @click="plusMinus"
+                                v-if="apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_min < 0">
+                                +/-
+                            </button>
+                            <input type="number" pattern="[0-9]*" inputmode="decimal" v-model="points"
+                                :min="apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_min"
+                                :max="apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_max"
+                                :disabled="disabled" />
+                        </div>
+
+                        <h3>Opis</h3>
+                        <textarea v-model="description" rows="4" cols="50" :disabled="disabled"></textarea>
+
+                        <button class="button success" @click="addPoints"
+                            v-if="points != 0 && selectedGroup && apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_min <= points && points <= apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_max && !loading && !success">Dodaj</button>
+                        <LoadingIndicator v-if="loading" />
+                        <p class="success">{{ info }}</p>
+                        <p v-if="error" class="error">{{ error }}</p>
+                        <button v-if="success" class="button" @click="reset">Dodaj kolejne</button>
+                    </div>
+                    <p v-else-if="selectedGroupType && selectedPointType && !apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType)"
+                        class="error">Grupa typu "{{ selectedGroupType }}" nie może posiadać podanej kategorii punktów
+                    </p>
+
+
+
                 </div>
 
-                <h3>Opis</h3>
-                <textarea v-model="description" rows="4" cols="50" :disabled="disabled"></textarea>
+                <LoadingIndicator v-if="apiDataStore.pointTypes.loading" />
+                <p v-if="apiDataStore.pointTypes.error" class="error">{{ apiDataStore.pointTypes.error }}</p>
 
-                <button class="button success" @click="addPoints"
-                    v-if="points != 0 && selectedGroup && apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_min <= points && points <= apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_max && !loading && !success">Dodaj</button>
-                <LoadingIndicator v-if="loading" />
-                <p class="success">{{ info }}</p>
-                <p v-if="error" class="error">{{ error }}</p>
-                <button v-if="success" class="button" @click="reset">Dodaj kolejne</button>
-            </div>
-            <p v-else-if="selectedGroupType && selectedPointType && !apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType)"
-                class="error">Grupa typu "{{ selectedGroupType }}" nie może posiadać podanej kategorii punktów</p>
-
-
-
-        </div>
-
-        <LoadingIndicator v-if="apiDataStore.pointTypes.loading" />
-        <p v-if="apiDataStore.pointTypes.error" class="error">{{ apiDataStore.pointTypes.error }}</p>
-
-    </main>
+            </main>
+        </ion-content>
+    </ion-page>
 </template>
 
 
@@ -175,12 +184,8 @@ export default {
                     data
                 )
                     .then((data) => {
-                        if (data.status === 403) {
-                            window.location.href = '/login/?next=' + window.location.pathname
-                            return
-                        }
                         if (data.ok) {
-                            return data.json()
+                            return data.
                         }
                         this.error = data.status + ' ' + data.statusText
                         this.success = false

@@ -127,6 +127,12 @@ p {
   height: 30px;
 }
 
+.small .leftIcon {
+  margin-left: 0;
+  width: 28px;
+  height: 28px;
+}
+
 .leftIcon img {
   width: 100%;
   height: 100%;
@@ -148,10 +154,5 @@ img {
 .small {
   min-height: 45px;
   padding: 5px 15px;
-}
-
-.small .leftIcon {
-  width: 32px;
-  height: 32px;
 }
 </style>

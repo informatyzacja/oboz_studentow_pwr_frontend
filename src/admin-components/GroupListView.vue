@@ -6,21 +6,26 @@ import LoadingIndicator from '../components/LoadingIndicator.vue'
 import rightArrow from '../assets/arrow.svg'
 
 import { apiRequest } from '../stores/functions.js'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
-  <main>
-    <TopBar title="Gra nocna - grupy" backLink="/admin-menu" />
+  <ion-page>
+    <ion-content :fullscreen="true">
+      <main>
+        <TopBar title="Gra nocna - grupy" backLink="/admin-menu" />
 
-    <div class="padding-main" v-if="ready && data">
-      <RouterLink :to="grupaLink + '/' + data.id" v-for="(data, index) in data" :key="index">
-        <ItemBox :leftBigText="data.type.name" :bigText="data.name" :rightIcon="grupaLink ? rightArrow : ''" />
-      </RouterLink>
-    </div>
+        <div class="padding-main" v-if="ready && data">
+          <RouterLink :to="grupaLink + '/' + data.id" v-for="(data, index) in data" :key="index">
+            <ItemBox :leftBigText="data.type.name" :bigText="data.name" :rightIcon="grupaLink ? rightArrow : ''" />
+          </RouterLink>
+        </div>
 
-    <LoadingIndicator v-if="loading" />
-    <p v-if="error" class="error">{{ error }}</p>
-  </main>
+        <LoadingIndicator v-if="loading" />
+        <p v-if="error" class="error">{{ error }}</p>
+      </main>
+    </ion-content>
+  </ion-page>
 </template>
 
 <script>
@@ -45,12 +50,9 @@ export default {
       apiRequest('../staff-api/get-groups/')
         .then((data) => {
           if (data.ok) {
-            return data.json()
+            return data
           }
 
-          if (data.status === 403) {
-            window.location.href = '/login/?next=' + window.location.pathname
-          }
           throw new Error(data.statusText)
         })
         .then((data) => {

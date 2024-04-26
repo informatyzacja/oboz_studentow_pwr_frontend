@@ -12,18 +12,15 @@ import { IonPage, IonContent } from '@ionic/vue';
 
   <ion-page>
     <ion-content :fullscreen="true">
-  <main>
-    <TopBar title="FAQ" :backLink="$router.options.history.state.back || '/faq'" />
-    <div
-      v-if="apiDataStore.faq.ready && apiDataStore.faq.data.length"
-      class="padding"
-      :set="(data = apiDataStore.faq.withId(parseInt($route.params.id)))"
-    >
-      <TextBox :content="data.answer" :title="data.question" />
-    </div>
-    <LoadingIndicator v-if="apiDataStore.faq.loading" />
-    <p v-if="apiDataStore.faq.error" class="error">{{ apiDataStore.faq.error }}</p>
-  </main>
+      <main>
+        <TopBar title="FAQ" :backLink="$router.options.history.state.back || '/faq'" />
+        <div v-if="apiDataStore.faq.ready && apiDataStore.faq.data.length" class="padding"
+          :set="(data = apiDataStore.faq.withId(id))">
+          <TextBox :content="data.answer" :title="data.question" />
+        </div>
+        <LoadingIndicator v-if="apiDataStore.faq.loading" />
+        <p v-if="apiDataStore.faq.error" class="error">{{ apiDataStore.faq.error }}</p>
+      </main>
 
     </ion-content>
   </ion-page>
@@ -33,7 +30,8 @@ import { IonPage, IonContent } from '@ionic/vue';
 export default {
   data() {
     return {
-      timer: null
+      timer: null,
+      id: parseInt(this.$route.params.id)
     }
   },
   computed: {

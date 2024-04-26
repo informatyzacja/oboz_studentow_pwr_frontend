@@ -8,65 +8,72 @@ import { mapStores } from 'pinia'
 import { apiRequest } from './stores/functions.js'
 
 import moment from 'moment'
+
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
-    <main>
-        <TopBar title="Dodaj ogłoszenie" :backLink="$router.options.history.state.back || '/admin-menu'" />
+    <ion-page>
+        <ion-content :fullscreen="true">
+            <main>
+                <TopBar title="Dodaj ogłoszenie" :backLink="$router.options.history.state.back || '/admin-menu'" />
 
-        <div class="padding-main" v-if="apiDataStore.pointTypes.ready">
-            <h3>Rodziaj grupy</h3>
-            <select v-model="selectedGroupType"
-                @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }"
-                :disabled="disabled">
-                <option value="all">Wszystkie</option>
-                <option v-for="groupType in apiDataStore.pointTypes.data.groupTypes" :key="groupType.id"
-                    :value="groupType.name">
-                    {{ groupType.name }}
-                </option>
-            </select>
+                <div class="padding-main" v-if="apiDataStore.pointTypes.ready">
+                    <h3>Rodziaj grupy</h3>
+                    <select v-model="selectedGroupType"
+                        @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }"
+                        :disabled="disabled">
+                        <option value="all">Wszystkie</option>
+                        <option v-for="groupType in apiDataStore.pointTypes.data.groupTypes" :key="groupType.id"
+                            :value="groupType.name">
+                            {{ groupType.name }}
+                        </option>
+                    </select>
 
-            <div v-if="selectedGroupType != 'all'">
-                <h3>Grupa</h3>
-                <select v-model="selectedGroup" :disabled="disabled">
-                    <option disabled value="null">Wybierz grupę</option>
-                    <option v-for="group in apiDataStore.pointTypes.groupsWithGroupType(selectedGroupType)"
-                        :key="group.id" :value="group.id">
-                        {{ group.name }}
-                    </option>
-                </select>
-            </div>
+                    <div v-if="selectedGroupType != 'all'">
+                        <h3>Grupa</h3>
+                        <select v-model="selectedGroup" :disabled="disabled">
+                            <option disabled value="null">Wybierz grupę</option>
+                            <option v-for="group in apiDataStore.pointTypes.groupsWithGroupType(selectedGroupType)"
+                                :key="group.id" :value="group.id">
+                                {{ group.name }}
+                            </option>
+                        </select>
+                    </div>
 
-            <div v-if="selectedGroupType === 'all' || selectedGroup">
-                <h3>Tytuł ogłoszenia</h3>
-                <input v-model="title" type="text" maxlength="100" :disabled="disabled" />
+                    <div v-if="selectedGroupType === 'all' || selectedGroup">
+                        <h3>Tytuł ogłoszenia</h3>
+                        <input v-model="title" type="text" maxlength="100" :disabled="disabled" />
 
-                <h3>Treść ogłoszenia</h3>
-                <textarea v-model="content" rows="4" cols="50" :disabled="disabled"></textarea>
+                        <h3>Treść ogłoszenia</h3>
+                        <textarea v-model="content" rows="4" cols="50" :disabled="disabled"></textarea>
 
-                <h3>Do kiedy ogłoszenie ma być widoczne</h3>
-                <input v-model="hide_date" type="datetime-local" :min="hide_date_min" :disabled="disabled" />
+                        <h3>Do kiedy ogłoszenie ma być widoczne</h3>
+                        <input v-model="hide_date" type="datetime-local" :min="hide_date_min" :disabled="disabled" />
 
-                <div class="sendNotif">
-                    <h3>Wyślij powiadomienia</h3>
-                    <input type="checkbox" v-model="sendNotif" :disabled="disabled" />
+                        <div class="sendNotif">
+                            <h3>Wyślij powiadomienia</h3>
+                            <input type="checkbox" v-model="sendNotif" :disabled="disabled" />
+                        </div>
+
+                        <button class="button success" @click="addAnouncement"
+                            v-if="title && content && hide_date && !loading && !success">Dodaj ogłoszenie</button>
+
+                        <LoadingIndicator v-if="loading" />
+                        <p class="success">{{ info }}</p>
+                        <p v-if="error" class="error">{{ error }}</p>
+                    </div>
+
+
+
                 </div>
 
-                <button class="button success" @click="addAnouncement"
-                    v-if="title && content && hide_date && !loading && !success">Dodaj ogłoszenie</button>
+                <LoadingIndicator v-if="apiDataStore.pointTypes.loading" />
+                <p v-if="apiDataStore.pointTypes.error" class="error">{{ apiDataStore.pointTypes.error }}</p>
+            </main>
 
-                <LoadingIndicator v-if="loading" />
-                <p class="success">{{ info }}</p>
-                <p v-if="error" class="error">{{ error }}</p>
-            </div>
-
-
-
-        </div>
-
-        <LoadingIndicator v-if="apiDataStore.pointTypes.loading" />
-        <p v-if="apiDataStore.pointTypes.error" class="error">{{ apiDataStore.pointTypes.error }}</p>
-    </main>
+        </ion-content>
+    </ion-page>
 </template>
 
 
@@ -123,12 +130,8 @@ export default {
                     data
                 )
                     .then((data) => {
-                        if (data.status === 403) {
-                            window.location.href = '/login/?next=' + window.location.pathname
-                            return
-                        }
                         if (data.ok) {
-                            return data.json()
+                            return data
                         }
                         this.error = data.status + ' ' + data.statusText
                         this.success = false

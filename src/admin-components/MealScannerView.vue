@@ -6,53 +6,58 @@ import ScannerBaseView from './ScannerBaseView.vue'
 import moment from 'moment'
 
 import { apiRequest } from '../stores/functions.js'
+import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
 <template>
-  <main>
-    <TopBar title="Walidacja posiłków" backLink="/skaner" />
+  <ion-page>
+    <ion-content :fullscreen="true">
+      <main>
+        <TopBar title="Walidacja posiłków" backLink="/skaner" />
 
-    <div class="padding-main">
-      <!-- <h3>Tryb skanowania</h3>
+        <div class="padding-main">
+          <!-- <h3>Tryb skanowania</h3>
         <ItemBox bigText="Walidacja posiłków" small/> -->
-      <!-- <h3>Posiłek</h3> -->
-      <ItemBox :bigText="currentMealLoadng
-        ? 'Ładowanie...'
-        : currentMeal
-          ? currentMeal.type__name + ', ' + moment(currentMeal.date).format('dddd DD.MM')
-          : 'Obecnie nie odbywa się żaden posiłek'
-        " small />
+          <!-- <h3>Posiłek</h3> -->
+          <ItemBox :bigText="currentMealLoadng
+            ? 'Ładowanie...'
+            : currentMeal
+              ? currentMeal.type__name + ', ' + moment(currentMeal.date).format('dddd DD.MM')
+              : 'Obecnie nie odbywa się żaden posiłek'
+            " small />
 
-      <div class="center">
-        <ScannerBaseView @error="(err) => (error = err)" @result="(res) => {
-          result = res
-          checkMealValidation()
-        }
-          " :hideScanner="currentMealLoadng || !currentMeal"
-          :codeText="!resultLoading ? user || error : 'Ładowanie...'"
-          :codeFrameColor="resultLoading ? 'gray' : success ? 'green' : '#9a2929'" />
+          <div class="center">
+            <ScannerBaseView @error="(err) => (error = err)" @result="(res) => {
+              result = res
+              checkMealValidation()
+            }
+              " :hideScanner="currentMealLoadng || !currentMeal"
+              :codeText="!resultLoading ? user || error : 'Ładowanie...'"
+              :codeFrameColor="resultLoading ? 'gray' : success ? 'green' : '#9a2929'" />
 
-        <div class="result" :class="{ error: success === false, success: success === true }" v-if="
-          result ||
-          user ||
-          error ||
-          resultLoading ||
-          (validationCheckSuccessful && !validationSuccessful && !resultLoading)
-        ">
-          <p v-if="result">Kod: {{ result }}</p>
-          <h4>{{ user }}</h4>
-          <h5 v-if="user_title">{{ user_title }}</h5>
-          <h6 v-if="user_diet">Dieta: {{ user_diet }}</h6>
-          <h5>{{ error }}</h5>
-          <LoadingIndicator v-if="resultLoading" inline small />
-          <button class="button success" v-if="validationCheckSuccessful && !validationSuccessful && !resultLoading"
-            @click="validateMeal">
-            Zatwierdź
-          </button>
+            <div class="result" :class="{ error: success === false, success: success === true }" v-if="
+              result ||
+              user ||
+              error ||
+              resultLoading ||
+              (validationCheckSuccessful && !validationSuccessful && !resultLoading)
+            ">
+              <p v-if="result">Kod: {{ result }}</p>
+              <h4>{{ user }}</h4>
+              <h5 v-if="user_title">{{ user_title }}</h5>
+              <h6 v-if="user_diet">Dieta: {{ user_diet }}</h6>
+              <h5>{{ error }}</h5>
+              <LoadingIndicator v-if="resultLoading" inline small />
+              <button class="button success" v-if="validationCheckSuccessful && !validationSuccessful && !resultLoading"
+                @click="validateMeal">
+                Zatwierdź
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </main>
+      </main>
+    </ion-content>
+  </ion-page>
 </template>
 
 <script>
@@ -93,10 +98,7 @@ export default {
       apiRequest('../staff-api/meal-validation/check/?' + new URLSearchParams(body))
         .then((data) => {
           if (data.ok) {
-            return data.json()
-          }
-          if (data.status === 403) {
-            window.location.href = '/login/?next=' + window.location.pathname
+            return data
           }
           this.error = data.status + ' ' + data.statusText
           this.success = false
@@ -128,10 +130,7 @@ export default {
       )
         .then((data) => {
           if (data.ok) {
-            return data.json()
-          }
-          if (data.status === 403) {
-            window.location.href = '/login/?next=' + window.location.pathname
+            return data
           }
           this.error = data.status + ' ' + data.statusText
           this.success = false
@@ -160,10 +159,7 @@ export default {
       apiRequest('../staff-api/meal-validation/current-meal/')
         .then((data) => {
           if (data.ok) {
-            return data.json()
-          }
-          if (data.status === 403) {
-            window.location.href = '/login/?next=' + window.location.pathname
+            return data
           }
           throw new Error('Request failed!')
         })

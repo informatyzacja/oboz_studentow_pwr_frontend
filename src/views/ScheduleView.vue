@@ -105,7 +105,7 @@ import { IonPage, IonContent, IonNavLink } from '@ionic/vue';
   justify-content: center;
   align-items: center;
   padding: 0 0 10px;
-  margin-top: -8px;
+  /* margin-top: -8px; */
 }
 
 .day-changer h5 {
@@ -154,7 +154,7 @@ a.button {
   display: inline-block;
   justify-content: center;
 
-  margin: 0 auto 20px auto;
+  margin: 0 auto 10px auto;
 }
 </style>
 

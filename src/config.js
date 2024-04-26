@@ -25,9 +25,6 @@ export function registerForPushNotifications() {
                         if (data.ok) {
                             return data.json()
                         }
-                        if (data.status === 403) {
-                            window.location.href = '/login/?next=' + window.location.pathname
-                        }
                         throw new Error(data.status + ' ' + data.statusText)
                     })
                     .then((data) => {
