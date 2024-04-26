@@ -5,26 +5,22 @@ import LoadingIndicator from '../components/LoadingIndicator.vue'
 
 import rightArrow from '../assets/arrow.svg'
 
-import { API_URL, AUTH_HEADER } from '../config.js'
+import { apiRequest } from '../stores/functions.js'
 </script>
 
 <template>
   <main>
-  <TopBar title="Gra nocna - grupy" backLink="/admin-menu" />
+    <TopBar title="Gra nocna - grupy" backLink="/admin-menu" />
 
-  <div class="padding-main" v-if="ready && data">
-    <RouterLink :to="grupaLink + '/' + data.id" v-for="(data, index) in data" :key="index">
-      <ItemBox
-        :leftBigText="data.type.name"
-        :bigText="data.name"
-        :rightIcon="grupaLink ? rightArrow : ''"
-      />
-    </RouterLink>
-  </div>
+    <div class="padding-main" v-if="ready && data">
+      <RouterLink :to="grupaLink + '/' + data.id" v-for="(data, index) in data" :key="index">
+        <ItemBox :leftBigText="data.type.name" :bigText="data.name" :rightIcon="grupaLink ? rightArrow : ''" />
+      </RouterLink>
+    </div>
 
-  <LoadingIndicator v-if="loading" />
-  <p v-if="error" class="error">{{ error }}</p>
-</main>
+    <LoadingIndicator v-if="loading" />
+    <p v-if="error" class="error">{{ error }}</p>
+  </main>
 </template>
 
 <script>
@@ -46,10 +42,7 @@ export default {
   },
   methods: {
     fetchGroupData() {
-      fetch(API_URL + '../staff-api/get-groups/', {
-        headers: AUTH_HEADER,
-        method: 'GET'
-      })
+      apiRequest('../staff-api/get-groups/')
         .then((data) => {
           if (data.ok) {
             return data.json()

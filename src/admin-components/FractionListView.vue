@@ -5,7 +5,7 @@ import LoadingIndicator from '../components/LoadingIndicator.vue'
 
 import rightArrow from '../assets/arrow.svg'
 
-import { API_URL, AUTH_HEADER } from '../config.js'
+import { apiRequest } from '../stores/functions.js'
 </script>
 
 <template>
@@ -42,10 +42,7 @@ export default {
   },
   methods: {
     fetchFractionData() {
-      fetch(API_URL + '../staff-api/get-fractions/', {
-        headers: AUTH_HEADER,
-        method: 'GET'
-      })
+      apiRequest('../staff-api/get-fractions/')
         .then((data) => {
           if (data.ok) {
             return data.json()

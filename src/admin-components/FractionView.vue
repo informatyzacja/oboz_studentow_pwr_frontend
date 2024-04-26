@@ -4,13 +4,13 @@ import GenericGroupView from '../views/GenericGroupView.vue'
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
-import { API_URL, AUTH_HEADER } from '../config.js'
+import { apiRequest } from '../stores/functions.js'
 </script>
 
 <template>
   <GenericGroupView title="Frakcja" :backLink="$router.options.history.state.back || '/skaner/uczestnik'"
-    mapDescription="Miejsce spotkań" messengerDescription="Grupa frakcji" :ready="ready" :loading="loading" :error="error"
-    :group="data"></GenericGroupView>
+    mapDescription="Miejsce spotkań" messengerDescription="Grupa frakcji" :ready="ready" :loading="loading"
+    :error="error" :group="data"></GenericGroupView>
 </template>
 
 <script>
@@ -34,10 +34,7 @@ export default {
   methods: {
     fetchFractionData() {
       const params = { group_id: this.$route.params.id }
-      fetch(API_URL + '../staff-api/get-fraction/?' + new URLSearchParams(params), {
-        headers: AUTH_HEADER,
-        method: 'GET'
-      })
+      apiRequest('../staff-api/get-fraction/?' + new URLSearchParams(params))
         .then((data) => {
           if (data.ok) {
             return data.json()

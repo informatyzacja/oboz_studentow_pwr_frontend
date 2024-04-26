@@ -6,53 +6,55 @@ import LoadingIndicator from '../components/LoadingIndicator.vue'
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
-import { API_URL, AUTH_HEADER } from '../config.js'
+import { apiRequest } from '../stores/functions.js'
 </script>
 
 <template>
   <main>
-  <TopBar title="Dodaj punkty" backLink="/skaner" />
+    <TopBar title="Dodaj punkty" backLink="/skaner" />
 
-  <div class="padding-main" v-if="apiDataStore.pointTypes.ready">
-    <h3>Rodziaj grupy</h3>
-    <select v-model="selectedGroupType"
-      @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }">
-      <option disabled value="">Wybierz rodzaj grupy</option>
-      <option v-for="groupType in apiDataStore.pointTypes.data.groupTypes" :key="groupType.id" :value="groupType.name">
-        {{ groupType.name }}
-      </option>
-    </select>
-
-    <div v-if="selectedGroupType">
-      <h3>Kategoria punktów</h3>
-      <select v-model="selectedPointType">
-        <option disabled value="">Wybierz kategorię punktów</option>
-        <option v-for="pointType in apiDataStore.pointTypes.forGroupType(selectedGroupType)" :key="pointType.id"
-          :value="pointType.id">
-          {{ pointType.name }}
+    <div class="padding-main" v-if="apiDataStore.pointTypes.ready">
+      <h3>Rodziaj grupy</h3>
+      <select v-model="selectedGroupType"
+        @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }">
+        <option disabled value="">Wybierz rodzaj grupy</option>
+        <option v-for="groupType in apiDataStore.pointTypes.data.groupTypes" :key="groupType.id"
+          :value="groupType.name">
+          {{ groupType.name }}
         </option>
       </select>
-    </div>
 
-    <div class="center">
-      <ScannerBaseView v-if="selectedGroupType && !loading" @error="(err) => (error = err)" @result="(res) => {
+      <div v-if="selectedGroupType">
+        <h3>Kategoria punktów</h3>
+        <select v-model="selectedPointType">
+          <option disabled value="">Wybierz kategorię punktów</option>
+          <option v-for="pointType in apiDataStore.pointTypes.forGroupType(selectedGroupType)" :key="pointType.id"
+            :value="pointType.id">
+            {{ pointType.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="center">
+        <ScannerBaseView v-if="selectedGroupType && !loading" @error="(err) => (error = err)" @result="(res) => {
           result = res
           showAddPointsView()
         }
-        " />
-      <p v-if="error" class="error">{{ error }}</p>
+          " />
+        <p v-if="error" class="error">{{ error }}</p>
+      </div>
     </div>
-  </div>
 
-  <RouterLink :to="{ name: 'punkty-dodaj', params: { groupType: selectedGroupType, pointTypeId: selectedPointType } }">
-    <button class="button" v-if="selectedGroupType">
-      Wybierz grupę ręcznie
-    </button>
-  </RouterLink>
-  
-  <LoadingIndicator v-if="apiDataStore.pointTypes.loading || loading" />
-  <p v-if="apiDataStore.pointTypes.error" class="error">{{ apiDataStore.pointTypes.error }}</p>
-</main>
+    <RouterLink
+      :to="{ name: 'punkty-dodaj', params: { groupType: selectedGroupType, pointTypeId: selectedPointType } }">
+      <button class="button" v-if="selectedGroupType">
+        Wybierz grupę ręcznie
+      </button>
+    </RouterLink>
+
+    <LoadingIndicator v-if="apiDataStore.pointTypes.loading || loading" />
+    <p v-if="apiDataStore.pointTypes.error" class="error">{{ apiDataStore.pointTypes.error }}</p>
+  </main>
 </template>
 
 <script>
@@ -81,18 +83,18 @@ export default {
     },
 
     selectedGroupType() {
-      this.$router.replace({  params: { groupType: this.selectedGroupType } })
+      this.$router.replace({ params: { groupType: this.selectedGroupType } })
     },
 
   },
   mounted() {
-    if ( this.apiDataStore.pointTypes.ready) {
-        if (this.$route.params.pointTypeId) {
-            this.selectedPointType = parseInt(this.$route.params.pointTypeId)
-            this.selectedGroupType = this.apiDataStore.pointTypes.getPointTypeById(this.selectedPointType).group_type.name
-        } else if (this.$route.params.groupType) {
-            this.selectedGroupType = this.$route.params.groupType
-        }
+    if (this.apiDataStore.pointTypes.ready) {
+      if (this.$route.params.pointTypeId) {
+        this.selectedPointType = parseInt(this.$route.params.pointTypeId)
+        this.selectedGroupType = this.apiDataStore.pointTypes.getPointTypeById(this.selectedPointType).group_type.name
+      } else if (this.$route.params.groupType) {
+        this.selectedGroupType = this.$route.params.groupType
+      }
     }
 
     this.apiDataStore.pointTypes.fetchData()
@@ -102,10 +104,7 @@ export default {
     showAddPointsView() {
       this.loading = true
       const params = { user_id: this.result, group_type: this.selectedGroupType }
-      fetch(API_URL + '../staff-api/get-user-group/?' + new URLSearchParams(params), {
-        headers: AUTH_HEADER,
-        method: 'GET'
-      })
+      apiRequest('../staff-api/get-user-group/?' + new URLSearchParams(params))
         .then((data) => {
           if (data.status === 403) {
             window.location.href = '/login/?next=' + window.location.pathname
@@ -158,7 +157,7 @@ textarea {
   border: 1px solid var(--text-gray);
   margin-bottom: 2px;
   font-size: 15px;
-  
+
   border: none;
   outline: none;
   color: white;
@@ -183,7 +182,7 @@ select {
   font-size: 17px;
   line-height: 16px;
   cursor: pointer;
-  
+
 
   display: flex;
   justify-content: center;
@@ -191,7 +190,6 @@ select {
   margin: 5px auto 12px;
 
   background-color: var(--bg-light);
-  
-}
 
+}
 </style>

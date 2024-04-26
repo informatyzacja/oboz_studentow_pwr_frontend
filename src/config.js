@@ -1,9 +1,6 @@
-export const API_URL = import.meta.env.VITE_API_URL || '/api/'
-const WS_API_PROTOCOL = import.meta.env.VITE_WS_API_PROTOCOL || 'wss'
-export const WS_API_URL = import.meta.env.VITE_WS_API_URL || WS_API_PROTOCOL + '://' + window.location.host + '/'
-// '{ "Authorization": "Token 67bdbcffd9c883b098da608f57db393c868ef178" }'
+export const API_URL = import.meta.env.VITE_API_URL
+export const WS_API_URL = import.meta.env.VITE_WS_API_URL
 export const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN
-export const AUTH_HEADER = AUTH_TOKEN ? { "Authorization": "Token " + AUTH_TOKEN } : {}
 
 export const REULAMIN_LINK = 'https://drive.google.com/file/d/1Ptkf7S7XUzlGGz_j3ye1XXhOYSyecanK/view?pli=1'
 export const POLITYKA_PRYWATNOSCI_LINK = null
@@ -12,7 +9,7 @@ export const POLITYKA_PRYWATNOSCI_LINK = null
 import { getToken, isSupported } from "firebase/messaging";
 import { messaging } from "./firebaseConfig.js";
 
-import { getCookie } from './stores/functions.js'
+import { apiRequest } from './stores/functions.js'
 
 export function registerForPushNotifications() {
     if (isSupported() && ("Notification" in window)) {
@@ -20,16 +17,10 @@ export function registerForPushNotifications() {
             if (currentToken) {
 
                 const body = { token: currentToken }
-                const csrftoken = getCookie('csrftoken')
-                fetch(API_URL + '../api2/register-fcm-token/', {
-                    headers: Object.assign(
-                        {},
-                        { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken },
-                        AUTH_HEADER
-                    ),
-                    method: 'POST',
-                    body: JSON.stringify(body)
-                })
+                apiRequest('../api2/register-fcm-token/',
+                    'POST',
+                    JSON.stringify(body)
+                )
                     .then((data) => {
                         if (data.ok) {
                             return data.json()

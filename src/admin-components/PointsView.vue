@@ -8,93 +8,95 @@ import PointsItemView from './PointsItemView.vue'
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
-import { API_URL, AUTH_HEADER } from '../config.js'
-import { getCookie } from '../stores/functions.js'
+import { apiRequest } from '../stores/functions.js'
 </script>
 
 <template>
     <main>
-    <TopBar title="Punkty" backLink="/admin-menu" />
+        <TopBar title="Punkty" backLink="/admin-menu" />
 
-    <div class="padding-main" v-if="apiDataStore.points.ready">
-        <h3>Rodziaj grupy</h3>
-        <select v-model="selectedGroupType"
-            @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }">
-            <option value="">Wszystkie</option>
-            <option v-for="groupType in apiDataStore.points.groupTypes" :key="groupType" :value="groupType">
-                {{ groupType }}
-            </option>
-        </select>
-
-        <div v-if="selectedGroupType != ''">
-            <h3>Kategoria punktów</h3>
-            <select v-model="selectedPointType">
+        <div class="padding-main" v-if="apiDataStore.points.ready">
+            <h3>Rodziaj grupy</h3>
+            <select v-model="selectedGroupType"
+                @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }">
                 <option value="">Wszystkie</option>
-                <option v-for="pointType in apiDataStore.points.pointTypes(selectedGroupType)" :key="pointType"
-                    :value="pointType">
-                    {{ pointType }}
+                <option v-for="groupType in apiDataStore.points.groupTypes" :key="groupType" :value="groupType">
+                    {{ groupType }}
                 </option>
             </select>
-        </div>
 
-        <div class="filters">
-            <p>Filtry:</p>
-            <div class="filterOption" :class="{ filterOptionSelected: niezatwierdzoneFilter }"
-                @click="toggleNiezatwierdzoneFilter">Nie zatwierdzone</div>
+            <div v-if="selectedGroupType != ''">
+                <h3>Kategoria punktów</h3>
+                <select v-model="selectedPointType">
+                    <option value="">Wszystkie</option>
+                    <option v-for="pointType in apiDataStore.points.pointTypes(selectedGroupType)" :key="pointType"
+                        :value="pointType">
+                        {{ pointType }}
+                    </option>
+                </select>
+            </div>
 
-            <div class="filterOption" :class="{ filterOptionSelected: odrzuconeFilter }"
-                @click="toggleOdrzuconeFilter">Odrzucone</div>
+            <div class="filters">
+                <p>Filtry:</p>
+                <div class="filterOption" :class="{ filterOptionSelected: niezatwierdzoneFilter }"
+                    @click="toggleNiezatwierdzoneFilter">Nie zatwierdzone</div>
 
-            <select v-model="selectedGroup" v-if="selectedGroupType != ''">
-                <option value="">Grupa</option>
-                <option v-for="group in apiDataStore.points.groups(selectedGroupType)" :key="group.id" :value="group.id">
-                    {{ group.name }}
-                </option>
-            </select>
-        </div>
+                <div class="filterOption" :class="{ filterOptionSelected: odrzuconeFilter }"
+                    @click="toggleOdrzuconeFilter">Odrzucone</div>
+
+                <select v-model="selectedGroup" v-if="selectedGroupType != ''">
+                    <option value="">Grupa</option>
+                    <option v-for="group in apiDataStore.points.groups(selectedGroupType)" :key="group.id"
+                        :value="group.id">
+                        {{ group.name }}
+                    </option>
+                </select>
+            </div>
 
 
-        <div style="margin-top: 20px;">
-            <div v-for="(data, index) in filterOdrzucone(filterNiezatwierdzone(apiDataStore.points.filtered(selectedGroupType, selectedPointType, selectedGroup)))"
-                :key="index">
-                <PointsItemView :points="data.numberOfPoints" :date="data.date" :validated="data.validated" :rejected="data.rejected"
-                    :points_type="data.type.name + ' (' + data.type.points_min + ' - ' + data.type.points_max + ' pkt)'"
-                    :description="data.description" :group_name="data.group.name"
-                    :added_by="data.addedBy.first_name + ' ' + data.addedBy.last_name"
-                    @click="showPointsOverlay(index)" />
+            <div style="margin-top: 20px;">
+                <div v-for="(data, index) in filterOdrzucone(filterNiezatwierdzone(apiDataStore.points.filtered(selectedGroupType, selectedPointType, selectedGroup)))"
+                    :key="index">
+                    <PointsItemView :points="data.numberOfPoints" :date="data.date" :validated="data.validated"
+                        :rejected="data.rejected"
+                        :points_type="data.type.name + ' (' + data.type.points_min + ' - ' + data.type.points_max + ' pkt)'"
+                        :description="data.description" :group_name="data.group.name"
+                        :added_by="data.addedBy.first_name + ' ' + data.addedBy.last_name"
+                        @click="showPointsOverlay(index)" />
 
-                <OverlayView ref="pointsOverlay">
-                    <div class="padding pointsOverlay">
-                        <PointsItemView style="width:100%" :points="data.numberOfPoints" :date="data.date" :validated="data.validated" :rejected="data.rejected"
-                            :validatedBy="data.validatedBy.first_name + ' ' + data.validatedBy.last_name"
-                            :validationDate="data.validationDate"
-                            :points_type="data.type.name + ' (' + data.type.points_min + ' - ' + data.type.points_max + ' pkt)'"
-                            :description="data.description" :group_name="data.group.name"
-                            :added_by="data.addedBy.first_name + ' ' + data.addedBy.last_name" />
+                    <OverlayView ref="pointsOverlay">
+                        <div class="padding pointsOverlay">
+                            <PointsItemView style="width:100%" :points="data.numberOfPoints" :date="data.date"
+                                :validated="data.validated" :rejected="data.rejected"
+                                :validatedBy="data.validatedBy.first_name + ' ' + data.validatedBy.last_name"
+                                :validationDate="data.validationDate"
+                                :points_type="data.type.name + ' (' + data.type.points_min + ' - ' + data.type.points_max + ' pkt)'"
+                                :description="data.description" :group_name="data.group.name"
+                                :added_by="data.addedBy.first_name + ' ' + data.addedBy.last_name" />
 
-                        <div class="validation-buttons">
-                            <button class="button success" @click="validatePoints(data)"
-                                v-if="!data.validated && apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_validate_points') && !success && !loading">
-                                Zatwierdź
-                            </button>
-                            <button class="button error" @click="rejectPoints(data)"
-                                v-if="!data.rejected && apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_validate_points') && !success && !loading">
-                                Odrzuć
-                            </button>
+                            <div class="validation-buttons">
+                                <button class="button success" @click="validatePoints(data)"
+                                    v-if="!data.validated && apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_validate_points') && !success && !loading">
+                                    Zatwierdź
+                                </button>
+                                <button class="button error" @click="rejectPoints(data)"
+                                    v-if="!data.rejected && apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_validate_points') && !success && !loading">
+                                    Odrzuć
+                                </button>
+                            </div>
+                            <LoadingIndicator v-if="loading" inline small />
+                            <p>{{ error }}</p>
+
+                            <button class="button" @click="hidePointsOverlay(index)">Zamknij</button>
                         </div>
-                        <LoadingIndicator v-if="loading" inline small />
-                        <p>{{ error }}</p>
-
-                        <button class="button" @click="hidePointsOverlay(index)">Zamknij</button>
-                    </div>
-                </OverlayView>
+                    </OverlayView>
+                </div>
             </div>
         </div>
-    </div>
 
-    <LoadingIndicator v-if="apiDataStore.points.loading" />
-    <p v-if="apiDataStore.points.error" class="error">{{ apiDataStore.points.error }}</p>
-</main>
+        <LoadingIndicator v-if="apiDataStore.points.loading" />
+        <p v-if="apiDataStore.points.error" class="error">{{ apiDataStore.points.error }}</p>
+    </main>
 </template>
 
 
@@ -161,15 +163,9 @@ export default {
         validatePoints(data) {
             if (this.apiDataStore.permissions.ready && this.apiDataStore.permissions.hasPermission('can_validate_points')) {
                 this.loading = true;
-                const csrftoken = getCookie('csrftoken')
-                fetch(API_URL + '../staff-api/validate-points/' + data.id + '/', {
-                    headers: Object.assign(
-                        {},
-                        { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken },
-                        AUTH_HEADER
-                    ),
-                    method: 'PUT'
-                })
+                apiRequest('../staff-api/validate-points/' + data.id + '/',
+                    'PUT'
+                )
                     .then((data) => {
                         if (data.ok) {
                             return data.json()
@@ -200,15 +196,9 @@ export default {
         rejectPoints(data) {
             if (this.apiDataStore.permissions.ready && this.apiDataStore.permissions.hasPermission('can_validate_points')) {
                 this.loading = true;
-                const csrftoken = getCookie('csrftoken')
-                fetch(API_URL + '../staff-api/reject-points/' + data.id + '/', {
-                    headers: Object.assign(
-                        {},
-                        { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken },
-                        AUTH_HEADER
-                    ),
-                    method: 'PUT'
-                })
+                apiRequest('../staff-api/reject-points/' + data.id + '/',
+                    'PUT'
+                )
                     .then((data) => {
                         if (data.ok) {
                             return data.json()
@@ -244,8 +234,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 select {
     width: 100%;
     padding: 10px 35px 10px 15px;
@@ -253,7 +241,7 @@ select {
     border: 1px solid var(--text-gray);
     margin-bottom: 10px;
     font-size: 15px;
-    
+
     border: none;
     outline: none;
     color: white;
@@ -281,7 +269,7 @@ select {
     background: var(--bg-light);
     padding: 8px 15px;
     border-radius: 20px;
-    
+
     color: white;
     cursor: pointer;
 }
@@ -304,7 +292,7 @@ button {
     font-size: 14px;
     line-height: 16px;
     cursor: pointer;
-    
+
     background-color: var(--bg-light);
 
     width: 130px;
@@ -317,9 +305,11 @@ button {
 button.success {
     background-color: green;
 }
+
 button.error {
     background-color: var(--red);
 }
+
 .pointsOverlay {
     margin: 0;
     margin-top: 30px;

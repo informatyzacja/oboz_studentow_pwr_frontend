@@ -5,73 +5,68 @@ import LoadingIndicator from '../components/LoadingIndicator.vue'
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
-import { API_URL, AUTH_HEADER } from '../config.js'
-import { getCookie } from '../stores/functions.js'
+import { apiRequest } from './stores/functions.js'
 
 import moment from 'moment'
 </script>
 
 <template>
     <main>
-    <TopBar title="Dodaj ogłoszenie" :backLink="$router.options.history.state.back || '/admin-menu'" />
+        <TopBar title="Dodaj ogłoszenie" :backLink="$router.options.history.state.back || '/admin-menu'" />
 
-    <div class="padding-main" v-if="apiDataStore.pointTypes.ready">
-        <h3>Rodziaj grupy</h3>
-        <select v-model="selectedGroupType"
-            @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }"
-            :disabled="disabled"
-            >
-            <option value="all">Wszystkie</option>
-            <option v-for="groupType in apiDataStore.pointTypes.data.groupTypes" :key="groupType.id" :value="groupType.name">
-                {{ groupType.name }}
-            </option>
-        </select>
-
-        <div  v-if="selectedGroupType!='all'">
-            <h3>Grupa</h3>
-            <select v-model="selectedGroup"
-            :disabled="disabled"
-            >
-                <option disabled value="null">Wybierz grupę</option>
-                <option v-for="group in apiDataStore.pointTypes.groupsWithGroupType(selectedGroupType)" :key="group.id" :value="group.id">
-                    {{ group.name }}
+        <div class="padding-main" v-if="apiDataStore.pointTypes.ready">
+            <h3>Rodziaj grupy</h3>
+            <select v-model="selectedGroupType"
+                @input="event => { selectedGroup = ''; selectedPointType = ''; selectedGroupType = event.target.value }"
+                :disabled="disabled">
+                <option value="all">Wszystkie</option>
+                <option v-for="groupType in apiDataStore.pointTypes.data.groupTypes" :key="groupType.id"
+                    :value="groupType.name">
+                    {{ groupType.name }}
                 </option>
             </select>
-        </div>
-        
-        <div v-if="selectedGroupType==='all' || selectedGroup">
-            <h3>Tytuł ogłoszenia</h3>
-            <input v-model="title" type="text" maxlength="100"
-            :disabled="disabled" />
-            
-            <h3>Treść ogłoszenia</h3>
-            <textarea v-model="content" rows="4" cols="50"
-            :disabled="disabled"
-            ></textarea>
 
-            <h3>Do kiedy ogłoszenie ma być widoczne</h3>
-            <input v-model="hide_date" type="datetime-local" :min="hide_date_min"
-            :disabled="disabled" />
-
-            <div class="sendNotif">
-                <h3>Wyślij powiadomienia</h3>
-                <input type="checkbox" v-model="sendNotif" :disabled="disabled"/>
+            <div v-if="selectedGroupType != 'all'">
+                <h3>Grupa</h3>
+                <select v-model="selectedGroup" :disabled="disabled">
+                    <option disabled value="null">Wybierz grupę</option>
+                    <option v-for="group in apiDataStore.pointTypes.groupsWithGroupType(selectedGroupType)"
+                        :key="group.id" :value="group.id">
+                        {{ group.name }}
+                    </option>
+                </select>
             </div>
 
-            <button class="button success" @click="addAnouncement" v-if="title && content && hide_date && !loading && !success">Dodaj ogłoszenie</button>
+            <div v-if="selectedGroupType === 'all' || selectedGroup">
+                <h3>Tytuł ogłoszenia</h3>
+                <input v-model="title" type="text" maxlength="100" :disabled="disabled" />
 
-            <LoadingIndicator v-if="loading" />
-            <p class="success">{{ info }}</p>
-            <p v-if="error" class="error">{{ error }}</p>
+                <h3>Treść ogłoszenia</h3>
+                <textarea v-model="content" rows="4" cols="50" :disabled="disabled"></textarea>
+
+                <h3>Do kiedy ogłoszenie ma być widoczne</h3>
+                <input v-model="hide_date" type="datetime-local" :min="hide_date_min" :disabled="disabled" />
+
+                <div class="sendNotif">
+                    <h3>Wyślij powiadomienia</h3>
+                    <input type="checkbox" v-model="sendNotif" :disabled="disabled" />
+                </div>
+
+                <button class="button success" @click="addAnouncement"
+                    v-if="title && content && hide_date && !loading && !success">Dodaj ogłoszenie</button>
+
+                <LoadingIndicator v-if="loading" />
+                <p class="success">{{ info }}</p>
+                <p v-if="error" class="error">{{ error }}</p>
+            </div>
+
+
+
         </div>
 
-
-
-    </div>
-
-    <LoadingIndicator v-if="apiDataStore.pointTypes.loading" />
-    <p v-if="apiDataStore.pointTypes.error" class="error">{{ apiDataStore.pointTypes.error }}</p>
-</main>
+        <LoadingIndicator v-if="apiDataStore.pointTypes.loading" />
+        <p v-if="apiDataStore.pointTypes.error" class="error">{{ apiDataStore.pointTypes.error }}</p>
+    </main>
 </template>
 
 
@@ -116,7 +111,6 @@ export default {
             if (this.apiDataStore.permissions.ready && this.apiDataStore.permissions.hasPermission('can_add_announcement')) {
                 this.disabled = true
                 this.loading = true;
-                const csrftoken = getCookie('csrftoken')
                 const data = {
                     groupId: this.selectedGroup,
                     title: this.title,
@@ -124,15 +118,10 @@ export default {
                     sendNotif: this.sendNotif,
                     hide_date: this.hide_date
                 }
-                fetch(API_URL + '../staff-api/add-announcement/', {
-                    headers: Object.assign(
-                        {},
-                        { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken },
-                        AUTH_HEADER
-                    ),
-                    method: 'POST',
-                    body: JSON.stringify(data)
-                })
+                apiRequest('../staff-api/add-announcement/',
+                    'POST',
+                    JSON.stringify(data)
+                )
                     .then((data) => {
                         if (data.status === 403) {
                             window.location.href = '/login/?next=' + window.location.pathname
@@ -168,16 +157,16 @@ export default {
 </script>
 
 <style scoped>
-
-
-input, select, textarea {
+input,
+select,
+textarea {
     width: 100%;
     padding: 10px 35px 10px 15px;
     border-radius: 20px;
     border: 1px solid var(--text-gray);
     margin-bottom: 2px;
     font-size: 15px;
-    
+
     border: none;
     outline: none;
     color: white;
@@ -250,7 +239,7 @@ button {
     font-size: 14px;
     line-height: 16px;
     cursor: pointer;
-    
+
     background-color: var(--bg-light);
 
     width: 130px;
@@ -277,5 +266,4 @@ p {
 input::-webkit-calendar-picker-indicator {
     filter: invert(1);
 }
-
 </style>

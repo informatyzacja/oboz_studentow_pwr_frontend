@@ -9,8 +9,7 @@ import moment from 'moment'
 
 import HouseCard from '../components/HouseCard.vue'
 
-import { API_URL, AUTH_HEADER } from '../config.js'
-import { getCookie } from '../stores/functions.js'
+import { apiRequest } from '../stores/functions.js'
 
 import OverlayView from '../components/OverlayView.vue'
 import cryingIcon from '../assets/icons8-crying.png'
@@ -262,15 +261,7 @@ export default {
             this.$refs.leaveHouseOverlay.hide();
 
             this.signupLoading = true
-            const csrftoken = getCookie('csrftoken')
-            fetch(API_URL + '../api2/leave-house/', {
-                headers: Object.assign(
-                    {},
-                    { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken },
-                    AUTH_HEADER
-                ),
-                method: 'PUT'
-            })
+            apiRequest('../api2/leave-house/', 'PUT')
                 .then((data) => {
                     if (data.ok) {
                         return data.json()
@@ -304,19 +295,13 @@ export default {
                 return
             }
             this.signupLoading = true
-            const csrftoken = getCookie('csrftoken')
             const body = {
                 bandId: bandId,
             }
-            fetch(API_URL + '../api2/signup-user-for-house/' + this.$route.params.id + '/', {
-                headers: Object.assign(
-                    {},
-                    { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken },
-                    AUTH_HEADER
-                ),
-                method: 'PUT',
-                body: JSON.stringify(body)
-            })
+            apiRequest('../api2/signup-user-for-house/' + this.$route.params.id + '/',
+                'PUT',
+                JSON.stringify(body)
+            )
                 .then((data) => {
                     if (data.ok) {
                         return data.json()

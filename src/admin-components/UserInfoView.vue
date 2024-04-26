@@ -3,30 +3,20 @@ import GenericProfileView from '../views/GenericProfileView.vue'
 
 import TopBar from '../components/navigation/TopBar.vue'
 
-import { API_URL, AUTH_HEADER } from '../config.js'
-
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
+import { apiRequest } from '../stores/functions.js'
 </script>
 
 <template>
-  <GenericProfileView
-    :profileData="profileData"
-    :loading="loading"
-    :ready="ready"
-    :error="error"
-    :hideFAQ="true" :hideQR="true"
-    :frakcjaLink="
-      apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_fractions')
-        ? '/frakcja'
-        : null
-    "
-    :grupaLink="
-      apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_groups')
+  <GenericProfileView :profileData="profileData" :loading="loading" :ready="ready" :error="error" :hideFAQ="true"
+    :hideQR="true" :frakcjaLink="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_fractions')
+      ? '/frakcja'
+      : null
+      " :grupaLink="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_groups')
         ? '/grupa'
         : null
-    "
-  >
+        ">
     <template #topBar>
       <TopBar title="Informacje o uczestniku" backLink="/skaner/uczestnik" />
     </template>
@@ -54,10 +44,7 @@ export default {
   methods: {
     fetchUserData() {
       const params = { user_id: this.$route.params.id }
-      fetch(API_URL + '../staff-api/get-user-info/?' + new URLSearchParams(params), {
-        headers: AUTH_HEADER,
-        method: 'GET'
-      })
+      apiRequest('../staff-api/get-user-info/?' + new URLSearchParams(params))
         .then((data) => {
           if (data.ok) {
             return data.json()

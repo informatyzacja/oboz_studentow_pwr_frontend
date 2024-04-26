@@ -9,8 +9,7 @@ import moment from 'moment'
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
-import { API_URL, AUTH_HEADER } from '../config.js'
-import { getCookie } from '../stores/functions.js'
+import { apiRequest } from '../stores/functions.js'
 
 import questionMark from '../assets/question-mark.jpg'
 import phoneIcon from '../assets/phone_icon.svg'
@@ -20,85 +19,86 @@ import { IonPage, IonContent } from '@ionic/vue';
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-  <main>
-    <TopBar :backLink="$router.options.history.state.back || { name: 'warsztaty' }" absolute />
-    <div v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length"
-      :set="(data = apiDataStore.workshops.withId(parseInt($route.params.id)))">
-      <div class="card">
-        <img class="bg" :src="data.photo || questionMark" />
-        <div class="time">
-          <p>{{ moment(data.start).format('dd. DD.MM') }}</p>
-          <p>{{ moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm') }}</p>
-        </div>
-        <div class="overlay"></div>
-        <div class="description">
-          <div>
-            <h2 v-if="data.location">
-              <IconLocation class="icon" /> {{ data.location }}
-            </h2>
-            <h1>{{ data.name }}</h1>
-            <h3>{{ data.userCount + '/' + data.userLimit }} osób</h3>
+      <main>
+        <TopBar :backLink="$router.options.history.state.back || { name: 'warsztaty' }" absolute />
+        <div v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length"
+          :set="(data = apiDataStore.workshops.withId(parseInt($route.params.id)))">
+          <div class="card">
+            <img class="bg" :src="data.photo || questionMark" />
+            <div class="time">
+              <p>{{ moment(data.start).format('dd. DD.MM') }}</p>
+              <p>{{ moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm') }}</p>
+            </div>
+            <div class="overlay"></div>
+            <div class="description">
+              <div>
+                <h2 v-if="data.location">
+                  <IconLocation class="icon" /> {{ data.location }}
+                </h2>
+                <h1>{{ data.name }}</h1>
+                <h3>{{ data.userCount + '/' + data.userLimit }} osób</h3>
+              </div>
+              <div>
+                <button class="button button_inactive" v-if="loading || data.loader" disabled>
+                  <LoadingIndicator inline small />
+                </button>
+                <button class="button button_signedup" v-else-if="data.userSignUpId"
+                  @click="signOut(data.userSignUpId)">
+                  Wypisz się
+                </button>
+                <button class="button button_inactive" v-else-if="!(
+                  data.signupsOpen &&
+                  (data.signupsOpenTime == null || moment(data.signupsOpenTime).isBefore(moment()))
+                )
+                " disabled>
+                  Zapisy nieaktywne
+                </button>
+                <button class="button button_inactive" v-else-if="data.userCount >= data.userLimit" disabled>
+                  Brak miejsc
+                </button>
+                <button class="button" v-else @click="signUp($route.params.id)">Zapisz się</button>
+
+                <p v-if="!loading && !data.loader && data.userSignUpId" class="signupsOpenTime">
+                  Jesteś zapisany/a
+                </p>
+                <p class="signupsOpenTime" v-else-if="data.signupsOpenTime &&
+                  moment(data.signupsOpenTime).isSame(moment(), 'day') &&
+                  moment(data.signupsOpenTime).isAfter(moment())
+                ">
+                  Otwierają się dzisiaj o {{ moment(data.signupsOpenTime).format('H:mm') }}
+                </p>
+              </div>
+            </div>
           </div>
-          <div>
-            <button class="button button_inactive" v-if="loading || data.loader" disabled>
-              <LoadingIndicator inline small />
-            </button>
-            <button class="button button_signedup" v-else-if="data.userSignUpId" @click="signOut(data.userSignUpId)">
-              Wypisz się
-            </button>
-            <button class="button button_inactive" v-else-if="!(
-              data.signupsOpen &&
-              (data.signupsOpenTime == null || moment(data.signupsOpenTime).isBefore(moment()))
-            )
-              " disabled>
-              Zapisy nieaktywne
-            </button>
-            <button class="button button_inactive" v-else-if="data.userCount >= data.userLimit" disabled>
-              Brak miejsc
-            </button>
-            <button class="button" v-else @click="signUp($route.params.id)">Zapisz się</button>
 
-            <p v-if="!loading && !data.loader && data.userSignUpId" class="signupsOpenTime">
-              Jesteś zapisany/a
-            </p>
-            <p class="signupsOpenTime" v-else-if="data.signupsOpenTime &&
-              moment(data.signupsOpenTime).isSame(moment(), 'day') &&
-              moment(data.signupsOpenTime).isAfter(moment())
-              ">
-              Otwierają się dzisiaj o {{ moment(data.signupsOpenTime).format('H:mm') }}
-            </p>
+          <div class="padding">
+
+            <TextBox v-if="data.description" :content="data.description" />
+
+            <div v-if="data && data.itemsToTake">
+              <h3>Co zabrać ze sobą?</h3>
+              <TextBox :content="data.itemsToTake" />
+            </div>
+
+            <h3 v-if="data.workshopleaders && data.workshopleaders.length">Prowadzący</h3>
+
+            <a v-for="( data, index ) in data.workshopleaders " :key="index" :href="'tel:' + data.phoneNumber">
+              <ItemBox :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo"
+                :rightIcon="data.phoneNumber ? phoneIcon : null" />
+            </a>
+
+
+            <h3 v-if="data.workshopusers && data.workshopusers.length">Zapisani</h3>
+            <ItemBox v-for="( data, index ) in data.workshopusers " :key="index"
+              :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo" />
           </div>
         </div>
-      </div>
 
-      <div class="padding">
-
-        <TextBox v-if="data.description" :content="data.description" />
-
-        <div v-if="data && data.itemsToTake">
-          <h3>Co zabrać ze sobą?</h3>
-          <TextBox :content="data.itemsToTake" />
-        </div>
-
-        <h3 v-if="data.workshopleaders && data.workshopleaders.length">Prowadzący</h3>
-
-        <a v-for="( data, index ) in  data.workshopleaders " :key="index" :href="'tel:' + data.phoneNumber">
-          <ItemBox :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo"
-            :rightIcon="data.phoneNumber ? phoneIcon : null" />
-        </a>
-
-
-        <h3 v-if="data.workshopusers && data.workshopusers.length">Zapisani</h3>
-        <ItemBox v-for="( data, index ) in  data.workshopusers " :key="index"
-          :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo" />
-      </div>
-    </div>
-
-    <LoadingIndicator v-if="apiDataStore.workshops.loading" />
-    <p v-if="apiDataStore.workshops.error" class="error">{{ apiDataStore.workshops.error }}</p>
-    <p v-if="error" class="error">{{ error }}</p>
-  </main>
-  </ion-content>
+        <LoadingIndicator v-if="apiDataStore.workshops.loading" />
+        <p v-if="apiDataStore.workshops.error" class="error">{{ apiDataStore.workshops.error }}</p>
+        <p v-if="error" class="error">{{ error }}</p>
+      </main>
+    </ion-content>
   </ion-page>
 </template>
 
@@ -115,7 +115,7 @@ main {
   font-size: 14px;
   line-height: 16px;
   cursor: pointer;
-  
+
   background-color: green;
 
   width: 130px;
@@ -251,16 +251,7 @@ export default {
     },
     workshopApiCall(method, URL, body = {}) {
       this.loading = true
-      const csrftoken = getCookie('csrftoken')
-      fetch(API_URL + URL, {
-        headers: Object.assign(
-          {},
-          { 'Content-type': 'application/json; charset=UTF-8', 'X-CSRFToken': csrftoken },
-          AUTH_HEADER
-        ),
-        method: method,
-        body: body
-      })
+      apiRequest(URL, method, body)
         .then((data) => {
           if (data.ok) {
             return data.json()
