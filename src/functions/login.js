@@ -1,5 +1,6 @@
 
 import { Preferences } from '@capacitor/preferences';
+import router from '@/router/index.js';
 
 const VITE_API_URL = import.meta.env.VITE_API_URL
 
@@ -61,7 +62,8 @@ export async function getAccessToken() {
 export async function getAuthorizationHeader() {
     const access_token = await getAccessToken()
     if (access_token) return { 'Authorization': `Bearer ${access_token}` }
-    return {}
+    router.replace({ name: 'register' })
+    return false
 }
 
 export async function veryifyToken() {

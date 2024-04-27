@@ -14,6 +14,7 @@ export async function apiSocket(url) {
 
 export async function apiRequest(url, method = 'GET', data = null, retry = false) {
   const headers = await getAuthorizationHeader()
+  if (!headers) return
   const options = {
     method: method,
     headers: {
@@ -56,13 +57,13 @@ export async function apiRequest(url, method = 'GET', data = null, retry = false
                     console.log('Token refresh failed', response2)
                     console.log(response2.status)
                     console.error('Logging out')
-                    router.replace({ name: 'login' })
+                    router.replace({ name: 'register' })
                     throw new Error('Token refresh failed')
                   })
               } else {
                 console.error('Logging out')
                 logout();
-                router.replace({ name: 'login' })
+                router.replace({ name: 'register' })
                 return
               }
             })

@@ -1,8 +1,9 @@
 <script setup>
-import { IonPage, IonContent, IonAlert } from '@ionic/vue';
+import { IonPage, IonContent } from '@ionic/vue';
 import logo from '@/assets/ikona.png';
 
 import { loginGetToken } from '@/functions/login.js'
+import { RouterLink } from 'vue-router';
 </script>
 
 <template>
@@ -11,31 +12,17 @@ import { loginGetToken } from '@/functions/login.js'
             <main>
                 <img id="logo" :src="logo" alt="logo">
 
-                <span v-if="error" class="errors">
-                    Twój adres e-mail lub hasło są nieprawidłowe.
-                </span>
-
                 <div>
-                    <input id="email" name="username" type="email" autocomplete="username" required class="pill"
+                    <input id="email-register" name="username" type="email" autocomplete="email" required class="pill"
                         placeholder="E-MAIL" v-model="email">
 
-                    <input id="password" name="password" type="password" autocomplete="current-password" required
-                        class="pill" placeholder="HASŁO" v-model="password">
-
-
                     <button @click="submit" class="pill button">
-                        Zaloguj
+                        Zarejestruj się
                     </button>
-
-                    <RouterLink to="/register">
-                        <a class="small-link f-left">Zarejestruj się</a>
+                    <RouterLink to="/login">
+                        <a class="small-link f-left">Masz już konto? Zaloguj się</a>
                     </RouterLink>
 
-                    <a id="present-alert" class=" small-link f-right">Zapomniałem hasła</a>
-
-                    <ion-alert trigger="present-alert" style="--ion-text-color: black;" header="Zapomniałeś/aś hasła?"
-                        message="Aby zresetować hasło, zarejestruj się ponownie. Będziesz mógł/mogła ustawić nowe hasło."
-                        :buttons="['Zarejestruj się']" @didDismiss="$router.push('register')"></ion-alert>
                 </div>
             </main>
         </ion-content>
