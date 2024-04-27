@@ -110,12 +110,10 @@ export async function apiRequest(url, method = 'GET', data = null, retry = false
 export async function loadData(item) {
   return apiRequest(item.url)
     .then((data) => {
-      item.loading = false
       item.data = data
       item.error = null
     })
     .catch((error) => {
-      item.loading = false
       item.error = error
       console.error('There was an error!', error)
     })

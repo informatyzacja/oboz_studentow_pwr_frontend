@@ -85,6 +85,11 @@ defineProps({
   align-items: center;
   flex-direction: row;
   gap: 10px;
+  margin-left: 10px;
+}
+
+.small .itemLeft {
+  margin-left: 0;
 }
 
 h5 {
@@ -96,16 +101,12 @@ h5 {
 
 h6 {
   margin: 0;
-  margin-left: 8px;
   padding: 1px;
   font-size: 12px;
   line-height: 13px !important;
   color: var(--light-text);
 }
 
-.small h6 {
-  margin-left: 0;
-}
 
 p {
   margin: 0;
@@ -127,7 +128,6 @@ p {
 }
 
 .leftIcon {
-  margin-left: 5px;
   width: 30px;
   height: 30px;
 }

@@ -87,7 +87,7 @@ const router = createRouter({
         {
           path: '/mapa',
           name: 'mapa',
-          component: () => import('../views/MapAndScheduleView.vue'),
+          component: () => import('../views/MapView.vue'),
           meta: { type: 'main' },
         },
         {

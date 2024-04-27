@@ -10,22 +10,22 @@ import { IonPage, IonContent } from '@ionic/vue';
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-  <main>
-    <div v-if="data">
-      <TopBar :title="data.name" />
-      <div class="padding">
-        <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Zimowy_PWr_2024'" target="_blank"
-          rel="nofollow">Pobierz mapkę</a>
-        <img :src="data.image" :alt="data.name" />
-      </div>
-    </div>
+      <main>
+        <div v-if="data">
+          <TopBar :title="data.name" backLink="/" />
+          <div class="padding">
+            <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Zimowy_PWr_2024'" target="_blank"
+              rel="nofollow">Pobierz mapkę</a>
+            <img :src="data.image" :alt="data.name" />
+          </div>
+        </div>
 
-    <LoadingIndicator v-if="apiDataStore.images.loading" />
-    <p v-if="apiDataStore.images.error" class="error">{{ apiDataStore.images.error }}</p>
-    <p v-if="apiDataStore.images.ready && !apiDataStore.images.data.length" class="error">
-      Brak danych
-    </p>
-  </main>
+        <LoadingIndicator v-if="apiDataStore.images.loading" />
+        <p v-if="apiDataStore.images.error" class="error">{{ apiDataStore.images.error }}</p>
+        <p v-if="apiDataStore.images.ready && !apiDataStore.images.data.length" class="error">
+          Brak danych
+        </p>
+      </main>
 
     </ion-content>
   </ion-page>
@@ -95,7 +95,7 @@ a.button {
   font-size: 14px;
   line-height: 16px;
   cursor: pointer;
-  
+
   background-color: var(--bg-light);
 
   width: auto;

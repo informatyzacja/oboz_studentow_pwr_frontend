@@ -20,7 +20,7 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 
-import { getCookie } from '../stores/functions.js'
+import { logout } from '../functions/login.js'
 
 </script>
 
@@ -76,11 +76,7 @@ import { getCookie } from '../stores/functions.js'
 
         <div class="spacer"></div>
 
-        <form action="/logout/" method="post" ref="logoutForm">
-          <input type="hidden" name="csrfmiddlewaretoken" :value="getCookie('csrftoken')" />
-          <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small
-            @click="$refs.logoutForm.submit()" />
-        </form>
+        <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small @click="logoutClicked" />
         <!-- <p class="version" v-if="version">v{{ version }}</p> -->
       </div>
     </template>
@@ -121,7 +117,11 @@ export default {
           alert('Błąd kopiowania kodu zniżkowego')
         },
       );
-    }
+    },
+    async logoutClicked() {
+      await logout()
+      this.$router.push('/login')
+    },
   },
   beforeUnmount() {
     clearInterval(this.timer1)

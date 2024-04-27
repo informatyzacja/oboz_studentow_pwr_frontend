@@ -15,7 +15,7 @@ import { IonPage, IonContent } from '@ionic/vue';
   <ion-page>
     <ion-content :fullscreen="true">
       <main>
-        <TopBar title="Warsztaty" backLink="/" />
+        <TopBar title="Warsztaty" />
         <div class="padding-main" v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length">
           <div class="day-changer">
             <RouterLink v-if="currentDay > 0" :to="{ name: 'warsztatyDay', params: { day: currentDay - 1 } }">

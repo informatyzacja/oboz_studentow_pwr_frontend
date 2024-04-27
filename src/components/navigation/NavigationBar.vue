@@ -1,8 +1,8 @@
 <script setup>
 import SosIcon from '../../assets/icons8-sos.png'
-import MapIcon from '../../assets/icons8-map_marker.png'
+// import MapIcon from '../../assets/icons8-map_marker.png'
 import Logo from '../../assets/ikona.png'
-// import HammerIcon from '../../assets/icons8-hammer.png'
+import HammerIcon from '../../assets/icons8-hammer-90.png'
 // import WorkshopIcon from '../../assets/warsztaty.svg'
 import CalendarIcon from '../../assets/icons8-calendar-100.png'
 import UserIcon from '../../assets/icons8-male_user.png'
@@ -19,7 +19,7 @@ import { IonNavLink } from '@ionic/vue'
 </script>
 
 <template>
-  <div class="navigation-bar" v-if="!apiDataStore.permissions.ready || !apiDataStore.permissions.data.length">
+  <div class="navigation-bar" v-if="true || !apiDataStore.permissions.ready || !apiDataStore.permissions.data.length">
 
     <div class="navigation-bar__content">
       <IonNavLink router-link="/sos" router-direction="none">
@@ -28,10 +28,10 @@ import { IonNavLink } from '@ionic/vue'
           <p>SOS</p>
         </div>
       </IonNavLink>
-      <IonNavLink router-link="/mapa" router-direction="none">
-        <div class="navigation_bar__item" :class="{ selected: $route.path == '/mapa' }">
-          <img :src="MapIcon" alt="map" />
-          <p>Mapka</p>
+      <IonNavLink router-link="/warsztaty" router-direction="none">
+        <div class="navigation_bar__item" :class="{ selected: $route.path == '/warsztaty' }">
+          <img :src="HammerIcon" alt="warsztaty" />
+          <p>Warsztaty</p>
         </div>
       </IonNavLink>
       <IonNavLink router-link="/" router-direction="none">
