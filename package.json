@@ -10,7 +10,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@capacitor/android": "^6.0.0",
+    "@capacitor-mlkit/barcode-scanning": "^6.1.0",
+    "@capacitor/android": "6.0.0",
     "@capacitor/app": "^6.0.0",
     "@capacitor/camera": "^6.0.0",
     "@capacitor/core": "^6.0.0",
@@ -28,7 +29,6 @@
     "pinia": "^2.0.36",
     "vue": "^3.3.2",
     "vue-qr": "^4.0.9",
-    "vue-qrcode-reader": "^5.5.4",
     "vue-router": "^4.2.0"
   },
   "devDependencies": {

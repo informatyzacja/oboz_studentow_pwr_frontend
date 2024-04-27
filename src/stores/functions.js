@@ -1,10 +1,16 @@
 const VITE_API_URL = import.meta.env.VITE_API_URL
-import { getAuthorizationHeader, refreshToken } from '@/functions/login.js'
+import { getAuthorizationHeader, refreshToken, getAccessToken } from '@/functions/login.js'
 import { toastController } from '@ionic/vue';
+import { WS_API_URL } from '@/config'
 
 import { logout } from '@/functions/login.js';
 
 import router from '@/router/index.js';
+
+export async function apiSocket(url) {
+  const access_token = await getAccessToken()
+  return new WebSocket(WS_API_URL + url + '?token=' + access_token)
+}
 
 export async function apiRequest(url, method = 'GET', data = null, retry = false) {
   const headers = await getAuthorizationHeader()

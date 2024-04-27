@@ -6,7 +6,8 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import moment from 'moment'
-import { WS_API_URL, AUTH_TOKEN } from '../config'
+
+import { apiSocket } from '@/stores/functions.js'
 
 import sendIcon from '../assets/icons8-paper_plane.png'
 
@@ -56,7 +57,7 @@ import { IonPage, IonContent } from '@ionic/vue';
                             </div>
                             <div v-if="apiDataStore.chat.data.length === 0"
                                 style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
-                                Witaj w czacie pokoju nr {{ apiDataStore.profile.data[0].house.name }}! 🏠<br>Bądź
+                                Witaj w czacie domku nr {{ apiDataStore.profile.data[0].house.name }}! 🏠<br>Bądź
                                 pierwszy/a i
                                 napisz coś!
                             </div>
@@ -67,7 +68,7 @@ import { IonPage, IonContent } from '@ionic/vue';
                                 placeholder="Aa" />
 
                             <button class="textBoxButton" v-if="currentMessage.trim() === ''"
-                                @click="currentMessage = '🏂'; sendMessage()">🏂</button>
+                                @click="currentMessage = '👍'; sendMessage()">👍</button>
 
                             <button class="textBoxButton" v-else @click="sendMessage"><img :src="sendIcon"
                                     class="sendIcon" /></button>
@@ -146,8 +147,8 @@ export default {
     },
     methods: {
 
-        connect() {
-            this.chatSocket = new WebSocket(WS_API_URL + 'chat/' + (AUTH_TOKEN ? ('?token=' + AUTH_TOKEN) : ''));
+        async connect() {
+            this.chatSocket = await apiSocket('chat/');
 
             this.chatSocket.onopen = function () {
                 this.loading = false

@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
-import { loadData, ready } from './functions.js'
-import { WS_API_URL, AUTH_TOKEN } from '../config'
+import { loadData, ready, apiSocket } from '@/stores/functions.js'
 
 export const useHousesStore = defineStore('houses', {
     state: () => ({ loading: true, error: null, data: null, url: 'houses/' }),
@@ -60,13 +59,13 @@ export const useHouseSignupsStore = defineStore('houseSignups', {
         }
     },
     actions: {
-        connect() {
+        async connect() {
             if (this.socket) {
                 return
             }
             this.reconnect = true
             this.loading = true
-            this.socket = new WebSocket(WS_API_URL + 'house-signups/' + (AUTH_TOKEN ? ('?token=' + AUTH_TOKEN) : ''))
+            this.socket = await apiSocket('house-signups/')
             this.socket.onopen = () => {
                 this.error = null
                 this.loading = false

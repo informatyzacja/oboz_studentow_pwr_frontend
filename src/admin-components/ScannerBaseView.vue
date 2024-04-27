@@ -1,6 +1,11 @@
 <script setup>
+import { isPlatform } from '@ionic/vue';
 import LoadingIndicator from '../components/LoadingIndicator.vue'
-import { QrcodeStream } from 'vue-qrcode-reader'
+import {
+  BarcodeScanner,
+  BarcodeFormat,
+  LensFacing,
+} from '@capacitor-mlkit/barcode-scanning';
 
 defineProps(['hideScanner', 'codeText', 'codeFrameColor'])
 defineEmits(['error', 'result']);
@@ -17,18 +22,13 @@ defineEmits(['error', 'result']);
     Sprawdź
   </button>
 
-  <div class="scanner">
-    <p class="error">{{ qrReaderError }}</p>
-    <div class="scanner-inside" :class="{ hidden: qrScannerLoading || hideScanner }">
-      <QrcodeStream ref="qrcodestream" @detect="onDecode" @camera-on="onInit" :track="track" :camera="camera"
-        :torch="torch" :constrains="{ focusMode, focusDistance }" v-if="!disable" />
-    </div>
-    <LoadingIndicator v-if="qrScannerLoading" inline />
-  </div>
-  <button class="button" v-if="torchSupported" @click="torch = !torch" style="margin-top: 5px; 
-  padding: 10px 35px; font-size: 13px; margin: 0;">
-    {{ torch ? 'Wyłącz latarkę' : 'Włącz latarkę' }}
+
+  <button class="button success" @click="startStan" v-if="!disable">
+    Otwórz skaner
   </button>
+
+  <p class="error" v-if="qrReaderError">{{ qrReaderError }}</p>
+
 </template>
 
 <script>
@@ -37,22 +37,52 @@ export default {
     return {
       originalResult: '',
       searchQuery: '',
-      qrReaderError: '',
-      qrScannerLoading: true,
       disable: false,
-      camera: 'auto',
-      torch: false,
-      torchSupported: false,
-      facingMode: 'user',
-      focusMode: "manual",
-      focusDistance: 0
+      qrReaderError: null,
     }
   },
-  beforeUnmount() {
-    // this.$refs.qrcodestream.beforeResetCamera()
-    // this.$refs.qrcodestream.destroyed = true
+
+  async mounted() {
+    try {
+      (await BarcodeScanner.isSupported()).supported ? this.disable = false : this.disable = true
+      if (this.disable) {
+        console.log('Twoje urządzenie nie obsługuje skanowania kodów QR')
+        this.qrReaderError = 'ERROR: Twoje urządzenie nie obsługuje skanowania kodów QR'
+        return
+      }
+    } catch (error) {
+      console.error('Error checking if BarcodeScanner is supported', error)
+      this.qrReaderError = 'ERROR: Twoje urządzenie nie obsługuje skanowania kodów QR';
+      this.disable = true
+    }
+
   },
+
   methods: {
+    async startStan() {
+      const granted = await this.requestPermissions();
+      if (!granted) {
+        console.log('Permission denied', 'Please grant camera permission to use the barcode scanner.');
+        return;
+      }
+      if (isPlatform('android')) {
+        const { available } = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
+        if (!available) {
+          console.log('Google Barcode Scanner module is not available');
+          this.qrReaderError = 'ERROR: Google Barcode Scanner module is not available. Trying to install.';
+          await BarcodeScanner.installGoogleBarcodeScannerModule();
+          this.qrReaderError = 'ERROR: Google Barcode Scanner was installed. Please try again.';
+          return;
+        }
+      }
+      const { barcodes } = await BarcodeScanner.scan();
+      console.log('Barcodes:', barcodes);
+      this.onDecode(barcodes);
+    },
+    async requestPermissions() {
+      const { camera } = await BarcodeScanner.requestPermissions();
+      return camera === 'granted' || camera === 'limited';
+    },
     isNumeric(str) {
       if (typeof str != 'string') return false // we only process strings!
       return (
@@ -61,14 +91,12 @@ export default {
       ) // ...and ensure strings of whitespace fail
     },
     onDecode(result) {
-      if (result === '') return
       this.originalResult = result[0].rawValue
       this.result = this.originalResult.substring(result.lastIndexOf('/') + 1)
       if (this.result.length > 6 || !this.isNumeric(this.result)) {
         this.result = ''
         this.error = 'Błędny kod'
         this.$emit('error', this.error)
-        // this.$emit('result', this.result)
         return
       }
       this.userRead(this.result)
@@ -85,106 +113,6 @@ export default {
     userRead(user_id) {
       this.$emit('result', user_id)
     },
-
-    async onInit(capabilities) {
-      try {
-        this.qrReaderError = null;
-
-        this.torchSupported = !!capabilities.torch
-        console.log("Camera capabilities:", capabilities)
-        console.log("Torch supported:", this.torchSupported)
-        console.log("Camera capabilities focusDistance:", capabilities.focusDistance)
-
-        if (capabilities.focusDistance) {
-          try {
-            this.focusDistance = capabilities.focusDistance.min
-
-            const stream = await navigator.mediaDevices.getUserMedia({
-              video: {
-                facingMode: this.facingMode,
-                focusMode: this.focusMode,
-                focusDistance: this.focusDistance,
-                zoom: true
-              }
-            });
-
-            const [track] = stream.getVideoTracks();
-            await track.applyConstraints({
-              focusMode: "manual",
-              focusDistance: capabilities.focusDistance.min
-            });
-          } catch (err) {
-            console.error("applyConstraints() failed: ", err);
-          }
-        }
-      } catch (error) {
-        if (error.name === 'NotAllowedError') {
-          this.qrReaderError = 'ERROR: musisz dać pozwolenie na dostęp do kamery'
-        } else if (error.name === 'NotFoundError') {
-          this.qrReaderError = 'ERROR: brak kamery w tym urządzeniu'
-        } else if (error.name === 'NotSupportedError') {
-          this.qrReaderError = 'ERROR: potrzebujesz HTTPS'
-        } else if (error.name === 'NotReadableError') {
-          this.qrReaderError = 'ERROR: Nie można uzyskać dostępu do kamery. Być może jest ona już używana'
-        } else if (error.name === 'OverconstrainedError') {
-          this.qrReaderError = 'ERROR: Twój sprzęt nie obsługuje wymaganych rozdzielczości'
-        } else if (error.name === 'StreamApiNotSupportedError') {
-          this.qrReaderError = 'ERROR: Stream API nie jest obsługiwane w tej przeglądarce'
-        } else if (error.name === 'InsecureContextError') {
-          this.qrReaderError = 'ERROR: Nie można uzyskać dostępu do kamery z niezabezpieczonej strony'
-        } else {
-          this.qrReaderError = `ERROR: Error kamery (${error.name})`
-        }
-      } finally {
-        this.qrScannerLoading = false
-      }
-    },
-    track(detectedCodes, ctx) {
-      for (const detectedCode of detectedCodes) {
-        const [firstPoint, ...otherPoints] = detectedCode.cornerPoints
-
-        //outline
-        const gradient = ctx.createLinearGradient(0, 0, 200, 0)
-        /* THEME COLORS */
-        gradient.addColorStop('0', '#84c6e7')
-        gradient.addColorStop('1.0', '#dea766')
-
-        ctx.strokeStyle =
-          this.codeFrameColor && this.originalResult == detectedCode.rawValue
-            ? this.codeFrameColor
-            : 'gray'
-        ctx.lineWidth = 10
-
-        ctx.beginPath()
-        ctx.moveTo(firstPoint.x, firstPoint.y)
-        for (const { x, y } of otherPoints) {
-          ctx.lineTo(x, y)
-        }
-        ctx.lineTo(firstPoint.x, firstPoint.y)
-        ctx.closePath()
-        ctx.stroke()
-
-        //text
-        const { boundingBox } = detectedCode
-
-        const centerX = boundingBox.x + boundingBox.width / 2
-        const centerY = boundingBox.y + boundingBox.height / 2
-
-        const fontSize = Math.max(12, (55 * boundingBox.width) / ctx.canvas.width)
-
-        ctx.font = `bold ${fontSize}px sans-serif`
-        ctx.textAlign = 'center'
-
-        const value = this.codeText ? this.codeText : ''
-
-        ctx.lineWidth = 3
-        ctx.strokeStyle = 'white'
-        ctx.strokeText(value, centerX, centerY)
-
-        ctx.fillStyle = 'black'
-        ctx.fillText(value, centerX, centerY)
-      }
-    }
   }
 }
 </script>
