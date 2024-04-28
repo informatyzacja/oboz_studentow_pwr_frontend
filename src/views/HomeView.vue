@@ -19,10 +19,8 @@ import questionMark from '../assets/question-mark.jpg'
 import homeCardLinkBg from '../assets/home-card-link-bg.png'
 
 import rightArrow from '../assets/arrow.svg'
-import microphoneIcon from '../assets/ogloszenia.svg'
+// import microphoneIcon from '../assets/ogloszenia.svg'
 
-// import zobaczFrakcje from '../assets/zobacz frakcje.png'
-// import zobaczPelnyHarmonogram from '../assets/zobacz-pelny-harmonogram.png'
 import graNocna from '../assets/gra nocna.png'
 import ItemBox from '../components/ItemBox.vue'
 
@@ -79,7 +77,7 @@ import { IonPage, IonContent } from '@ionic/vue';
           <!-- <h3>Linki</h3> -->
           <div class="padding">
 
-            <span v-for="(data, index) in  apiDataStore.homeLinks.data " :key="index">
+            <span v-for="(data, index) in apiDataStore.homeLinks.data " :key="index">
 
               <RouterLink v-if="data.url && data.url.startsWith('/')" :to="data.url">
                 <div class="image_link_container" v-if="data.image">
@@ -126,7 +124,7 @@ import { IonPage, IonContent } from '@ionic/vue';
         <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
           <h3>Twoje dzisiejsze warsztaty</h3>
           <div class="scroll">
-            <RouterLink v-for="( data, index ) in  apiDataStore.userWorkshop.today " :key="index"
+            <RouterLink v-for="( data, index ) in apiDataStore.userWorkshop.today " :key="index"
               :to="`/warsztaty/info/${data.id}`">
               <HomeCard :name="data.name" :location="data.location"
                 :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
@@ -139,7 +137,7 @@ import { IonPage, IonContent } from '@ionic/vue';
         <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length">
           <h3>Co się teraz dzieje?</h3>
           <div class="scroll">
-            <RouterLink v-for="( data, index ) in  apiDataStore.schedule.rightNow " :key="index"
+            <RouterLink v-for="( data, index ) in apiDataStore.schedule.rightNow " :key="index"
               :to="'/harmonogram/info/' + data.id">
               <HomeCard :name="data.name" :location="data.location"
                 :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
@@ -148,17 +146,8 @@ import { IonPage, IonContent } from '@ionic/vue';
           </div>
         </div>
 
-        <!-- <div class="padding">
-      <RouterLink to="/harmonogram">
-        <div class="image_link_container">
-          <img :src="zobaczPelnyHarmonogram" class="image_link" />
-          <img :src="rightArrow" class="image_link_arrow" />
-        </div>
-      </RouterLink>
-    </div> -->
-
         <!-- Images -->
-        <div v-for="( data, index ) in  apiDataStore.images.other " :key="index">
+        <div v-for="( data, index ) in apiDataStore.images.other " :key="index">
           <TopBar :title="data.name" />
           <div class="image-view">
             <img :src="data.image" :alt="data.name" @click="showRef('imageOverlay', index)" />
@@ -182,7 +171,7 @@ import { IonPage, IonContent } from '@ionic/vue';
         <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.upNext.length">
           <h3>Następne</h3>
           <div class="scroll">
-            <RouterLink v-for="( data, index ) in  apiDataStore.schedule.upNext " :key="index"
+            <RouterLink v-for="( data, index ) in apiDataStore.schedule.upNext " :key="index"
               :to="'/harmonogram/info/' + data.id">
               <HomeCard :name="data.name" :location="data.location"
                 :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
@@ -193,21 +182,11 @@ import { IonPage, IonContent } from '@ionic/vue';
 
         <div class="spacer"></div>
 
-        <!-- <div class="padding">
-      <RouterLink to="/frakcje">
-        <div class="image_link_container">
-          <img :src="zobaczFrakcje" class="image_link" />
-          <img :src="rightArrow" class="image_link_arrow" />
-        </div>
-      </RouterLink>
-    </div> -->
-
-
         <!-- Partners -->
         <div class="partners" v-if="apiDataStore.partner.ready && apiDataStore.partner.data.length">
           <h3>Partnerzy</h3>
           <div class="scroll" ref="partners">
-            <a :href="data.link" target="_blank" :key="index" v-for="( data, index ) in  apiDataStore.partner.data ">
+            <a :href="data.link" target="_blank" :key="index" v-for="( data, index ) in apiDataStore.partner.data ">
               <img class="partner" :src="data.logo" />
             </a>
           </div>
@@ -420,7 +399,7 @@ button {
   font-size: 14px;
   line-height: 16px;
   cursor: pointer;
-  
+
   background-color: var(--bg-light);
 
   width: 130px;
@@ -519,7 +498,7 @@ a.button {
   font-size: 14px;
   line-height: 16px;
   cursor: pointer;
-  
+
   background-color: var(--bg-light);
 
   width: auto;
