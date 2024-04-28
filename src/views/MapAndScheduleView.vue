@@ -14,7 +14,7 @@ import { IonPage, IonContent } from '@ionic/vue';
         <div v-if="data">
           <TopBar :title="data.name" backLink="/" />
           <div class="padding">
-            <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Zimowy_PWr_2024'" target="_blank"
+            <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentów_PWr'" target="_blank"
               rel="nofollow">Pobierz mapkę</a>
             <img :src="data.image" :alt="data.name" />
           </div>

@@ -20,7 +20,7 @@ import { IonPage, IonContent, IonNavLink } from '@ionic/vue';
 
           <div v-if="harmonogramImage" class="downloadButtonDiv">
             <a class="button" :href="harmonogramImage.downloadLink"
-              :download="harmonogramImage.name + '_Obóz_Zimowy_PWr_2024'" target="_blank" rel="nofollow">Pobierz
+              :download="harmonogramImage.name + '_Obóz_Studentów_PWr'" target="_blank" rel="nofollow">Pobierz
               harmonogram w
               formie grafiki</a>
           </div>

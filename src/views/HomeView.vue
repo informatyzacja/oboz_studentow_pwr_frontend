@@ -33,122 +33,122 @@ import { IonPage, IonContent } from '@ionic/vue';
   <ion-page>
     <ion-content :fullscreen="true">
       <main>
-    <TopBar title="Home" />
+        <TopBar title="Home" />
 
-    <!-- Night Game Signup -->
-    <div class="padding"
-      v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.night_game_signup_active">
-      <RouterLink to="/zapisy-gra-nocna">
-        <div class="image_link_container">
-          <img :src="graNocna" class="image_link" />
-          <img :src="rightArrow" class="image_link_arrow" />
-        </div>
-      </RouterLink>
-    </div>
-
-
-    <!-- Announcements -->
-    <div v-if="apiDataStore.announcement.ready && apiDataStore.announcement.data.length">
-      <h3>Ogłoszenia</h3>
-      <div class="padding">
-        <TextBox v-for="(data, index) in apiDataStore.announcement.data" :key="index" :title="data.title"
-          :content="data.content" :image="microphoneIcon" style="margin-bottom: 10px" />
-      </div>
-    </div>
-
-
-    <!-- Daily Quest -->
-    <div class="padding" v-if="apiDataStore.dailyQuest.ready && apiDataStore.dailyQuest.future.length">
-      <div v-for="(data, index) in apiDataStore.dailyQuest.future" :key="index">
-        <DailyQuestView :finish="data.finish" :title="data.title" :points="data.points"
-          @click="showRef('dailyQuestOverlay', index)" />
-
-        <OverlayView ref="dailyQuestOverlay">
-          <div class="daily_quest_overlay">
-            <DailyQuestView :finish="data.finish" :title="data.title" :description="data.description"
-              :points="data.points" />
-            <button @click="hideRef('dailyQuestOverlay', index)">Zamknij</button>
-          </div>
-        </OverlayView>
-      </div>
-    </div>
-
-
-    <!-- Home Links -->
-    <div v-if="apiDataStore.homeLinks.ready && apiDataStore.homeLinks.data.length">
-      <!-- <h3>Linki</h3> -->
-      <div class="padding">
-
-        <span v-for="(data, index) in  apiDataStore.homeLinks.data " :key="index">
-
-          <RouterLink v-if="data.url && data.url.startsWith('/')" :to="data.url">
-            <div class="image_link_container" v-if="data.image">
-              <img :src="data.image" class="image_link" />
-              <img :src="rightArrow" class="image_link_arrow" v-if="data.url" />
-            </div>
-            <ItemBox v-else-if="data.name && data.icon" :bigText="data.name" :rightIcon="data.url ? rightArrow : ''"
-              :leftIcon="data.icon" />
-            <div class="image_link_container" v-else-if="data.name">
-              <img :src="homeCardLinkBg" class="image_link" style="max-height: 180px;" />
-              <img :src="rightArrow" class="image_link_arrow dark_filter" v-if="data.url" />
-              <p class="image_link_text" :style="{ 'font-size': data.font_size }">{{ data.name }}</p>
+        <!-- Night Game Signup -->
+        <div class="padding"
+          v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.night_game_signup_active">
+          <RouterLink to="/zapisy-gra-nocna">
+            <div class="image_link_container">
+              <img :src="graNocna" class="image_link" />
+              <img :src="rightArrow" class="image_link_arrow" />
             </div>
           </RouterLink>
-          <a v-else :href="data.url" target="_blank">
-            <div class="image_link_container" v-if="data.image">
-              <img :src="data.image" class="image_link" />
-              <img :src="rightArrow" class="image_link_arrow" v-if="data.url" />
-            </div>
-            <ItemBox v-if="data.name && data.icon" :bigText="data.name" :rightIcon="data.url ? rightArrow : ''"
-              :leftIcon="data.icon" />
-            <div class="image_link_container" v-else-if="data.name">
-              <img :src="homeCardLinkBg" class="image_link" style="max-height: 180px;" />
-              <img :src="rightArrow" class="image_link_arrow dark_filter" v-if="data.url" />
-              <p class="image_link_text" :style="{ 'font-size': data.font_size }">{{ data.name }}</p>
-            </div>
-          </a>
+        </div>
 
 
-        </span>
+        <!-- Announcements -->
+        <div v-if="apiDataStore.announcement.ready && apiDataStore.announcement.data.length">
+          <h3>Ogłoszenia</h3>
+          <div class="padding">
+            <TextBox v-for="(data, index) in apiDataStore.announcement.data" :key="index" :title="data.title"
+              :content="data.content" :image="microphoneIcon" style="margin-bottom: 10px" />
+          </div>
+        </div>
 
 
-      </div>
-    </div>
+        <!-- Daily Quest -->
+        <div class="padding" v-if="apiDataStore.dailyQuest.ready && apiDataStore.dailyQuest.future.length">
+          <div v-for="(data, index) in apiDataStore.dailyQuest.future" :key="index">
+            <DailyQuestView :finish="data.finish" :title="data.title" :points="data.points"
+              @click="showRef('dailyQuestOverlay', index)" />
+
+            <OverlayView ref="dailyQuestOverlay">
+              <div class="daily_quest_overlay">
+                <DailyQuestView :finish="data.finish" :title="data.title" :description="data.description"
+                  :points="data.points" />
+                <button @click="hideRef('dailyQuestOverlay', index)">Zamknij</button>
+              </div>
+            </OverlayView>
+          </div>
+        </div>
 
 
-    <div
-      v-if="showPushNotificationCard && (!isIos || (apiDataStore.profile.ready && !apiDataStore.profile.data[0].push_notifications_registered))"
-      style="margin-bottom: 5px;">
-      <PushNotficationsPopupView @hide="showPushNotificationCard = false" />
-    </div>
+        <!-- Home Links -->
+        <div v-if="apiDataStore.homeLinks.ready && apiDataStore.homeLinks.data.length">
+          <!-- <h3>Linki</h3> -->
+          <div class="padding">
 
-    <!-- Workshops -->
-    <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
-      <h3>Twoje dzisiejsze warsztaty</h3>
-      <div class="scroll">
-        <RouterLink v-for="( data, index ) in  apiDataStore.userWorkshop.today " :key="index"
-          :to="`/warsztaty/info/${data.id}`">
-          <HomeCard :name="data.name" :location="data.location"
-            :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-            :imgSrc="data.photo || questionMark" />
-        </RouterLink>
-      </div>
-    </div>
+            <span v-for="(data, index) in  apiDataStore.homeLinks.data " :key="index">
 
-    <!-- Schedule - now -->
-    <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length">
-      <h3>Co się teraz dzieje?</h3>
-      <div class="scroll">
-        <RouterLink v-for="( data, index ) in  apiDataStore.schedule.rightNow " :key="index"
-          :to="'/harmonogram/info/' + data.id">
-          <HomeCard :name="data.name" :location="data.location"
-            :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-            :imgSrc="data.photo || questionMark" />
-        </RouterLink>
-      </div>
-    </div>
+              <RouterLink v-if="data.url && data.url.startsWith('/')" :to="data.url">
+                <div class="image_link_container" v-if="data.image">
+                  <img :src="data.image" class="image_link" />
+                  <img :src="rightArrow" class="image_link_arrow" v-if="data.url" />
+                </div>
+                <ItemBox v-else-if="data.name && data.icon" :bigText="data.name" :rightIcon="data.url ? rightArrow : ''"
+                  :leftIcon="data.icon" />
+                <div class="image_link_container" v-else-if="data.name">
+                  <img :src="homeCardLinkBg" class="image_link" style="max-height: 180px;" />
+                  <img :src="rightArrow" class="image_link_arrow dark_filter" v-if="data.url" />
+                  <p class="image_link_text" :style="{ 'font-size': data.font_size }">{{ data.name }}</p>
+                </div>
+              </RouterLink>
+              <a v-else :href="data.url" target="_blank">
+                <div class="image_link_container" v-if="data.image">
+                  <img :src="data.image" class="image_link" />
+                  <img :src="rightArrow" class="image_link_arrow" v-if="data.url" />
+                </div>
+                <ItemBox v-if="data.name && data.icon" :bigText="data.name" :rightIcon="data.url ? rightArrow : ''"
+                  :leftIcon="data.icon" />
+                <div class="image_link_container" v-else-if="data.name">
+                  <img :src="homeCardLinkBg" class="image_link" style="max-height: 180px;" />
+                  <img :src="rightArrow" class="image_link_arrow dark_filter" v-if="data.url" />
+                  <p class="image_link_text" :style="{ 'font-size': data.font_size }">{{ data.name }}</p>
+                </div>
+              </a>
 
-    <!-- <div class="padding">
+
+            </span>
+
+
+          </div>
+        </div>
+
+
+        <div
+          v-if="showPushNotificationCard && (!isIos || (apiDataStore.profile.ready && !apiDataStore.profile.data[0].push_notifications_registered))"
+          style="margin-bottom: 5px;">
+          <PushNotficationsPopupView @hide="showPushNotificationCard = false" />
+        </div>
+
+        <!-- Workshops -->
+        <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
+          <h3>Twoje dzisiejsze warsztaty</h3>
+          <div class="scroll">
+            <RouterLink v-for="( data, index ) in  apiDataStore.userWorkshop.today " :key="index"
+              :to="`/warsztaty/info/${data.id}`">
+              <HomeCard :name="data.name" :location="data.location"
+                :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
+                :imgSrc="data.photo || questionMark" />
+            </RouterLink>
+          </div>
+        </div>
+
+        <!-- Schedule - now -->
+        <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length">
+          <h3>Co się teraz dzieje?</h3>
+          <div class="scroll">
+            <RouterLink v-for="( data, index ) in  apiDataStore.schedule.rightNow " :key="index"
+              :to="'/harmonogram/info/' + data.id">
+              <HomeCard :name="data.name" :location="data.location"
+                :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
+                :imgSrc="data.photo || questionMark" />
+            </RouterLink>
+          </div>
+        </div>
+
+        <!-- <div class="padding">
       <RouterLink to="/harmonogram">
         <div class="image_link_container">
           <img :src="zobaczPelnyHarmonogram" class="image_link" />
@@ -157,43 +157,43 @@ import { IonPage, IonContent } from '@ionic/vue';
       </RouterLink>
     </div> -->
 
-    <!-- Images -->
-    <div v-for="( data, index ) in  apiDataStore.images.other " :key="index">
-      <TopBar :title="data.name" />
-      <div class="image-view">
-        <img :src="data.image" :alt="data.name" @click="showRef('imageOverlay', index)" />
+        <!-- Images -->
+        <div v-for="( data, index ) in  apiDataStore.images.other " :key="index">
+          <TopBar :title="data.name" />
+          <div class="image-view">
+            <img :src="data.image" :alt="data.name" @click="showRef('imageOverlay', index)" />
 
-        <OverlayView ref="imageOverlay">
-          <div class="image_overlay">
-            <h3>{{ data.name }}</h3>
-            <img :src="data.image" :alt="data.name" />
+            <OverlayView ref="imageOverlay">
+              <div class="image_overlay">
+                <h3>{{ data.name }}</h3>
+                <img :src="data.image" :alt="data.name" />
 
-            <!-- <button class="button" @click="shareViaWebShare(data.name, data.image)" v-if="webShareApiSupported"><p v-if="!loading">Zapisz</p><LoadingIndicator inline small v-else/></button> -->
-            <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Zimowy_PWr_2024'" target="_blank"
-              rel="nofollow">Pobierz</a>
+                <!-- <button class="button" @click="shareViaWebShare(data.name, data.image)" v-if="webShareApiSupported"><p v-if="!loading">Zapisz</p><LoadingIndicator inline small v-else/></button> -->
+                <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentów_PWr'"
+                  target="_blank" rel="nofollow">Pobierz</a>
 
-            <button class="red-bg" @click="hideRef('imageOverlay', index)">Zamknij</button>
+                <button class="red-bg" @click="hideRef('imageOverlay', index)">Zamknij</button>
+              </div>
+            </OverlayView>
           </div>
-        </OverlayView>
-      </div>
-    </div>
+        </div>
 
-    <!-- Schedule - up next -->
-    <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.upNext.length">
-      <h3>Następne</h3>
-      <div class="scroll">
-        <RouterLink v-for="( data, index ) in  apiDataStore.schedule.upNext " :key="index"
-          :to="'/harmonogram/info/' + data.id">
-          <HomeCard :name="data.name" :location="data.location"
-            :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
-            :imgSrc="data.photo || questionMark" />
-        </RouterLink>
-      </div>
-    </div>
+        <!-- Schedule - up next -->
+        <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.upNext.length">
+          <h3>Następne</h3>
+          <div class="scroll">
+            <RouterLink v-for="( data, index ) in  apiDataStore.schedule.upNext " :key="index"
+              :to="'/harmonogram/info/' + data.id">
+              <HomeCard :name="data.name" :location="data.location"
+                :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
+                :imgSrc="data.photo || questionMark" />
+            </RouterLink>
+          </div>
+        </div>
 
-    <div class="spacer"></div>
+        <div class="spacer"></div>
 
-    <!-- <div class="padding">
+        <!-- <div class="padding">
       <RouterLink to="/frakcje">
         <div class="image_link_container">
           <img :src="zobaczFrakcje" class="image_link" />
@@ -203,21 +203,21 @@ import { IonPage, IonContent } from '@ionic/vue';
     </div> -->
 
 
-    <!-- Partners -->
-    <div class="partners" v-if="apiDataStore.partner.ready && apiDataStore.partner.data.length">
-      <h3>Partnerzy</h3>
-      <div class="scroll" ref="partners">
-        <a :href="data.link" target="_blank" :key="index" v-for="( data, index ) in  apiDataStore.partner.data ">
-          <img class="partner" :src="data.logo" />
-        </a>
-      </div>
-    </div>
+        <!-- Partners -->
+        <div class="partners" v-if="apiDataStore.partner.ready && apiDataStore.partner.data.length">
+          <h3>Partnerzy</h3>
+          <div class="scroll" ref="partners">
+            <a :href="data.link" target="_blank" :key="index" v-for="( data, index ) in  apiDataStore.partner.data ">
+              <img class="partner" :src="data.logo" />
+            </a>
+          </div>
+        </div>
 
 
-    <LoadingIndicator v-if="apiDataStore.schedule.loading" />
-    <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
-  </main>
-      </ion-content>
+        <LoadingIndicator v-if="apiDataStore.schedule.loading" />
+        <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
+      </main>
+    </ion-content>
   </ion-page>
 </template>
 

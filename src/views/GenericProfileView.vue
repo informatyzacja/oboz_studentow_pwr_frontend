@@ -199,7 +199,7 @@ defineProps([
           <slot name="footer"></slot>
 
           <div class="credits">
-            <p>© Obóz Zimowy PWr 2024</p>
+            <p>© Obóz Zimowy PWr {{moment().format('YYYY')}}</p>
             <p>Made with 🍺 by <a href="https://www.facebook.com/Marvin.Ruc/" target="_blank"><u>Marvin</u></a></p>
           </div>
         </div>
