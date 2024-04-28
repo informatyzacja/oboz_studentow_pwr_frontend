@@ -12,21 +12,8 @@ export async function apiSocket(url) {
   return new WebSocket(WS_API_URL + url + '?token=' + access_token)
 }
 
-export async function apiRequest(url, method = 'GET', data = null, retry = false) {
-  const headers = await getAuthorizationHeader()
-  if (!headers) return
-  const options = {
-    method: method,
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json',
-    }
-  }
-  if (data && method !== 'GET' && method !== 'HEAD') {
-    options.body = JSON.stringify(data)
-  }
+export async function request(url, options) {
   return fetch(VITE_API_URL + url, options)
-
     .catch((error) => {
       toastController.create({
         message: 'Błąd połączenia z serwerem. Sprawdź połaczenie z internetem.',
@@ -40,6 +27,22 @@ export async function apiRequest(url, method = 'GET', data = null, retry = false
       throw error
     })
 
+}
+
+export async function apiRequest(url, method = 'GET', data = null, retry = false) {
+  const headers = await getAuthorizationHeader()
+  if (!headers) return
+  const options = {
+    method: method,
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    }
+  }
+  if (data && method !== 'GET' && method !== 'HEAD') {
+    options.body = JSON.stringify(data)
+  }
+  return request(url, options)
     .then((responseData) => {
 
       if (responseData.status === 401) {

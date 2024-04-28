@@ -120,7 +120,7 @@ export default {
     },
     async logoutClicked() {
       await logout()
-      this.$router.push('/login')
+      this.$router.push('/register')
     },
   },
   beforeUnmount() {

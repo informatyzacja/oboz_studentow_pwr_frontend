@@ -3,7 +3,9 @@ import { IonPage, IonContent, IonSpinner } from '@ionic/vue';
 import logo from '@/assets/ikona.png';
 
 import { RouterLink } from 'vue-router';
-import { request } from '@/stores/functions.js';
+import { request } from '@/stores/functions';
+import { Preferences } from '@capacitor/preferences'
+
 </script>
 
 <template>
@@ -14,22 +16,25 @@ import { request } from '@/stores/functions.js';
 
                 <div>
 
-                    <h1>Zaloguj się</h1>
                     <p class="info">
-                        Podaj adres e-mail, który podałeś/aś podczas rejestracji na obóz.
+                        Podaj kod weryfikacyjny wysłany na {{ $route.params.email }}. <br>
+                        <!-- <RouterLink to="/register" router-direction="back">
+                            <a class="small-link f-left">Zmień email</a>
+                        </RouterLink> -->
                     </p>
+
+                    <input id="verification-code" name="verification-code" type="text" autocomplete="one-time-code"
+                        required class="pill" placeholder="Kod weryfikacyjny" pattern="\d*" v-model="verificationCode">
 
                     <p v-if="error" class="errors">
-                        Podany adres e-mail nie jest przypisany do żadnego uczestnika obozu.
+                        Podany kod weryfikacyjny jest nieprawidłowy.
                     </p>
-
-                    <input id="email" type="email" autocomplete="email" required class="pill" placeholder="E-MAIL"
-                        v-model="email">
 
                     <button @click="submit" class="pill button" :disabled="loading">
                         <span v-if="!loading">Zaloguj się</span>
                         <ion-spinner v-else name="dots" />
                     </button>
+
 
                 </div>
             </main>
@@ -43,34 +48,44 @@ export default {
         return {
             email: '',
             error: false,
-            loading: false
+            loading: false,
+            verificationCode: ''
         }
     },
     methods: {
         submit() {
-            if (!this.email) {
+            if (!this.verificationCode) {
                 return;
             }
             this.loading = true;
             this.error = false;
-            request('../api2/send_email_verification/', {
+            request('../api2/login_with_code/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    email: this.email,
+                    code: this.verificationCode,
+                    email: this.$route.params.email
                 })
             }).then(data => {
                 if (data.ok) {
                     return data.json()
                 }
-            }).then(data => {
-                if (data.exists) {
-                    this.$router.push({ name: 'verification-code', params: { email: this.email } })
+            }).then((data) => {
+                if (data.access && data.refresh) {
+                    Preferences.set({ key: 'access_token', value: data.access })
+                        .then(() => {
+                            Preferences.set({ key: 'refresh_token', value: data.refresh })
+                                .then(() => {
+                                    this.$router.push('/home')
+                                })
+                        })
                 } else {
                     this.error = true;
                 }
+            }).catch(() => {
+                this.error = true;
             }).finally(() => {
                 this.loading = false
             })
@@ -151,7 +166,7 @@ input::placeholder {
 }
 
 #logo {
-    width: 60%;
+    width: 80%;
     margin-top: 30px;
     margin-bottom: 30px;
 }
@@ -194,20 +209,11 @@ form {
     float: left;
 }
 
-
 .info {
     font-size: 14px;
     color: var(--text-gray);
     font-weight: 600;
     text-align: center;
     margin-bottom: 20px;
-}
-
-h1 {
-    font-size: 28px;
-    color: var(--theme-light);
-    font-weight: 600;
-    margin-bottom: 20px !important;
-    text-align: center;
 }
 </style>
