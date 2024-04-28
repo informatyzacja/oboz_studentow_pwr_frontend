@@ -49,13 +49,6 @@ export default {
     fetchGroupData() {
       apiRequest('../staff-api/get-groups/')
         .then((data) => {
-          if (data.ok) {
-            return data
-          }
-
-          throw new Error(data.statusText)
-        })
-        .then((data) => {
           if (data.error) {
             this.error = data.error
             this.ready = false

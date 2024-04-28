@@ -255,12 +255,6 @@ export default {
       this.loading = true
       apiRequest(URL, method, body)
         .then((data) => {
-          if (data.ok) {
-            return data
-          }
-          throw new Error('Request failed!')
-        })
-        .then((data) => {
           this.error = data.error
         })
         .catch((error) => {

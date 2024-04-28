@@ -30,7 +30,7 @@ import { IonPage, IonContent } from '@ionic/vue';
                   </p>
                   <p style="font-size: 10px;" v-if="data.group.name">Grupa: {{ data.group.type.name }} - {{
                     data.group.name
-                  }}</p>
+                    }}</p>
                   <p style="font-size: 10px;">Data dodania: {{ moment(data.date).format('DD.MM.YYYY HH:mm') }}</p>
                   <p style="font-size: 10px;">Data ukrycia: {{ moment(data.hide_date).format('DD.MM.YYYY HH:mm') }}</p>
                 </TextBox>
@@ -72,12 +72,6 @@ export default {
       apiRequest('../staff-api/hide-announcement/' + id + '/',
         'PUT'
       )
-        .then((data) => {
-          if (data.ok) {
-            return data
-          }
-          throw new Error('Request failed!')
-        })
         .then(() => { })
         .catch((error) => {
           console.error('There was an error!', error)

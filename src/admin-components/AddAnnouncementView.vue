@@ -130,15 +130,6 @@ export default {
                     data
                 )
                     .then((data) => {
-                        if (data.ok) {
-                            return data
-                        }
-                        this.error = data.status + ' ' + data.statusText
-                        this.success = false
-                        this.disabled = false
-                        throw new Error('Request failed!')
-                    })
-                    .then((data) => {
                         this.success = data.success
                         this.error = data.error
                         this.info = data.info

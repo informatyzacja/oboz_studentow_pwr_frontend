@@ -21,12 +21,6 @@ export function registerForPushNotifications() {
                     body
                 )
                     .then((data) => {
-                        if (data.ok) {
-                            return data.json()
-                        }
-                        throw new Error(data.status + ' ' + data.statusText)
-                    })
-                    .then((data) => {
                         return data.success;
                     })
                     .catch((error) => {

@@ -219,14 +219,6 @@ export default {
             }
             apiRequest('../api2/signup-group/', 'POST', body)
                 .then((data) => {
-                    if (data.ok) {
-                        return data
-                    }
-                    this.error = data.status + ' ' + data.statusText
-                    this.success = false
-                    throw new Error('Request failed!')
-                })
-                .then((data) => {
                     this.success = data.success
                     this.error = data.error
                     console.log(this.error)

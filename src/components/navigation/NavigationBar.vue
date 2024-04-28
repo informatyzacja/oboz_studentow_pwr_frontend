@@ -19,7 +19,7 @@ import { IonNavLink } from '@ionic/vue'
 </script>
 
 <template>
-  <div class="navigation-bar" v-if="true || !apiDataStore.permissions.ready || !apiDataStore.permissions.data.length">
+  <div class="navigation-bar" v-if="!apiDataStore.permissions.ready || !apiDataStore.permissions.data.length">
 
     <div class="navigation-bar__content">
       <IonNavLink router-link="/sos" router-direction="none">

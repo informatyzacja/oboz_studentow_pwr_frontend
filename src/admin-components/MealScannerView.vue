@@ -97,14 +97,6 @@ export default {
       const body = { user_id: this.result, meal_id: this.currentMeal.id }
       apiRequest('../staff-api/meal-validation/check/?' + new URLSearchParams(body))
         .then((data) => {
-          if (data.ok) {
-            return data
-          }
-          this.error = data.status + ' ' + data.statusText
-          this.success = false
-          throw new Error('Request failed!')
-        })
-        .then((data) => {
           this.success = data.success ? null : false
           this.validationCheckSuccessful = data.success
           this.error = data.error
@@ -129,14 +121,6 @@ export default {
         body
       )
         .then((data) => {
-          if (data.ok) {
-            return data
-          }
-          this.error = data.status + ' ' + data.statusText
-          this.success = false
-          throw new Error('Request failed!')
-        })
-        .then((data) => {
           this.success = data.success
           this.validationSuccessful = data.success
           this.error = data.error
@@ -157,12 +141,6 @@ export default {
 
     getCurrentMeal() {
       apiRequest('../staff-api/meal-validation/current-meal/')
-        .then((data) => {
-          if (data.ok) {
-            return data
-          }
-          throw new Error('Request failed!')
-        })
         .then((data) => {
           if (!data.id) {
             this.currentMeal = null
@@ -235,6 +213,12 @@ export default {
 
 .result p {
   font-size: 15px;
+}
+
+.result h5,
+.result h6,
+.result p {
+  margin: 0 !important;
 }
 
 .error {

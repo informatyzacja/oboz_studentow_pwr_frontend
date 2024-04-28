@@ -111,12 +111,6 @@ export default {
       const params = { user_id: this.result, group_type: this.selectedGroupType }
       apiRequest('../staff-api/get-user-group/?' + new URLSearchParams(params))
         .then((data) => {
-          if (data.ok) {
-            return data
-          }
-          throw new Error('Request failed!')
-        })
-        .then((data) => {
           this.success = data.success
           if (data.success) {
             this.error = null

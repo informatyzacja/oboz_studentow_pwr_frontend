@@ -46,12 +46,6 @@ export default {
       const params = { user_id: this.$route.params.id }
       apiRequest('../staff-api/get-user-info/?' + new URLSearchParams(params))
         .then((data) => {
-          if (data.ok) {
-            return data
-          }
-          throw new Error(data.statusText)
-        })
-        .then((data) => {
           if (data.error) {
             this.error = data.error
             this.ready = false
