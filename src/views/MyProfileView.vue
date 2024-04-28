@@ -11,7 +11,6 @@ import icons8Icon from '../assets/icons8-icons8.png'
 import rightArrow from '../assets/arrow.svg'
 import adminPanelIcon from '../assets/icons8-administrative_tools.png'
 
-import taxiIcon from '../assets/icons8-taxi_mobile_payment.png'
 import copyIcon from '../assets/icons8-copy.png'
 
 import { REGULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
@@ -39,15 +38,6 @@ import { logout } from '../functions/login.js'
     <template #footer>
 
       <div class="zindex">
-
-        <div v-if="apiDataStore.profile.ready && apiDataStore.profile.data[0].freenow_code">
-          <h3>Twój kod zniżkowy FREENOW 40%</h3>
-          <h5>Ważny na terenie Wrocławia do końca października</h5>
-          <ItemBox :big-text="apiDataStore.profile.data[0].freenow_code.toUpperCase()"
-            small-text="Naciśnij, aby skopiować" :leftIcon="taxiIcon" :rightIcon="copyIcon" noRoundIcon
-            @click="copyFreenowCode" />
-        </div>
-
         <a href="/admin/" target="_blank" v-if="apiDataStore.permissions.ready &&
           apiDataStore.permissions.hasOneOfPermissions(['is_staff'])
         ">
@@ -108,16 +98,6 @@ export default {
     this.timer3 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000)
   },
   methods: {
-    copyFreenowCode() {
-      navigator.clipboard.writeText(this.apiDataStore.profile.data[0].freenow_code.toUpperCase()).then(
-        () => {
-          alert('Skopiowano kod zniżkowy do schowka')
-        },
-        () => {
-          alert('Błąd kopiowania kodu zniżkowego')
-        },
-      );
-    },
     async logoutClicked() {
       await logout()
       this.$router.push('/register')
