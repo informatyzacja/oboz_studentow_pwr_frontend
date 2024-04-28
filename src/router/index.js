@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router'
 import MainView from '../views/MainView.vue'
+import { getAccessToken } from '../functions/login.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      redirect: '/home'
+      redirect: '/home',
     },
     {
       path: '/register',
@@ -14,7 +15,7 @@ const router = createRouter({
       component: () => import('../views/login/RegisterView.vue')
     },
     {
-      path: '/verification-code/:email',
+      path: '/verification-code/:email/',
       name: 'verification-code',
       component: () => import('../views/login/VerificationCodeView.vue'),
     },
@@ -226,22 +227,22 @@ const router = createRouter({
 import { useApiDataStore } from '../stores/api.js'
 
 // permission check
-router.beforeEach((to, from, next) => {
-  const apiDataStore = useApiDataStore()
-  if (!apiDataStore.permissions.hasPermissionsNeeded(to)) {
-    next('/')
-  } else {
-    next()
-  }
-})
+router.beforeEach(async (to, from, next) => {
+  if (to.name === 'register' || to.name === 'verification-code') return next()
 
-// transition
-router.afterEach((to, from) => {
-  if (to.meta.transition) return
-  const toDepth = to.path.split('/').length
-  const fromDepth = from.path.split('/').length
-  to.meta.transition = to.meta.type === 'main' && from.meta.type === 'main' || from.name === undefined ? 'fade' :
-    (to.meta.type === 'main' || toDepth < fromDepth ? 'slide-right' : 'slide-left')
+  await getAccessToken().then((token) => {
+    if (token) {
+      const apiDataStore = useApiDataStore()
+      if (!apiDataStore.permissions.hasPermissionsNeeded(to)) {
+        next('/')
+      } else {
+        next()
+      }
+    } else {
+      next('/register')
+    }
+  })
+
 })
 
 export default router

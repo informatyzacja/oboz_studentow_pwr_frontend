@@ -2,7 +2,6 @@
 import { IonPage, IonContent, IonSpinner } from '@ionic/vue';
 import logo from '@/assets/ikona.png';
 
-import { RouterLink } from 'vue-router';
 import { request } from '@/stores/functions.js';
 </script>
 

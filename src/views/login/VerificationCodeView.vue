@@ -2,7 +2,6 @@
 import { IonPage, IonContent, IonSpinner } from '@ionic/vue';
 import logo from '@/assets/ikona.png';
 
-import { RouterLink } from 'vue-router';
 import { request } from '@/stores/functions';
 import { Preferences } from '@capacitor/preferences'
 
@@ -18,13 +17,11 @@ import { Preferences } from '@capacitor/preferences'
 
                     <p class="info">
                         Podaj kod weryfikacyjny wysłany na {{ $route.params.email }}. <br>
-                        <!-- <RouterLink to="/register" router-direction="back">
-                            <a class="small-link f-left">Zmień email</a>
-                        </RouterLink> -->
                     </p>
 
                     <input id="verification-code" name="verification-code" type="text" autocomplete="one-time-code"
-                        required class="pill" placeholder="Kod weryfikacyjny" pattern="\d*" v-model="verificationCode">
+                        required class="pill" placeholder="Kod weryfikacyjny" pattern="\d*" v-model="verificationCode"
+                        maxlength="8">
 
                     <p v-if="error" class="errors">
                         Podany kod weryfikacyjny jest nieprawidłowy.
@@ -50,6 +47,13 @@ export default {
             error: false,
             loading: false,
             verificationCode: ''
+        }
+    },
+    watch: {
+        verificationCode(newVal, oldVal) {
+            if (newVal.length === 8) {
+                this.submit()
+            }
         }
     },
     methods: {
@@ -166,7 +170,7 @@ input::placeholder {
 }
 
 #logo {
-    width: 80%;
+    width: 60%;
     margin-top: 30px;
     margin-bottom: 30px;
 }
