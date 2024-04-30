@@ -198,7 +198,7 @@ defineProps([
 
           <slot name="footer"></slot>
 
-          <div class="credits">
+          <div class="credits" v-if="!hideQR">
             <p>© Obóz Zimowy PWr {{ moment().format('YYYY') }}</p>
             <p>Made with 🍺 by <a href="https://www.facebook.com/Marvin.Ruc/" target="_blank"><u>Marvin</u></a></p>
           </div>
