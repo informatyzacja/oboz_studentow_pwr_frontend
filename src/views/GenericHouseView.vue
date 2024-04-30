@@ -17,7 +17,7 @@ defineProps([
   <ion-page>
     <ion-content :fullscreen="true">
       <main>
-        <TopBar :title="'Domek nr ' + (house ? house.name : '')" :backLink="backLink ? backLink : '/czat-domku'" />
+        <TopBar :title="'Domek nr ' + (house ? house.name : '')" autoBackLink />
 
         <div class="padding-main">
 

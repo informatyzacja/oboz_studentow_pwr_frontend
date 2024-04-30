@@ -125,11 +125,11 @@ const router = createRouter({
           name: 'notFound',
           component: () => import('../views/NotFoundView.vue')
         },
-        // {
-        //   path: '/zapisy-gra-nocna',
-        //   name: 'zapisy-gra-nocna',
-        //   component: () => import('../views/NightGameSignupView.vue')
-        // },
+        {
+          path: '/zapisy-gra-nocna',
+          name: 'zapisy-gra-nocna',
+          component: () => import('../views/NightGameSignupView.vue')
+        },
         {
           path: '/zapisy',
           name: 'zapisy-na-domki',

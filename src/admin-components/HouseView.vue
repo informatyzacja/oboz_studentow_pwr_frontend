@@ -9,7 +9,7 @@ import { apiRequest } from '../stores/functions.js'
 </script>
 
 <template>
-  <GenericHouseView v-if="data" :house="data" :membersData="data.members" backLink="back" />
+  <GenericHouseView v-if="data" :house="data" :membersData="data.members" />
 </template>
 
 

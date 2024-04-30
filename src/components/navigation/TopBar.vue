@@ -6,6 +6,10 @@ defineProps({
   backLink: {
     type: String
   },
+  autoBackLink: {
+    type: Boolean,
+    default: false
+  },
   absolute: {
     type: Boolean,
     default: false
@@ -17,8 +21,8 @@ import { IonNavLink } from '@ionic/vue';
 <template>
   <div class="header" :class="{ header_absolute: absolute }">
     <div class="header-left">
-      <IonNavLink v-if="backLink" @click="$router.back" router-direction="back" class="link">
-        <!-- <IonNavLink v-if="backLink" :router-link="backLink" router-direction="back" class="link"> -->
+      <IonNavLink v-if="backLink || autoBackLink" :router-link="backLink || $router.options.history.state.back || '/'"
+        router-direction="back" class="link">
         <div class="arrow-circle">
           <div class="arrow"></div>
         </div>

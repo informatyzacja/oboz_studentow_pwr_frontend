@@ -49,7 +49,7 @@ import TextBox from '@/components/TextBox.vue'
       </div>
 
       <div class="button-container"
-        v-if="apiDataStore.permissions.hasOneOfPermissions(['can_view_confidential_user_info']) && !confidentialData">
+        v-if="profileData.first_name && apiDataStore.permissions.hasOneOfPermissions(['can_view_confidential_user_info']) && !confidentialData">
         <IonButton fill="outline" color="danger" @click="fetchConfidentialUserData" :disabled="confidentialDataLoading">
           <span v-if="!confidentialDataLoading">Wyświetl poufne dane</span>
           <ion-spinner v-else color="danger" name="dots"></ion-spinner>

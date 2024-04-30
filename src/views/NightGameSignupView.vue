@@ -32,12 +32,12 @@ import { IonPage, IonContent } from '@ionic/vue';
                                 class="bold">chłopacy, jak i
                                 dziewczyny</span>.</p>
 
-                        <p>Wszystkie osoby w grupie muszą mieć <span class="bold">ukończone 18 lat</span> w dniu
+                        <!-- <p>Wszystkie osoby w grupie muszą mieć <span class="bold">ukończone 18 lat</span> w dniu
                             gry<span
                                 v-if="apiDataStore.nightGameGroupInfo.ready && apiDataStore.nightGameGroupInfo.data.night_game_date">
                                 ({{ moment(apiDataStore.nightGameGroupInfo.data.night_game_date).format('DD.MM.YYYY')
                                 }})</span>.
-                        </p>
+                        </p> -->
 
                         <div class="spacer"></div>
 
@@ -93,9 +93,9 @@ import { IonPage, IonContent } from '@ionic/vue';
                         v-if="groupName && groupSize >= apiDataStore.nightGameGroupInfo.data.group_user_min && groupSize <= apiDataStore.nightGameGroupInfo.data.group_user_max && !apiDataStore.nightGameGroupInfo.loading && !success && !signupLoading && peopleValid()">
                         <button class="button success" style="margin-top: 30px" @click="signupGroup">Zapisz
                             grupę</button>
-                        <h3 style="margin-top: 5px;text-align: center;">Upewnij się, że wpisane imiona są takie same jak
+                        <!-- <h3 style="margin-top: 5px;text-align: center;">Upewnij się, że wpisane imiona są takie same jak
                             imię
-                            wyświetlające się w zakładce "profil" każdego uczestnika</h3>
+                            wyświetlające się w zakładce "profil" każdego uczestnika</h3> -->
                     </div>
                     <LoadingIndicator v-if="signupLoading" inline />
                 </div>
