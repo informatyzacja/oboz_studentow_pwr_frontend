@@ -23,7 +23,8 @@ import { IonPage, IonContent } from '@ionic/vue';
             <div>
                 <div class="statusBar"></div>
                 <TopBar
-                    :title="apiDataStore.profile.ready ? ('Czat pokoju nr ' + apiDataStore.profile.data[0].house.name) : 'Czat pokoju'"
+                    :title="'Czat ' + (apiDataStore.houseSignupsInfo.ready &&
+                        apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoju' : 'domku') + (apiDataStore.profile.ready ? (' nr ' + apiDataStore.profile.data[0].house.name) : 'Czat pokoju')"
                     back-link="/profil" class="top-bar">
                     <RouterLink v-if="apiDataStore.myHouseMembers.data" to="/moj-domek/info">
                         <img class="topRightButton" :src="groupIcon" />
@@ -199,7 +200,7 @@ export default {
 
             window.scrollTo(0, document.body.scrollHeight);
 
-            this.chatSocket.send(({ message: message }));
+            this.chatSocket.send(JSON.stringify({ message: message }));
         }
 
     }

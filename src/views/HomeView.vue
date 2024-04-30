@@ -19,7 +19,7 @@ import questionMark from '../assets/question-mark.jpg'
 import homeCardLinkBg from '../assets/home-card-link-bg.png'
 
 import rightArrow from '../assets/arrow.svg'
-// import microphoneIcon from '../assets/ogloszenia.svg'
+import megaphoneIcon from '../assets/icons8-megaphone-100.png'
 
 import graNocna from '../assets/gra nocna.png'
 import ItemBox from '../components/ItemBox.vue'
@@ -50,7 +50,7 @@ import { IonPage, IonContent } from '@ionic/vue';
           <h3>Ogłoszenia</h3>
           <div class="padding">
             <TextBox v-for="(data, index) in apiDataStore.announcement.data" :key="index" :title="data.title"
-              :content="data.content" :image="microphoneIcon" style="margin-bottom: 10px" />
+              :content="data.content" :image="megaphoneIcon" style="margin-bottom: 10px" white />
           </div>
         </div>
 

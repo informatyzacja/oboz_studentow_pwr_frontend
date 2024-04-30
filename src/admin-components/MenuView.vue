@@ -11,7 +11,8 @@ import FractionIcon from '../assets/icons8-meeting_room.png'
 import PointsIcon from '../assets/icons8-scoreboard.png'
 import RankingIcon from '../assets/icons8-leaderboard.png'
 import AddPointsIcon from '../assets/icons8-timezone_+10.png'
-import AnnouncementIcon from '../assets/ogloszenia.svg'
+import AnnouncementIcon from '../assets/icons8-megaphone-100.png'
+
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
@@ -53,8 +54,8 @@ import { IonPage, IonContent } from '@ionic/vue'
           <MenuCard title="Sos" :icon="SosIcon" link="/sos" />
           <MenuCard title="Mapka" :icon="MapIcon" link="/mapa" />
 
-          <div style="height: 150px; width: 150px"></div>
-          <div style="height: 150px; width: 150px"></div>
+          <div style="height: calc(33vw - 25px); width: calc(33vw - 25px)"></div>
+          <div style="height: calc(33vw - 25px); width: calc(33vw - 25px)"></div>
         </div>
       </main>
     </ion-content>

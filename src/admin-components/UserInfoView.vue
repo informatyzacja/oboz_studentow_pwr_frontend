@@ -6,6 +6,11 @@ import TopBar from '../components/navigation/TopBar.vue'
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 import { apiRequest } from '../stores/functions.js'
+import { RouterLink } from 'vue-router'
+import ItemBox from '../components/ItemBox.vue'
+import phoneIcon from '@/assets/phone_icon.svg'
+import domekIcon from '@/assets/icons8-exterior.png'
+import rightArrow from '@/assets/arrow.svg'
 </script>
 
 <template>
@@ -17,8 +22,28 @@ import { apiRequest } from '../stores/functions.js'
         ? '/grupa'
         : null
         ">
+
     <template #topBar>
       <TopBar title="Informacje o uczestniku" backLink="/skaner/uczestnik" />
+    </template>
+
+    <template #footer>
+      <div v-if="profileData.house">
+
+        <RouterLink :to="'/domek/' + profileData.house.id">
+          <ItemBox
+            :bigText="(apiDataStore.houseSignupsInfo.ready &&
+              apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'Pokój' : 'Domek') + ' nr ' + profileData.house.name"
+            :leftIcon="domekIcon"
+            :smallText="profileData.house.key_collected ? 'Klucze odebrane ✅' : 'Klucze nieodebrane ❌'"
+            :rightIcon="rightArrow" />
+        </RouterLink>
+
+
+        <a :href="'tel:' + profileData.phoneNumber">
+          <ItemBox bigText="Telefon" :smallText="profileData.phoneNumber" :rightIcon="phoneIcon" />
+        </a>
+      </div>
     </template>
   </GenericProfileView>
 </template>

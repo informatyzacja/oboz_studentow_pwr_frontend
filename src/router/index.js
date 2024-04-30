@@ -51,7 +51,7 @@ const router = createRouter({
           component: () => import('../views/ChatView.vue'),
         },
         {
-          path: 'moj-domek/info',
+          path: 'moj-domek/info/',
           name: 'moj-domek',
           component: () => import('../views/MyHouseView.vue'),
         },
@@ -173,6 +173,11 @@ const router = createRouter({
           path: '/uczestnik/:id',
           name: 'uczestnik',
           component: () => import('../admin-components/UserInfoView.vue')
+        },
+        {
+          path: 'domek/:id/',
+          name: 'domek',
+          component: () => import('../admin-components/HouseView.vue'),
         },
         {
           path: '/frakcja/:id',

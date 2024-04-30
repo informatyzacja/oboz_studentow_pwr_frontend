@@ -11,6 +11,11 @@ defineProps({
   image: {
     type: String,
     required: false
+  },
+  white: {
+    type: Boolean,
+    required: false,
+    default: false
   }
 });
 </script>
@@ -18,7 +23,7 @@ defineProps({
 <template>
   <div class="textbox">
     <div class="textbox-header" v-if="image || title">
-      <img v-if="image" :src="image" />
+      <img v-if="image" :src="image" :class="{ white }" />
       <h4 v-if="title">{{ title }}</h4>
     </div>
     <p>{{ content }}</p>
@@ -60,5 +65,9 @@ p {
   font-size: 13px;
   line-height: 16px !important;
   font-weight: 400;
+}
+
+img.white {
+  filter: brightness(0) invert(1);
 }
 </style>

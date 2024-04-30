@@ -142,7 +142,7 @@ defineProps([
               <h3 v-if="profileData.bus || profileData.bandId || profileData.houseNumber">Dane</h3>
 
               <!-- House -->
-              <RouterLink v-if="profileData.house" :to="!hideQR ? '/czat-domku' : ''">
+              <RouterLink v-if="profileData.house && !hideQR" to="/czat-domku">
                 <ItemBox
                   :bigText="(apiDataStore.houseSignupsInfo.ready &&
                     apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'Pokój' : 'Domek') + ' nr ' + profileData.house.name"
@@ -199,7 +199,7 @@ defineProps([
           <slot name="footer"></slot>
 
           <div class="credits">
-            <p>© Obóz Zimowy PWr {{moment().format('YYYY')}}</p>
+            <p>© Obóz Zimowy PWr {{ moment().format('YYYY') }}</p>
             <p>Made with 🍺 by <a href="https://www.facebook.com/Marvin.Ruc/" target="_blank"><u>Marvin</u></a></p>
           </div>
         </div>
