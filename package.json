@@ -18,6 +18,7 @@
     "@capacitor/haptics": "^6.0.0",
     "@capacitor/ios": "6.0.0",
     "@capacitor/keyboard": "^6.0.0",
+    "@capacitor/live-updates": "^0.2.1",
     "@capacitor/preferences": "^6.0.0",
     "@capacitor/share": "^6.0.0",
     "@capacitor/status-bar": "^6.0.0",

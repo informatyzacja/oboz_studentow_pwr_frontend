@@ -25,7 +25,6 @@ export default {
   },
   mounted() {
     this.fetchData()
-    console.log(this.$router)
   },
   methods: {
     fetchData() {
