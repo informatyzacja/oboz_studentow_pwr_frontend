@@ -140,6 +140,11 @@ const router = createRouter({
           name: 'zapisy-na-domki-detail',
           component: () => import('../views/HouseSignupDetailView.vue')
         },
+        {
+          path: '/tinder/',
+          name: 'tinder',
+          component: () => import('../views/TinderView.vue')
+        },
 
         // ADMIN ROUTES
         {
