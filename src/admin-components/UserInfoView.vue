@@ -17,11 +17,10 @@ import TextBox from '@/components/TextBox.vue'
 </script>
 
 <template>
-  <GenericProfileView :profileData="profileData" :loading="loading" :ready="ready" :error="error" :hideFAQ="true"
-    :hideQR="true" :frakcjaLink="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_fractions')
-      ? '/frakcja'
-      : null
-      " :grupaLink="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_groups')
+  <GenericProfileView :profileData="profileData" :loading="loading" :ready="ready" :error="error" :frakcjaLink="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_fractions')
+    ? '/frakcja'
+    : null
+    " :grupaLink="apiDataStore.permissions.ready && apiDataStore.permissions.hasPermission('can_view_groups')
         ? '/grupa'
         : null
         ">

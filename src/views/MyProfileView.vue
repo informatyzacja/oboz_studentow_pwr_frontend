@@ -3,6 +3,8 @@ import GenericProfileView from './GenericProfileView.vue'
 
 import TopBar from '../components/navigation/TopBar.vue'
 import ItemBox from '../components/ItemBox.vue'
+import LoadingIndicator from '../components/LoadingIndicator.vue'
+import moment from 'moment'
 
 import logoutIcon from '../assets/icons8-logout.png'
 import politykaPrywatnosciIcon from '../assets/icons8-terms_and_conditions.png'
@@ -11,7 +13,15 @@ import icons8Icon from '../assets/icons8-icons8.png'
 import rightArrow from '../assets/arrow.svg'
 import adminPanelIcon from '../assets/icons8-administrative_tools.png'
 
-import copyIcon from '../assets/icons8-copy.png'
+// import copyIcon from '../assets/icons8-copy.png'
+
+import VueQr from 'vue-qr/src/packages/vue-qr.vue'
+import OverlayView from '../components/OverlayView.vue'
+import Logo from '../assets/ikona.png'
+
+import qrBg from '../assets/pod QRsvg- profil.svg'
+import backArrow from '../assets/strzala- do qr.svg'
+import hand from '../assets/hands.svg'
 
 import { REGULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
 
@@ -21,18 +31,73 @@ import { mapStores } from 'pinia'
 
 import { logout } from '../functions/login.js'
 
+import { App } from '@capacitor/app';
+import * as LiveUpdates from '@capacitor/live-updates';
+import { isPlatform } from '@ionic/vue';
+
 </script>
 
 <template>
-  <GenericProfileView :profileData="apiDataStore.profile.data && apiDataStore.profile.data.length
-    ? apiDataStore.profile.data[0]
-    : {}
-    " :loading="apiDataStore.profile.loading" :ready="apiDataStore.profile.ready" :error="apiDataStore.profile.error"
-    :linksData="apiDataStore.links.data" :linksReady="apiDataStore.links.ready"
-    :userWorkshopData="apiDataStore.userWorkshop.data" :userWorkshopReady="apiDataStore.userWorkshop.ready"
-    frakcjaLink="/moja-frakcja" grupaLink="/moja-grupa">
+  <GenericProfileView :profileData="profileData" :loading="apiDataStore.profile.loading"
+    :ready="apiDataStore.profile.ready" :error="apiDataStore.profile.error" :linksData="apiDataStore.links.data"
+    :linksReady="apiDataStore.links.ready" :userWorkshopData="apiDataStore.userWorkshop.data"
+    :userWorkshopReady="apiDataStore.userWorkshop.ready" frakcjaLink="/moja-frakcja" grupaLink="/moja-grupa"
+    :profileView="true">
     <template #topBar>
       <TopBar title="Profil" />
+    </template>
+
+    <template #qr>
+      <div class="qr_card" @click="$refs.qrOverlay.show">
+        <img class="qr_card_bg" :src="qrBg" />
+
+        <div class="qr_content" v-if="profileData.bandId">
+          <div class="qr">
+            <div class="qr_div" :class="{ hidden: qrLoading }">
+              <VueQr :text="profileData.bandId" :logoSrc="Logo" :logoScale="0.15" :dotScale="0.8" colorDark="black"
+                colorLight="transparent" whiteMargin="false" :margin="0" :callback="qrReady" :size="250" />
+              <span class="top"></span>
+              <span class="right"></span>
+              <span class="bottom"></span>
+              <span class="left"></span>
+            </div>
+            <LoadingIndicator v-if="qrLoading" inline />
+          </div>
+          {{ profileData.bandId }}
+        </div>
+        <div v-else class="qr_content">
+          <img :src="BlackLogo" class="qr_placeholder_logo" />
+        </div>
+      </div>
+
+      <OverlayView ref="qrOverlay" v-if="profileData.bandId">
+        <div class="qr_overlay">
+          <div class="qr_overlay_inner">
+
+            <div style="width:100%;">
+              <img @click="$refs.qrOverlay.hide" :src="backArrow" class="qr_back_arrow" />
+            </div>
+
+            <h6 style="margin-bottom: 15px">
+              Twój indyfidualny kod QR używany jest do potwierdzania Twojej tożsamości np. podczas
+              wydawania posiłków
+            </h6>
+            <div class="qr_div" :class="{ hidden: qrLoading }">
+              <VueQr :text="profileData.bandId" :logoSrc="Logo" :logoScale="0.15" :dotScale="0.8" colorDark="black"
+                colorLight="transparent" whiteMargin="false" :margin="0" :callback="qrReady" :size="700" />
+              <span class="top"></span>
+              <span class="right"></span>
+              <span class="bottom"></span>
+              <span class="left"></span>
+            </div>
+            <LoadingIndicator v-if="qrLoading" inline />
+            <p>Kod: {{ profileData.bandId }}</p>
+          </div>
+
+          <img :src="hand" class="qr_hand" />
+
+        </div>
+      </OverlayView>
     </template>
 
     <template #footer>
@@ -67,7 +132,14 @@ import { logout } from '../functions/login.js'
         <div class="spacer"></div>
 
         <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small @click="logoutClicked" />
-        <!-- <p class="version" v-if="version">v{{ version }}</p> -->
+        <p class="version" v-if="version">v{{ version }} {{ liveUpdateVersion }}</p>
+
+
+        <div class="credits">
+          <p>© Obóz Zimowy PWr {{ moment().format('YYYY') }}</p>
+          <p>Made with 🍺 by <a href="https://www.facebook.com/Marvin.Ruc/" target="_blank"><u>Marvin</u></a></p>
+        </div>
+
       </div>
     </template>
   </GenericProfileView>
@@ -81,12 +153,17 @@ export default {
       timer2: null,
       timer3: null,
 
-      // eslint-disable-next-line no-undef
-      // version: VERSION_NUMBER || null,
+      qrLoading: true,
+      version: null,
+      liveUpdateVersion: null,
     }
   },
   computed: {
-    ...mapStores(useApiDataStore)
+    ...mapStores(useApiDataStore),
+    profileData() {
+      return this.apiDataStore.profile.data && this.apiDataStore.profile.data.length
+        && this.apiDataStore.profile.data[0]
+    }
   },
   mounted() {
     this.apiDataStore.profile.fetchData()
@@ -96,11 +173,25 @@ export default {
     this.timer1 = setInterval(this.apiDataStore.profile.fetchData, 300000)
     this.timer2 = setInterval(this.apiDataStore.links.fetchData, 300000)
     this.timer3 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000)
+
+    App.getInfo()
+      .then((appinfo) => {
+        this.version = appinfo.version + ' (' + appinfo.build + ')'
+      })
+
+    LiveUpdates.sync()
+      .then((result) => {
+        if (!result.snapshot) return
+        this.liveUpdateVersion = result.snapshot.buildId
+      })
   },
   methods: {
     async logoutClicked() {
       await logout()
       this.$router.push('/register')
+    },
+    qrReady() {
+      this.qrLoading = false
     },
   },
   beforeUnmount() {
@@ -112,6 +203,13 @@ export default {
 </script>
 
 <style scoped>
+.credits {
+  margin-top: 20px;
+  font-size: 10px;
+  color: var(--light-text);
+  text-align: center;
+}
+
 .spacer {
   height: 15px;
 }
@@ -140,5 +238,242 @@ h6 {
 .zindex {
   z-index: 1;
   position: relative;
+}
+
+
+.qr_placeholder_logo {
+  width: 110px;
+  margin-top: -25px;
+}
+
+.qr {
+  width: 110px;
+  height: 110px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 2;
+}
+
+.qr_card {
+  text-align: center;
+  padding: 10px 20px;
+  color: black;
+  position: relative;
+  width: 450px;
+}
+
+.qr_card_bg {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  width: 100%;
+}
+
+.qr_content {
+  transform: translateZ(1px);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  height: 218px;
+  font-weight: 600;
+}
+
+.qr_overlay {
+  width: 100%;
+  height: 100vh;
+  max-width: 650px;
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+
+  background: var(--theme-dark);
+  padding: 30px 40px;
+  text-align: center;
+  color: black;
+
+  overflow: hidden;
+
+  position: relative;
+}
+
+.qr_overlay_inner {
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  z-index: 2;
+  background: var(--theme-dark);
+}
+
+.qr_back_arrow {
+  height: 33px;
+  width: 100px !important;
+  object-fit: cover !important;
+  object-position: bottom;
+  float: left;
+}
+
+.qr_hand {
+  position: absolute;
+  bottom: 0;
+  z-index: 0;
+  width: auto !important;
+  image-rendering: auto !important;
+}
+
+.qr_overlay p {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.qr img,
+.qr_overlay img,
+.qr .qr_div,
+.qr_overlay .qr_div {
+  width: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+
+
+span,
+div {
+  --border-width: calc(2% + 3px);
+}
+
+.qr_div {
+  position: relative;
+  color: #fff;
+  background: transparent;
+  overflow: hidden;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: calc(var(--border-width) + 2%);
+}
+
+span {
+  position: absolute;
+  border-radius: 100vmax;
+}
+
+.top {
+  top: 0;
+  left: 0;
+  width: 0;
+  height: var(--border-width);
+  background: linear-gradient(90deg,
+      transparent 30%,
+      var(--red),
+      var(--red));
+}
+
+.bottom {
+  right: 0;
+  bottom: 0;
+  height: var(--border-width);
+  background: linear-gradient(90deg,
+      var(--red),
+      var(--red),
+      transparent 70%);
+}
+
+.right {
+  top: 0;
+  right: 0;
+  width: var(--border-width);
+  height: 0;
+  background: linear-gradient(180deg,
+      transparent 30%,
+      var(--red),
+      var(--red));
+}
+
+.left {
+  left: 0;
+  bottom: 0;
+  width: var(--border-width);
+  height: 0;
+  background: linear-gradient(180deg,
+      var(--red),
+      var(--red),
+      transparent 70%);
+}
+
+.top {
+  animation: animateTopBottom 1s linear infinite;
+}
+
+.bottom {
+  animation: animateTopBottom 1s linear infinite;
+}
+
+.right {
+  animation: animateRightLeft 1s linear infinite;
+}
+
+.left {
+  animation: animateRightLeft 1s linear infinite;
+}
+
+
+
+@keyframes animateTopBottom {
+  0% {
+    opacity: 0;
+    width: 0;
+  }
+
+  50% {
+    width: 100%;
+    opacity: 1;
+  }
+
+  70% {
+    width: 100%;
+    opacity: 0;
+  }
+
+  100% {
+    width: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes animateRightLeft {
+  0% {
+    opacity: 1;
+    height: 100%;
+  }
+
+  20% {
+    opacity: 0;
+    height: 100%;
+  }
+
+  50% {
+    opacity: 0;
+    bottom: 0;
+    height: 0;
+  }
+
+  100% {
+    opacity: 1;
+    height: 100%;
+  }
+
 }
 </style>
