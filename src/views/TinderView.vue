@@ -13,12 +13,11 @@ import source from '@/bing'
     <ion-page>
         <ion-content :fullscreen="true">
 
-            <Tinder ref="tinder" key-name="id" v-model:queue="queue" :max="3" :offset-y="10" allow-down
-                @submit="onSubmit">
+            <Tinder ref="tinder" key-name="id" :queue="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
                 <template v-slot="scope">
                     <div class="pic" :style="{
                         'background-image': `url(https://cn.bing.com//th?id=OHR.${scope.data.id}_UHD.jpg&pid=hp&w=720&h=1280&rs=1&c=4&r=0)`
-                    }" />
+                    }"></div>
                 </template>
                 <!-- <img class="like-pointer" slot="like" src="~img/like-txt.png" />
                 <img class="nope-pointer" slot="nope" src="~img/nope-txt.png" />
@@ -58,6 +57,7 @@ export default {
     },
     methods: {
         mock(count = 5, append = true) {
+            console.log('mock', count, append)
             const list = []
             for (let i = 0; i < count; i++) {
                 list.push({ id: source[this.offset] })
@@ -119,17 +119,17 @@ body {
     overflow: hidden;
 }
 
-#app .vue-tinder {
+.vue-tinder {
     position: absolute;
     z-index: 1;
     left: 0;
     right: 0;
     top: 23px;
     margin: auto;
-    width: calc(100% - 20px);
-    height: calc(100% - 23px - 65px - 47px - 16px);
-    min-width: 300px;
-    max-width: 355px;
+    /* width: calc(100% - 20px);
+    height: calc(100% - 23px - 65px - 47px - 16px); */
+    width: 90%;
+    height: 90%;
 }
 
 .nope-pointer,

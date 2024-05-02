@@ -17,7 +17,7 @@ import { STATUS } from './status'
 export default {
   name: 'TinderCard',
   props: {
-    // 避免 vue-tinder 还未完全初始化时，各 tinder-card 因为没有生效的 style 而重叠
+    // To prevent overlapping of tinder-cards due to unapplied styles before vue-tinder is fully initialized
     tinderMounted: {
       type: Boolean,
       default: false
@@ -61,13 +61,13 @@ export default {
     willDestory: false
   }),
   computed: {
-    // 当前缩放尺寸
+    // Current scale size
     curScale() {
       return this.scaleStep * this.index
     },
     /**
-     * 是否是当前卡片
-     * @param  {Number}  index 卡片索引值
+     * Whether it is the current card
+     * @param  {Number}  index Card index
      * @return {Boolean}       true/false
      */
     isCur() {
@@ -77,7 +77,7 @@ export default {
       if (!this.inited) {
         return {}
       }
-      // 借 inited 的变化覆盖在 beforeEnter 中设置的样式
+      // Use the change of inited to override the style set in beforeEnter
       const status = this.state.status
       if (status === STATUS.MOVING) {
         return this.movingStyle
@@ -97,18 +97,18 @@ export default {
         opacity: this.ready ? 0 : 1,
         transform: this.getTransform(),
         transition: `all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275) ${this.scopedRewind ? this.scopedRewind * 80 : 0
-          }ms, z-index 0s` // 正在 rewind 的 item 的 transition 要与主卡片一致
+          }ms, z-index 0s` // Transition of an item being rewound should match the main card
       }
     },
     movingStyle() {
       const style = { transition: 'none' }
       if (this.isCur) {
-        // 移动中，位移及旋转角度
+        // During movement, displacement and rotation angle
         const state = this.state
         const { start, move, startPoint } = state
         const x = move.x - start.x || 0
         const y = move.y - start.y || 0
-        // 横向滑动卡片一半宽(0.5)时为标准状态
+        // Standard state when sliding card halfway width (0.5)
         const rotate = 10 * this.ratio * startPoint
         style['transform'] = `translate3d(${x}px,${y}px,0) rotate(${rotate}deg)`
       } else {
@@ -126,8 +126,8 @@ export default {
   },
   watch: {
     index(val, oldVal) {
-      // 从本来需要 rewind 过渡到新的目标位置，不需要 delay
-      // 如果层级提升需要隐藏，避免快速操作出现闪现 bug
+      // Transitioning from originally needing rewind to a new target position, no delay needed
+      // If level is elevated and needs to be hidden, prevent the flashing bug from quick operations
       if (val < oldVal) {
         this.scopedRewind = false
       }
@@ -140,16 +140,16 @@ export default {
     }
   },
   mounted() {
-    // 必须要包裹 requestAnimationFrame，保证在 beforeEnter 执行之后
+    // Must wrap in requestAnimationFrame to ensure it executes after beforeEnter
     requestAnimationFrame(() => {
       this.inited = true
     })
   },
   methods: {
-    // 回归原位，可以重置 vue-tinder 状态
+    // Return to original position, can reset vue-tinder state
     transitionEnd(e) {
       if (e.target === e.currentTarget && e.propertyName === 'transform') {
-        // 需要在回到原位后隐藏 rewind slot
+        // Need to hide rewind slot after returning to position
         this.scopedRewind = false
         if (this.isCur) {
           const status = this.state.status

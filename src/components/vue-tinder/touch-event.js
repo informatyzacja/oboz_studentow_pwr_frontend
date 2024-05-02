@@ -54,7 +54,6 @@ export default {
     move(e) {
       e.preventDefault()
       const state = this.state
-      console.log(this.status)
       if (
         state.touchId === null ||
         this.status === STATUS.LEAVING ||

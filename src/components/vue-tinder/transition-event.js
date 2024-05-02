@@ -43,7 +43,6 @@ export default {
      * @param {Function} done Callback function
      */
     leave(el, done) {
-      console.log('leave')
       const state = this.state
       const { start, move, startPoint } = state
       let x = move.x - start.x || 0
@@ -101,7 +100,7 @@ export default {
       })
       if (
         !this.sync &&
-        el.dataset.index - 0 === 0 &&
+        // el.dataset.index - 0 === 0 &&
         this.status !== STATUS.REWINDING
       ) {
         this.resetStatus()

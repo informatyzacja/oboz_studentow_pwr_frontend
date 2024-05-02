@@ -2,33 +2,33 @@
   <TransitionGroup class="vue-tinder" tag="div" :css="false" @beforeEnter="beforeEnter" @leave="leave"
     @touchstart="start" @touchmove="move" @touchend="end" @touchcancel="end" @mousedown="start" @mousemove="move"
     @mouseup="end">
-    <template v-for="(item, index) in list">
-      <TinderCard v-if="index < max + 1" :ready="index === max" :key="item.$vtKey || item[keyName]"
-        :data-id="item.$vtKey || item[keyName]" :index="index" :state="state" :ratio="ratio" :rewind="rewindKeys.indexOf(item.$vtKey || item[keyName]) > -1 ? index : false
-          " :tinder-mounted="tinderMounted" :scale-step="scaleStep" :offset-y="offsetY" :offset-unit="offsetUnit"
+    <div v-for="(item, index) in list" :key="item.$vtKey || item[keyName]">
+      <TinderCard v-if="index < max + 1" :ready="index === max" :data-id="item.$vtKey || item[keyName]" :index="index"
+        :state="state" :ratio="ratio" :rewind="rewindKeys.indexOf(item.$vtKey || item[keyName]) > -1 ? index : false"
+        :tinder-mounted="tinderMounted" :scale-step="scaleStep" :offset-y="offsetY" :offset-unit="offsetUnit"
         @reverted="resetStatus">
         <slot :data="item" :index="index" :status="status"></slot>
         <template v-if="index === 0 && status !== 2">
           <span slot="nope" class="pointer-wrap nope-pointer-wrap" :style="{ opacity: nopeOpacity }">
-            <slot name="nope" :opacity="nopeOpacity" />
+            <slot name="nope" :opacity="nopeOpacity"></slot>
           </span>
           <span slot="like" class="pointer-wrap like-pointer-wrap" :style="{ opacity: likeOpacity }">
-            <slot name="like" :opacity="likeOpacity" />
+            <slot name="like" :opacity="likeOpacity"></slot>
           </span>
           <span v-if="allowSuper" slot="super" class="pointer-wrap super-pointer-wrap"
             :style="{ opacity: superOpacity }">
-            <slot name="super" :opacity="superOpacity" />
+            <slot name="super" :opacity="superOpacity"></slot>
           </span>
           <span v-if="allowDown" slot="down" class="pointer-wrap down-pointer-wrap" :style="{ opacity: downOpacity }">
-            <slot name="down" :opacity="downOpacity" />
+            <slot name="down" :opacity="downOpacity"></slot>
           </span>
         </template>
-        <!-- rewind 指示器显示不需要是第一张卡片，会由内部判断显示 -->
+        <!-- The rewind indicator does not need to be the first card, it will be judged internally when to display -->
         <span v-if="state.status === 4" slot="rewind" class="pointer-wrap rewind-pointer-wrap">
-          <slot name="rewind" />
+          <slot name="rewind"></slot>
         </span>
       </TinderCard>
-    </template>
+    </div>
   </TransitionGroup>
 </template>
 
@@ -49,7 +49,7 @@ export default {
   },
   emits: ['update:queue', 'reverted', 'submit'],
   props: {
-    // TODO: 考虑添加一个不强制渲染的配置
+    // TODO: Consider adding a configuration that does not enforce rendering
     allowSuper: {
       type: Boolean,
       default: true
@@ -67,16 +67,16 @@ export default {
       default: 'key'
     },
     /**
-     * 横向移动直至消失时，移动距离占卡片 "一半宽度" 的比例
-     * 因为是占卡片一半宽度的比例，所以默认 0.5 便相当于 1/4（0.5*0.5）卡片宽度
+     * When moving horizontally until disappearance, the ratio of the distance moved to "half the width" of the card
+     * Since it is a proportion of half the width of the card, the default 0.5 is equivalent to 1/4 (0.5*0.5) of the card width
      */
     pointerThreshold: {
       type: Number,
       default: 0.5
     },
     /**
-     * 向上移动直至消失时，移动距离占卡片高度的比例
-     * 默认移动 1/2 高度便符合移出条件
+     * When moving upward until disappearance, the ratio of the distance moved to the height of the card
+     * Default movement of 1/2 height meets the removal condition
      */
     superThreshold: {
       type: Number,
@@ -86,19 +86,18 @@ export default {
       type: Number,
       default: 0.5
     },
-    // 执行下次操作是否需要等卡片完全消失，默认非同步操作
+    // Whether the next action needs to wait for the card to completely disappear, default is asynchronous operation
     sync: {
       type: Boolean,
       default: false
     },
-    // 最大渲染数
+    // Maximum render count
     max: {
       type: Number,
       default: 3
     },
     scaleStep: {
       type: Number,
-      // default: 30
       default: 0.05
     },
     offsetY: {
@@ -116,15 +115,15 @@ export default {
       width: 0,
       height: 0
     },
-    state: initStatus(), // 此次触摸及移动坐标等状态
-    list: [], // 实际使用的列表，用以与新列表比较，对新列表 item 做唯一处理，避免 dom 被重用
+    state: initStatus(), // Status of this touch and movement, etc.
+    list: [], // Actual list used, to compare with new list, treat new list items uniquely to avoid DOM reuse
     tinderMounted: false
   }),
   computed: {
     status() {
       return this.state.status
     },
-    // 在 x 轴上移动距离相对于卡片一半宽度的比例
+    // Ratio of the horizontal movement distance relative to half the width of the card
     ratio() {
       if (this.size.width) {
         const { start, move } = this.state
@@ -134,7 +133,7 @@ export default {
       }
       return 0
     },
-    // 卡片上喜欢/不喜欢图标的不透明度
+    // Opacity of the like/dislike icons on the card
     pointerOpacity() {
       return this.ratio / this.pointerThreshold
     },
@@ -161,7 +160,8 @@ export default {
       return ratio > pointerOpacity ? ratio : 0
     },
     likeOpacity() {
-      // 如果当前卡片正在往上滑，需要隐藏喜欢/不喜欢
+      return 1
+      // If the current card is sliding up, need to hide the like/dislike
       if (this.superOpacity || this.downOpacity) {
         return 0
       }
@@ -171,28 +171,29 @@ export default {
       return -this.likeOpacity
     }
   },
+
   watch: {
-    queue(val) {
-      const keyName = this.keyName
-      const newKeys = val.map(item => item[keyName])
-      const oldKeys = this.list.map(item => item[keyName])
-      this.diff(newKeys, oldKeys)
-      this.list = val.slice()
+    queue: {
+      handler(val) {
+        const keyName = this.keyName
+        const newKeys = val.map(item => item[keyName])
+        const oldKeys = this.list.map(item => item[keyName])
+        this.diff(newKeys, oldKeys)
+      },
+      deep: true
     }
   },
   mounted() {
-    if (!this.$el.offsetWidth || !this.$el.offsetHeight) {
-      /* eslint-disable-next-line */
-      console.error('请设置vue-tinder的宽高');
-      return
-    }
-    this.size = {
-      top: this.$el.offsetTop,
-      width: this.$el.offsetWidth,
-      height: this.$el.offsetHeight
-    }
     window.onresize = this.getSize
-    this.tinderMounted = true
+    setTimeout(() => {
+      this.getSize()
+      if (!this.$el.offsetWidth || !this.$el.offsetHeight) {
+        /* eslint-disable-next-line */
+        console.error('Please set the width and height of vue-tinder');
+        return
+      }
+      this.tinderMounted = true
+    }, 0)
   },
   created() {
     this.list = this.queue.slice()
@@ -201,7 +202,7 @@ export default {
     window.removeEventListener('onresize', this.getSize)
   },
   methods: {
-    // 获取组件尺寸及位置，用以决定旋转角度、显示对应状态等
+    // Get component size and position to determine the angle of rotation, show corresponding status, etc.
     getSize() {
       clearInterval(resizeTimer)
       resizeTimer = setTimeout(() => {
@@ -212,7 +213,7 @@ export default {
         }
       }, 300)
     },
-    // 当前卡片已经离开
+    // Current card has already left
     resetStatus() {
       this.state = initStatus()
     }
@@ -226,7 +227,7 @@ export default {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* style正在被数据绑定，只能使用important来覆盖 */
+/* Style is being bound by data, only important can be used to override */
 .v-move {
   transition: none !important;
 }
@@ -236,7 +237,7 @@ export default {
   transition: opacity 0.2s ease;
 }
 
-/* 通过调用函数让卡片消失时需要直接显示对应状态，不需要过渡动画 */
+/* When calling a function to make a card disappear, corresponding state needs to be shown directly without transition animations */
 .tinder-card.nope .nope-pointer-wrap,
 .tinder-card.like .like-pointer-wrap,
 .tinder-card.super .super-pointer-wrap,
