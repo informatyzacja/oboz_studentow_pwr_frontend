@@ -12,6 +12,9 @@ import phoneIcon from '../assets/phone_icon.svg'
 import mapIcon from '../assets/icons8-map_marker.png'
 import { IonPage, IonContent } from '@ionic/vue';
 
+import SavePhotoButton from '@/components/SavePhotoButton.vue'
+
+
 defineProps([
   'title',
   'backLink',
@@ -69,8 +72,9 @@ defineProps([
           <OverlayView ref="mapOverlay">
             <div class="image_overlay">
               <img :src="group.map" alt="mapa" />
-              <a class="button" :href="group.map" :download="group.name + '_Mapa_Obóz_Studentów_PWr'">Pobierz</a>
-              <button class="red-bg" @click="$refs.mapOverlay.hide">Zamknij</button>
+              <SavePhotoButton :path="group.map" />
+
+              <button class=" red-bg" @click="$refs.mapOverlay.hide">Zamknij</button>
             </div>
           </OverlayView>
 

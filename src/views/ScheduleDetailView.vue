@@ -96,7 +96,7 @@ main {
 
 .card {
   width: 100%;
-  height: 325px;
+  height: calc(325px + var(--ion-safe-area-top));
   background-color: black;
   position: relative;
 
@@ -118,6 +118,7 @@ main {
   float: right;
   color: black;
   margin: 20px;
+  margin-top: calc(20px + var(--ion-safe-area-top)/2);
   padding: 10px 12px;
   font-size: 14px;
   line-height: 16px;

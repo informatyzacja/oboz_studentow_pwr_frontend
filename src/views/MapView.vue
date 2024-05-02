@@ -4,8 +4,9 @@ import LoadingIndicator from '../components/LoadingIndicator.vue'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
-import { IonPage, IonContent, IonSpinner } from '@ionic/vue';
-import { Share } from '@capacitor/share';
+import { IonPage, IonContent } from '@ionic/vue';
+
+import SavePhotoButton from '@/components/SavePhotoButton.vue'
 </script>
 
 <template>
@@ -15,12 +16,7 @@ import { Share } from '@capacitor/share';
         <div v-if="data">
           <TopBar :title="data.name" backLink="/" />
           <div class="padding">
-            <!-- <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentów_PWr'" target="_blank"
-              rel="nofollow">Pobierz mapkę</a> -->
-            <a class="button" @click="save">
-              <span v-if="!loading">Pobierz mapkę</span>
-              <ion-spinner v-else name="dots" />
-            </a>
+            <SavePhotoButton v-if="data" :path="data.image" />
             <img :src="data.image" :alt="data.name" />
           </div>
         </div>
@@ -41,7 +37,6 @@ export default {
   data() {
     return {
       timer: null,
-      loading: false
     }
   },
   computed: {
@@ -56,25 +51,6 @@ export default {
   },
   beforeUnmount() {
     clearInterval(this.timer)
-  },
-  methods: {
-    async save() {
-      if (this.loading) return;
-      if (!this.data) return;
-      this.loading = true;
-      try {
-        await Share.share({
-          title: 'Mapka Obóz Studentów PWr',
-          // text: 'Polecam aplikację Dyżury.app',
-          url: this.data.image,
-          // dialogTitle: 'Poleć aplikację znajomym',
-        });
-      } catch (error) {
-        // Handle error here
-      } finally {
-        this.loading = false;
-      }
-    }
   }
 }
 </script>

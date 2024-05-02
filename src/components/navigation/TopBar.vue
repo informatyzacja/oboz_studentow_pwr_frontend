@@ -47,7 +47,7 @@ import { IonNavLink } from '@ionic/vue';
 
 .header_absolute {
   position: absolute;
-  top: 0;
+  top: calc(var(--ion-safe-area-top)/1.5);
   left: 0;
   width: 100%;
   padding: 10px 10px 5px;

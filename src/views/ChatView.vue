@@ -75,7 +75,6 @@ import { IonPage, IonContent } from '@ionic/vue';
                                     class="sendIcon" /></button>
 
                         </div>
-                        <div class="fake-bg"></div>
                     </div>
                     <LoadingIndicator v-else />
                 </main>
@@ -337,16 +336,7 @@ export default {
     filter: brightness(0) saturate(100%) invert(37%) sepia(47%) saturate(783%) hue-rotate(181deg) brightness(98%) contrast(91%);
 }
 
-.textBox+.fake-bg {
-    width: 100%;
-    height: 20px;
-    position: fixed;
-    left: 0;
-    bottom: 80px;
-    background-color: var(--bg-translusent);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
+
 
 .datetime {
     text-align: center;

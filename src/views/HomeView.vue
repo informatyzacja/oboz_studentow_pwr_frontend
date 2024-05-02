@@ -25,6 +25,8 @@ import graNocna from '../assets/gra nocna.png'
 import ItemBox from '../components/ItemBox.vue'
 
 import { IonPage, IonContent } from '@ionic/vue';
+
+import SavePhotoButton from '@/components/SavePhotoButton.vue'
 </script>
 
 <template>
@@ -156,10 +158,7 @@ import { IonPage, IonContent } from '@ionic/vue';
               <div class="image_overlay">
                 <h3>{{ data.name }}</h3>
                 <img :src="data.image" :alt="data.name" />
-
-                <!-- <button class="button" @click="shareViaWebShare(data.name, data.image)" v-if="webShareApiSupported"><p v-if="!loading">Zapisz</p><LoadingIndicator inline small v-else/></button> -->
-                <a class="button" :href="data.downloadLink" :download="data.name + '_Obóz_Studentów_PWr'"
-                  target="_blank" rel="nofollow">Pobierz</a>
+                <SavePhotoButton :path="data.image" />
 
                 <button class="red-bg" @click="hideRef('imageOverlay', index)">Zamknij</button>
               </div>

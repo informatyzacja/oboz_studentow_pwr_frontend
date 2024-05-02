@@ -45,5 +45,7 @@
 	<string>Aplikacja potrzebuje dostępu do kamery, aby skanować kody QR</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Aplikacja potrzebuje dostęp do galerii zdjęć, aby zapisać obrazek</string>
 </dict>
 </plist>

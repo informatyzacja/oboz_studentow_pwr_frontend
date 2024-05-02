@@ -9,6 +9,9 @@ import { mapStores } from 'pinia'
 
 import questionMark from '../assets/question-mark.jpg'
 import { IonPage, IonContent, IonNavLink } from '@ionic/vue';
+
+import SavePhotoButton from '@/components/SavePhotoButton.vue'
+
 </script>
 
 <template>
@@ -19,10 +22,8 @@ import { IonPage, IonContent, IonNavLink } from '@ionic/vue';
         <div class="padding-main" v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length">
 
           <div v-if="harmonogramImage" class="downloadButtonDiv">
-            <a class="button" :href="harmonogramImage.downloadLink"
-              :download="harmonogramImage.name + '_Obóz_Studentów_PWr'" target="_blank" rel="nofollow">Pobierz
-              harmonogram w
-              formie grafiki</a>
+            <SavePhotoButton :path="harmonogramImage.image" text="Zapisz w galerii w formie grafiki" />
+
           </div>
 
           <div class="day-changer">
