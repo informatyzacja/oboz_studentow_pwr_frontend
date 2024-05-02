@@ -33,8 +33,8 @@ import { logout } from '../functions/login.js'
 
 import { App } from '@capacitor/app';
 import * as LiveUpdates from '@capacitor/live-updates';
-import { isPlatform } from '@ionic/vue';
 
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 </script>
 
 <template>
@@ -103,7 +103,7 @@ import { isPlatform } from '@ionic/vue';
     <template #footer>
 
       <div class="zindex">
-        <a href="/admin/" target="_blank" v-if="apiDataStore.permissions.ready &&
+        <a :href="VITE_API_URL + '../admin/'" target="_blank" v-if="apiDataStore.permissions.ready &&
           apiDataStore.permissions.hasOneOfPermissions(['is_staff'])
         ">
           <div class="spacer"></div>
