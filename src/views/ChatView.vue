@@ -18,10 +18,10 @@ import { IonPage, IonContent } from '@ionic/vue';
 
 <template>
 
+
     <ion-page>
         <ion-content :fullscreen="true">
             <div>
-                <div class="statusBar"></div>
                 <TopBar
                     :title="'Czat ' + (apiDataStore.houseSignupsInfo.ready &&
                         apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoju' : 'domku') + (apiDataStore.profile.ready ? (' nr ' + apiDataStore.profile.data[0].house.name) : 'Czat pokoju')"
@@ -209,22 +209,12 @@ export default {
 
 
 <style scoped>
-.statusBar {
-    width: 100%;
-    background-color: var(--bg);
-    height: 70px;
-    position: fixed;
-    top: -65px;
-    left: 0;
-    right: 0;
-    z-index: 1;
-}
-
 .top-bar {
     position: fixed;
     background-color: var(--bg);
     width: 100%;
     left: 0;
+    top: var(--ion-safe-area-top);
 }
 
 
@@ -285,11 +275,7 @@ export default {
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 100px;
-    /* z-index: 100; */
-
-    /* margin: 5px 0; */
-
+    bottom: 0;
     display: flex;
     background-color: var(--bg-lighter);
 }
