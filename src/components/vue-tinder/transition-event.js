@@ -21,11 +21,13 @@ export default {
     hidingKeys: []
   }),
   methods: {
-    beforeEnter(el) {
+    beforeEnter(divEl) {
+      const el = divEl.querySelector('.tinder-card')
+      if (!el) return
       const beforeIndex = el.dataset.index - 0 + 1
       el.style.opacity = 0
       el.style.transform = this.getTransform(beforeIndex)
-      if (this.rewindKeys.indexOf(el.dataset.id) > -1) {
+      if (this.rewindKeys.indexOf(parseInt(el.dataset.id)) > -1) {
         // This is the same as the calculation method for the destination of the card being removed in the leave function
         let x = -1 // Rewind from the left
         x += this.size.width * (x < 0 ? -0.5 : 0.5)
@@ -42,7 +44,7 @@ export default {
      * @param {element}  el   Current card
      * @param {Function} done Callback function
      */
-    leave(el, done) {
+    leave(divEl, done) {
       const state = this.state
       const { start, move, startPoint } = state
       let x = move.x - start.x || 0
@@ -58,14 +60,14 @@ export default {
       const ratio = x / (this.size.width * 0.5) // x and y are fine-tuned, cannot directly use this.ratio
       const rotate = (ratio / (0.8 / 0.5)) * 15 * startPoint
       let duration =
-        state.touchId === null ||
-          state.result === 'super' ||
+        state.result === 'super' ||
           state.result === 'down'
           ? 800
           : 300
+      const el = divEl.querySelector('.tinder-card')
       el.style.opacity = 0
       el.style['pointer-events'] = 'none'
-      if (this.leavingKeys.indexOf(el.dataset.id) > -1) {
+      if (this.leavingKeys.indexOf(parseInt(el.dataset.id)) > -1) {
         // Removal operation
         el.className += ` ${state.result}`
         el.style.transform = `translate3d(${x}px,${y}px,0) rotate(${rotate}deg)`
@@ -73,7 +75,7 @@ export default {
         el.style.zIndex = 1000000 - this.leavedCount++
       } else {
         // Need to be hidden because the index exceeds max after a rewind operation
-        this.hidingKeys.push(el.dataset.id)
+        this.hidingKeys.push(parseInt(el.dataset.id))
         duration = 500
         const index =
           Math.min(this.max, this.onceRewindCount) + (el.dataset.index - 0)
@@ -100,7 +102,7 @@ export default {
       })
       if (
         !this.sync &&
-        // el.dataset.index - 0 === 0 &&
+        el.dataset.index - 0 === 0 &&
         this.status !== STATUS.REWINDING
       ) {
         this.resetStatus()

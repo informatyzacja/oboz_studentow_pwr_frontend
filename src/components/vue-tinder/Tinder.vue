@@ -2,11 +2,11 @@
   <TransitionGroup class="vue-tinder" tag="div" :css="false" @beforeEnter="beforeEnter" @leave="leave"
     @touchstart="start" @touchmove="move" @touchend="end" @touchcancel="end" @mousedown="start" @mousemove="move"
     @mouseup="end">
-    <div v-for="(item, index) in list" :key="item.$vtKey || item[keyName]">
-      <TinderCard v-if="index < max + 1" :ready="index === max" :data-id="item.$vtKey || item[keyName]" :index="index"
-        :state="state" :ratio="ratio" :rewind="rewindKeys.indexOf(item.$vtKey || item[keyName]) > -1 ? index : false"
-        :tinder-mounted="tinderMounted" :scale-step="scaleStep" :offset-y="offsetY" :offset-unit="offsetUnit"
-        @reverted="resetStatus">
+    <div v-for="(item, index) in list" :key="item.$vtKey || item[keyName]" style="opacity: 1;">
+      <TinderCard v-if="index < max + 1" :ready="index === max" :data-id="item.$vtKey || item[keyName]"
+        :data-index="index" :index="index" :state="state" :ratio="ratio"
+        :rewind="rewindKeys.indexOf(item.$vtKey || item[keyName]) > -1 ? index : false" :tinder-mounted="tinderMounted"
+        :scale-step="scaleStep" :offset-y="offsetY" :offset-unit="offsetUnit" @reverted="resetStatus">
         <slot :data="item" :index="index" :status="status"></slot>
         <template v-if="index === 0 && status !== 2">
           <span slot="nope" class="pointer-wrap nope-pointer-wrap" :style="{ opacity: nopeOpacity }">
@@ -160,7 +160,7 @@ export default {
       return ratio > pointerOpacity ? ratio : 0
     },
     likeOpacity() {
-      return 1
+      // return 1
       // If the current card is sliding up, need to hide the like/dislike
       if (this.superOpacity || this.downOpacity) {
         return 0
@@ -185,15 +185,7 @@ export default {
   },
   mounted() {
     window.onresize = this.getSize
-    setTimeout(() => {
-      this.getSize()
-      if (!this.$el.offsetWidth || !this.$el.offsetHeight) {
-        /* eslint-disable-next-line */
-        console.error('Please set the width and height of vue-tinder');
-        return
-      }
-      this.tinderMounted = true
-    }, 0)
+    this.getSize()
   },
   created() {
     this.list = this.queue.slice()
@@ -206,6 +198,12 @@ export default {
     getSize() {
       clearInterval(resizeTimer)
       resizeTimer = setTimeout(() => {
+        if (!this.$el.offsetWidth || !this.$el.offsetHeight) {
+          /* eslint-disable-next-line */
+          console.error('Please set the width and height of vue-tinder');
+          return
+        }
+        this.tinderMounted = true
         this.size = {
           top: this.$el.offsetTop,
           width: this.$el.offsetWidth,

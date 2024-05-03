@@ -5,7 +5,7 @@ import { IonPage, IonContent, IonTextarea, IonButton } from '@ionic/vue';
 import { useApiDataStore } from '@/stores/api.js'
 import { mapStores } from 'pinia'
 
-import TinderCard from './TinderCard.vue';
+import MyTinderCard from './MyTinderCard.vue';
 import OverlayView from '@/components/OverlayView.vue'
 import { apiRequest } from '@/stores/functions';
 
@@ -16,7 +16,7 @@ import { apiRequest } from '@/stores/functions';
     <ion-page>
         <ion-content>
             <main v-if="profileData && profileData.tinder_profile">
-                <TinderCard :item="profileData.tinder_profile" editable
+                <MyTinderCard class="tinder-card" :item="profileData.tinder_profile" editable
                     @editDescription="$refs.editDescriptionOverlay.show();" />
             </main>
 
@@ -101,5 +101,10 @@ ion-textarea {
 h4 {
     margin: 0 !important;
     margin-bottom: 10px !important;
+}
+
+.tinder-card {
+    height: 500px;
+    padding: 0 20px;
 }
 </style>

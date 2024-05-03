@@ -29,7 +29,7 @@ import { mapStores } from 'pinia'
                 <div v-else-if="editable">
                     <div class="edit-button edit-photo">
                         <IonButton @click="addPhoto" fill="clear">
-                            <ion-icon slot="icon-only" :icon="imageOutline" color="light"></ion-icon>
+                            <ion-icon slot="icon-only" :icon="imageOutline"></ion-icon>
                         </IonButton>
                     </div>
                 </div>
@@ -40,7 +40,7 @@ import { mapStores } from 'pinia'
 
                     <IonButton @click="editDescription" fill="clear" size="small" class="edit-description"
                         v-if="editable">
-                        <ion-icon slot="icon-only" :icon="createOutline" color="light"></ion-icon>
+                        <ion-icon slot="icon-only" :icon="createOutline"></ion-icon>
                     </IonButton>
                 </h2>
                 <p>{{ description }}</p>
@@ -99,6 +99,10 @@ export default {
 </script>
 
 <style scoped>
+ion-icon {
+    color: white;
+}
+
 .edit-button {
     position: absolute;
     z-index: 5;
@@ -114,8 +118,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 500px;
-    padding: 0 20px;
+    height: 100%;
+    /* height: 500px; */
+    /* padding: 0 20px; */
 }
 
 .tinder-card__content {
@@ -172,7 +177,10 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin: 0;
     margin-right: -10px;
+
+    color: white;
 }
 
 .tinder-card__info p {

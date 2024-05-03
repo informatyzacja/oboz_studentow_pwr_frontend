@@ -2,9 +2,9 @@
 
 import { IonPage, IonContent } from '@ionic/vue';
 import Tinder from '@/components/vue-tinder/Tinder.vue'
-import source from '@/bing'
 import { apiRequest } from '@/stores/functions'
-
+import MyTinderCard from './MyTinderCard.vue'
+import TopBar from '@/components/navigation/TopBar.vue'
 </script>
 
 <!-- <img slot="like" src="@/assets/tinder/icons8-like-90.png" />
@@ -13,33 +13,41 @@ import { apiRequest } from '@/stores/functions'
 <template>
     <ion-page>
         <ion-content :fullscreen="true">
+            <main>
+                <TopBar title="Tinder" />
 
-            <Tinder ref="tinder" key-name="id" :queue="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
-                <template v-slot="scope">
-                    <div class="pic" :style="{
+                <h2 v-if="noMoreProfiles">Koniec profilów.<br>Sprawdź później, czy dołączył ktoś nowy.</h2>
+
+                <Tinder ref="tinder" key-name="id" :queue="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
+                    <template v-slot="scope">
+                        <!-- <div class="pic" :style="{
                         'background-image': `url(https://cn.bing.com//th?id=OHR.${scope.data.id}_UHD.jpg&pid=hp&w=720&h=1280&rs=1&c=4&r=0)`
-                    }"></div>
-                </template>
-                <!-- <img class="like-pointer" slot="like" src="~img/like-txt.png" />
-                <img class="nope-pointer" slot="nope" src="~img/nope-txt.png" />
-                <img class="super-pointer" slot="super" src="~img/super-txt.png" />
-                <img class="down-pointer" slot="down" src="~img/down-txt.png" />
-                <img class="rewind-pointer" slot="rewind" src="~img/rewind-txt.png" /> -->
+                    }"></div> -->
+                        <MyTinderCard :item="scope.data" />
+                    </template>
+                    <!-- 
+                        <img class="down-pointer" slot="down" src="~img/down-txt.png" />
+                        <img class="rewind-pointer" slot="rewind" src="~img/rewind-txt.png" /> -->
 
-                <template #like>
-                    <img src="@/assets/tinder/icons8-like-90.png" />
-                </template>
-                <!-- <img slot="nope" src="@/assets/tinder/icons8-reject-90.png" />
-                <img slot="super" src="@/assets/tinder/icons8-in-love-90.png" /> -->
-            </Tinder>
-            <!-- <div class="btns">
-                <img src="~img/rewind.png" @click="decide('rewind')" />
-                <img src="~img/nope.png" @click="decide('nope')" />
-                <img src="~img/super-like.png" @click="decide('super')" />
-                <img src="~img/like.png" @click="decide('like')" />
-                <img src="~img/help.png" @click="decide('help')" />
-            </div> -->
+                    <template #like>
+                        <img class="like-pointer" src="@/assets/tinder/icons8-like-90.png" />
+                    </template>
+                    <template #nope>
+                        <img class="nope-pointer" src="@/assets/tinder/icons8-reject-90.png" />
+                    </template>
+                    <template #super>
+                        <img class="super-pointer" src="@/assets/tinder/icons8-in-love-90.png" />
+                    </template>
 
+                </Tinder>
+                <div class="btns">
+                    <!-- <img src="~img/rewind.png" @click="decide('rewind')" /> -->
+                    <img src="@/assets/tinder/icons8-reject-90.png" @click="decide('nope')" />
+                    <img src="@/assets/tinder/icons8-in-love-90.png" @click="decide('super')" />
+                    <img src="@/assets/tinder/icons8-like-90.png" @click="decide('like')" />
+                    <!-- <img src="~img/help.png" @click="decide('help')" /> -->
+                </div>
+            </main>
         </ion-content>
     </ion-page>
 </template>
@@ -48,33 +56,46 @@ import { apiRequest } from '@/stores/functions'
 export default {
     data: () => ({
         queue: [],
-        offset: 0,
         history: [],
+        noMoreProfiles: false
     }),
     created() {
-        this.mock()
+        this.mock();
     },
     methods: {
-        mock(count = 5, append = true) {
-            console.log('mock', count, append)
-            apiRequest('../api2/tinder/load-profiles').then(res => {
-                console.log('mock', res)
-                // this.add(res.data, append)
+        async mock() {
+            console.log('mock')
+
+            const res = await apiRequest('../api2/tinder/load-profiles/');
+            if (res.length === 0) {
+                this.noMoreProfiles = true;
+                return
+            }
+            this.queue.push(...res)
+
+        },
+        onSubmit({ item, type }) {
+            var apiType = '';
+            if (type === 'like') {
+                apiType = 'like';
+            } else if (type === 'nope') {
+                apiType = 'dislike';
+            } else if (type === 'super') {
+                apiType = 'superlike';
+            } else {
+                return
+            }
+            apiRequest('../api2/tinder/action/', 'POST', {
+                action: apiType,
+                target: item.user
+            }).then(res => {
+                if (res.success) {
+                    if (res.match) {
+                        console.log('Matched!')
+                    }
+                }
             })
 
-            const list = []
-            for (let i = 0; i < count; i++) {
-                list.push({ id: source[this.offset] })
-                this.offset++
-            }
-            if (append) {
-                this.queue = this.queue.concat(list)
-            } else {
-                this.queue.unshift(...list)
-            }
-        },
-        onSubmit({ item }) {
-            console.log('submit', item)
             if (this.queue.length < 3) {
                 this.mock()
             }
@@ -83,21 +104,21 @@ export default {
         async decide(choice) {
             if (choice === 'rewind') {
                 if (this.history.length) {
-                    //一个个 rewind
+                    // Rewind one by one
                     // this.$refs.tinder.rewind([this.history.pop()])
-                    // 一次性 rewind 全部
+                    // Rewind all at once
                     // this.$refs.tinder.rewind(this.history)
                     // this.history = []
-                    // 一次随机 rewind 多个
+                    // Rewind multiple randomly
                     this.$refs.tinder.rewind(
                         this.history.splice(-Math.ceil(Math.random() * 3))
                     )
-                    // 非 api调用的添加
+                    // Add without API call
                     // this.queue.unshift(this.history.pop())
                     // this.queue.push(this.history.pop())
-                    // 非头部添加
+                    // Add at non-head position
                     // this.queue.splice(1, 0, this.history.pop())
-                    // 一次性 rewind 多个，并且含有非头部添加的 item
+                    // Rewind multiple at once and include non-head added items
                     // this.queue.unshift(this.history.pop())
                     // this.queue.unshift(...this.history)
                 }
@@ -123,6 +144,13 @@ body {
     overflow: hidden;
 }
 
+h2 {
+    color: var(--text-gray);
+    text-align: center;
+    margin: 20px;
+    margin-top: 40px;
+}
+
 .vue-tinder {
     position: absolute;
     z-index: 1;
@@ -130,8 +158,10 @@ body {
     right: 0;
     top: 23px;
     margin: auto;
-    width: calc(100% - 20px);
-    height: calc(100% - 23px - 65px - 47px - 16px);
+    /* width: calc(100% - 20px); */
+    margin: 0 20px;
+    /* height: calc(100% - 23px - 65px - 47px - 16px); */
+    height: 500px;
     /* width: 90%;
     height: 90%; */
 }
@@ -160,7 +190,7 @@ body {
     left: 0;
     right: 0;
     margin: auto;
-    width: 112px;
+    /* width: 112px; */
     height: 78px;
 }
 
@@ -177,7 +207,7 @@ body {
     z-index: 1;
     top: 20px;
     right: 10px;
-    width: 112px;
+    /* width: 112px; */
     height: 78px;
 }
 
@@ -189,11 +219,12 @@ body {
 }
 
 .btns {
-    position: absolute;
-    left: 0;
+    /* position: absolute; */
+    /* left: 0;
     right: 0;
-    bottom: 30px;
+    bottom: 30px; */
     margin: auto;
+    margin-top: 50px;
     height: 65px;
     display: flex;
     align-items: center;
