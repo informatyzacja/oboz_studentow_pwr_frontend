@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router'
 import MainView from '../views/MainView.vue'
+import TinderMainView from '../views/tinder/TinderMainView.vue'
 import { getAccessToken } from '../functions/login.js'
 
 const router = createRouter({
@@ -18,6 +19,22 @@ const router = createRouter({
       path: '/verification-code/:email/',
       name: 'verification-code',
       component: () => import('../views/login/VerificationCodeView.vue'),
+    },
+    {
+      path: '/tinder',
+      component: TinderMainView,
+      children: [
+        {
+          path: '',
+          name: 'tinder',
+          component: () => import('../views/tinder/TinderView.vue')
+        },
+        {
+          path: 'profil',
+          name: 'tinder-profil',
+          component: () => import('../views/tinder/TinderProfile.vue')
+        },
+      ]
     },
     {
       path: '/',
@@ -139,11 +156,6 @@ const router = createRouter({
           path: '/zapisy/:id',
           name: 'zapisy-na-domki-detail',
           component: () => import('../views/HouseSignupDetailView.vue')
-        },
-        {
-          path: '/tinder/',
-          name: 'tinder',
-          component: () => import('../views/TinderView.vue')
         },
 
         // ADMIN ROUTES

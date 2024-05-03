@@ -29,7 +29,7 @@ export async function request(url, options) {
 
 }
 
-export async function apiRequest(url, method = 'GET', data = null, retry = false) {
+export async function apiRequest(url, method = 'GET', body = null, retry = false, data = null) {
   const headers = await getAuthorizationHeader()
   if (!headers) return
   const options = {
@@ -39,9 +39,10 @@ export async function apiRequest(url, method = 'GET', data = null, retry = false
       'Content-Type': 'application/json',
     }
   }
-  if (data && method !== 'GET' && method !== 'HEAD') {
-    options.body = JSON.stringify(data)
+  if (body && method !== 'GET' && method !== 'HEAD') {
+    options.body = JSON.stringify(body)
   }
+  options.data = data;
   return request(url, options)
     .then((responseData) => {
 
@@ -57,11 +58,13 @@ export async function apiRequest(url, method = 'GET', data = null, retry = false
                     return apiRequest(url, method, data, retry = true);
                   })
                   .catch((response2) => {
-                    console.log('Token refresh failed', response2)
-                    console.log(response2.status)
-                    console.error('Logging out')
-                    router.replace({ name: 'register' })
-                    throw new Error('Token refresh failed')
+                    if (response2.status === 401) {
+                      console.log('Token refresh failed', response2)
+                      console.log(response2.status)
+                      console.error('Logging out')
+                      router.replace({ name: 'register' })
+                      throw new Error('Token refresh failed')
+                    }
                   })
               } else {
                 console.error('Logging out')

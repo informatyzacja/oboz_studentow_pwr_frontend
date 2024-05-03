@@ -1,0 +1,28 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "oboz-studentow-pwr",
+	"webDir": "dist",
+	"server": {
+		"androidScheme": "https"
+	},
+	"plugins": {
+		"LiveUpdates": {
+			"appId": "***REMOVED***",
+			"channel": "Production",
+			"autoUpdateMethod": "background",
+			"maxVersions": 2
+		}
+	},
+	"packageClassList": [
+		"BarcodeScannerPlugin",
+		"BarcodeScannerPlugin",
+		"AppPlugin",
+		"CAPCameraPlugin",
+		"HapticsPlugin",
+		"KeyboardPlugin",
+		"CAPLiveUpdatesPlugin",
+		"PreferencesPlugin",
+		"SharePlugin",
+		"StatusBarPlugin"
+	]
+}

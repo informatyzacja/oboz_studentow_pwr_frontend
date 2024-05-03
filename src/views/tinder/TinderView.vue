@@ -3,6 +3,7 @@
 import { IonPage, IonContent } from '@ionic/vue';
 import Tinder from '@/components/vue-tinder/Tinder.vue'
 import source from '@/bing'
+import { apiRequest } from '@/stores/functions'
 
 </script>
 
@@ -45,8 +46,6 @@ import source from '@/bing'
 
 <script>
 export default {
-    name: 'App',
-    components: { Tinder },
     data: () => ({
         queue: [],
         offset: 0,
@@ -58,6 +57,11 @@ export default {
     methods: {
         mock(count = 5, append = true) {
             console.log('mock', count, append)
+            apiRequest('../api2/tinder/load-profiles').then(res => {
+                console.log('mock', res)
+                // this.add(res.data, append)
+            })
+
             const list = []
             for (let i = 0; i < count; i++) {
                 list.push({ id: source[this.offset] })
@@ -126,10 +130,10 @@ body {
     right: 0;
     top: 23px;
     margin: auto;
-    /* width: calc(100% - 20px);
-    height: calc(100% - 23px - 65px - 47px - 16px); */
-    width: 90%;
-    height: 90%;
+    width: calc(100% - 20px);
+    height: calc(100% - 23px - 65px - 47px - 16px);
+    /* width: 90%;
+    height: 90%; */
 }
 
 .nope-pointer,
