@@ -107,10 +107,6 @@ defineProps([
 </template>
 
 <style scoped>
-main {
-  background: var(--bg-gradient);
-}
-
 h1 {
   background: var(--radial-gradient);
   -webkit-background-clip: text;

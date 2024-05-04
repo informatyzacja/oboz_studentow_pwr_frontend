@@ -45,6 +45,21 @@ const router = createRouter({
           redirect: '/home'
         },
         {
+          path: 'czaty',
+          name: 'czaty',
+          component: () => import('../views/ChatsView.vue'),
+        },
+        {
+          path: 'czat-domku',
+          name: 'czat-domku',
+          component: () => import('../views/ChatView.vue'),
+        },
+        {
+          path: 'czat/:id/',
+          name: 'czat',
+          component: () => import('../views/ChatView.vue'),
+        },
+        {
           path: 'home',
           name: 'home',
           component: () => import('../views/HomeView.vue'),
@@ -61,11 +76,6 @@ const router = createRouter({
           name: 'profil',
           component: () => import('../views/MyProfileView.vue'),
           meta: { type: 'main' },
-        },
-        {
-          path: 'czat-domku',
-          name: 'czat-domku',
-          component: () => import('../views/ChatView.vue'),
         },
         {
           path: 'moj-domek/info/',

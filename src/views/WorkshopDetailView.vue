@@ -104,7 +104,6 @@ import { IonPage, IonContent } from '@ionic/vue';
 
 <style scoped>
 main {
-  padding-bottom: 100px;
   padding-top: 0 !important;
 }
 

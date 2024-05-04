@@ -257,10 +257,6 @@ export default {
 </script>
 
 <style scoped>
-main {
-    padding-bottom: 100px;
-}
-
 input,
 select,
 textarea {

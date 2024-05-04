@@ -16,7 +16,7 @@ moment.locale('pl')
 
 <style>
 main {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   padding-top: max(var(--ion-safe-area-top), var(--ion-padding, 16px)) !important;
 }
 

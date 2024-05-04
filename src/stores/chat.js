@@ -14,3 +14,18 @@ export const useChatStore = defineStore('chat', {
     }
   }
 })
+
+export const useChatsStore = defineStore('chats', {
+  state: () => ({ loading: true, error: null, data: null, url: 'chats/' }),
+  getters: {
+    ready() {
+      return ready(this)
+    }
+  },
+  actions: {
+    fetchData() {
+      loadData(this)
+    }
+  }
+})
+

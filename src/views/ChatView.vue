@@ -11,7 +11,6 @@ import { apiSocket } from '@/stores/functions.js'
 
 import sendIcon from '../assets/icons8-paper_plane.png'
 
-import groupIcon from '../assets/grupa.svg'
 import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
@@ -20,22 +19,15 @@ import { IonPage, IonContent } from '@ionic/vue';
 
 
     <ion-page>
-        <ion-content :fullscreen="true">
+        <ion-content :fullscreen="true" ref="content">
             <div>
-                <TopBar
-                    :title="'Czat ' + (apiDataStore.houseSignupsInfo.ready &&
-                        apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoju' : 'domku') + (apiDataStore.profile.ready ? (' nr ' + apiDataStore.profile.data[0].house.name) : 'Czat pokoju')"
-                    back-link="/profil" class="top-bar">
-                    <RouterLink v-if="apiDataStore.myHouseMembers.data" to="/moj-domek/info">
-                        <img class="topRightButton" :src="groupIcon" />
-                    </RouterLink>
-                </TopBar>
+                <TopBar title="Chat" autoBackLink class="top-bar" />
                 <main class="padding-main">
                     <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading">
                         <div class="chat">
                             <div v-for="(message, index) in apiDataStore.chat.data" class="messageRow" :key="index"
                                 :class="{ messageFromMe: message.fromMe }">
-                                <div style="width: 100%">
+                                <div style="width: 100%" v-if="message.chat == chat_id">
 
                                     <p class="datetime"
                                         v-if="index == 0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.data[index - 1].date) > 8 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.data[index - 1].date), 'day')">
@@ -58,7 +50,7 @@ import { IonPage, IonContent } from '@ionic/vue';
                             </div>
                             <div v-if="apiDataStore.chat.data.length === 0"
                                 style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
-                                Witaj w czacie domku nr {{ apiDataStore.profile.data[0].house.name }}! 🏠<br>Bądź
+                                Witaj w czacie!<br>Bądź
                                 pierwszy/a i
                                 napisz coś!
                             </div>
@@ -71,8 +63,8 @@ import { IonPage, IonContent } from '@ionic/vue';
                             <button class="textBoxButton" v-if="currentMessage.trim() === ''"
                                 @click="currentMessage = '👍'; sendMessage()">👍</button>
 
-                            <button class="textBoxButton" v-else @click="sendMessage"><img :src="sendIcon"
-                                    class="sendIcon" /></button>
+                            <button class="textBoxButton sendIcon" v-else @click="sendMessage"><img
+                                    :src="sendIcon" /></button>
 
                         </div>
                     </div>
@@ -94,7 +86,8 @@ export default {
             loading: true,
             reconnect: true,
             timer: null,
-            scrollToEnd: true
+            scrollToEnd: true,
+            chat_id: null
         }
     },
     computed: {
@@ -102,16 +95,16 @@ export default {
     },
     watch: {
         currentMessage() {
-            window.scrollTo(0, document.body.scrollHeight);
+            this.$refs.content.$el.scrollToBottom(500);
         }
     },
     mounted() {
-        this.scrollToEnd = true
+        this.chat_id = this.$route.params.id
 
         this.apiDataStore.chat.fetchData()
         this.timer = setInterval(() => {
             this.apiDataStore.chat.fetchData()
-        }, 1000 * 60) // fetch data every minute
+        }, 1000 * 60 * 5) // fetch data every 5 minutes
         if (!this.apiDataStore.profile.data) {
             this.apiDataStore.profile.fetchData()
         }
@@ -120,16 +113,16 @@ export default {
         this.reconnect = true
         this.connect()
 
-        this.apiDataStore.myHouseMembers.fetchData()
-
 
         // debug
         // this.loading = false
 
-
+    },
+    didEnter() {
+        this.scrollToEnd = true
+        this.$refs.content.$el.scrollToBottom(0);
     },
     unmounted() {
-        this.scrollToEnd = true
         clearInterval(this.timer)
         this.reconnect = false
         this.chatSocket.onclose = function () { }; // disable onclose handler first
@@ -139,14 +132,12 @@ export default {
     updated() {
         if (this.scrollToEnd) {
             this.scrollToEnd = false
-            console.log('scroll')
             setTimeout(() => {
-                window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+                this.$refs.content.$el.scrollToBottom(0);
             }, 10)
         }
     },
     methods: {
-
         async connect() {
             this.chatSocket = await apiSocket('chat/');
 
@@ -178,17 +169,21 @@ export default {
 
         receiveMessage(data) {
             const scrollToEnd = Math.abs(window.scrollY + window.innerHeight - document.body.scrollHeight) <= 10
+
+            if (data.user_id === this.apiDataStore.profile.data[0].id) return // don't show own messages
+
             this.apiDataStore.chat.data.push({
                 message: data.message,
                 username: data.username,
                 user_id: data.user_id,
                 date: data.date,
-                fromMe: data.user_id === this.apiDataStore.profile.data[0].id
+                fromMe: false,
+                chat: data.chat
             })
             if (scrollToEnd) {
                 setTimeout(() => {
-                    window.scrollTo(0, document.body.scrollHeight);
-                }, 100)
+                    this.$refs.content.$el.scrollToBottom(100);
+                }, 1)
             }
         },
 
@@ -197,9 +192,17 @@ export default {
             const message = this.currentMessage.trim()
             this.currentMessage = ''
 
-            window.scrollTo(0, document.body.scrollHeight);
+            this.apiDataStore.chat.data.push({
+                message: message,
+                user_id: this.apiDataStore.profile.data[0].id,
+                date: new Date().toISOString(),
+                fromMe: true,
+                chat: this.chat_id
+            })
 
-            this.chatSocket.send(JSON.stringify({ message: message }));
+            this.$refs.content.$el.scrollToBottom(50);
+
+            this.chatSocket.send(JSON.stringify({ message: message, 'chat': this.chat_id }));
         }
 
     }
@@ -210,17 +213,17 @@ export default {
 <style scoped>
 .top-bar {
     position: fixed;
-    background-color: var(--bg);
     width: 100%;
     left: 0;
-    top: var(--ion-safe-area-top);
+    top: calc(10px + var(--ion-safe-area-top)/2);
 }
 
 
 .chat {
     display: flex;
     flex-direction: column;
-    padding: 100px 0;
+    margin: 30px 0;
+    margin-bottom: 40px;
 }
 
 .message {
@@ -276,6 +279,8 @@ export default {
     right: 0;
     bottom: 0;
     display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: var(--bg-lighter);
 }
 
@@ -302,6 +307,10 @@ export default {
 
 }
 
+.textBox input::placeholder {
+    color: rgba(255, 255, 255, 0.546);
+}
+
 .textBoxButton {
     /* border-radius: 20px; */
     border: none;
@@ -325,15 +334,16 @@ export default {
 }
 
 .sendIcon {
-    width: 100%;
-    height: 100%;
+    /* width: 100%; */
+    /* height: 100%; */
     object-fit: contain;
+    overflow: hidden;
+}
 
-    /* orange */
-    filter: brightness(0) saturate(100%) invert(62%) sepia(45%) saturate(1866%) hue-rotate(342deg) brightness(90%) contrast(91%);
-
-    /* blue */
-    filter: brightness(0) saturate(100%) invert(37%) sepia(47%) saturate(783%) hue-rotate(181deg) brightness(98%) contrast(91%);
+.sendIcon img {
+    height: 100%;
+    filter: drop-shadow(0px 100px 0 var(--theme-dark));
+    transform: translateY(-100px);
 }
 
 
@@ -342,23 +352,5 @@ export default {
     text-align: center;
     color: rgba(255, 255, 255, 0.546);
     margin-top: 5px;
-}
-
-
-
-
-.topRightButton {
-    box-sizing: content-box;
-    text-align: right;
-    margin-top: 10px;
-    margin-left: 20px;
-    width: 40px;
-    height: 40px;
-
-    /* orange */
-    filter: brightness(0) saturate(100%) invert(62%) sepia(45%) saturate(1866%) hue-rotate(342deg) brightness(90%) contrast(91%);
-
-    /* blue */
-    filter: brightness(0) saturate(100%) invert(37%) sepia(47%) saturate(783%) hue-rotate(181deg) brightness(98%) contrast(91%);
 }
 </style>

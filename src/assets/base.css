@@ -9,7 +9,7 @@
   --bg: #371804;
   --bg-translusent: var(--bg);
   /* --bg-translusent: #8B4513194; */
-  --bg-lighter: #9a5711;
+  --bg-lighter: #612d0a;
   --bg-light: #c47309;
   --bg-light-translusent: rgba(255, 111, 0, 0.222);
   --bg-light-translusent-hover: rgba(166, 75, 0, 0.177);
@@ -86,7 +86,7 @@ h3 {
   opacity: 1;
 }
 
-main {
+ion-content {
   background: var(--bg-translusent);
 }
 

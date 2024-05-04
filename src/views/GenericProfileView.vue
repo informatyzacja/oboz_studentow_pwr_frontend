@@ -147,11 +147,6 @@ defineProps([
 </template>
 
 <style scoped>
-main {
-  /* background: var(--bg-gradient); */
-  /* background-image: var(--bg-gradient-translusent), url('@/assets/Icon Grid.svg'), var(--bg-gradient), linear-gradient(var(--red), var(--red)) */
-}
-
 .disabled {
   pointer-events: none;
 }

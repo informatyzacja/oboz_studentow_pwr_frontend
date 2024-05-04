@@ -13,62 +13,66 @@ import { IonPage, IonContent } from '@ionic/vue';
 
 
 <template>
-  <ion-page>
-    <ion-content :fullscreen="true">
-    <main>
-        <TopBar :title="'Zapisy' + (
-            apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.room_instead_of_house ? ' na pokoje' : ' na domki'
-        )" backLink="/" />
+    <ion-page>
+        <ion-content :fullscreen="true">
+            <main>
+                <TopBar :title="'Zapisy' + (
+                    apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.room_instead_of_house ? ' na pokoje' : ' na domki'
+                )" backLink="/" />
 
-        <div
-            v-if="apiDataStore.houses.ready && apiDataStore.profile.ready && apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.house_signups_active">
-            <div v-if="apiDataStore.profile.data[0].house && apiDataStore.houses.houseWithId(apiDataStore.profile.data[0].house.id)"
-                class="padding">
+                <div
+                    v-if="apiDataStore.houses.ready && apiDataStore.profile.ready && apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.house_signups_active">
+                    <div v-if="apiDataStore.profile.data[0].house && apiDataStore.houses.houseWithId(apiDataStore.profile.data[0].house.id)"
+                        class="padding">
 
-                <h3>Twój pokój</h3>
-                <div class="my-house">
-                    <RouterLink
-                        :to="{ name: 'zapisy-na-domki-detail', params: { id: apiDataStore.profile.data[0].house.id } }">
-                        <HouseCard :key="apiDataStore.profile.data[0].house.id"
-                            :house="apiDataStore.houses.houseWithId(apiDataStore.profile.data[0].house.id)" />
+                        <h3>Twój pokój</h3>
+                        <div class="my-house">
+                            <RouterLink
+                                :to="{ name: 'zapisy-na-domki-detail', params: { id: apiDataStore.profile.data[0].house.id } }">
+                                <HouseCard :key="apiDataStore.profile.data[0].house.id"
+                                    :house="apiDataStore.houses.houseWithId(apiDataStore.profile.data[0].house.id)" />
+                            </RouterLink>
+                        </div>
+
+                        <h3>Pozostałe {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoje' : 'domki'
+                            }}</h3>
+                    </div>
+                    <div v-if="apiDataStore.houses.ready && apiDataStore.profile.ready">
+                        <TransitionGroup name="list" tag="div" class="houses" @before-leave="beforeLeave">
+                            <RouterLink :to="{ name: 'zapisy-na-domki-detail', params: { id: house.id } }"
+                                :key="house.id"
+                                v-for="house in apiDataStore.houses.housesWithoutId(apiDataStore.profile.data[0].house ? apiDataStore.profile.data[0].house.id : null)">
+                                <HouseCard :key="house.id" :house="house" />
+                            </RouterLink>
+                        </TransitionGroup>
+                        <p
+                            v-if="!apiDataStore.houses.housesWithoutId(apiDataStore.profile.data[0].house ? apiDataStore.profile.data[0].house.id : null).length">
+                            Brak wolnych {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoi' :
+                            'domków'
+                            }}</p>
+                    </div>
+                    <p v-if="apiDataStore.houses.error || apiDataStore.profile.error" class="error">{{
+                        apiDataStore.houses.error ||
+                        apiDataStore.profile.error }}</p>
+                </div>
+
+                <div class="padding info-screen"
+                    v-else-if="apiDataStore.houseSignupsInfo.ready && !apiDataStore.houseSignupsInfo.data.house_signups_active">
+                    <h3>Zapisy zamknięte!</h3>
+                    <img :src="cryingIcon" alt="crying" style="width: 100px; margin: 20px auto; display: block;" />
+                    <p>Przepraszamy, ale zapisy na {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ?
+                        'pokoje' : 'domki'
+                        }} są
+                        zamknięte.</p>
+
+                    <RouterLink to="/">
+                        <button class="button" style="margin-top: 20px">Wyjdź</button>
                     </RouterLink>
                 </div>
 
-                <h3>Pozostałe {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoje' : 'domki'
-                }}</h3>
-            </div>
-            <div v-if="apiDataStore.houses.ready && apiDataStore.profile.ready">
-                <TransitionGroup name="list" tag="div" class="houses" @before-leave="beforeLeave">
-                    <RouterLink :to="{ name: 'zapisy-na-domki-detail', params: { id: house.id } }" :key="house.id"
-                        v-for="house in apiDataStore.houses.housesWithoutId(apiDataStore.profile.data[0].house ? apiDataStore.profile.data[0].house.id : null)">
-                        <HouseCard :key="house.id" :house="house" />
-                    </RouterLink>
-                </TransitionGroup>
-                <p
-                    v-if="!apiDataStore.houses.housesWithoutId(apiDataStore.profile.data[0].house ? apiDataStore.profile.data[0].house.id : null).length">
-                    Brak wolnych {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoi' : 'domków'
-                    }}</p>
-            </div>
-            <p v-if="apiDataStore.houses.error || apiDataStore.profile.error" class="error">{{ apiDataStore.houses.error ||
-                apiDataStore.profile.error }}</p>
-        </div>
-
-        <div class="padding info-screen"
-            v-else-if="apiDataStore.houseSignupsInfo.ready && !apiDataStore.houseSignupsInfo.data.house_signups_active">
-            <h3>Zapisy zamknięte!</h3>
-            <img :src="cryingIcon" alt="crying" style="width: 100px; margin: 20px auto; display: block;" />
-            <p>Przepraszamy, ale zapisy na {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoje' : 'domki'
-            }} są
-                zamknięte.</p>
-
-            <RouterLink to="/">
-                <button class="button" style="margin-top: 20px">Wyjdź</button>
-            </RouterLink>
-        </div>
-
-        <LoadingIndicator v-else />
-    </main>
-    </ion-content>
+                <LoadingIndicator v-else />
+            </main>
+        </ion-content>
     </ion-page>
 </template>
 
@@ -114,10 +118,6 @@ export default {
 </script>
 
 <style scoped>
-main {
-    padding-bottom: 120px;
-}
-
 .houses {
     display: flex;
     flex-direction: row;
@@ -169,7 +169,7 @@ button {
     font-size: 14px;
     line-height: 16px;
     cursor: pointer;
-    
+
     background-color: var(--bg-light);
 
     width: 160px;

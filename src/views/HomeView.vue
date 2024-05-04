@@ -349,11 +349,6 @@ export default {
 </script>
 
 <style scoped>
-main {
-  padding-bottom: 100px;
-  background: var(--bg);
-}
-
 .loading {
   display: flex;
   justify-content: center;

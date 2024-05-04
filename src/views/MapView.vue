@@ -65,7 +65,6 @@ export default {
 }
 
 main {
-  padding-bottom: 100px;
   text-align: center;
 }
 
