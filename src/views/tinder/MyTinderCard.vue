@@ -63,11 +63,14 @@ export default {
         description() {
             // max X characters
             if (!this.item.description) return '';
-            const X = 90;
+            const X = 80;
             if (this.item.description.length > X) {
                 return this.item.description.substring(0, X) + '...';
             }
             return this.item.description;
+        },
+        descriptionIsLonger() {
+            return this.item.description && this.item.description.length > 80;
         }
     },
     methods: {

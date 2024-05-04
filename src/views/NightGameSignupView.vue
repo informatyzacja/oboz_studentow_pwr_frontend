@@ -12,7 +12,7 @@ import { apiRequest } from '../stores/functions.js'
 import okIcon from '../assets/icons8-ok.png'
 import cryingIcon from '../assets/icons8-crying.png'
 
-import moment from 'moment'
+// import moment from 'moment'
 import { IonPage, IonContent } from '@ionic/vue';
 </script>
 
@@ -267,7 +267,6 @@ textarea {
     width: 100%;
     padding: 10px 15px 10px 15px;
     border-radius: 20px;
-    border: 1px solid var(--text-gray);
     margin-bottom: 2px;
     font-size: 15px;
 
@@ -279,6 +278,10 @@ textarea {
     appearance: none;
 
     background-color: var(--bg-light);
+}
+
+input::placeholder {
+    color: var(--text-gray);
 }
 
 .bandInput {

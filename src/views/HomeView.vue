@@ -27,6 +27,8 @@ import ItemBox from '../components/ItemBox.vue'
 import { IonPage, IonContent } from '@ionic/vue';
 
 import SavePhotoButton from '@/components/SavePhotoButton.vue'
+
+import ProfileCircle from '../components/navigation/ProfileCircle.vue'
 </script>
 
 <template>
@@ -34,6 +36,7 @@ import SavePhotoButton from '@/components/SavePhotoButton.vue'
     <ion-content :fullscreen="true">
       <main>
         <TopBar title="Home" />
+        <ProfileCircle />
 
         <!-- Night Game Signup -->
         <div class="padding"

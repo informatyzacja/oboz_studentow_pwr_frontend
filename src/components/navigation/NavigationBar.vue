@@ -10,6 +10,8 @@ import MenuIcon from '../../assets/icons8-squared_menu.png'
 
 // import ScannerIcon from '../../assets/icons8-barcode_reader.png'
 
+import ChatIcon from '../../assets/icons8-chat.png'
+
 import { useApiDataStore } from '../../stores/api.js'
 import { mapStores } from 'pinia'
 
@@ -24,7 +26,7 @@ import { IonNavLink, IonTabBar } from '@ionic/vue'
     <div class="navigation-bar__content">
 
       <IonNavLink router-link="/sos" router-direction="none">
-        <div class="navigation_bar__item" :class="{ selected: $route.path == '/sos' }">
+        <div class="navigation_bar__item" :class="{ selected: $route.path.startsWith('/sos') }">
           <img :src="SosIcon" alt="sos" />
           <p>SOS</p>
         </div>
@@ -33,13 +35,13 @@ import { IonNavLink, IonTabBar } from '@ionic/vue'
 
       <IonNavLink router-link="/warsztaty" router-direction="none"
         v-if="!apiDataStore.permissions.ready || !apiDataStore.permissions.data.length">
-        <div class="navigation_bar__item" :class="{ selected: $route.path == '/warsztaty' }">
+        <div class="navigation_bar__item" :class="{ selected: $route.path.startsWith('/warsztaty') }">
           <img :src="HammerIcon" alt="warsztaty" />
           <p>Warsztaty</p>
         </div>
       </IonNavLink>
       <IonNavLink router-link="/admin-menu" router-direction="none" v-else>
-        <div class="navigation_bar__item" :class="{ selected: $route.path == '/admin-menu' }">
+        <div class="navigation_bar__item" :class="{ selected: $route.path.startsWith('/admin-menu') }">
           <img :src="MenuIcon" alt="menu" />
           <p>Menu</p>
         </div>
@@ -52,15 +54,15 @@ import { IonNavLink, IonTabBar } from '@ionic/vue'
         </div>
       </IonNavLink>
       <IonNavLink router-link="/harmonogram" router-direction="none">
-        <div class="navigation_bar__item" :class="{ selected: $route.path == '/harmonogram' }">
+        <div class="navigation_bar__item" :class="{ selected: $route.path.startsWith('/harmonogram') }">
           <img :src="CalendarIcon" alt="harmonogram" />
           <p>Harmonogram</p>
         </div>
       </IonNavLink>
-      <IonNavLink router-link="/profil" router-direction="none">
-        <div class="navigation_bar__item" :class="{ selected: $route.path == '/profil' }">
-          <img :src="UserIcon" alt="user" />
-          <p>Profil</p>
+      <IonNavLink router-link="/czaty" router-direction="none">
+        <div class="navigation_bar__item" :class="{ selected: $route.path.startsWith('/czaty') }">
+          <img :src="ChatIcon" alt="user" />
+          <p>Czaty</p>
         </div>
       </IonNavLink>
     </div>
@@ -171,25 +173,18 @@ export default {
   height: 100%;
 }
 
+.navigation_bar__item {
+  overflow: hidden;
+}
+
 .navigation_bar__item img {
+  filter: drop-shadow(0px 100px 0 var(--theme-dark));
+  transform: translateY(-100px);
   width: 24px;
   object-fit: contain;
-  /* filter: brightness(0) saturate(100%) invert(62%) sepia(45%) saturate(1866%) hue-rotate(342deg) brightness(90%) contrast(91%); */
-
-  /* Gray */
-  filter: brightness(0) saturate(100%) invert(57%) sepia(0%) saturate(0%) hue-rotate(164deg) brightness(98%) contrast(89%);
-
-  /* Blue */
-  filter: brightness(0) saturate(100%) invert(59%) sepia(9%) saturate(1049%) hue-rotate(186deg) brightness(84%) contrast(87%);
 }
 
 .navigation_bar__item.selected img {
-  /* filter: brightness(0) saturate(100%) invert(22%) sepia(21%) saturate(4532%) hue-rotate(337deg) brightness(102%) contrast(89%); */
-
-  /* Orange */
-  /* filter: brightness(0) saturate(100%) invert(62%) sepia(45%) saturate(1866%) hue-rotate(342deg) brightness(90%) contrast(91%); */
-
-  /* BLue */
-  filter: brightness(0) saturate(100%) invert(37%) sepia(47%) saturate(783%) hue-rotate(181deg) brightness(98%) contrast(91%);
+  filter: drop-shadow(0px 100px 0 var(--theme-light));
 }
 </style>

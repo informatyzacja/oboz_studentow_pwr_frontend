@@ -7,9 +7,6 @@ import MyTinderCard from './MyTinderCard.vue'
 import TopBar from '@/components/navigation/TopBar.vue'
 </script>
 
-<!-- <img slot="like" src="@/assets/tinder/icons8-like-90.png" />
-<img slot="nope" src="@/assets/tinder/icons8-reject-90.png" />
-<img slot="super" src="@/assets/tinder/icons8-in-love-90.png" /> -->
 <template>
     <ion-page>
         <ion-content :fullscreen="true">
@@ -20,9 +17,6 @@ import TopBar from '@/components/navigation/TopBar.vue'
 
                 <Tinder ref="tinder" key-name="id" :queue="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
                     <template v-slot="scope">
-                        <!-- <div class="pic" :style="{
-                        'background-image': `url(https://cn.bing.com//th?id=OHR.${scope.data.id}_UHD.jpg&pid=hp&w=720&h=1280&rs=1&c=4&r=0)`
-                    }"></div> -->
                         <MyTinderCard :item="scope.data" />
                     </template>
                     <!-- 
@@ -41,11 +35,11 @@ import TopBar from '@/components/navigation/TopBar.vue'
 
                 </Tinder>
                 <div class="btns">
-                    <!-- <img src="~img/rewind.png" @click="decide('rewind')" /> -->
+                    <img src="" @click="decide('rewind')" />
                     <img src="@/assets/tinder/icons8-reject-90.png" @click="decide('nope')" />
                     <img src="@/assets/tinder/icons8-in-love-90.png" @click="decide('super')" />
                     <img src="@/assets/tinder/icons8-like-90.png" @click="decide('like')" />
-                    <!-- <img src="~img/help.png" @click="decide('help')" /> -->
+                    <img src="" @click="decide('help')" />
                 </div>
             </main>
         </ion-content>
@@ -75,6 +69,10 @@ export default {
 
         },
         onSubmit({ item, type }) {
+            if (!item.user) {
+                return
+            }
+
             var apiType = '';
             if (type === 'like') {
                 apiType = 'like';
@@ -132,10 +130,9 @@ export default {
 }
 </script>
 
-<style>
-html,
-body {
-    height: 100%;
+<style scoped>
+ion-content {
+    --overflow: hidden
 }
 
 body {

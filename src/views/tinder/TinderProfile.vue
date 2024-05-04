@@ -25,7 +25,7 @@ import { apiRequest } from '@/stores/functions';
                     <h4>Edytuj opis</h4>
 
                     <ion-textarea v-model="profileData.tinder_profile.description" placeholder="Twój opis"
-                        autoGrow="true"></ion-textarea>
+                        autoGrow="true" maxlength="250"></ion-textarea>
 
                     <ion-button class="button" size="small" @click="descriptionEdited">Gotowe</ion-button>
                 </div>
@@ -85,6 +85,7 @@ export default {
     padding: 20px 10px;
     border-radius: 20px;
     margin: 20px;
+    margin-top: calc(20px + var(--ion-safe-area-top)/2);
 }
 
 ion-textarea {
