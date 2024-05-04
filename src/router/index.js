@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router'
 import MainView from '../views/MainView.vue'
-import TinderMainView from '../views/tinder/TinderMainView.vue'
 import { getAccessToken } from '../functions/login.js'
 
 const router = createRouter({
@@ -21,22 +20,6 @@ const router = createRouter({
       component: () => import('../views/login/VerificationCodeView.vue'),
     },
     {
-      path: '/tinder',
-      component: TinderMainView,
-      children: [
-        {
-          path: '',
-          name: 'tinder',
-          component: () => import('../views/tinder/TinderView.vue')
-        },
-        {
-          path: 'profil',
-          name: 'tinder-profil',
-          component: () => import('../views/tinder/TinderProfile.vue')
-        },
-      ]
-    },
-    {
       path: '/',
       component: MainView,
       children: [
@@ -45,14 +28,24 @@ const router = createRouter({
           redirect: '/home'
         },
         {
+          path: 'tinder',
+          name: 'tinder',
+          component: () => import('../views/tinder/TinderView.vue')
+        },
+        {
+          path: 'tinder/help',
+          name: 'tinder-help',
+          component: () => import('../views/tinder/TinderView.vue')
+        },
+        {
+          path: 'tinder/profil',
+          name: 'tinder-profil',
+          component: () => import('../views/tinder/TinderProfile.vue')
+        },
+        {
           path: 'czaty',
           name: 'czaty',
           component: () => import('../views/ChatsView.vue'),
-        },
-        {
-          path: 'czat-domku',
-          name: 'czat-domku',
-          component: () => import('../views/ChatView.vue'),
         },
         {
           path: 'czat/:id/',

@@ -11,6 +11,7 @@ import questionMark from '../assets/question-mark.jpg'
 import { IonPage, IonContent, IonNavLink } from '@ionic/vue';
 
 import SavePhotoButton from '@/components/SavePhotoButton.vue'
+import ProfileCircle from '../components/navigation/ProfileCircle.vue'
 
 </script>
 
@@ -19,6 +20,7 @@ import SavePhotoButton from '@/components/SavePhotoButton.vue'
     <ion-content :fullscreen="true">
       <main>
         <TopBar title="Harmonogram" />
+        <ProfileCircle />
         <div class="padding-main" v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length">
 
           <div v-if="harmonogramImage" class="downloadButtonDiv">

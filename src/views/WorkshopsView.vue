@@ -9,6 +9,8 @@ import { mapStores } from 'pinia'
 
 import questionMark from '../assets/question-mark.jpg'
 import { IonPage, IonContent } from '@ionic/vue';
+import ProfileCircle from '../components/navigation/ProfileCircle.vue'
+
 </script>
 
 <template>
@@ -16,6 +18,7 @@ import { IonPage, IonContent } from '@ionic/vue';
     <ion-content :fullscreen="true">
       <main>
         <TopBar title="Warsztaty" />
+        <ProfileCircle />
         <div class="padding-main" v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length">
           <div class="day-changer">
             <RouterLink v-if="currentDay > 0" :to="{ name: 'warsztatyDay', params: { day: currentDay - 1 } }">

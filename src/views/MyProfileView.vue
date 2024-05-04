@@ -14,6 +14,7 @@ import rightArrow from '../assets/arrow.svg'
 import adminPanelIcon from '../assets/icons8-administrative_tools.png'
 
 // import copyIcon from '../assets/icons8-copy.png'
+import tinderIcon from '../assets/icons8-tinder-100.png'
 
 import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 import OverlayView from '../components/OverlayView.vue'
@@ -33,6 +34,8 @@ import { logout } from '../functions/login.js'
 
 import { App } from '@capacitor/app';
 import * as LiveUpdates from '@capacitor/live-updates';
+
+import { IonNavLink } from '@ionic/vue';
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 </script>
@@ -98,6 +101,11 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 
         </div>
       </OverlayView>
+      <IonNavLink router-link="/tinder/profil">
+        <ItemBox
+          :big-text="apiDataStore.profile.ready && apiDataStore.profile.data[0].tinder_profile.user ? 'Profil na tinderze' : 'Utwórz profil na tinderze'"
+          :leftIcon="tinderIcon" small leftIconWhite />
+      </IonNavLink>
     </template>
 
     <template #footer>

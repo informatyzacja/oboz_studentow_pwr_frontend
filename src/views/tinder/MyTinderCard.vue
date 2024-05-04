@@ -9,9 +9,7 @@ defineProps({
 
 import LoadingIndicator from '@/components/LoadingIndicator.vue';
 import { IonButton, IonIcon } from '@ionic/vue';
-import { Camera, CameraResultType } from '@capacitor/camera';
 import { createOutline, imageOutline } from 'ionicons/icons';
-import { apiRequest } from '@/stores/functions';
 
 import { useApiDataStore } from '@/stores/api.js'
 import { mapStores } from 'pinia'
@@ -25,8 +23,8 @@ import { mapStores } from 'pinia'
                 <LoadingIndicator v-if="item.photo && !isLoaded" inline />
                 <img :src="item.photo" alt="tinder" @load="loaded" v-show="isLoaded" v-if="item.photo" />
 
-                <IonButton @click="addPhoto" v-if="!item.photo && editable">Dodaj zdjęcie</IonButton>
-                <div v-else-if="editable">
+
+                <div v-if="editable">
                     <div class="edit-button edit-photo">
                         <IonButton @click="addPhoto" fill="clear">
                             <ion-icon slot="icon-only" :icon="imageOutline"></ion-icon>
@@ -78,21 +76,7 @@ export default {
             this.isLoaded = true;
         },
         addPhoto() {
-            Camera.getPhoto({
-                quality: 90,
-                allowEditing: true,
-                resultType: CameraResultType.DataUrl,
-            }).then((photo) => {
-                this.isLoaded = false;
-
-                apiRequest('../api2/tinder/upload-profile-photo/', 'POST', {
-                    photo: photo.dataUrl,
-                }).then(res => {
-                    if (res.success) {
-                        this.apiDataStore.profile.data[0].tinder_profile = res.tinder_profile;
-                    }
-                });
-            });
+            this.$emit('addPhoto');
         },
         editDescription() {
             this.$emit('editDescription');
@@ -133,7 +117,7 @@ ion-icon {
     justify-content: center;
     width: 100%;
     height: 100%;
-    background-color: var(--bg-lighter);
+    background-color: rgba(255, 255, 255, 0.165);
     border-radius: 10px;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
     /* padding: 20px; */

@@ -1,6 +1,6 @@
 :root {
   /* THEME COLORS */
-  --bg-gradient: linear-gradient(180deg, #0057B7 22.92%, #0057B7 22.93%, #8B4513 100%);
+  --bg-gradient: linear-gradient(180deg, #761200 22.92%, #761200 22.93%, #2f0a01 100%);
   --bg-gradent-translusent: var(--bg-gradient);
   /* --bg-gradient-translusent: linear-gradient(180deg, rgba(0, 87, 183, 0.478) 22.92%, rgba(0, 87, 183, 0.478) 22.93%, #8B4513AA 100%); */
   --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #FFD700 0%, #FF0000 100%);

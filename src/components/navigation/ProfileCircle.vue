@@ -25,6 +25,9 @@ export default {
             return (this.profileData && this.profileData.tinder_profile && this.profileData.tinder_profile.photo) || (this.profileData && this.profileData.photo)
         }
     },
+    mounted() {
+        this.apiDataStore.profile.fetchData()
+    }
 }
 </script>
 
@@ -34,7 +37,7 @@ export default {
     top: calc(20px + var(--ion-safe-area-top)/2);
     right: 20px;
     color: var(--bg-light);
-    z-index: 100;
+    z-index: 11;
 }
 
 img,

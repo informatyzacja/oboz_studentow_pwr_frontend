@@ -1,19 +1,62 @@
 <script setup>
 
-import { IonPage, IonContent } from '@ionic/vue';
+import { IonPage, IonContent, IonIcon, IonButton } from '@ionic/vue';
 import Tinder from '@/components/vue-tinder/Tinder.vue'
 import { apiRequest } from '@/stores/functions'
 import MyTinderCard from './MyTinderCard.vue'
 import TopBar from '@/components/navigation/TopBar.vue'
+import { refresh, close, heart, star, help } from 'ionicons/icons'
+import OverlayView from '../../components/OverlayView.vue';
+import ProfileCircle from '@/components/navigation/ProfileCircle.vue'
+
+import { useApiDataStore } from '@/stores/api.js'
+import { mapStores } from 'pinia'
+import LoadingIndicator from '../../components/LoadingIndicator.vue';
 </script>
 
 <template>
     <ion-page>
         <ion-content :fullscreen="true">
             <main>
-                <TopBar title="Tinder" />
+                <TopBar title="Tinder" backLink="/home" />
+                <ProfileCircle />
 
                 <h2 v-if="noMoreProfiles">Koniec profilów.<br>Sprawdź później, czy dołączył ktoś nowy.</h2>
+
+                <OverlayView ref="helpOverlay">
+                    <div class="help-overlay">
+                        <div class="help-content">
+                            <h4>Jak działa tinder obozowy?</h4>
+                            <div class="action-desc">
+                                <ion-icon :icon="heart" color="success"></ion-icon>
+                                <p><span class="action-desc-title">Like</span> - Przesuń w prawo, aby polubić</p>
+                            </div>
+                            <div class="action-desc">
+                                <ion-icon :icon="close" color="danger"></ion-icon>
+                                <p><span class="action-desc-title">Nope</span> - Przesuń w lewo, aby odrzucić</p>
+                            </div>
+                            <div class="action-desc">
+                                <ion-icon :icon="star" color="primary"></ion-icon>
+                                <div>
+                                    <p><span class="action-desc-title">Super like</span> - przesuń w górę, aby mieć
+                                        możliwość
+                                        natychmiastowego czatowania nawet
+                                        jeżeli nie masz matcha z
+                                        drugą osobą.</p>
+                                    <p class="subdesctiprion">UWAGA! Super like możesz użyć raz na cały obóz. Use it
+                                        wisely.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="help-footer">
+                            <ion-button @click="$refs.helpOverlay.hide()" shape="round">
+                                Zacznij swajpować
+                            </ion-button>
+                        </div>
+                    </div>
+                </OverlayView>
+
+                <LoadingIndicator v-if="!queue.length && !noMoreProfiles" />
 
                 <Tinder ref="tinder" key-name="id" :queue="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
                     <template v-slot="scope">
@@ -22,24 +65,38 @@ import TopBar from '@/components/navigation/TopBar.vue'
                     <!-- 
                         <img class="down-pointer" slot="down" src="~img/down-txt.png" />
                         <img class="rewind-pointer" slot="rewind" src="~img/rewind-txt.png" /> -->
+                    <template #rewind>
+                        <ion-icon :icon="refresh" color="warning" class="rewind-icon"></ion-icon>
+                    </template>
 
                     <template #like>
-                        <img class="like-pointer" src="@/assets/tinder/icons8-like-90.png" />
+                        <ion-icon :icon="heart" color="success" class="like-pointer"></ion-icon>
                     </template>
                     <template #nope>
-                        <img class="nope-pointer" src="@/assets/tinder/icons8-reject-90.png" />
+                        <ion-icon :icon="close" color="danger" class="nope-pointer"></ion-icon>
                     </template>
                     <template #super>
-                        <img class="super-pointer" src="@/assets/tinder/icons8-in-love-90.png" />
+                        <ion-icon :icon="star" color="primary" class="super-pointer"
+                            style="font-size: 50px;"></ion-icon>
                     </template>
 
                 </Tinder>
                 <div class="btns">
-                    <img src="" @click="decide('rewind')" />
-                    <img src="@/assets/tinder/icons8-reject-90.png" @click="decide('nope')" />
-                    <img src="@/assets/tinder/icons8-in-love-90.png" @click="decide('super')" />
-                    <img src="@/assets/tinder/icons8-like-90.png" @click="decide('like')" />
-                    <img src="" @click="decide('help')" />
+                    <ion-button @click="decide('rewind')" shape="round">
+                        <ion-icon slot="icon-only" :icon="refresh" color="warning" class="rewind-icon"></ion-icon>
+                    </ion-button>
+                    <ion-button @click="decide('nope')" shape="round">
+                        <ion-icon slot="icon-only" :icon="close" color="danger"></ion-icon>
+                    </ion-button>
+                    <ion-button @click="decide('super')" shape="round">
+                        <ion-icon slot="icon-only" :icon="star" color="primary"></ion-icon>
+                    </ion-button>
+                    <ion-button @click="decide('like')" shape="round">
+                        <ion-icon slot="icon-only" :icon="heart" color="success"></ion-icon>
+                    </ion-button>
+                    <ion-button @click="decide('help')" shape="round">
+                        <ion-icon slot="icon-only" :icon="help" class="help-icon"></ion-icon>
+                    </ion-button>
                 </div>
             </main>
         </ion-content>
@@ -51,9 +108,22 @@ export default {
     data: () => ({
         queue: [],
         history: [],
-        noMoreProfiles: false
+        noMoreProfiles: false,
     }),
-    created() {
+    computed: {
+        ...mapStores(useApiDataStore),
+    },
+    async mounted() {
+        if (!this.apiDataStore.profile.ready) {
+            await this.apiDataStore.profile.fetchData()
+        }
+        if (!this.apiDataStore.profile.data[0].tinder_profile.user) {
+            this.$router.push('/tinder/profil');
+            return
+        }
+        if (this.$router.currentRoute.value.name === 'tinder-help') {
+            this.$refs.helpOverlay.show()
+        }
         this.mock();
     },
     methods: {
@@ -121,7 +191,7 @@ export default {
                     // this.queue.unshift(...this.history)
                 }
             } else if (choice === 'help') {
-                //
+                this.$refs.helpOverlay.show()
             } else {
                 this.$refs.tinder.decide(choice)
             }
@@ -131,6 +201,47 @@ export default {
 </script>
 
 <style scoped>
+.help-overlay {
+    background-color: var(--bg);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 0 20px;
+    margin-top: 50px;
+}
+
+.help-content {
+    margin-bottom: 20px;
+}
+
+.help-footer {
+    display: flex;
+    justify-content: center;
+}
+
+
+.action-desc {
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    font-size: .9rem;
+}
+
+.action-desc ion-icon {
+    font-size: 30px;
+}
+
+.action-desc-title {
+    font-weight: bold;
+}
+
+.subdesctiprion {
+    font-size: 12px;
+    color: var(--text-gray);
+    font-weight: bold;
+}
+
 ion-content {
     --overflow: hidden
 }
@@ -149,7 +260,7 @@ h2 {
 }
 
 .vue-tinder {
-    position: absolute;
+    /* position: absolute; */
     z-index: 1;
     left: 0;
     right: 0;
@@ -230,25 +341,45 @@ h2 {
     max-width: 355px;
 }
 
-.btns img {
+.btns ion-button {
     margin-right: 12px;
     box-shadow: 0 4px 9px rgba(0, 0, 0, 0.15);
     border-radius: 50%;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+    --padding-start: 0;
+    --padding-end: 0;
+    aspect-ratio: 1;
+
+    --background: rgba(0, 0, 0, 0.439);
+    --background-activated: var(--bg-lighter)
 }
 
-.btns img:nth-child(2n + 1) {
+.btns ion-button:nth-child(2n + 1) {
     width: 53px;
 }
 
-.btns img:nth-child(2n) {
+.btns ion-button:nth-child(2n) {
     width: 65px;
 }
 
-.btns img:nth-last-child(1) {
+.btns ion-button:nth-child(2n) ion-icon {
+    font-size: 35px;
+}
+
+.btns ion-button:nth-last-child(1) {
     margin-right: 0;
 }
+
+.help-icon {
+    color: rgb(172, 63, 216)
+}
+
+.rewind-icon {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
 
 /* .vue-tinder.right-end,
 .vue-tinder.left-end {

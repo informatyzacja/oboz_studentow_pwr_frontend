@@ -18,7 +18,7 @@ export const useProfileStore = defineStore('profile', {
   },
   actions: {
     fetchData() {
-      loadData(this)
+      return loadData(this)
     }
   }
 })
@@ -33,7 +33,7 @@ export const useMyHouseMembersStore = defineStore('myHouseMembers', {
   },
   actions: {
     fetchData() {
-      loadData(this)
+      return loadData(this)
     }
   }
 })
@@ -47,7 +47,7 @@ export const useLinkStore = defineStore('link', {
   },
   actions: {
     fetchData() {
-      loadData(this)
+      return loadData(this)
     }
   }
 })

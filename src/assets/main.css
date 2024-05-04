@@ -10,3 +10,8 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+ion-button:not([fill="clear"]) {
+  --background: var(--bg-lighter);
+  --background-activated: var(--bg-light);
+}

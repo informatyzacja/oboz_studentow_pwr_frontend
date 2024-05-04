@@ -9,105 +9,77 @@ import { mapStores } from 'pinia'
 import rightArrow from '../assets/arrow.svg'
 import phoneIcon from '../assets/phone_icon.svg'
 import { IonPage, IonContent } from '@ionic/vue';
+import ProfileCircle from '../components/navigation/ProfileCircle.vue'
+
 </script>
 
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-  <main>
-  <TopBar title="SOS" />
-  <div class="sos">
-    <h3>Ratownicy</h3>
-    <div v-if="apiDataStore.contacts.ready && apiDataStore.contacts.data.lifeGuard.length">
-      <a
-        v-for="(data, index) in apiDataStore.contacts.data.lifeGuard"
-        :key="index"
-        :href="'tel:' + data.phoneNumber"
-      >
-        <ItemBox
-          :bigText="data.first_name + ' ' + data.last_name"
-          :smallText="data.title"
-          :leftIcon="data.photo"
-          :rightIcon="phoneIcon"
-          bgColor="var(--red)"
-        />
-      </a>
-    </div>
-    <p
-      v-if="
-        apiDataStore.contacts.ready &&
-        apiDataStore.contacts.data.lifeGuard &&
-        !apiDataStore.contacts.data.lifeGuard.length
-      "
-      class="error"
-    >
-      Brak ratowników
-    </p>
+      <main>
+        <TopBar title="SOS" />
+        <ProfileCircle />
+        <div class="sos">
+          <h3>Ratownicy</h3>
+          <div v-if="apiDataStore.contacts.ready && apiDataStore.contacts.data.lifeGuard.length">
+            <a v-for="(data, index) in apiDataStore.contacts.data.lifeGuard" :key="index"
+              :href="'tel:' + data.phoneNumber">
+              <ItemBox :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo"
+                :rightIcon="phoneIcon" bgColor="var(--red)" />
+            </a>
+          </div>
+          <p v-if="
+            apiDataStore.contacts.ready &&
+            apiDataStore.contacts.data.lifeGuard &&
+            !apiDataStore.contacts.data.lifeGuard.length
+          " class="error">
+            Brak ratowników
+          </p>
 
-    <LoadingIndicator v-if="apiDataStore.contacts.loading" />
-    <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
+          <LoadingIndicator v-if="apiDataStore.contacts.loading" />
+          <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
 
-    <div v-if="apiDataStore.contacts.ready && apiDataStore.contacts.data.currentSoberDuty.length">
-      <h3>Obecnie na dyżurze trzeźwości</h3>
-      <div>
-        <a
-          v-for="(data, index) in apiDataStore.contacts.data.currentSoberDuty"
-          :key="index"
-          :href="'tel:' + data.phoneNumber"
-        >
-          <ItemBox
-            :bigText="data.first_name + ' ' + data.last_name"
-            :smallText="data.title"
-            :leftIcon="data.photo"
-            :rightIcon="phoneIcon"
-          />
-        </a>
-      </div>
-    </div>
+          <div v-if="apiDataStore.contacts.ready && apiDataStore.contacts.data.currentSoberDuty.length">
+            <h3>Obecnie na dyżurze trzeźwości</h3>
+            <div>
+              <a v-for="(data, index) in apiDataStore.contacts.data.currentSoberDuty" :key="index"
+                :href="'tel:' + data.phoneNumber">
+                <ItemBox :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title"
+                  :leftIcon="data.photo" :rightIcon="phoneIcon" />
+              </a>
+            </div>
+          </div>
 
-    <LoadingIndicator v-if="apiDataStore.contacts.loading" />
-    <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
+          <LoadingIndicator v-if="apiDataStore.contacts.loading" />
+          <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
 
-    <h3>Sztab</h3>
-    <div
-      v-if="
-        apiDataStore.contacts.ready &&
-        apiDataStore.contacts.data.staff &&
-        apiDataStore.contacts.data.staff.length
-      "
-    >
-      <a
-        v-for="(data, index) in apiDataStore.contacts.data.staff"
-        :key="index"
-        :href="'tel:' + data.phoneNumber"
-      >
-        <ItemBox
-          :bigText="data.first_name + ' ' + data.last_name"
-          :smallText="data.title"
-          :leftIcon="data.photo"
-          :rightIcon="phoneIcon"
-        />
-      </a>
-    </div>
-    <p
-      v-if="
-        apiDataStore.contacts.ready &&
-        apiDataStore.contacts.data.staff &&
-        !apiDataStore.contacts.data.staff.length
-      "
-      class="error"
-    >
-      Sztab się najebał
-    </p>
+          <h3>Sztab</h3>
+          <div v-if="
+            apiDataStore.contacts.ready &&
+            apiDataStore.contacts.data.staff &&
+            apiDataStore.contacts.data.staff.length
+          ">
+            <a v-for="(data, index) in apiDataStore.contacts.data.staff" :key="index" :href="'tel:' + data.phoneNumber">
+              <ItemBox :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo"
+                :rightIcon="phoneIcon" />
+            </a>
+          </div>
+          <p v-if="
+            apiDataStore.contacts.ready &&
+            apiDataStore.contacts.data.staff &&
+            !apiDataStore.contacts.data.staff.length
+          " class="error">
+            Sztab się najebał
+          </p>
 
-    <LoadingIndicator v-if="apiDataStore.contacts.loading" />
-    <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
+          <LoadingIndicator v-if="apiDataStore.contacts.loading" />
+          <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
 
-    <RouterLink to="/faq">
-      <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" :rightIcon="rightArrow" />
-    </RouterLink>
-  </div>
-</main>
+          <RouterLink to="/faq">
+            <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" :rightIcon="rightArrow" />
+          </RouterLink>
+        </div>
+      </main>
 
     </ion-content>
   </ion-page>

@@ -65,6 +65,7 @@ export default {
           ? 800
           : 300
       const el = divEl.querySelector('.tinder-card')
+      if (!el) return
       el.style.opacity = 0
       el.style['pointer-events'] = 'none'
       if (this.leavingKeys.indexOf(parseInt(el.dataset.id)) > -1) {
