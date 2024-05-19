@@ -2,6 +2,9 @@
 include ':capacitor-android'
 project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/capacitor')
 
+include ':capacitor-community-fcm'
+project(':capacitor-community-fcm').projectDir = new File('../node_modules/@capacitor-community/fcm/android')
+
 include ':capacitor-community-media'
 project(':capacitor-community-media').projectDir = new File('../node_modules/@capacitor-community/media/android')
 
@@ -25,6 +28,9 @@ project(':capacitor-live-updates').projectDir = new File('../node_modules/@capac
 
 include ':capacitor-preferences'
 project(':capacitor-preferences').projectDir = new File('../node_modules/@capacitor/preferences/android')
+
+include ':capacitor-push-notifications'
+project(':capacitor-push-notifications').projectDir = new File('../node_modules/@capacitor/push-notifications/android')
 
 include ':capacitor-share'
 project(':capacitor-share').projectDir = new File('../node_modules/@capacitor/share/android')

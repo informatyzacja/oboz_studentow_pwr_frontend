@@ -11,9 +11,8 @@ import OverlayView from '../components/OverlayView.vue'
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
-import { isSupported } from "firebase/messaging";
-
 import PushNotficationsPopupView from '../components/PushNotficationsPopupView.vue'
+import { PushNotifications } from '@capacitor/push-notifications'
 
 import questionMark from '../assets/question-mark.jpg'
 import homeCardLinkBg from '../assets/home-card-link-bg.png'
@@ -29,6 +28,8 @@ import { IonPage, IonContent } from '@ionic/vue';
 import SavePhotoButton from '@/components/SavePhotoButton.vue'
 
 import ProfileCircle from '../components/navigation/ProfileCircle.vue'
+
+import { registerForPushNotifications } from '../config.js'
 </script>
 
 <template>
@@ -57,6 +58,11 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
             <TextBox v-for="(data, index) in apiDataStore.announcement.data" :key="index" :title="data.title"
               :content="data.content" :image="megaphoneIcon" style="margin-bottom: 10px" white />
           </div>
+        </div>
+
+
+        <div v-if="showPushNotificationCard" style="margin-bottom: 5px;">
+          <PushNotficationsPopupView @hide="showPushNotificationCard = false" />
         </div>
 
 
@@ -118,12 +124,6 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
           </div>
         </div>
 
-
-        <div
-          v-if="showPushNotificationCard && (!isIos || (apiDataStore.profile.ready && !apiDataStore.profile.data[0].push_notifications_registered))"
-          style="margin-bottom: 5px;">
-          <PushNotficationsPopupView @hide="showPushNotificationCard = false" />
-        </div>
 
         <!-- Workshops -->
         <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
@@ -252,21 +252,15 @@ export default {
 
 
     // push notifications
-    if (isSupported() && ("Notification" in window)) {
-      if (Notification.permission !== "denied" && Notification.permission !== "granted") {
+    PushNotifications.checkPermissions().then((permStatus) => {
+      if (permStatus.receive === 'prompt') {
         this.showPushNotificationCard = true
+      } else if (permStatus.receive === 'granted') {
+        registerForPushNotifications()
       }
-    } else if (this.isIos) {
-      if ("Notification" in window) {
-        if (Notification.permission !== "granted") {
-          this.showPushNotificationCard = true
-          console.log("Permission not granted", Notification.permission);
-        }
-      } else {
-        this.showPushNotificationCard = true
-        console.log("This browser does not support desktop notification");
-      }
-    }
+    })
+
+
 
     setTimeout(() => {
       // random partner scroll position

@@ -10,6 +10,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@capacitor-community/fcm": "^5.0.3",
     "@capacitor-community/media": "^6.0.0",
     "@capacitor-mlkit/barcode-scanning": "^6.1.0",
     "@capacitor/android": "6.0.0",
@@ -21,6 +22,7 @@
     "@capacitor/keyboard": "^6.0.0",
     "@capacitor/live-updates": "^0.2.1",
     "@capacitor/preferences": "^6.0.0",
+    "@capacitor/push-notifications": "^6.0.0",
     "@capacitor/share": "^6.0.0",
     "@capacitor/status-bar": "^6.0.0",
     "@ionic/pwa-elements": "^3.2.2",

@@ -5,7 +5,7 @@ import Logo from '../../assets/ikona.png'
 import HammerIcon from '../../assets/icons8-hammer-90.png'
 // import WorkshopIcon from '../../assets/warsztaty.svg'
 import CalendarIcon from '../../assets/icons8-calendar-100.png'
-import UserIcon from '../../assets/icons8-male_user.png'
+// import UserIcon from '../../assets/icons8-male_user.png'
 import MenuIcon from '../../assets/icons8-squared_menu.png'
 
 // import ScannerIcon from '../../assets/icons8-barcode_reader.png'
@@ -15,8 +15,6 @@ import ChatIcon from '../../assets/icons8-chat.png'
 import { useApiDataStore } from '../../stores/api.js'
 import { mapStores } from 'pinia'
 
-import { isSupported } from "firebase/messaging";
-import { registerForPushNotifications } from '../../config.js'
 import { IonNavLink, IonTabBar } from '@ionic/vue'
 </script>
 
@@ -99,10 +97,6 @@ export default {
   },
   mounted() {
     this.apiDataStore.permissions.fetchData()
-
-    if (isSupported() && ("Notification" in window) && Notification.permission === "granted") {
-      registerForPushNotifications()
-    }
   },
   beforeUnmount() {
     clearInterval(this.versionTimer)

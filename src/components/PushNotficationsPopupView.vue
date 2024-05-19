@@ -1,73 +1,43 @@
 <script setup>
 
 import { registerForPushNotifications } from '../config.js'
-import { isSupported } from "firebase/messaging";
 defineEmits(['hide']);
 
 </script>
 
 <template>
-    <div class="padding">
-        <div class="overlay-card">
-            
-            <p v-if="iOSversionTooLow" style="text-align: center;">Twoja wersja iOS jest za niska, aby obsługiwać powiadomienia. Zaktualizuj system do wersji iOS 16.4 lub wyższej.</p>
-
-            <p v-else-if="showInstallMessage" style="text-align: center;">Aby włączyć powiadomienia, zainstaluj aplikację.</p>
-
-            <div v-else>
-                <p style="text-align: center;">Bądź na bieżąco w każdej chwili, dzięki włączonym powiadomieniom! Będziemy informować Cię o tym, co się aktualnie dzieje, o wszelkich zmianach i wiele więcej!</p>
-                <div class="buttons">
-                    <button @click="register" class="button success">Włącz powiadomienia</button>
-                    <button class="button red-bg" @click="close">Może później</button>
-                </div>
-            </div>
-
+  <div class="padding">
+    <div class="overlay-card">
+      <div>
+        <p style="text-align: center;">Bądź na bieżąco w każdej chwili, dzięki włączonym powiadomieniom! Będziemy
+          informować Cię o tym, co się aktualnie dzieje, o wszelkich zmianach i wiadomościach!</p>
+        <div class="buttons">
+          <button @click="register" class="button success">Włącz powiadomienia</button>
+          <button class="button red-bg" @click="close">Może później</button>
         </div>
+      </div>
+
     </div>
+  </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            iOSversionTooLow: false,
-            showInstallMessage: false
-        }
-    },
+  data() {
+    return {
+    }
+  },
 
   computed: {
-    isIos() {
-      const userAgent = window.navigator.userAgent.toLowerCase();
-      return /iphone|ipod/.test( userAgent );
-    },
-    isInStandaloneMode() {
-      return ('standalone' in window.navigator) && (window.navigator.standalone);
-    },
-    iOSversion() {
-      const userAgent = window.navigator.userAgent
-      if (/iP(hone|od|ad)/.test(userAgent)) {
-        // supports iOS 2.0 and later: <http://bit.ly/TJjs1V>
-        var v = (userAgent).match(/OS (\d+)_(\d+)_?(\d+)?/);
-        return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
-      }
-      return false;
-    }
   },
   methods: {
     register() {
-        if (isSupported() && ("Notification" in window)) {
-            registerForPushNotifications()
-        } else if (this.isIos && (this.iOSversion[0] < 16 || (this.iOSversion[0] === 16 && this.iOSversion[1] < 4))) {
-            this.iOSversionTooLow = true
-            return
-        } else if (this.isIos && !this.isInStandaloneMode) {
-            this.showInstallMessage = true
-            return
-        }
+      registerForPushNotifications().then(() => {
         this.close()
+      })
     },
     close() {
-        this.$emit('hide')
+      this.$emit('hide')
     }
   },
   mounted() {
@@ -101,7 +71,7 @@ a.button {
   font-size: 14px;
   line-height: 16px;
   cursor: pointer;
-  
+
   background-color: var(--bg-light);
 
   width: 140px;
@@ -115,9 +85,10 @@ a.button {
 .button.success {
   background-color: green;
 }
+
 .buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 </style>

@@ -10,7 +10,7 @@ export const useChatStore = defineStore('chat', {
   },
   actions: {
     fetchData() {
-      loadData(this)
+      return loadData(this)
     }
   }
 })
@@ -20,11 +20,19 @@ export const useChatsStore = defineStore('chats', {
   getters: {
     ready() {
       return ready(this)
+    },
+    withId() {
+      return (id) => {
+        if (!this.data) return null
+        return this.data.find((item) => {
+          return item.id === id
+        })
+      }
     }
   },
   actions: {
     fetchData() {
-      loadData(this)
+      return loadData(this)
     }
   }
 })

@@ -21,13 +21,14 @@ import { IonPage, IonContent } from '@ionic/vue';
     <ion-page>
         <ion-content :fullscreen="true" ref="content">
             <div>
-                <TopBar title="Chat" autoBackLink class="top-bar" />
+                <TopBar :title="apiDataStore.chats.ready && apiDataStore.chats.withId(chat_id).name || 'Czat ?'"
+                    autoBackLink class="top-bar" />
                 <main class="padding-main">
                     <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading">
                         <div class="chat">
                             <div v-for="(message, index) in apiDataStore.chat.data" class="messageRow" :key="index"
                                 :class="{ messageFromMe: message.fromMe }">
-                                <div style="width: 100%" v-if="message.chat == chat_id">
+                                <div style="width: 100%" v-if="message.chat === chat_id">
 
                                     <p class="datetime"
                                         v-if="index == 0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.data[index - 1].date) > 8 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.data[index - 1].date), 'day')">
@@ -87,7 +88,7 @@ export default {
             reconnect: true,
             timer: null,
             scrollToEnd: true,
-            chat_id: null
+            chat_id: parseInt(this.$route.params.id)
         }
     },
     computed: {
@@ -99,9 +100,9 @@ export default {
         }
     },
     mounted() {
-        this.chat_id = this.$route.params.id
 
         this.apiDataStore.chat.fetchData()
+        this.apiDataStore.chats.fetchData()
         this.timer = setInterval(() => {
             this.apiDataStore.chat.fetchData()
         }, 1000 * 60 * 5) // fetch data every 5 minutes
@@ -118,7 +119,7 @@ export default {
         // this.loading = false
 
     },
-    didEnter() {
+    ionViewWillEnter() {
         this.scrollToEnd = true
         this.$refs.content.$el.scrollToBottom(0);
     },

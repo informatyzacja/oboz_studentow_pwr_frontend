@@ -26,6 +26,9 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
                         <ChatCardView :chat="chat" />
                     </ion-nav-link>
                 </div>
+                <div v-if="apiDataStore.chats.data && apiDataStore.chats.data.length === 0">
+                    <h3>Brak czatów</h3>
+                </div>
             </main>
         </ion-content>
     </ion-page>
@@ -45,3 +48,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+h3 {
+    text-align: center;
+    margin-top: 20px;
+}
+</style>

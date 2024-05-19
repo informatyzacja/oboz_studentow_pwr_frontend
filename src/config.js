@@ -4,41 +4,41 @@ export const WS_API_URL = import.meta.env.VITE_WS_API_URL
 export const REGULAMIN_LINK = 'https://drive.google.com/file/d/1Ptkf7S7XUzlGGz_j3ye1XXhOYSyecanK/view?pli=1'
 export const POLITYKA_PRYWATNOSCI_LINK = null
 
+import { FCM } from '@capacitor-community/fcm';
+import { PushNotifications } from '@capacitor/push-notifications'
 
-import { getToken, isSupported } from "firebase/messaging";
-import { messaging } from "./firebaseConfig.js";
+import { toastController } from '@ionic/vue'
 
 import { apiRequest } from './stores/functions.js'
 
-export function registerForPushNotifications() {
-    if (isSupported() && ("Notification" in window)) {
-        getToken(messaging, { vapidKey: "BA4pphEFBKRtGGjjKfukpE5P4W9m4P9Sufa0et4JrKgWQ0lfyj07teD27ztP4enz0Cgv9OPm0W_4ldDS-_iWVmE" }).then((currentToken) => {
-            if (currentToken) {
+export async function registerForPushNotifications() {
+    try {
+        await PushNotifications.requestPermissions();
+        await PushNotifications.register();
 
-                const body = { token: currentToken }
-                apiRequest('../api2/register-fcm-token/',
-                    'POST',
-                    body
-                )
-                    .then((data) => {
-                        return data.success;
-                    })
-                    .catch((error) => {
-                        console.error('There was an error!', error)
-                        return error
-                    })
+        const token = await FCM.getToken();
+        console.log('FCM token:', token);
 
-            } else {
-                // Show permission request UI
-                console.log('No registration token available. Request permission to generate one.');
-                return 'No registration token available. Request permission to generate one.';
-                // ...
-            }
-        }).catch((err) => {
-            console.log('An error occurred while retrieving token. ', err);
-            alert('Pojawił się błąd podczas włączania powiadomień')
-            return err;
-            // ...
-        });
+        const body = { token: token.token }
+        const data = await apiRequest('../api2/register-fcm-token/',
+            'POST',
+            body
+        )
+        if (!data.success) {
+            throw new Error('Failed to register FCM token')
+        }
+        return data
+
+    } catch (error) {
+        console.error('Error while turning on notifications:', error);
+
+        toastController.create({
+            message: 'Nie udało się włączyć powiadomień',
+            duration: 1500,
+            position: 'top',
+            color: 'danger'
+        }).then(toast =>
+            toast.present()
+        );
     }
 }

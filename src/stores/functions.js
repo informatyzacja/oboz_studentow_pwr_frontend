@@ -130,7 +130,7 @@ export async function loadData(item) {
 }
 
 export function ready(item) {
-  return item.data
+  return Boolean(item.data)
 }
 
 export function getCookie(name) {

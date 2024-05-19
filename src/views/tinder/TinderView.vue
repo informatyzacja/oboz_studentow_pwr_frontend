@@ -12,6 +12,8 @@ import ProfileCircle from '@/components/navigation/ProfileCircle.vue'
 import { useApiDataStore } from '@/stores/api.js'
 import { mapStores } from 'pinia'
 import LoadingIndicator from '../../components/LoadingIndicator.vue';
+import ChatCardView from '@/views/ChatCardView.vue'
+
 </script>
 
 <template>
@@ -51,6 +53,23 @@ import LoadingIndicator from '../../components/LoadingIndicator.vue';
                         <div class="help-footer">
                             <ion-button @click="$refs.helpOverlay.hide()" shape="round">
                                 Zacznij swajpować
+                            </ion-button>
+                        </div>
+                    </div>
+                </OverlayView>
+
+
+                <OverlayView ref="matchOverlay">
+                    <div class="help-overlay">
+                        <div class="help-content">
+                            <h4>Match!</h4>
+                            <p>Gratulacje! Masz matcha z tą osobą. Możesz teraz zacząć rozmowę.</p>
+                            <ChatCardView :chat="{ avatar: matchData.photo, name: matchData.name, users: [1, 1] }" />
+                        </div>
+                        <div class="help-footer">
+                            <ion-button @click="$refs.matchOverlay.hide(); $router.push('/czat/' + matchData.chat_id)"
+                                shape="round">
+                                Rozpocznij rozmowę
                             </ion-button>
                         </div>
                     </div>
@@ -109,6 +128,7 @@ export default {
         queue: [],
         history: [],
         noMoreProfiles: false,
+        matchData: {}
     }),
     computed: {
         ...mapStores(useApiDataStore),
@@ -128,8 +148,6 @@ export default {
     },
     methods: {
         async mock() {
-            console.log('mock')
-
             const res = await apiRequest('../api2/tinder/load-profiles/');
             if (res.length === 0) {
                 this.noMoreProfiles = true;
@@ -159,7 +177,8 @@ export default {
             }).then(res => {
                 if (res.success) {
                     if (res.match) {
-                        console.log('Matched!')
+                        this.matchData = { ...item, chat_id: res.chat_id }
+                        this.$refs.matchOverlay.show()
                     }
                 }
             })
