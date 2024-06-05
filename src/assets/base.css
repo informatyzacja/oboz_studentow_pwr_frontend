@@ -1,29 +1,29 @@
 :root {
   /* THEME COLORS */
-  --bg-gradient: linear-gradient(180deg, #761200 22.92%, #761200 22.93%, #2f0a01 100%);
+  --bg-gradient: linear-gradient(180deg, #3399FF 22.92%, #3399FF 22.93%, #003366 100%);
   --bg-gradent-translusent: var(--bg-gradient);
   /* --bg-gradient-translusent: linear-gradient(180deg, rgba(0, 87, 183, 0.478) 22.92%, rgba(0, 87, 183, 0.478) 22.93%, #8B4513AA 100%); */
-  --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #FFD700 0%, #FF0000 100%);
-  --radial-gradient-circle: radial-gradient(circle, #FFD700 0%, #FF0000 80%);
+  --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #B0E0E6 0%, #87CEFA 100%);
+  --radial-gradient-circle: radial-gradient(circle, #B0E0E6 0%, #87CEFA 80%);
 
-  --bg: #371804;
+  --bg: #053464;
   --bg-translusent: var(--bg);
   /* --bg-translusent: #8B4513194; */
-  --bg-lighter: #612d0a;
-  --bg-light: #c47309;
-  --bg-light-translusent: rgba(255, 111, 0, 0.222);
-  --bg-light-translusent-hover: rgba(166, 75, 0, 0.177);
+  --bg-lighter: #4b7eb0;
+  --bg-light: #7cc5dd;
+  --bg-light-translusent: rgba(173, 216, 230, 0.222);
+  --bg-light-translusent-hover: rgba(173, 216, 230, 0.177);
 
-  --theme-dark: #862811;
-  --theme-light: #b66a24;
-  --theme-text: #b75800;
-  --light-text: #FFFDD0D1;
+  --theme-dark: #2db8f8;
+  --theme-light: #23bfcd;
+  --theme-text: #3488dd;
+  --light-text: #F0F8FF;
 
-  --text-gray: #e3dad4dd;
+  --text-gray: #B0C4DE;
   --red-dark: #8B0000;
   --red-action: #FF0000;
   --red: #9a2929;
-  --orange: #DC7D28;
+  --orange: #FFA500;
   --yellow: #FFD700;
 }
 

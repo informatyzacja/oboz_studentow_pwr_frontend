@@ -1,6 +1,6 @@
 <script setup>
 
-import { IonPage, IonContent, IonIcon, IonButton } from '@ionic/vue';
+import { IonPage, IonContent, IonIcon, IonButton, toastController } from '@ionic/vue';
 import Tinder from '@/components/vue-tinder/Tinder.vue'
 import { apiRequest } from '@/stores/functions'
 import MyTinderCard from './MyTinderCard.vue'
@@ -24,6 +24,8 @@ import ChatCardView from '@/views/ChatCardView.vue'
                 <ProfileCircle />
 
                 <h2 v-if="noMoreProfiles">Koniec profilów.<br>Sprawdź później, czy dołączył ktoś nowy.</h2>
+
+                <h2 v-if="info">{{ info }}</h2>
 
                 <OverlayView ref="helpOverlay">
                     <div class="help-overlay">
@@ -75,7 +77,7 @@ import ChatCardView from '@/views/ChatCardView.vue'
                     </div>
                 </OverlayView>
 
-                <LoadingIndicator v-if="!queue.length && !noMoreProfiles" />
+                <LoadingIndicator v-if="!queue.length && !noMoreProfiles && !info" />
 
                 <Tinder ref="tinder" key-name="id" :queue="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
                     <template v-slot="scope">
@@ -128,7 +130,8 @@ export default {
         queue: [],
         history: [],
         noMoreProfiles: false,
-        matchData: {}
+        matchData: {},
+        info: ''
     }),
     computed: {
         ...mapStores(useApiDataStore),
@@ -149,6 +152,10 @@ export default {
     methods: {
         async mock() {
             const res = await apiRequest('../api2/tinder/load-profiles/');
+            if (res.info) {
+                this.info = res.info
+                return
+            }
             if (res.length === 0) {
                 this.noMoreProfiles = true;
                 return
