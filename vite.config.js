@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path'
+import dotenv from "dotenv";
 
 
 // https://vitejs.dev/config/
@@ -101,6 +102,6 @@ export default defineConfig({
     }
   },
   define: {
-    VERSION_NUMBER: JSON.stringify(new Date().toISOString().slice(2, 10).replace(/-/g, '.')),
+    'process.env': dotenv.config({ path: '.env' }).parsed
   }
 })
