@@ -22,7 +22,8 @@ import { IonPage, IonContent } from '@ionic/vue';
         <ion-content :fullscreen="true" ref="content">
             <div>
                 <TopBar :title="apiDataStore.chats.ready && apiDataStore.chats.withId(chat_id).name || 'Czat ?'"
-                    autoBackLink class="top-bar" />
+                    autoBackLink class="top-bar"
+                    :image="apiDataStore.chats.ready && apiDataStore.chats.withId(chat_id).avatar" />
                 <main class="padding-main">
                     <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading">
                         <div class="chat">

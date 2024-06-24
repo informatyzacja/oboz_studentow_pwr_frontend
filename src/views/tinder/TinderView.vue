@@ -23,7 +23,8 @@ import ChatCardView from '@/views/ChatCardView.vue'
                 <TopBar title="Tinder" backLink="/home" />
                 <ProfileCircle />
 
-                <h2 v-if="noMoreProfiles">Koniec profilów.<br>Sprawdź później, czy dołączył ktoś nowy.</h2>
+                <h2 v-if="noMoreProfiles && !queue.length">Koniec profilów.<br>Sprawdź później, czy dołączył ktoś nowy.
+                </h2>
 
                 <h2 v-if="info">{{ info }}</h2>
 
@@ -69,8 +70,7 @@ import ChatCardView from '@/views/ChatCardView.vue'
                             <ChatCardView :chat="{ avatar: matchData.photo, name: matchData.name, users: [1, 1] }" />
                         </div>
                         <div class="help-footer">
-                            <ion-button @click="$refs.matchOverlay.hide(); $router.push('/czat/' + matchData.chat_id)"
-                                shape="round">
+                            <ion-button @click="openChat" shape="round">
                                 Rozpocznij rozmowę
                             </ion-button>
                         </div>
@@ -102,7 +102,7 @@ import ChatCardView from '@/views/ChatCardView.vue'
                     </template>
 
                 </Tinder>
-                <div class="btns">
+                <div class="btns" v-if="!(noMoreProfiles && !queue.length)">
                     <ion-button @click="decide('rewind')" shape="round">
                         <ion-icon slot="icon-only" :icon="refresh" color="warning" class="rewind-icon"></ion-icon>
                     </ion-button>
@@ -151,7 +151,7 @@ export default {
     },
     methods: {
         async mock() {
-            const res = await apiRequest('../api2/tinder/load-profiles/');
+            const res = await apiRequest('../api2/tinder/load-profiles/?skip_ids=' + this.queue.map(x => x.user).join(','));
             if (res.info) {
                 this.info = res.info
                 return
@@ -162,6 +162,11 @@ export default {
             }
             this.queue.push(...res)
 
+        },
+        async openChat() {
+            this.$refs.matchOverlay.hide()
+            await this.apiDataStore.chats.fetchData()
+            this.$router.push('/czat/' + this.matchData.chat_id)
         },
         onSubmit({ item, type }) {
             if (!item.user) {
@@ -188,12 +193,12 @@ export default {
                         this.$refs.matchOverlay.show()
                     }
                 }
+                if (this.queue.length < 3) {
+                    this.mock()
+                }
+                this.history.push(item)
             })
 
-            if (this.queue.length < 3) {
-                this.mock()
-            }
-            this.history.push(item)
         },
         async decide(choice) {
             if (choice === 'rewind') {

@@ -13,6 +13,9 @@ defineProps({
   absolute: {
     type: Boolean,
     default: false
+  },
+  image: {
+    type: String
   }
 });
 import { IonNavLink } from '@ionic/vue';
@@ -27,6 +30,7 @@ import { IonNavLink } from '@ionic/vue';
           <div class="arrow"></div>
         </div>
       </IonNavLink>
+      <img v-if="image" :src="image" alt="avatar" />
       <h1>{{ title }}</h1>
     </div>
 
@@ -105,5 +109,14 @@ h1 {
 .header-left {
   display: flex;
   height: 100%;
+  justify-content: center;
+}
+
+img {
+  margin-right: .5rem;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 </style>

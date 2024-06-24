@@ -9,7 +9,7 @@ import moment from 'moment';
     <div class="chat-element">
         <div class="chat-element__avatar">
             <ion-icon v-if="chat.house_chat" :src="home" />
-            <img :src="chat.avatar" alt="avatar" v-else-if="chat.avatar" />
+            <img class="avatar" :src="chat.avatar" alt="avatar" v-else-if="chat.avatar" />
             <ion-icon v-else-if="chat.users.length <= 2" :src="person" />
             <ion-icon v-else :src="people" />
         </div>
@@ -83,5 +83,11 @@ import moment from 'moment';
 .chat-element__message {
     font-size: 0.9rem;
     color: var(--text-gray);
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 </style>
