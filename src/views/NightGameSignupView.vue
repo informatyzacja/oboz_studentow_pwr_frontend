@@ -19,7 +19,7 @@ import { IonPage, IonContent } from '@ionic/vue';
 <template>
 
     <ion-page>
-        <ion-content :fullscreen="true">
+        <ion-content :fullscreen="false">
             <main>
                 <TopBar title="Zapisy na grę nocną" :backLink="$router.options.history.state.back || '/'" />
 

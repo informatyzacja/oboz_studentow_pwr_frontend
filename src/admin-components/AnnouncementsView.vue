@@ -14,7 +14,7 @@ import { IonPage, IonContent } from '@ionic/vue';
 
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <ion-content :fullscreen="false">
       <main>
         <TopBar title="Widoczne ogłoszenia" backLink="/admin-menu" />
         <RouterLink to="/ogloszenia/dodaj">
@@ -30,7 +30,7 @@ import { IonPage, IonContent } from '@ionic/vue';
                   </p>
                   <p style="font-size: 10px;" v-if="data.group.name">Grupa: {{ data.group.type.name }} - {{
                     data.group.name
-                  }}</p>
+                    }}</p>
                   <p style="font-size: 10px;">Data dodania: {{ moment(data.date).format('DD.MM.YYYY HH:mm') }}</p>
                   <p style="font-size: 10px;">Data ukrycia: {{ moment(data.hide_date).format('DD.MM.YYYY HH:mm') }}</p>
                 </TextBox>

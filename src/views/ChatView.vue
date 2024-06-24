@@ -19,7 +19,7 @@ import { IonPage, IonContent } from '@ionic/vue';
 
 
     <ion-page>
-        <ion-content :fullscreen="true" ref="content">
+        <ion-content :fullscreen="false" ref="content">
             <div>
                 <TopBar :title="apiDataStore.chats.ready && apiDataStore.chats.withId(chat_id).name || 'Czat ?'"
                     autoBackLink class="top-bar"

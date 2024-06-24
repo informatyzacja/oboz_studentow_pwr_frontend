@@ -9,7 +9,7 @@ import { Preferences } from '@capacitor/preferences'
 
 <template>
     <ion-page>
-        <ion-content :fullscreen="true">
+        <ion-content :fullscreen="false">
             <main>
                 <img id="logo" :src="logo" alt="logo">
 

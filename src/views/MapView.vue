@@ -11,7 +11,7 @@ import SavePhotoButton from '@/components/SavePhotoButton.vue'
 
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <ion-content :fullscreen="false">
       <main>
         <div v-if="data">
           <TopBar :title="data.name" backLink="/" />

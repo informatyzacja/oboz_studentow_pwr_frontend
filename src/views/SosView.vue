@@ -15,7 +15,7 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
 
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <ion-content :fullscreen="false">
       <main>
         <TopBar title="SOS" />
         <ProfileCircle />
@@ -36,9 +36,6 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
             Brak ratowników
           </p>
 
-          <LoadingIndicator v-if="apiDataStore.contacts.loading" />
-          <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
-
           <div v-if="apiDataStore.contacts.ready && apiDataStore.contacts.data.currentSoberDuty.length">
             <h3>Obecnie na dyżurze trzeźwości</h3>
             <div>
@@ -49,9 +46,6 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
               </a>
             </div>
           </div>
-
-          <LoadingIndicator v-if="apiDataStore.contacts.loading" />
-          <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
 
           <h3>Sztab</h3>
           <div v-if="
@@ -96,8 +90,8 @@ h3 {
 }
 
 .faq {
-  position: absolute;
-  bottom: 100px;
+  position: fixed;
+  bottom: 0;
   left: 20px;
   right: 20px;
 }

@@ -36,7 +36,7 @@ defineProps([
 
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <ion-content :fullscreen="false">
       <main>
         <slot name="topBar"></slot>
         <div class="padding-main">

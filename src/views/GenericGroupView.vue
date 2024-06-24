@@ -33,7 +33,7 @@ defineProps([
 
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <ion-content :fullscreen="false">
       <main
         :style="{ background: group.background ? ('linear-gradient(#00000080, #00000000), url(' + group.background + '), var(--bg-gradient)') : '' }">
         <TopBar :title="title" :backLink="$router.options.history.state.back || backLink">

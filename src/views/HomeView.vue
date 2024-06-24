@@ -23,7 +23,7 @@ import megaphoneIcon from '../assets/icons8-megaphone-100.png'
 import graNocna from '../assets/gra nocna.png'
 import ItemBox from '../components/ItemBox.vue'
 
-import { IonPage, IonContent } from '@ionic/vue';
+import { IonPage, IonContent, IonRefresher, IonRefresherContent } from '@ionic/vue';
 
 import SavePhotoButton from '@/components/SavePhotoButton.vue'
 
@@ -34,7 +34,10 @@ import { registerForPushNotifications } from '../config.js'
 
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <ion-content :fullscreen="false">
+      <ion-refresher slot="fixed" @ionRefresh="fetchData($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
       <main>
         <TopBar title="Home" />
         <ProfileCircle />
@@ -238,7 +241,7 @@ export default {
     },
   },
   mounted() {
-    this.loadData()
+    this.fetchData()
     this.registerPageVisibility()
 
     this.timer1 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000)
@@ -286,7 +289,7 @@ export default {
     }, 50)
   },
   methods: {
-    loadData() {
+    async fetchData(event) {
       this.apiDataStore.userWorkshop.fetchData()
       this.apiDataStore.schedule.fetchData()
       this.apiDataStore.announcement.fetchData()
@@ -295,7 +298,10 @@ export default {
       this.apiDataStore.profile.fetchData()
       this.apiDataStore.nightGameGroupInfo.fetchData()
       this.apiDataStore.partner.fetchData()
-      this.apiDataStore.images.fetchData()
+      await this.apiDataStore.images.fetchData()
+      if (event) {
+        event.target.complete();
+      }
     },
     registerPageVisibility() {
       let hidden;
@@ -313,7 +319,7 @@ export default {
       this.visibilityListener = window.document.addEventListener(visibilityChange, () => {
         if (!document[hidden]) {
           //will execute everytime PWA is opened.
-          this.loadData()
+          this.fetchData()
         }
       });
     },
@@ -501,5 +507,9 @@ a.button {
 
 .red-bg {
   background-color: var(--red);
+}
+
+ion-refresher-content {
+  margin-top: 40px;
 }
 </style>

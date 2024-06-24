@@ -7,7 +7,7 @@ import { request } from '@/stores/functions.js';
 
 <template>
     <ion-page>
-        <ion-content :fullscreen="true">
+        <ion-content :fullscreen="false">
             <main>
                 <img id="logo" :src="logo" alt="logo">
 

@@ -18,7 +18,7 @@ import { IonPage, IonContent } from '@ionic/vue';
 
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <ion-content :fullscreen="false">
       <main>
         <TopBar :backLink="$router.options.history.state.back || { name: 'warsztaty' }" absolute />
         <div v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length"

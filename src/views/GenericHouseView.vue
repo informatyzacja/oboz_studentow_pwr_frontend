@@ -15,7 +15,7 @@ defineProps([
 
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <ion-content :fullscreen="false">
       <main>
         <TopBar :title="'Domek nr ' + (house ? house.name : '')" autoBackLink />
 

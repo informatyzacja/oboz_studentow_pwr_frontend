@@ -15,7 +15,7 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
 
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <ion-content :fullscreen="false">
       <main>
         <TopBar title="Warsztaty" />
         <ProfileCircle />

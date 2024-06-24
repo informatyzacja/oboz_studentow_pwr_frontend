@@ -22,7 +22,7 @@ import { IonPage, IonContent } from '@ionic/vue'
 
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <ion-content :fullscreen="false">
       <main>
         <TopBar title="Menu" />
         <div class="padding cards">

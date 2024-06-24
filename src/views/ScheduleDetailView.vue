@@ -14,7 +14,7 @@ import { IonPage, IonContent } from '@ionic/vue';
 
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <ion-content :fullscreen="false">
       <main>
         <TopBar :backLink="$router.options.history.state.back || '/home'" absolute />
         <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length && scheduleId"

@@ -14,7 +14,7 @@ import { IonPage, IonContent } from '@ionic/vue';
 
 <template>
     <ion-page>
-        <ion-content :fullscreen="true">
+        <ion-content :fullscreen="false">
             <main>
                 <TopBar :title="'Zapisy' + (
                     apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.room_instead_of_house ? ' na pokoje' : ' na domki'
@@ -48,7 +48,7 @@ import { IonPage, IonContent } from '@ionic/vue';
                         <p
                             v-if="!apiDataStore.houses.housesWithoutId(apiDataStore.profile.data[0].house ? apiDataStore.profile.data[0].house.id : null).length">
                             Brak wolnych {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoi' :
-                            'domków'
+                                'domków'
                             }}</p>
                     </div>
                     <p v-if="apiDataStore.houses.error || apiDataStore.profile.error" class="error">{{

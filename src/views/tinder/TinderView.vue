@@ -18,7 +18,7 @@ import ChatCardView from '@/views/ChatCardView.vue'
 
 <template>
     <ion-page>
-        <ion-content :fullscreen="true">
+        <ion-content :fullscreen="false">
             <main>
                 <TopBar title="Tinder" backLink="/home" />
                 <ProfileCircle />
