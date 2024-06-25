@@ -1,6 +1,7 @@
 import './assets/main.css'
 
 import { IonicVue } from '@ionic/vue';
+import { SplashScreen } from '@capacitor/splash-screen';
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -39,6 +40,7 @@ app.use(router)
 
 router.isReady().then(() => {
     app.mount('#app');
+    SplashScreen.hide();
 });
 
 // app.mixin({
