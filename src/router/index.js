@@ -15,7 +15,7 @@ const router = createRouter({
       component: () => import('../views/login/RegisterView.vue')
     },
     {
-      path: '/verification-code/:email/',
+      path: '/verification-code/',
       name: 'verification-code',
       component: () => import('../views/login/VerificationCodeView.vue'),
     },

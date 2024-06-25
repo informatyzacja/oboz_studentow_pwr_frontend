@@ -3,6 +3,8 @@ import { IonPage, IonContent, IonSpinner } from '@ionic/vue';
 import logo from '@/assets/ikona.png';
 
 import { request } from '@/stores/functions.js';
+import { Storage } from '@ionic/storage';
+import { Keyboard } from '@capacitor/keyboard';
 </script>
 
 <template>
@@ -23,7 +25,7 @@ import { request } from '@/stores/functions.js';
                     </p>
 
                     <input id="email" type="email" autocomplete="email" required class="pill" placeholder="E-MAIL"
-                        v-model="email">
+                        v-model="email" enterkeyhint="go" @keyup.enter="submit">
 
                     <button @click="submit" class="pill button" :disabled="loading">
                         <span v-if="!loading">Zaloguj się</span>
@@ -45,8 +47,13 @@ export default {
             loading: false
         }
     },
+    async mounted() {
+        this.storage = new Storage();
+        await this.storage.create();
+    },
     methods: {
         submit() {
+            Keyboard.hide();
             if (!this.email) {
                 return;
             }
@@ -66,7 +73,9 @@ export default {
                 }
             }).then(data => {
                 if (data.exists) {
-                    this.$router.push({ name: 'verification-code', params: { email: this.email } })
+                    this.storage.set('email', this.email).then(() => {
+                        this.$router.push({ name: 'verification-code' })
+                    })
                 } else {
                     this.error = true;
                 }

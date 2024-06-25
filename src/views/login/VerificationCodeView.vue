@@ -1,27 +1,34 @@
 <script setup>
-import { IonPage, IonContent, IonSpinner } from '@ionic/vue';
+import { IonPage, IonContent, IonSpinner, IonNavLink } from '@ionic/vue';
 import logo from '@/assets/ikona.png';
 
 import { request } from '@/stores/functions';
 import { Preferences } from '@capacitor/preferences'
-
+import { Storage } from '@ionic/storage';
+import { Keyboard } from '@capacitor/keyboard';
 </script>
 
 <template>
     <ion-page>
         <ion-content :fullscreen="false">
+            <IonNavLink router-link="/login" router-direction="back">
+                <div class="back-link">
+                    <div class="arrow"></div>
+                    Wróć
+                </div>
+            </IonNavLink>
             <main>
                 <img id="logo" :src="logo" alt="logo">
 
                 <div>
 
                     <p class="info">
-                        Podaj kod weryfikacyjny wysłany na {{ $route.params.email }}. <br>
+                        Podaj kod weryfikacyjny wysłany na {{ email }}. <br>
                     </p>
 
                     <input id="verification-code" name="verification-code" type="text" autocomplete="one-time-code"
                         required class="pill" placeholder="Kod weryfikacyjny" pattern="\d*" v-model="verificationCode"
-                        maxlength="8">
+                        maxlength="8" enterkeyhint="go" @keyup.enter="submit">
 
                     <p v-if="error" class="errors">
                         Podany kod weryfikacyjny jest nieprawidłowy.
@@ -56,11 +63,22 @@ export default {
             }
         }
     },
+    async mounted() {
+        this.storage = new Storage();
+        await this.storage.create();
+        if (await this.storage.get('email')) {
+            this.email = await this.storage.get('email');
+        } else {
+            this.$router.push('/login')
+        }
+    },
     methods: {
         submit() {
             if (!this.verificationCode) {
                 return;
             }
+
+            Keyboard.hide();
             this.loading = true;
             this.error = false;
             request('../api2/login_with_code/', {
@@ -70,7 +88,7 @@ export default {
                 },
                 body: JSON.stringify({
                     code: this.verificationCode,
-                    email: this.$route.params.email
+                    email: this.email
                 })
             }).then(data => {
                 if (data.ok) {
@@ -78,6 +96,7 @@ export default {
                 }
             }).then((data) => {
                 if (data.access && data.refresh) {
+                    this.storage.remove('email')
                     Preferences.set({ key: 'access_token', value: data.access })
                         .then(() => {
                             Preferences.set({ key: 'refresh_token', value: data.refresh })
@@ -219,5 +238,23 @@ form {
     font-weight: 600;
     text-align: center;
     margin-bottom: 20px;
+}
+
+.back-link {
+    position: fixed;
+    left: 10px;
+    top: calc(10px + var(--ion-safe-area-top));
+    display: flex;
+    align-items: center;
+}
+
+.arrow {
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 7px;
+    margin-left: 4px;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
 }
 </style>
