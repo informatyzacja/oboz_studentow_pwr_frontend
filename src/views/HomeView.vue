@@ -22,6 +22,7 @@ import megaphoneIcon from '../assets/icons8-megaphone-100.png'
 
 import graNocna from '../assets/gra nocna.png'
 import ItemBox from '../components/ItemBox.vue'
+import tinderIcon from '../assets/icons8-tinder-100.png'
 
 import { IonPage, IonContent, IonRefresher, IonRefresherContent } from '@ionic/vue';
 
@@ -195,6 +196,15 @@ import { registerForPushNotifications } from '../config.js'
               <img class="partner" :src="data.logo" />
             </a>
           </div>
+        </div>
+
+        <!-- Tinder -->
+
+        <div class="padding" v-if="apiDataStore.profile.data && apiDataStore.profile.data[0].tinder_profile && apiDataStore.profile.data[0].tinder_profile.user && apiDataStore.profile.data[0].tinder_profile.photo &&
+          apiDataStore.profile.data[0].tinder_profile.description">
+          <RouterLink to="/tinder">
+            <ItemBox bigText="Tinder obozowy" :rightIcon="rightArrow" :leftIcon="tinderIcon" left-icon-white />
+          </RouterLink>
         </div>
 
 

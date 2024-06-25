@@ -24,7 +24,7 @@ import { IonNavLink, IonTabBar } from '@ionic/vue'
     <div class="navigation-bar__content">
 
       <IonNavLink router-link="/sos" router-direction="none">
-        <div class="navigation_bar__item" :class="{ selected: $route.path.startsWith('/sos') }">
+        <div class="navigation_bar__item">
           <img :src="SosIcon" alt="sos" />
           <p>SOS</p>
         </div>
@@ -33,13 +33,13 @@ import { IonNavLink, IonTabBar } from '@ionic/vue'
 
       <IonNavLink router-link="/warsztaty" router-direction="none"
         v-if="!apiDataStore.permissions.ready || !apiDataStore.permissions.data.length">
-        <div class="navigation_bar__item" :class="{ selected: $route.path.startsWith('/warsztaty') }">
+        <div class="navigation_bar__item">
           <img :src="HammerIcon" alt="warsztaty" />
           <p>Warsztaty</p>
         </div>
       </IonNavLink>
       <IonNavLink router-link="/admin-menu" router-direction="none" v-else>
-        <div class="navigation_bar__item" :class="{ selected: $route.path.startsWith('/admin-menu') }">
+        <div class="navigation_bar__item">
           <img :src="MenuIcon" alt="menu" />
           <p>Menu</p>
         </div>
@@ -52,13 +52,13 @@ import { IonNavLink, IonTabBar } from '@ionic/vue'
         </div>
       </IonNavLink>
       <IonNavLink router-link="/harmonogram" router-direction="none">
-        <div class="navigation_bar__item" :class="{ selected: $route.path.startsWith('/harmonogram') }">
+        <div class="navigation_bar__item">
           <img :src="CalendarIcon" alt="harmonogram" />
           <p>Harmonogram</p>
         </div>
       </IonNavLink>
       <IonNavLink router-link="/czaty" router-direction="none">
-        <div class="navigation_bar__item" :class="{ selected: $route.path.startsWith('/czaty') }">
+        <div class="navigation_bar__item">
           <img :src="ChatIcon" alt="user" />
           <p>Czaty</p>
         </div>

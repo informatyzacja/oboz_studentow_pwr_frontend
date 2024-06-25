@@ -217,14 +217,14 @@ export default {
     position: fixed;
     width: 100%;
     left: 0;
-    top: calc(10px + var(--ion-safe-area-top)/2);
+    top: calc(5px + var(--ion-safe-area-top));
 }
 
 
 .chat {
     display: flex;
     flex-direction: column;
-    margin: 30px 0;
+    margin: 35px 0;
     margin-bottom: 40px;
 }
 
