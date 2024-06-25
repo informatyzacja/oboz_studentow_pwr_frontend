@@ -26,9 +26,9 @@ import { Keyboard } from '@capacitor/keyboard';
                         Podaj kod weryfikacyjny wysłany na {{ email }}. <br>
                     </p>
 
-                    <input id="verification-code" name="verification-code" type="text" autocomplete="one-time-code"
-                        required class="pill" placeholder="Kod weryfikacyjny" pattern="\d*" v-model="verificationCode"
-                        maxlength="8" enterkeyhint="go" @keyup.enter="submit">
+                    <input id="verification-code" name="verification-code" type="number" autocomplete="one-time-code"
+                        inputmode="numeric" required class="pill" placeholder="Kod weryfikacyjny" pattern="\d*"
+                        v-model="verificationCode" maxlength="8" enterkeyhint="go" @keyup.enter="submit">
 
                     <p v-if="error" class="errors">
                         Podany kod weryfikacyjny jest nieprawidłowy.
