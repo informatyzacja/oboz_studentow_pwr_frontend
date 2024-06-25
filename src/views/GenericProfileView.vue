@@ -85,7 +85,7 @@ defineProps([
               <h3 v-if="profileData.bus || profileData.bandId || profileData.houseNumber">Dane</h3>
 
               <!-- House -->
-              <RouterLink v-if="profileData.house && profileView" to="/czat-domku">
+              <RouterLink v-if="profileData.house && profileView" :to="'/czat/' + profileData.house.chat">
                 <ItemBox
                   :bigText="(apiDataStore.houseSignupsInfo.ready &&
                     apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'Pokój' : 'Domek') + ' nr ' + profileData.house.name"
