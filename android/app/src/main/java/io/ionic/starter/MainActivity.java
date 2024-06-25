@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package pl.edu.pwr.samorzad.oboz;
 
 import com.getcapacitor.BridgeActivity;
 
