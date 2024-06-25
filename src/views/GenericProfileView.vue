@@ -16,7 +16,8 @@ import domekIcon from '../assets/icons8-exterior.png'
 import mealIcon from '../assets/icons8-cutlery.png'
 import chatIcon from '../assets/icons8-chat.png'
 
-import { IonPage, IonContent } from '@ionic/vue';
+import { IonPage, IonContent, toastController } from '@ionic/vue';
+import { Clipboard } from '@capacitor/clipboard';
 
 
 defineProps([
@@ -231,12 +232,24 @@ export default {
   },
   methods: {
     copyUserId() {
-      navigator.clipboard.writeText(this.profileData.bandId).then(
+      Clipboard.write({
+        string: this.profileData.bandId
+      }).then(
         () => {
-          alert('Twoje ID zostało skopiowane do schowka')
+          toastController.create({
+            message: 'Twój numer opaski został skopiowany do schowka',
+            duration: 2000,
+            position: 'top',
+            color: 'success'
+          }).then(toast => toast.present());
         },
         () => {
-          alert('Błąd kopiowania Twojego ID')
+          toastController.create({
+            message: 'Błąd kopiowania Twojego numeru opaski',
+            duration: 2000,
+            position: 'top',
+            color: 'danger'
+          }).then(toast => toast.present());
         },
       );
     }

@@ -268,8 +268,6 @@ export default {
     PushNotifications.checkPermissions().then((permStatus) => {
       if (permStatus.receive === 'prompt') {
         this.showPushNotificationCard = true
-      } else if (permStatus.receive === 'granted') {
-        registerForPushNotifications()
       }
     })
 
