@@ -20,9 +20,8 @@ import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 import OverlayView from '../components/OverlayView.vue'
 import Logo from '../assets/ikona.png'
 
-import qrBg from '../assets/pod QRsvg- profil.svg'
-import backArrow from '../assets/strzala- do qr.svg'
-import hand from '../assets/hands.svg'
+import qrBg from '../assets/Grafika za QR.png'
+// import backArrow from '../assets/strzala- do qr.svg'
 
 import { REGULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
 
@@ -78,7 +77,8 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
           <div class="qr_overlay_inner">
 
             <div style="width:100%;">
-              <img @click="$refs.qrOverlay.hide" :src="backArrow" class="qr_back_arrow" />
+              <TopBar backLink="/profil" @click="$refs.qrOverlay.hide()" absolute />
+              <!-- <div @click="$refs.qrOverlay.hide" class="qr_back_arrow"> -->
             </div>
 
             <h6 style="margin-bottom: 15px">
@@ -97,7 +97,6 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
             <p>Kod: {{ profileData.bandId }}</p>
           </div>
 
-          <img :src="hand" class="qr_hand" />
 
         </div>
       </OverlayView>
@@ -270,14 +269,25 @@ h6 {
   padding: 10px 20px;
   color: black;
   position: relative;
-  width: 450px;
+  /* width: 450px; */
+  margin-bottom: 20px;
 }
 
 .qr_card_bg {
   position: absolute;
-  top: -100px;
+  top: 0;
   left: 0;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  overflow: hidden;
+
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 3px;
 }
 
 .qr_content {
@@ -288,7 +298,7 @@ h6 {
   align-items: center;
   flex-direction: column;
 
-  height: 218px;
+  /* height: 218px; */
   font-weight: 600;
 }
 
@@ -303,9 +313,10 @@ h6 {
   align-items: center;
   flex-direction: column;
 
-  background: var(--theme-dark);
+  background: url('../assets/Grafika za QR.png');
   padding: 30px 40px;
   text-align: center;
+
   color: black;
 
   overflow: hidden;
@@ -320,7 +331,6 @@ h6 {
   align-items: center;
   flex-direction: column;
   z-index: 2;
-  background: var(--theme-dark);
 }
 
 .qr_back_arrow {
@@ -385,8 +395,8 @@ span {
   height: var(--border-width);
   background: linear-gradient(90deg,
       transparent 30%,
-      var(--red),
-      var(--red));
+      var(--theme-text),
+      var(--theme-text));
 }
 
 .bottom {
@@ -394,8 +404,8 @@ span {
   bottom: 0;
   height: var(--border-width);
   background: linear-gradient(90deg,
-      var(--red),
-      var(--red),
+      var(--theme-text),
+      var(--theme-text),
       transparent 70%);
 }
 
@@ -406,8 +416,8 @@ span {
   height: 0;
   background: linear-gradient(180deg,
       transparent 30%,
-      var(--red),
-      var(--red));
+      var(--theme-text),
+      var(--theme-text));
 }
 
 .left {
@@ -416,8 +426,8 @@ span {
   width: var(--border-width);
   height: 0;
   background: linear-gradient(180deg,
-      var(--red),
-      var(--red),
+      var(--theme-text),
+      var(--theme-text),
       transparent 70%);
 }
 

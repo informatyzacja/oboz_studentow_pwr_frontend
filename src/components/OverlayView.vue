@@ -64,6 +64,7 @@ export default {
   -webkit-backdrop-filter: blur(10px);
   transform: translateZ(20px);
   overflow: auto;
+  padding-top: var(--ion-safe-area-top);
 }
 
 .scale-up-top {

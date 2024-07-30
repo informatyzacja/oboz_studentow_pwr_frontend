@@ -3,28 +3,30 @@
   --bg-gradient: linear-gradient(180deg, #3399FF 22.92%, #3399FF 22.93%, #003366 100%);
   --bg-gradent-translusent: var(--bg-gradient);
   /* --bg-gradient-translusent: linear-gradient(180deg, rgba(0, 87, 183, 0.478) 22.92%, rgba(0, 87, 183, 0.478) 22.93%, #8B4513AA 100%); */
-  --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #B0E0E6 0%, #87CEFA 100%);
-  --radial-gradient-circle: radial-gradient(circle, #B0E0E6 0%, #87CEFA 80%);
+  --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #134d7c 0%, #134b9e 100%);
+  --radial-gradient-circle: radial-gradient(circle, #134d7c 0%, #134b9e 80%);
 
   --bg: #053464;
   --bg-translusent: var(--bg);
   /* --bg-translusent: #8B4513194; */
-  --bg-lighter: #4b7eb0;
-  --bg-light: #7cc5dd;
-  --bg-light-translusent: rgba(173, 216, 230, 0.222);
-  --bg-light-translusent-hover: rgba(173, 216, 230, 0.177);
+  --bg-lighter: #3176bb;
+  --bg-light: #3478bc;
+  --bg-light-translusent: rgba(12, 48, 95, 0.44);
+  --bg-light-translusent-hover: rgba(22, 68, 121, 0.177);
 
-  --theme-dark: #2a9bcf;
-  --theme-light: #49d2ea;
-  --theme-text: #3488dd;
-  --light-text: #F0F8FF;
+  --theme-dark: #1579a7;
+  --theme-light: #2f6fc3;
+  --theme-text: #10467c;
+  --light-text: #ffffff;
 
-  --text-gray: #B0C4DE;
+  --text-gray: #c5d6e0;
   --red-dark: #8B0000;
-  --red-action: #FF0000;
+  --red-action: #dc1212;
   --red: #9a2929;
   --orange: #FFA500;
   --yellow: #FFD700;
+
+  --gray-text-gradient: radial-gradient(50% 50% at 55.81% 50%, #145380b0 0%, #175084c1 100%);
 }
 
 *,
@@ -87,7 +89,8 @@ h3 {
 }
 
 ion-content {
-  background: var(--bg-translusent);
+  /* background: var(--bg-translusent); */
+  background-image: url('@/assets/bg.jpg');
 }
 
 a {

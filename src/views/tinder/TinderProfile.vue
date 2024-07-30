@@ -21,7 +21,7 @@ import { Camera, CameraResultType } from '@capacitor/camera';
                 <MyTinderCard class="tinder-card" :item="profileData.tinder_profile" editable
                     @editDescription="$refs.editDescriptionOverlay.show();"
                     v-if="profileData.tinder_profile.user && profileData.tinder_profile.photo && profileData.tinder_profile.description"
-                    @addPhoto="addPhoto" />
+                    @addPhoto="addPhoto" ref="myTinderCard" />
                 <div v-else-if="!profileData.tinder_profile.photo" class="onboarding">
                     <h4>Uwórz profil</h4>
                     <h5>Krok 1</h5>
@@ -98,7 +98,7 @@ export default {
                 allowEditing: true,
                 resultType: CameraResultType.DataUrl,
             }).then((photo) => {
-                this.isLoaded = false;
+                this.$refs.myTinderCard.notLoaded()
 
                 apiRequest('../api2/tinder/upload-profile-photo/', 'POST', {
                     photo: photo.dataUrl,

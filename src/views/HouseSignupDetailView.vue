@@ -104,8 +104,8 @@ import { IonPage, IonContent } from '@ionic/vue';
                                 <input type="text" placeholder="Imię" :value="person.first_name" disabled />
                                 <input type="text" placeholder="Nazwisko" :value="person.last_name" disabled />
                             </div>
-                            <input v-else type="text" pattern="[0-9]*" inputmode="numeric" class="bandInput"
-                                v-model="person.band" placeholder="ID"
+                            <input v-else type="number" pattern="[0-9]*" inputmode="numeric" class="bandInput"
+                                v-model="person.band" placeholder="Nr opaski"
                                 :disabled="signupLoading || person.first_name || !((isFreeForSignup || youAreSigningUp) && youAreSignedUpForThisHouse)"
                                 maxlength="6" />
                             <button class="button success" @click="signup(person.band)"
@@ -395,6 +395,10 @@ textarea {
     appearance: none;
 
     background-color: var(--bg-light);
+}
+
+input::placeholder {
+    color: rgba(255, 255, 255, 0.5)
 }
 
 .bandInput {

@@ -105,7 +105,7 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
 }
 
 .day-changer h5 {
-  background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%);
+  background: var(--gray-text-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -158,15 +158,15 @@ export default {
   },
   methods: {
     addAnmateClass(event) {
-      var card = event.target.parentNode.parentNode
-      if (card && card.classList.contains('card')) {
-        card.id = 'animate'
-        return
-      }
-      card = card.querySelector('.card')
-      if (card) {
-        card.id = 'animate'
-      }
+      // var card = event.target.parentNode.parentNode
+      // if (card && card.classList.contains('card')) {
+      //   card.id = 'animate'
+      //   return
+      // }
+      // card = card.querySelector('.card')
+      // if (card) {
+      //   card.id = 'animate'
+      // }
     }
   }
 }

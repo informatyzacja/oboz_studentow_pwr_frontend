@@ -71,11 +71,11 @@ import { IonPage, IonContent } from '@ionic/vue';
             </div>
           </div>
 
-          <div class="padding">
+          <div class="padding" v-if="data">
 
             <TextBox v-if="data.description" :content="data.description" />
 
-            <div v-if="data && data.itemsToTake">
+            <div v-if="data.itemsToTake">
               <h3>Co zabrać ze sobą?</h3>
               <TextBox :content="data.itemsToTake" />
             </div>

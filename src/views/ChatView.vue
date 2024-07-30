@@ -232,7 +232,7 @@ export default {
     padding: 10px 20px;
     margin: 2px;
     margin-right: 35px;
-    background-color: rgba(255, 255, 255, 0.081);
+    background-color: rgba(61, 86, 142, 0.379);
     border-radius: 20px 20px 20px 5px;
     width: auto;
     display: inline-block;

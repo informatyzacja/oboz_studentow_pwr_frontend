@@ -42,7 +42,7 @@ defineProps({
     <div class="description">
       <h2 v-if="location">
         <IconLocation class="icon" />
-        <p>{{ location }}</p>
+        <div>{{ location }}</div>
       </h2>
       <h1>{{ name }}</h1>
       <h3 v-if="userCount">{{ userCount }} osób</h3>
@@ -154,12 +154,17 @@ defineProps({
   line-height: 14px !important;
 }
 
-.description h2 p {
+.description h2 div {
   display: inline-block;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 100%;
+  width: 190px;
+  padding-right: 1.5rem;
+}
+
+.card.big .description h2 div {
+  width: calc(100vw - 55px);
 }
 
 .description h3 {

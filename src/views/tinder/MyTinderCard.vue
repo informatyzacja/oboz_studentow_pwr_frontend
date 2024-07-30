@@ -75,13 +75,17 @@ export default {
         loaded() {
             this.isLoaded = true;
         },
+        notLoaded() {
+            this.isLoaded = false;
+        },
         addPhoto() {
             this.$emit('addPhoto');
         },
         editDescription() {
             this.$emit('editDescription');
         },
-    }
+    },
+    expose: ['notLoaded'],
 }
 </script>
 

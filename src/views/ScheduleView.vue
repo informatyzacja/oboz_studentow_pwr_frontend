@@ -23,7 +23,7 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
         <ProfileCircle />
         <div class="padding-main" v-if="apiDataStore.schedule.ready && apiDataStore.schedule.data.length">
 
-          <div v-if="harmonogramImage" class="downloadButtonDiv">
+          <div v-if="harmonogramImage && harmonogramImage.image" class="downloadButtonDiv">
             <SavePhotoButton :path="harmonogramImage.image" text="Zapisz w galerii w formie grafiki" />
 
           </div>
@@ -77,11 +77,11 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
 }
 
 .arrow-circle-left {
-  background: radial-gradient(50% 50% at 150% 50%, #989898 0%, #6b6b6b 100%);
+  background: var(--gray-text-gradient);
 }
 
 .arrow-circle-right {
-  background: radial-gradient(50% 50% at -50% 50%, #989898 0%, #6b6b6b 100%);
+  background: var(--gray-text-gradient);
 }
 
 .arrow {
@@ -112,7 +112,7 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
 }
 
 .day-changer h5 {
-  background: radial-gradient(50% 50% at 55.81% 50%, #989898 0%, #6b6b6b 100%);
+  background: var(--gray-text-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
