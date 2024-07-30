@@ -125,12 +125,12 @@ main {
     flex-direction: column;
     height: 100%;
     padding: 0 20px;
-    background: var(--bg-gradient);
+
 }
 
 .button {
-    background: var(--theme-light);
-    color: var(--theme-dark);
+    background: var(--login-button-bg);
+    color: var(--login-button-color);
 
 
     font-size: 15px;
@@ -156,10 +156,10 @@ main {
 
 input {
     padding: 0 22px;
-    background-color: var(--theme-dark);
-    border: 1px solid var(--theme-dark);
+    background-color: var(--login-button-bg);
+    border: 1px solid var(--login-button-bg);
     font-size: 12px;
-    color: var(--theme-light);
+    color: var(--login-button-color);
     font-weight: 600;
 
 
@@ -234,7 +234,7 @@ form {
 
 .info {
     font-size: 14px;
-    color: var(--text-gray);
+    color: var(--theme-text);
     font-weight: 600;
     text-align: center;
     margin-bottom: 20px;

@@ -19,7 +19,7 @@
   --theme-text: #10467c;
   --light-text: #ffffff;
 
-  --text-gray: #c5d6e0;
+  --text-gray: #ffffffb9;
   --red-dark: #8B0000;
   --red-action: #dc1212;
   --red: #9a2929;
@@ -27,6 +27,9 @@
   --yellow: #FFD700;
 
   --gray-text-gradient: radial-gradient(50% 50% at 55.81% 50%, #145380b0 0%, #175084c1 100%);
+
+  --login-button-color: #67add3;
+  --login-button-bg: #104a84;
 }
 
 *,
