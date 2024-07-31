@@ -32,7 +32,6 @@ import { mapStores } from 'pinia'
 import { logout } from '../functions/login.js'
 
 import { App } from '@capacitor/app';
-import * as LiveUpdates from '@capacitor/live-updates';
 
 import { IonNavLink } from '@ionic/vue';
 
@@ -139,7 +138,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
         <div class="spacer"></div>
 
         <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small @click="logoutClicked" />
-        <p class="version" v-if="version">v{{ version }} {{ liveUpdateVersion }}</p>
+        <p class="version" v-if="version">v{{ version }}</p>
 
 
         <div class="credits">
@@ -162,7 +161,6 @@ export default {
 
       qrLoading: true,
       version: null,
-      liveUpdateVersion: null,
     }
   },
   computed: {
@@ -184,12 +182,6 @@ export default {
     App.getInfo()
       .then((appinfo) => {
         this.version = appinfo.version + ' (' + appinfo.build + ')'
-      })
-
-    LiveUpdates.sync()
-      .then((result) => {
-        if (!result.snapshot) return
-        this.liveUpdateVersion = result.snapshot.buildId
       })
   },
   methods: {
