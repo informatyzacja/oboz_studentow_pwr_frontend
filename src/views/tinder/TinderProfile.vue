@@ -98,7 +98,7 @@ export default {
                 allowEditing: true,
                 resultType: CameraResultType.DataUrl,
             }).then((photo) => {
-                this.$refs.myTinderCard.notLoaded()
+                if (this.$refs.myTinderCard) this.$refs.myTinderCard.notLoaded()
 
                 apiRequest('../api2/tinder/upload-profile-photo/', 'POST', {
                     photo: photo.dataUrl,

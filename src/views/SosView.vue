@@ -70,7 +70,7 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
           <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
 
           <RouterLink to="/faq">
-            <ItemBox class="faq" bigText="Więcej pomocy możesz znaleść w FAQ" :rightIcon="rightArrow" />
+            <ItemBox class="faq" bigText="Więcej pomocy możesz znaleźć w FAQ" :rightIcon="rightArrow" />
           </RouterLink>
         </div>
       </main>
