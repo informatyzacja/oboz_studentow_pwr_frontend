@@ -29,8 +29,6 @@ import { IonPage, IonContent, IonRefresher, IonRefresherContent } from '@ionic/v
 import SavePhotoButton from '@/components/SavePhotoButton.vue'
 
 import ProfileCircle from '../components/navigation/ProfileCircle.vue'
-
-import { registerForPushNotifications } from '../config.js'
 </script>
 
 <template>

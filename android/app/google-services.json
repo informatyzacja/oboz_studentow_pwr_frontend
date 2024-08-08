@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "229169791903",
+    "project_id": "oboz-studentow-pwr",
+    "storage_bucket": "oboz-studentow-pwr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229169791903:android:1473f2b3b0bec625e8f3aa",
+        "android_client_info": {
+          "package_name": "pl.edu.pwr.samorzad.oboz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "229169791903-hiicq4m9b11ohjsse18m817daquind25.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeKKeznrwTn6mT07IPX-E7AKVO_QP8Oy8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "229169791903-hiicq4m9b11ohjsse18m817daquind25.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

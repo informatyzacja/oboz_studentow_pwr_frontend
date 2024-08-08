@@ -32,6 +32,14 @@
   --login-button-bg: #104a84;
 }
 
+
+:root,
+body {
+  --ion-background-color: transparent !important;
+  --background: transparent;
+}
+
+
 *,
 *::before,
 *::after {
