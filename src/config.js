@@ -1,7 +1,7 @@
 export const API_URL = import.meta.env.VITE_API_URL
 export const WS_API_URL = import.meta.env.VITE_WS_API_URL
 
-export const REGULAMIN_LINK = 'https://drive.google.com/file/d/1Ptkf7S7XUzlGGz_j3ye1XXhOYSyecanK/view?pli=1'
+export const REGULAMIN_LINK = 'https://d1ll4kxfi4ofbm.cloudfront.net/file/user/event_files/896284/552dfd44487d0524320f076e97e0bdff.pdf'
 export const POLITYKA_PRYWATNOSCI_LINK = null
 
 import { FCM } from '@capacitor-community/fcm';
