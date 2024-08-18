@@ -127,7 +127,7 @@ main {
 }
 
 .button.button_signedup {
-  background-color: var(--red-action);
+  background-color: var(--red);
 }
 
 .button.button_inactive {

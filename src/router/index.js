@@ -243,7 +243,17 @@ const router = createRouter({
           path: '/ogloszenia/dodaj',
           name: 'ogloszenia-dodaj',
           component: () => import('../admin-components/AddAnnouncementView.vue')
-        }
+        },
+        {
+          path: '/busy',
+          name: 'busy',
+          component: () => import('../admin-components/buses/BusesListView.vue')
+        },
+        {
+          path: '/bus/:id',
+          name: 'bus',
+          component: () => import('../admin-components/buses/BusView.vue')
+        },
       ]
     }
   ]

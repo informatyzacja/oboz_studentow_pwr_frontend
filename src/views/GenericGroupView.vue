@@ -83,7 +83,7 @@ defineProps([
           </a>
 
           <div v-if="ready && group.wardens && group.wardens.length">
-            <h3>Mentorzy</h3>
+            <h3>Opiekunowie</h3>
             <a v-for="(data, index) in group.wardens" :key="index" :href="'tel:' + data.phoneNumber">
               <ItemBox :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo"
                 :rightIcon="phoneIcon" />

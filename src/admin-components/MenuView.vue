@@ -12,6 +12,7 @@ import PointsIcon from '../assets/icons8-scoreboard.png'
 import RankingIcon from '../assets/icons8-leaderboard.png'
 import AddPointsIcon from '../assets/icons8-timezone_+10.png'
 import AnnouncementIcon from '../assets/icons8-megaphone-100.png'
+import BusIcon from '../assets/icons8-bus.png'
 
 
 import { useApiDataStore } from '../stores/api.js'
@@ -49,6 +50,10 @@ import { IonPage, IonContent } from '@ionic/vue'
           <MenuCard title="Ogłoszenia" :icon="AnnouncementIcon" link="/ogloszenia" v-if="apiDataStore.permissions.ready &&
             apiDataStore.permissions.hasOneOfPermissions(['can_add_announcement'])
           " />
+          <MenuCard title="Busy" :icon="BusIcon" link="/busy" v-if="apiDataStore.permissions.ready &&
+            apiDataStore.permissions.hasOneOfPermissions(['can_check_bus_presence'])
+          " />
+
 
           <MenuCard title="Warsztaty" :icon="HammerIcon" link="/warsztaty" />
           <MenuCard title="Sos" :icon="SosIcon" link="/sos" />
