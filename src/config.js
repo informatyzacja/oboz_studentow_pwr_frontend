@@ -27,6 +27,16 @@ export async function registerForPushNotifications() {
         if (!data.success) {
             throw new Error('Failed to register FCM token')
         }
+
+        toastController.create({
+            message: 'Powiadomienia włączone',
+            duration: 1500,
+            position: 'top',
+            color: 'success'
+        }).then(toast =>
+            toast.present()
+        );
+
         return data
 
     } catch (error) {
@@ -34,6 +44,43 @@ export async function registerForPushNotifications() {
 
         toastController.create({
             message: 'Nie udało się włączyć powiadomień',
+            duration: 1500,
+            position: 'top',
+            color: 'danger'
+        }).then(toast =>
+            toast.present()
+        );
+    }
+}
+
+export async function turnOffNotifications() {
+    try {
+
+        const body = { enabled: false }
+        const data = await apiRequest('../api2/enable_disable_notifications/',
+            'PUT',
+            body
+        )
+        if (!data.success) {
+            throw new Error('Failed to turn off notifications')
+        }
+
+        toastController.create({
+            message: 'Powiadomienia wyłączone',
+            duration: 1500,
+            position: 'top',
+            color: 'success'
+        }).then(toast =>
+            toast.present()
+        );
+
+        return data
+
+    } catch (error) {
+        console.error('Error while turning off notifications:', error);
+
+        toastController.create({
+            message: 'Nie udało się wyłączyć powiadomień',
             duration: 1500,
             position: 'top',
             color: 'danger'

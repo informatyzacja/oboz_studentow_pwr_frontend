@@ -12,6 +12,8 @@ import regulaminIcon from '../assets/icons8-rules_book.png'
 import icons8Icon from '../assets/icons8-icons8.png'
 import rightArrow from '../assets/arrow.svg'
 import adminPanelIcon from '../assets/icons8-administrative_tools.png'
+import AnnouncementIcon from '../assets/icons8-megaphone-100.png'
+
 
 // import copyIcon from '../assets/icons8-copy.png'
 import tinderIcon from '../assets/icons8-tinder-100.png'
@@ -33,7 +35,9 @@ import { logout } from '../functions/login.js'
 
 import { App } from '@capacitor/app';
 
-import { IonNavLink } from '@ionic/vue';
+import { IonNavLink, IonToggle } from '@ionic/vue';
+
+import { registerForPushNotifications, turnOffNotifications } from '../config.js'
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 </script>
@@ -118,10 +122,17 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
         </a>
 
         <h6 v-if="apiDataStore.profile.ready">
-          W przypadku błędnych danych prosimy o natychmiastowy kontakt ze sztabem
+          W przypadku błędnych danych prosimy o kontakt ze sztabem
         </h6>
 
         <div class="spacer"></div>
+
+        <ItemBox v-if="apiDataStore.profile.ready" big-text="Powiadomienia" :leftIcon="AnnouncementIcon" small
+          leftIconWhite>
+          <ion-toggle color="success" @ionChange="(ev) => notifiactionsToggle(ev)"
+            :checked="profileData.notifications"></ion-toggle>
+        </ItemBox>
+
         <div class="spacer"></div>
 
         <a :href="REGULAMIN_LINK" target="_blank" v-if="REGULAMIN_LINK">
@@ -192,6 +203,13 @@ export default {
     qrReady() {
       this.qrLoading = false
     },
+    notifiactionsToggle(ev) {
+      if (ev.detail.checked) {
+        registerForPushNotifications()
+      } else {
+        turnOffNotifications()
+      }
+    }
   },
   beforeUnmount() {
     clearInterval(this.timer1)

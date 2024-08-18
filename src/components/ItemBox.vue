@@ -58,6 +58,8 @@ defineProps({
     <div v-if="rightIcon" class="rightIcon">
       <img :src="rightIcon" />
     </div>
+    <slot>
+    </slot>
   </div>
 </template>
 
