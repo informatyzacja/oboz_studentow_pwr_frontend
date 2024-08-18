@@ -183,6 +183,11 @@ export default {
             } else {
                 return
             }
+            this.history.push(item)
+            if (this.history.length > 3) {
+                this.history.shift()
+            }
+
             apiRequest('../api2/tinder/action/', 'POST', {
                 action: apiType,
                 target: item.user
@@ -196,7 +201,8 @@ export default {
                 if (this.queue.length < 3) {
                     this.mock()
                 }
-                this.history.push(item)
+            }).catch(err => {
+                this.decide('rewind')
             })
 
         },
@@ -209,9 +215,12 @@ export default {
                     // this.$refs.tinder.rewind(this.history)
                     // this.history = []
                     // Rewind multiple randomly
+
+                    // rewind 1
                     this.$refs.tinder.rewind(
-                        this.history.splice(-Math.ceil(Math.random() * 3))
+                        this.history.splice(-1)
                     )
+
                     // Add without API call
                     // this.queue.unshift(this.history.pop())
                     // this.queue.push(this.history.pop())
@@ -220,6 +229,13 @@ export default {
                     // Rewind multiple at once and include non-head added items
                     // this.queue.unshift(this.history.pop())
                     // this.queue.unshift(...this.history)
+                } else {
+                    toastController.create({
+                        message: 'Nie ma więcej kart do cofnięcia',
+                        duration: 2000,
+                        color: 'warning',
+                        position: 'top'
+                    }).then(toast => toast.present())
                 }
             } else if (choice === 'help') {
                 this.$refs.helpOverlay.show()

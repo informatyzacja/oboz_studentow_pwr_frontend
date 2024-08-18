@@ -28,7 +28,8 @@ import { Keyboard } from '@capacitor/keyboard';
 
                     <input id="verification-code" name="verification-code" type="number" autocomplete="one-time-code"
                         inputmode="numeric" required class="pill" placeholder="Kod weryfikacyjny" pattern="\d*"
-                        v-model="verificationCode" maxlength="8" enterkeyhint="go" @keyup.enter="submit">
+                        v-model="verificationCode" maxlength="8" enterkeyhint="go" @keyup.enter="submit"
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
 
                     <p v-if="error" class="errors">
                         Podany kod weryfikacyjny jest nieprawidłowy.
@@ -58,7 +59,7 @@ export default {
     },
     watch: {
         verificationCode(newVal, oldVal) {
-            if (newVal.length === 8) {
+            if (newVal.toString().length === 8) {
                 this.submit()
             }
         }

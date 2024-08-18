@@ -16,12 +16,15 @@ import moment from 'moment';
         <div class="chat-element__content">
             <div class="chat-element__header">
                 <h4>{{ chat.name }}</h4>
-                <p v-if="chat.last_message">{{ moment(chat.last_message.date).format('HH:mm') }}</p>
+                <p v-if="chat.last_message">{{ chat.last_message.date ? moment(chat.last_message.date).format('HH:mm') :
+                    '' }}
+                </p>
             </div>
             <div class="chat-element__message">
-                <p v-if="chat.last_message">{{ chat.last_message.fromMe ? 'Ty:' : chat.last_message.username + ':' }} {{
-                    chat.last_message.message
-                    }}
+                <p v-if="chat.last_message">{{ chat.last_message.fromMe ? 'Ty:' :
+                    (chat.last_message.username ? chat.last_message.username + ':' : '') }} {{
+                        chat.last_message.message.substring(0, 250)
+                    }}{{ chat.last_message.message.length > 250 ? '...' : '' }}
                 </p>
             </div>
         </div>

@@ -21,9 +21,8 @@ import { IonPage, IonContent } from '@ionic/vue';
     <ion-page>
         <ion-content :fullscreen="false" ref="content">
             <div>
-                <TopBar :title="apiDataStore.chats.ready && apiDataStore.chats.withId(chat_id).name || 'Czat ?'"
-                    autoBackLink class="top-bar"
-                    :image="apiDataStore.chats.ready && apiDataStore.chats.withId(chat_id).avatar" />
+                <TopBar :title="apiDataStore.chats.ready && chat.name || 'Czat ?'" autoBackLink class="top-bar"
+                    :image="apiDataStore.chats.ready && chat.avatar" />
                 <main class="padding-main">
                     <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading">
                         <div class="chat">
@@ -59,8 +58,8 @@ import { IonPage, IonContent } from '@ionic/vue';
                         </div>
 
                         <div class="textBox">
-                            <input type="text" v-on:keyup.enter="sendMessage" v-model="currentMessage"
-                                placeholder="Aa" />
+                            <input type="text" v-on:keyup.enter="sendMessage" v-model="currentMessage" placeholder="Aa"
+                                maxlength="500" />
 
                             <button class="textBoxButton" v-if="currentMessage.trim() === ''"
                                 @click="currentMessage = '👍'; sendMessage()">👍</button>
@@ -93,7 +92,10 @@ export default {
         }
     },
     computed: {
-        ...mapStores(useApiDataStore)
+        ...mapStores(useApiDataStore),
+        chat() {
+            return this.apiDataStore.chats.withId(this.chat_id)
+        }
     },
     watch: {
         currentMessage() {
@@ -182,6 +184,14 @@ export default {
                 fromMe: false,
                 chat: data.chat
             })
+            this.apiDataStore.chats.data.find(chat => chat.id === data.chat).last_message = {
+                message: data.message,
+                username: data.username,
+                user_id: data.user_id,
+                date: data.date,
+                fromMe: false,
+                chat: data.chat
+            }
             if (scrollToEnd) {
                 setTimeout(() => {
                     this.$refs.content.$el.scrollToBottom(100);
@@ -201,6 +211,13 @@ export default {
                 fromMe: true,
                 chat: this.chat_id
             })
+            this.apiDataStore.chats.data.find(chat => chat.id === this.chat_id).last_message = {
+                message: message,
+                user_id: this.apiDataStore.profile.data[0].id,
+                date: new Date().toISOString(),
+                fromMe: true,
+                chat: this.chat_id
+            }
 
             this.$refs.content.$el.scrollToBottom(50);
 
