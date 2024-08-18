@@ -69,9 +69,22 @@ export default {
         const { available } = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
         if (!available) {
           console.log('Google Barcode Scanner module is not available');
-          this.qrReaderError = 'ERROR: Google Barcode Scanner module is not available. Trying to install.';
-          await BarcodeScanner.installGoogleBarcodeScannerModule();
-          this.qrReaderError = 'ERROR: Google Barcode Scanner was installed. Please try again.';
+          this.qrReaderError = 'ERROR: Moduł Google Barcode Scanner nie jest dostępny, próbuję zainstalować';
+          BarcodeScanner.addListener('googleBarcodeScannerModuleInstallProgress', (event) => {
+            if (event.state = 4) {
+              // COMPLETED
+              console.log('Google Barcode Scanner was installed successfully');
+              this.qrReaderError = 'Moduł Google Barcode Scanner został zainstalowany, spróbuj ponownie. Jeżeli problem nadal występuje, zainstaluj "Usługi operatora" (ang. "Google Play services") z Google Play';
+            } else if (event.state = 5) {
+              // FAILED
+              console.log('Google Barcode Scanner was not installed');
+              this.qrReaderError = 'ERROR: Moduł Google Barcode Scanner nie jest dostępny i nie został zainstalowany. Jeżeli problem nadal występuje, zainstaluj "Usługi operatora" (ang. "Google Play services") z Google Play.';
+            } else {
+              console.log('Google Barcode Scanner installation in progress');
+              this.qrReaderError = 'Moduł Google Barcode Scanner jest instalowany (status: ' + event.state + ', progres: ' + event.progress + ')';
+            }
+          });
+          BarcodeScanner.installGoogleBarcodeScannerModule();
           return;
         }
       }
