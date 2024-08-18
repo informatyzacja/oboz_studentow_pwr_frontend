@@ -283,7 +283,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--bg-lighter);
+    background-color: rgba(61, 87, 142, 0.149);
 }
 
 .textBox input {
@@ -304,6 +304,7 @@ export default {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    caret-color: white;
 
     background-color: var(--bg-light);
 
