@@ -22,7 +22,7 @@ import { IonPage, IonContent } from '@ionic/vue';
           <ItemBox :bigText="currentMealLoadng
             ? 'Ładowanie...'
             : currentMeal
-              ? currentMeal.type__name + ', ' + moment(currentMeal.date).format('dddd DD.MM')
+              ? currentMeal.name + ', ' + moment(currentMeal.start).format('dddd DD.MM')
               : 'Obecnie nie odbywa się żaden posiłek'
             " small />
 
