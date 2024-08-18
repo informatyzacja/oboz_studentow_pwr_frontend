@@ -146,6 +146,10 @@ export default {
   outline: none;
 }
 
+.search::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .scanner {
   width: 80vw;
   height: 80vw;
