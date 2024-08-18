@@ -19,10 +19,11 @@
   --theme-text: #10467c;
   --light-text: #ffffff;
 
-  --text-gray: #ffffffb9;
+  --text-gray: #efefefb9;
+  --text-dark: #2b4f8fb9;
   --red-dark: #8B0000;
   --red-action: #dc1212;
-  --red: #9a2929;
+  --red: #6d1111;
   --orange: #FFA500;
   --yellow: #FFD700;
 

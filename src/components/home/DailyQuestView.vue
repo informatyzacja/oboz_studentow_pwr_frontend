@@ -132,4 +132,8 @@ h5 {
   color: rgba(255, 255, 255, 0.736);
   font-size: 14px;
 }
+
+h6 {
+  white-space: pre;
+}
 </style>
