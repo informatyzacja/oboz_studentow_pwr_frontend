@@ -78,7 +78,7 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
               <div class="daily_quest_overlay">
                 <DailyQuestView :finish="data.finish" :title="data.title" :description="data.description"
                   :points="data.points" />
-                <button @click="hideRef('dailyQuestOverlay', index)">Zamknij</button>
+                <button class="red-bg" @click="hideRef('dailyQuestOverlay', index)">Zamknij</button>
               </div>
             </OverlayView>
           </div>
@@ -403,7 +403,7 @@ button {
   line-height: 16px;
   cursor: pointer;
 
-  background-color: var(--bg-light);
+  background-color: var(--bg);
 
   width: 130px;
   display: flex;

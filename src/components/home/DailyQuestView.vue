@@ -26,7 +26,7 @@ defineProps({
     <div class="header">
       <div>
         <h1>Daily Quest</h1>
-        <h5>Punkty: {{ points || '?' }}</h5>
+        <h5 v-if="points">Punkty: {{ points }}</h5>
       </div>
       <div class="timer">
         <p>Pozostały czas:</p>
@@ -35,7 +35,6 @@ defineProps({
     </div>
     <h3>{{ title }}</h3>
     <h6>{{ description }}</h6>
-    <h4>Zrobione zdjęcie należy przesłać na fanpage obozowy na facebooku i podać nazwę swojej frakcji</h4>
   </div>
 </template>
 
@@ -67,7 +66,7 @@ export default {
 <style scoped>
 .daily-quest {
   /* THEME COLORS */
-  background: radial-gradient(farthest-corner at 90% 90%, #dea766 0%, #84c6e7 100%);
+  background: radial-gradient(farthest-corner at 90% 90%, #34ade1 0%, #1c6386 100%);
   border-radius: 20px;
   padding: 15px 15px 5px 20px;
   margin-bottom: 20px;
@@ -85,30 +84,32 @@ export default {
 .timer {
   background: #fff;
   border-radius: 15px;
-  padding: 12px 20px 10px;
+  padding: 10px 14px 7px;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
   color: black;
   margin-left: 10px;
+  width: 130px;
 }
 
 .timer p {
   margin: 0;
-  margin-bottom: 5px;
   font-size: 11px;
   line-height: 11px;
-  color: var(--text-gray);
+  color: var(--text-dark);
 }
 
 .timer h2 {
   margin: 0;
-  font-size: 25px;
-  line-height: 25px;
+  font-size: 19px;
+  line-height: 18px;
+  width: 100%;
+  text-align: center;
 }
 
 h1 {
-  color: black;
-  font-size: 32px;
-  line-height: 32px;
+  color: white;
+  font-size: 28px;
+  line-height: 28px;
 }
 
 h3 {
@@ -128,7 +129,7 @@ h4 {
 }
 
 h5 {
-  color: rgb(56, 56, 56);
+  color: rgba(255, 255, 255, 0.736);
   font-size: 14px;
 }
 </style>

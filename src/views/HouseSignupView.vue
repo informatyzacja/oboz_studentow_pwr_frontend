@@ -34,8 +34,9 @@ import { IonPage, IonContent } from '@ionic/vue';
                             </RouterLink>
                         </div>
 
-                        <h3>Pozostałe {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoje' : 'domki'
-                            }}</h3>
+                        <h3 style="margin-top: 12px !important;">Pozostałe {{
+                            apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoje' : 'domki'
+                        }}</h3>
                     </div>
                     <div v-if="apiDataStore.houses.ready && apiDataStore.profile.ready">
                         <TransitionGroup name="list" tag="div" class="houses" @before-leave="beforeLeave">
@@ -45,7 +46,7 @@ import { IonPage, IonContent } from '@ionic/vue';
                                 <HouseCard :key="house.id" :house="house" />
                             </RouterLink>
                         </TransitionGroup>
-                        <p
+                        <p class="no-free-houses"
                             v-if="!apiDataStore.houses.housesWithoutId(apiDataStore.profile.data[0].house ? apiDataStore.profile.data[0].house.id : null).length">
                             Brak wolnych {{ apiDataStore.houseSignupsInfo.data.room_instead_of_house ? 'pokoi' :
                                 'domków'
@@ -198,5 +199,10 @@ button {
    animations can be calculated correctly. */
 .list-leave-active {
     position: absolute;
+}
+
+.no-free-houses {
+    text-align: center;
+    /* margin-top: 5px; */
 }
 </style>

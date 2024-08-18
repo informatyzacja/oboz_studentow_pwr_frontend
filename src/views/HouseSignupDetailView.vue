@@ -354,7 +354,7 @@ export default {
 }
 
 .info {
-    color: var(--text-gray);
+    color: var(--text-dark);
     font-size: .8rem;
     text-align: center;
     margin: 5px 30px;
