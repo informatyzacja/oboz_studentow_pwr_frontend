@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { loadData, ready } from './functions.js'
 
+import moment from 'moment';
+
 // one chat messages
 export const useChatStore = defineStore('chat', {
   state: () => ({ loading: true, error: null, data: null, url: 'chat/' }),
@@ -30,7 +32,7 @@ export const useChatsStore = defineStore('chats', {
           return item.id === id
         })
       }
-    }
+    },
   },
   actions: {
     fetchData() {

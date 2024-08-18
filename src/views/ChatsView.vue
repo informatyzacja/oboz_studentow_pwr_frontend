@@ -11,6 +11,9 @@ import { IonPage, IonContent, IonNavLink } from '@ionic/vue';
 import ChatCardView from './ChatCardView.vue'
 import ProfileCircle from '../components/navigation/ProfileCircle.vue'
 
+import moment from 'moment';
+import _ from 'lodash';
+
 </script>
 
 
@@ -21,7 +24,7 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
                 <top-bar title="Czaty" />
                 <ProfileCircle />
                 <loading-indicator v-if="apiDataStore.chats.loading" />
-                <div v-for="chat in apiDataStore.chats.data" :key="chat.id">
+                <div v-for="chat in orderedChats" :key="chat.id">
                     <ion-nav-link :router-link="'/czat/' + chat.id">
                         <ChatCardView :chat="chat" />
                     </ion-nav-link>
@@ -41,7 +44,11 @@ export default {
         }
     },
     computed: {
-        ...mapStores(useApiDataStore)
+        ...mapStores(useApiDataStore),
+        orderedChats() {
+            this.apiDataStore.chats.data;
+            return this.apiDataStore.chats.ready && _.orderBy(this.apiDataStore.chats.data, ['last_message.date'], ['desc'])
+        }
     },
     mounted() {
         this.apiDataStore.chats.fetchData()

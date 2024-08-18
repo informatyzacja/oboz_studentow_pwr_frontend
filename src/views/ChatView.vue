@@ -207,14 +207,14 @@ export default {
             this.apiDataStore.chat.data.push({
                 message: message,
                 user_id: this.apiDataStore.profile.data[0].id,
-                date: new Date().toISOString(),
+                date: moment().format('YYYY-MM-DDTHH:mm:ss'),
                 fromMe: true,
                 chat: this.chat_id
             })
             this.apiDataStore.chats.data.find(chat => chat.id === this.chat_id).last_message = {
                 message: message,
                 user_id: this.apiDataStore.profile.data[0].id,
-                date: new Date().toISOString(),
+                date: moment().format('YYYY-MM-DDTHH:mm:ss'),
                 fromMe: true,
                 chat: this.chat_id
             }

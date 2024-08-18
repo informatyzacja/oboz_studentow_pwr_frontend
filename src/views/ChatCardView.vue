@@ -16,8 +16,7 @@ import moment from 'moment';
         <div class="chat-element__content">
             <div class="chat-element__header">
                 <h4>{{ chat.name }}</h4>
-                <p v-if="chat.last_message">{{ chat.last_message.date ? moment(chat.last_message.date).format('HH:mm') :
-                    '' }}
+                <p v-if="chat.last_message">{{ last_message_date }}
                 </p>
             </div>
             <div class="chat-element__message">
@@ -30,6 +29,21 @@ import moment from 'moment';
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    computed: {
+        last_message_date() {
+            if (!this.chat.last_message.date || !this.chat.chat) {
+                return '';
+            }
+            if (moment(this.chat.last_message.date).isSame(new Date(), "day"))
+                return moment(this.chat.last_message.date).format('HH:mm');
+            return moment(this.chat.last_message.date).format('dddd HH:mm');
+        }
+    }
+}
+</script>
 
 <style scoped>
 .chat-element {
