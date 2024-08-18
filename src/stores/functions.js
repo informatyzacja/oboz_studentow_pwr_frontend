@@ -121,7 +121,7 @@ export async function loadData(item) {
       item.error = null
     })
     .catch((error) => {
-      item.error = error
+      item.error = "Bład połączenia z serwerem"
       console.error('There was an error!', error)
     })
     .finally(() => {

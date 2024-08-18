@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">oboz-studentow-pwr</string>
-    <string name="title_activity_main">oboz-studentow-pwr</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="app_name">Obóz Studentów PWr</string>
+    <string name="title_activity_main">Obóz Studentów PWr</string>
+    <string name="package_name">pl.edu.pwr.samorzad.oboz</string>
+    <string name="custom_url_scheme">pl.edu.pwr.samorzad.oboz</string>
 </resources>

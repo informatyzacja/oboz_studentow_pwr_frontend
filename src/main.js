@@ -38,9 +38,43 @@ app.use(createPinia())
 app.use(router)
 
 
+import { PushNotifications } from '@capacitor/push-notifications';
+import { LocalNotifications } from '@capacitor/local-notifications';
+
+const addListeners = async () => {
+    await PushNotifications.addListener('registration', token => {
+        console.info('Registration token: ', token.value);
+    });
+
+    await PushNotifications.addListener('registrationError', err => {
+        console.error('Registration error: ', err.error);
+    });
+
+    await PushNotifications.addListener('pushNotificationReceived', notification => {
+        console.log('Push notification received: ', notification);
+        LocalNotifications.schedule({
+            notifications: [
+                {
+                    title: notification.title,
+                    body: notification.body,
+                    id: 1,
+                    sound: 'default',
+                },
+            ],
+        });
+    });
+
+    await PushNotifications.addListener('pushNotificationActionPerformed', notification => {
+        console.log('Push notification action performed', notification.actionId, notification.inputValue);
+    });
+}
+
+
+
 router.isReady().then(() => {
     app.mount('#app');
     SplashScreen.hide();
+    addListeners();
 });
 
 // app.mixin({
