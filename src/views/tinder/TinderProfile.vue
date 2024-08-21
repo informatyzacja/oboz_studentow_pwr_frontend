@@ -86,7 +86,7 @@ export default {
     methods: {
         async descriptionEdited() {
             apiRequest('../api2/tinder/upload-profile-data/', 'POST', {
-                description: this.description
+                description: this.description.substring(0, 250)
             }).then(res => {
                 this.apiDataStore.profile.data[0].tinder_profile = res.tinder_profile
             })

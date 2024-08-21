@@ -41,7 +41,7 @@ import { mapStores } from 'pinia'
                         <ion-icon slot="icon-only" :icon="createOutline"></ion-icon>
                     </IonButton>
                 </h2>
-                <p>{{ description }}</p>
+                <p>{{ item.description }}</p>
             </div>
         </div>
     </div>
@@ -58,18 +58,6 @@ export default {
     },
     computed: {
         ...mapStores(useApiDataStore),
-        description() {
-            // max X characters
-            if (!this.item.description) return '';
-            const X = 80;
-            if (this.item.description.length > X) {
-                return this.item.description.substring(0, X) + '...';
-            }
-            return this.item.description;
-        },
-        descriptionIsLonger() {
-            return this.item.description && this.item.description.length > 80;
-        }
     },
     methods: {
         loaded() {
