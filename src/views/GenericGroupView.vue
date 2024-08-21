@@ -72,7 +72,7 @@ defineProps([
           <OverlayView ref="mapOverlay">
             <div class="image_overlay">
               <img :src="group.map" alt="mapa" />
-              <SavePhotoButton :path="group.map" />
+              <SavePhotoButton :path="group.map" v-if="group.map" />
 
               <button class=" red-bg" @click="$refs.mapOverlay.hide">Zamknij</button>
             </div>
@@ -107,6 +107,10 @@ defineProps([
 </template>
 
 <style scoped>
+main {
+  min-height: 100vh;
+}
+
 h1 {
   background: var(--radial-gradient);
   -webkit-background-clip: text;
@@ -150,7 +154,8 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0) invert(1);
+  /* filter: brightness(0) invert(1); */
+  border-radius: 50%;
 }
 
 .map {

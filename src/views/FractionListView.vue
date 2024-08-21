@@ -17,8 +17,7 @@ import { IonPage, IonContent } from '@ionic/vue';
 
         <div class="padding-main" v-if="ready && data">
           <RouterLink :to="frakcjaLink + '/' + data.id" v-for="(data, index) in data" :key="index">
-            <ItemBox :bigText="data.name" :leftIcon="data.logo" :rightIcon="frakcjaLink ? rightArrow : ''"
-              leftIconWhite />
+            <ItemBox :bigText="data.name" :leftIcon="data.logo" :rightIcon="frakcjaLink ? rightArrow : ''" />
           </RouterLink>
         </div>
 
@@ -37,14 +36,12 @@ export default {
       ready: false,
       loading: true,
       error: null,
-      timer: null,
       frakcjaLink: '/frakcja'
     }
   },
   computed: {},
   mounted() {
     this.fetchFractionData()
-    this.timer = setInterval(this.fetchFractionData, 300000)
   },
   methods: {
     fetchFractionData() {
@@ -67,9 +64,6 @@ export default {
           this.loading = false
         })
     }
-  },
-  beforeUnmount() {
-    clearInterval(this.timer)
   }
 }
 </script>

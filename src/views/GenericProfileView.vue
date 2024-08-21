@@ -56,7 +56,7 @@ defineProps([
               <RouterLink :to="frakcjaLink + '/' + profileData.fraction.id" v-if="profileData.fraction.name"
                 :class="{ disabled: !frakcjaLink }">
                 <ItemBox v-if="profileData.fraction" :bigText="profileData.fraction.name"
-                  :leftIcon="profileData.fraction.logo" :rightIcon="frakcjaLink ? rightArrow : ''" leftIconWhite />
+                  :leftIcon="profileData.fraction.logo" :rightIcon="frakcjaLink ? rightArrow : ''" />
               </RouterLink>
 
               <!-- grupy -->

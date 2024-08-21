@@ -21,7 +21,6 @@ export default {
       ready: false,
       loading: true,
       error: null,
-      timer: null
     }
   },
   computed: {
@@ -29,7 +28,6 @@ export default {
   },
   mounted() {
     this.fetchFractionData()
-    this.timer = setInterval(this.fetchFractionData, 300000)
   },
   methods: {
     fetchFractionData() {
@@ -54,8 +52,5 @@ export default {
         })
     }
   },
-  beforeUnmount() {
-    clearInterval(this.timer)
-  }
 }
 </script>
