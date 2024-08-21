@@ -65,7 +65,7 @@ p {
   font-size: 13px;
   line-height: 16px !important;
   font-weight: 400;
-  white-space: pre;
+  white-space: pre-wrap;
 }
 
 img.white {

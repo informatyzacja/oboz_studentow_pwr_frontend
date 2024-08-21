@@ -134,6 +134,6 @@ h5 {
 }
 
 h6 {
-  white-space: pre;
+  white-space: pre-wrap;
 }
 </style>
