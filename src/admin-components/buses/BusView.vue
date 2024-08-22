@@ -11,7 +11,7 @@ import { useApiDataStore } from '../../stores/api.js'
 import { mapStores } from 'pinia'
 
 import { apiRequest } from '../../stores/functions.js'
-import { IonPage, IonContent, IonRefresher, IonRefresherContent } from '@ionic/vue';
+import { IonPage, IonContent, IonRefresher, IonRefresherContent, IonSearchbar } from '@ionic/vue';
 </script>
 
 <template>
@@ -22,6 +22,8 @@ import { IonPage, IonContent, IonRefresher, IonRefresherContent } from '@ionic/v
       </ion-refresher>
       <main>
         <TopBar :title="'Bus nr ' + (bus && bus.description)" backLink="/busy" />
+        <ion-searchbar placeholder="Szukaj" @ionInput="handleSearch($event)"></ion-searchbar>
+
 
         <div class="padding-main" v-if="apiDataStore.buses.ready && bus && bus.users">
 
@@ -31,7 +33,7 @@ import { IonPage, IonContent, IonRefresher, IonRefresherContent } from '@ionic/v
 
           <ItemBox :bigText="data.last_name + ' ' + data.first_name" :rightIcon="rightArrow"
             :smallText="(data.bus_presence ? '✅ Obecny  ' : '❌ Nieobecny  ') + (data.bandId || '❗️Brak opaski')"
-            v-for="(data, index) in bus.users" :key="index" @click="openCard(data.id)" />
+            v-for="(data, index) in filteredUsers" :key="index" @click="openCard(data.id)" />
 
         </div>
 
@@ -93,7 +95,8 @@ export default {
       timer: null,
       bus_id: null,
       user: null,
-      presence_loading: false
+      presence_loading: false,
+      filteredUsers: [],
     }
   },
   computed: {
@@ -107,8 +110,15 @@ export default {
     users_with_band_count() {
       return this.bus && this.bus.users.filter(user => user.bandId).length
     },
+
   },
   methods: {
+    handleSearch(event) {
+      const query = event ? event.target.value.toLowerCase() : '';
+      this.filteredUsers = this.bus.users.filter(user => {
+        return user.first_name.toLowerCase().includes(query) || user.last_name.toLowerCase().includes(query) || user.bandId.toLowerCase().includes(query)
+      })
+    },
     openCard(id) {
       this.user = this.bus.users.find(user => user.id === id)
       this.$refs.userOverlay.show()
@@ -135,6 +145,7 @@ export default {
     },
     async fetchData(event) {
       await this.apiDataStore.buses.fetchUsersForBusWithId(this.bus_id)
+      this.handleSearch()
       if (event) {
         event.target.complete();
       }
@@ -143,7 +154,7 @@ export default {
 
   mounted() {
     this.bus_id = parseInt(this.$route.params.id)
-    this.apiDataStore.buses.fetchUsersForBusWithId(this.bus_id)
+    this.fetchData()
     this.timer = setInterval(() => {
       this.apiDataStore.buses.fetchUsersForBusWithId(this.bus_id)
     }, 60000)
