@@ -117,8 +117,12 @@ export async function apiRequest(url, method = 'GET', body = null, retry = false
 export async function loadData(item) {
   return apiRequest(item.url)
     .then((data) => {
-      item.data = data
-      item.error = null
+      if (data.error) {
+        item.error = data.error
+      } else {
+        item.data = data
+        item.error = null
+      }
     })
     .catch((error) => {
       item.error = "Bład połączenia z serwerem"

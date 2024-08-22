@@ -22,7 +22,7 @@ import { IonPage, IonContent, IonRefresher, IonRefresherContent } from '@ionic/v
         <TopBar title="Busy" backLink="/admin-menu" />
 
         <div class="padding-main" v-if="apiDataStore.buses.data">
-          <RouterLink :to="'bus/' + data.id" v-for="(data, index) in apiDataStore.buses.data" :key="index">
+          <RouterLink :to="'/bus/' + data.id" v-for="(data, index) in apiDataStore.buses.data" :key="index">
             <ItemBox :bigText="'Bus nr ' + data.description" :rightIcon="rightArrow"
               :smallText="data.present_users_count + '/' + data.users_count + ' obecni  ' + data.opaski_count + '/' + data.users_count + ' opaski'" />
           </RouterLink>

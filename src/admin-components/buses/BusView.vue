@@ -22,7 +22,7 @@ import { IonPage, IonContent, IonRefresher, IonRefresherContent, IonSearchbar } 
       </ion-refresher>
       <main>
         <TopBar :title="'Bus nr ' + (bus && bus.description)" backLink="/busy" />
-        <ion-searchbar placeholder="Szukaj" @ionInput="handleSearch($event)"></ion-searchbar>
+        <ion-searchbar placeholder="Szukaj" ref="searchbar" @ionInput="handleSearch($event)"></ion-searchbar>
 
 
         <div class="padding-main" v-if="apiDataStore.buses.ready && bus && bus.users">
@@ -32,7 +32,7 @@ import { IonPage, IonContent, IonRefresher, IonRefresherContent, IonSearchbar } 
           </h3>
 
           <ItemBox :bigText="data.last_name + ' ' + data.first_name" :rightIcon="rightArrow"
-            :smallText="(data.bus_presence ? '✅ Obecny  ' : '❌ Nieobecny  ') + (data.bandId || '❗️Brak opaski')"
+            :smallText="(data.presence ? '✅ Obecny  ' : '❌ Nieobecny  ') + (data.bandId || '❗️Brak opaski')"
             v-for="(data, index) in filteredUsers" :key="index" @click="openCard(data.id)" />
 
         </div>
@@ -43,7 +43,7 @@ import { IonPage, IonContent, IonRefresher, IonRefresherContent, IonSearchbar } 
             <div v-if="user">
               <h2>{{ user.first_name }} {{ user.last_name }}</h2>
 
-              <div v-if="user.bus_presence">
+              <div v-if="user.presence">
                 ✅ Obecny/a
                 <button class="red-bg" @click="setPresence(user.id, false)" v-if="!presence_loading">Oznacz jako
                   nieobecny/a</button>
@@ -105,7 +105,7 @@ export default {
       return this.apiDataStore.buses && this.apiDataStore.buses.getBusById(this.bus_id)
     },
     present_users_count() {
-      return this.bus && this.bus.users.filter(user => user.bus_presence).length
+      return this.bus && this.bus.users.filter(user => user.presence).length
     },
     users_with_band_count() {
       return this.bus && this.bus.users.filter(user => user.bandId).length
@@ -130,6 +130,7 @@ export default {
           this.apiDataStore.buses.fetchUsersForBusWithId(this.bus_id).then(() => {
             this.presence_loading = false
             this.user = this.bus.users.find(user => user.id === userId)
+            this.handleSearch()
           })
         })
     },
