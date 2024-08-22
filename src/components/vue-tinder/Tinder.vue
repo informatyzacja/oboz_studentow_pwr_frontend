@@ -223,6 +223,8 @@ export default {
 .vue-tinder {
   position: relative;
   -webkit-tap-highlight-color: transparent;
+
+  aspect-ratio: 3/4;
 }
 
 /* Style is being bound by data, only important can be used to override */

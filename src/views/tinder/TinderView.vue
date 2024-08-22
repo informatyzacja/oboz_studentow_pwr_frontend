@@ -3,7 +3,7 @@
 import { IonPage, IonContent, IonIcon, IonButton, toastController } from '@ionic/vue';
 import Tinder from '@/components/vue-tinder/Tinder.vue'
 import { apiRequest } from '@/stores/functions'
-import MyTinderCard from './MyTinderCard.vue'
+import CustomTinderCard from './CustomTinderCard.vue'
 import TopBar from '@/components/navigation/TopBar.vue'
 import { refresh, close, heart, star, help } from 'ionicons/icons'
 import OverlayView from '../../components/OverlayView.vue';
@@ -81,7 +81,7 @@ import ChatCardView from '@/views/ChatCardView.vue'
 
                 <Tinder ref="tinder" key-name="id" :queue="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
                     <template v-slot="scope">
-                        <MyTinderCard :item="scope.data" />
+                        <CustomTinderCard :item="scope.data" />
                     </template>
                     <!-- 
                         <img class="down-pointer" slot="down" src="~img/down-txt.png" />
@@ -316,7 +316,7 @@ h2 {
     /* width: calc(100% - 20px); */
     margin: 0 20px;
     /* height: calc(100% - 23px - 65px - 47px - 16px); */
-    height: 500px;
+    /* height: 500px; */
     /* width: 90%;
     height: 90%; */
 }

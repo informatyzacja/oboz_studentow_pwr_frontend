@@ -1,12 +1,4 @@
 <script setup>
-defineProps({
-    item: Object,
-    editable: {
-        type: Boolean,
-        default: false,
-    }
-});
-
 import LoadingIndicator from '@/components/LoadingIndicator.vue';
 import { IonButton, IonIcon } from '@ionic/vue';
 import { createOutline, imageOutline } from 'ionicons/icons';
@@ -14,6 +6,13 @@ import { createOutline, imageOutline } from 'ionicons/icons';
 import { useApiDataStore } from '@/stores/api.js'
 import { mapStores } from 'pinia'
 
+defineProps({
+    item: Object,
+    editable: {
+        type: Boolean,
+        default: false,
+    }
+});
 </script>
 
 <template>

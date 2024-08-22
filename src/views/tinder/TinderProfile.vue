@@ -5,7 +5,7 @@ import { IonPage, IonContent, IonTextarea, IonButton } from '@ionic/vue';
 import { useApiDataStore } from '@/stores/api.js'
 import { mapStores } from 'pinia'
 
-import MyTinderCard from './MyTinderCard.vue';
+import CustomTinderCard from './CustomTinderCard.vue';
 import OverlayView from '@/components/OverlayView.vue'
 import { apiRequest } from '@/stores/functions';
 
@@ -18,7 +18,7 @@ import { Camera, CameraResultType } from '@capacitor/camera';
         <ion-content>
             <main v-if="profileData && profileData.tinder_profile">
                 <TopBar title="Profil na tinderze" back-link="/profil" />
-                <MyTinderCard class="tinder-card" :item="profileData.tinder_profile" editable
+                <CustomTinderCard class="tinder-card" :item="profileData.tinder_profile" editable
                     @editDescription="$refs.editDescriptionOverlay.show();"
                     v-if="profileData.tinder_profile.user && profileData.tinder_profile.photo && profileData.tinder_profile.description"
                     @addPhoto="addPhoto" ref="myTinderCard" />
@@ -153,7 +153,9 @@ h4 {
 }
 
 .tinder-card {
-    height: 500px;
+    /* height: 500px; */
+    aspect-ratio: 3/4;
+    width: 100%;
     padding: 0 20px;
 }
 

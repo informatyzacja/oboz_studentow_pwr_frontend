@@ -2,6 +2,7 @@
 import TopBar from '../components/navigation/TopBar.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
 import ChatSettingsButton from './ChatSettingsButton.vue'
+import CustomTinderCard from './tinder/CustomTinderCard.vue'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
@@ -28,6 +29,13 @@ import { IonPage, IonContent } from '@ionic/vue';
                     <ChatSettingsButton :chat="chat" />
                 </TopBar>
                 <main class="padding-main">
+                    <CustomTinderCard v-if="chat && chat.tinder_profile" :item="chat.tinder_profile"
+                        class="tinder-card" />
+                    <div v-if="apiDataStore.chat.messagesForChatWithId(chat_id).length === 0"
+                        style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
+                        Witaj na czacie!<br>
+                        Bądź pierwszy/a i napisz coś!
+                    </div>
                     <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading">
                         <div class="chat">
                             <div v-for="(message, index) in apiDataStore.chat.messagesForChatWithId(chat_id)"
@@ -52,12 +60,6 @@ import { IonPage, IonContent } from '@ionic/vue';
                                     </div>
 
                                 </div>
-                            </div>
-                            <div v-if="apiDataStore.chat.messagesForChatWithId(chat_id).length === 0"
-                                style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
-                                Witaj w czacie!<br>Bądź
-                                pierwszy/a i
-                                napisz coś!
                             </div>
                         </div>
 
@@ -234,6 +236,13 @@ export default {
 
 
 <style scoped>
+.tinder-card {
+    margin: 0 auto;
+    margin-top: 45px;
+    width: 100%;
+    aspect-ratio: 3/4;
+}
+
 .top-bar {
     position: fixed;
     width: 100%;
