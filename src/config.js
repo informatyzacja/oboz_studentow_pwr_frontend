@@ -62,17 +62,18 @@ export async function turnOffNotifications() {
             body
         )
         if (!data.success) {
+
+            toastController.create({
+                message: 'Powiadomienia wyłączone',
+                duration: 1500,
+                position: 'top',
+                color: 'success'
+            }).then(toast =>
+                toast.present()
+            );
+
             throw new Error('Failed to turn off notifications')
         }
-
-        toastController.create({
-            message: 'Powiadomienia wyłączone',
-            duration: 1500,
-            position: 'top',
-            color: 'success'
-        }).then(toast =>
-            toast.present()
-        );
 
         return data
 

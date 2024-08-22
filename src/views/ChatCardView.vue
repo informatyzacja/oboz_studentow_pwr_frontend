@@ -33,7 +33,7 @@ import moment from 'moment';
 export default {
     computed: {
         last_message_date() {
-            if (!this.chat.last_message.date || !this.chat.last_message.chat) {
+            if (!this.chat.last_message || !this.chat.last_message.date || !this.chat.last_message.chat) {
                 return '';
             }
             if (moment(this.chat.last_message.date).isSame(new Date(), "day"))

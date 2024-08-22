@@ -5,7 +5,6 @@ import LoadingIndicator from '../components/LoadingIndicator.vue'
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
-
 import { IonPage, IonContent, IonNavLink } from '@ionic/vue';
 
 import ChatCardView from './ChatCardView.vue'

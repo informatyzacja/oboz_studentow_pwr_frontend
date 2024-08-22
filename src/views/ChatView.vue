@@ -1,6 +1,7 @@
 <script setup>
 import TopBar from '../components/navigation/TopBar.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
+import ChatSettingsButton from './ChatSettingsButton.vue'
 
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
@@ -12,6 +13,7 @@ import { apiSocket } from '@/stores/functions.js'
 import sendIcon from '../assets/icons8-paper_plane.png'
 
 import { IonPage, IonContent } from '@ionic/vue';
+
 </script>
 
 
@@ -21,8 +23,10 @@ import { IonPage, IonContent } from '@ionic/vue';
     <ion-page>
         <ion-content :fullscreen="false" ref="content">
             <div>
-                <TopBar :title="apiDataStore.chats.ready && chat.name || 'Czat ?'" autoBackLink class="top-bar"
-                    :image="apiDataStore.chats.ready && chat.avatar" />
+                <TopBar :title="apiDataStore.chats.ready && chat && chat.name || 'Czat ?'" autoBackLink class="top-bar"
+                    :image="apiDataStore.chats.ready && chat && chat.avatar">
+                    <ChatSettingsButton :chat="chat" />
+                </TopBar>
                 <main class="padding-main">
                     <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading">
                         <div class="chat">
@@ -234,7 +238,7 @@ export default {
     position: fixed;
     width: 100%;
     left: 0;
-    top: calc(5px + var(--ion-safe-area-top));
+    top: calc(10px + var(--ion-safe-area-top));
 }
 
 
