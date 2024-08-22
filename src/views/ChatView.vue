@@ -30,7 +30,7 @@ import { IonPage, IonContent } from '@ionic/vue';
                     <ChatSettingsButton :chat="chat" />
                 </TopBar>
                 <main class="padding-main">
-                    <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading">
+                    <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading" class="scroll">
                         <CustomTinderCard v-if="chat && chat.tinder_profile" :item="chat.tinder_profile"
                             class="tinder-card" />
                         <div v-if="apiDataStore.chat.messagesForChatWithId(chat_id).length === 0"
@@ -94,7 +94,6 @@ export default {
             loading: true,
             reconnect: true,
             timer: null,
-            scrollToEnd: true,
             chat_id: parseInt(this.$route.params.id)
         }
     },
@@ -111,26 +110,25 @@ export default {
     },
     mounted() {
 
-        this.apiDataStore.chat.fetchData()
-        this.apiDataStore.chats.fetchData()
+        Promise.all([
+            this.apiDataStore.chat.fetchData(),
+            this.apiDataStore.chats.fetchData(),
+            this.apiDataStore.profile.fetchData()
+        ]).then(() => {
+            this.$refs.content.$el.scrollToBottom(0);
+        })
+
         this.timer = setInterval(() => {
             this.apiDataStore.chat.fetchData()
         }, 1000 * 60 * 5) // fetch data every 5 minutes
-        if (!this.apiDataStore.profile.data) {
-            this.apiDataStore.profile.fetchData()
-        }
 
 
         this.reconnect = true
         this.connect()
 
 
-        // debug
-        // this.loading = false
-
     },
     ionViewWillEnter() {
-        this.scrollToEnd = true
         this.$refs.content.$el.scrollToBottom(0);
     },
     unmounted() {
@@ -139,14 +137,6 @@ export default {
         this.chatSocket.onclose = function () { }; // disable onclose handler first
         this.chatSocket.onerror = function () { }; // disable onerror handler first
         this.chatSocket.close()
-    },
-    updated() {
-        if (this.scrollToEnd) {
-            this.scrollToEnd = false
-            setTimeout(() => {
-                this.$refs.content.$el.scrollToBottom(0);
-            }, 10)
-        }
     },
     methods: {
         async connect() {
@@ -387,4 +377,10 @@ export default {
     color: rgba(255, 255, 255, 0.546);
     margin-top: 5px;
 }
+
+/* .scroll {
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+} */
 </style>
