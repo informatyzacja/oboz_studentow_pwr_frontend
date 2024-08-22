@@ -28,6 +28,8 @@
 		<string>Aplikacja potrzebuje dostęp do galerii zdjęć, aby zapisać obrazek</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>Aplikacja potrzebuje dostęp do galerii zdjęć, aby wybrać zdjęcie profilowe</string>
+		<key>NSContactsUsageDescription</key>
+		<string>Aplikacja potrzebuje dostępu do kontaktów, aby zapisać numery kontaktowe</string>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>

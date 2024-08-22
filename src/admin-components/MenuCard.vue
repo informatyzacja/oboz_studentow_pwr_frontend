@@ -3,17 +3,30 @@ defineProps(['title', 'icon', 'link']);
 </script>
 
 <template>
-  <RouterLink :to="link">
-    <div class="card">
-      <div class="card__icon">
-        <img :src="icon" alt="icon" />
-      </div>
-      <div class="card__title">
-        <p>{{ title }}</p>
-      </div>
+  <div class="card" @click="click">
+    <div class="card__icon">
+      <img :src="icon" alt="icon" />
     </div>
-  </RouterLink>
+    <div class="card__title">
+      <p>{{ title }}</p>
+    </div>
+  </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    click() {
+      if (this.$props.onClick) {
+        this.$props.onClick();
+      } else if (this.$props.link) {
+        this.$router.push(this.$props.link);
+      }
+    }
+  }
+}
+</script>
+
 
 <style scoped>
 .card {

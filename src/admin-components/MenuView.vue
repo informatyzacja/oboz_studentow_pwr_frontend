@@ -18,7 +18,9 @@ import BusIcon from '../assets/icons8-bus.png'
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
-import { IonPage, IonContent } from '@ionic/vue'
+
+import { IonPage, IonContent, toastController } from '@ionic/vue'
+import { importContacts, deleteContacts } from '@/functions/importContacts'
 </script>
 
 <template>
@@ -53,11 +55,17 @@ import { IonPage, IonContent } from '@ionic/vue'
           <MenuCard title="Busy" :icon="BusIcon" link="/busy" v-if="apiDataStore.permissions.ready &&
             apiDataStore.permissions.hasOneOfPermissions(['can_check_bus_presence'])
           " />
-
+          <MenuCard title="Importuj kontakty" :icon="GroupIcon" @click="importContacts" v-if="apiDataStore.permissions.ready &&
+            apiDataStore.permissions.hasOneOfPermissions(['can_get_contacts'])
+          " />
+          <MenuCard title="Usuń kontakty" :icon="GroupIcon" @click="deleteContacts" v-if="apiDataStore.permissions.ready &&
+            apiDataStore.permissions.hasOneOfPermissions(['can_get_contacts'])
+          " />
 
           <MenuCard title="Warsztaty" :icon="HammerIcon" link="/warsztaty" />
           <MenuCard title="Sos" :icon="SosIcon" link="/sos" />
           <MenuCard title="Mapka" :icon="MapIcon" link="/mapa" />
+
 
           <div style="height: calc(33vw - 25px); width: calc(33vw - 25px)"></div>
           <div style="height: calc(33vw - 25px); width: calc(33vw - 25px)"></div>
@@ -81,9 +89,14 @@ import { IonPage, IonContent } from '@ionic/vue'
 
 <script>
 export default {
+  data() {
+    return {
+    }
+  },
   computed: {
     ...mapStores(useApiDataStore)
   },
-  mounted() { }
+  methods: {
+  }
 }
 </script>

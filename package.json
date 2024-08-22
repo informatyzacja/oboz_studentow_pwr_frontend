@@ -10,35 +10,36 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@capacitor-community/contacts": "^6.0.6",
     "@capacitor-community/fcm": "^6.0.0",
     "@capacitor-community/media": "^6.0.0",
     "@capacitor-mlkit/barcode-scanning": "^6.1.0",
-    "@capacitor/android": "6.1.0",
+    "@capacitor/android": "^6.1.0",
     "@capacitor/app": "^6.0.0",
-    "@capacitor/camera": "6.0.1",
+    "@capacitor/camera": "^6.0.1",
     "@capacitor/clipboard": "^6.0.0",
     "@capacitor/core": "^6.1.0",
     "@capacitor/device": "^6.0.0",
     "@capacitor/haptics": "^6.0.0",
-    "@capacitor/ios": "6.1.0",
-    "@capacitor/keyboard": "6.0.1",
+    "@capacitor/ios": "^6.1.0",
+    "@capacitor/keyboard": "^6.0.1",
     "@capacitor/local-notifications": "^6.0.0",
-    "@capacitor/preferences": "6.0.1",
-    "@capacitor/push-notifications": "6.0.1",
-    "@capacitor/share": "6.0.1",
+    "@capacitor/preferences": "^6.0.1",
+    "@capacitor/push-notifications": "^6.0.1",
+    "@capacitor/share": "^6.0.1",
     "@capacitor/splash-screen": "^6.0.1",
     "@capacitor/status-bar": "^6.0.0",
-    "@ionic/pwa-elements": "3.3.0",
+    "@ionic/pwa-elements": "^3.3.0",
     "@ionic/storage": "^4.0.0",
-    "@ionic/vue": "8.2.2",
-    "@ionic/vue-router": "8.2.2",
+    "@ionic/vue": "^8.2.2",
+    "@ionic/vue-router": "^8.2.2",
     "dotenv": "^16.4.5",
-    "firebase": "10.12.2",
+    "firebase": "^10.12.2",
     "moment": "^2.29.4",
     "pinia": "^2.0.36",
-    "vue": "3.4.29",
+    "vue": "^3.4.29",
     "vue-qr": "^4.0.9",
-    "vue-router": "4.3.3"
+    "vue-router": "^4.3.3"
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
@@ -50,6 +51,10 @@
     "eslint-plugin-vue": "9.26.0",
     "prettier": "3.3.2",
     "vite": "5.3.1",
-    "vite-plugin-pwa": "0.20.0"
+    "vite-plugin-pwa": "^0.20.1"
+  },
+  "overrides": {
+    "update-notifier": "^7.2.0",
+    "nodemon": "^3.1.4"
   }
 }
