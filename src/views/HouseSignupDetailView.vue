@@ -14,7 +14,7 @@ import { apiRequest } from '../stores/functions.js'
 import OverlayView from '../components/OverlayView.vue'
 import cryingIcon from '../assets/icons8-crying.png'
 
-import { IonPage, IonContent } from '@ionic/vue';
+import { IonPage, IonContent, toastController } from '@ionic/vue';
 </script>
 
 <template>
@@ -73,10 +73,9 @@ import { IonPage, IonContent } from '@ionic/vue';
                         <div class="person" v-if="youDontHaveAHouseOrYouAreSignedUpForThisHouse">
                             <div class="index">1.</div>
                             <div class="names">
-                                <input type="text" placeholder="Imię" :value="apiDataStore.profile.data[0].first_name"
+                                <input type="text" placeholder="Imię i Nazwisko"
+                                    :value="apiDataStore.profile.data[0].first_name + ' ' + apiDataStore.profile.data[0].last_name"
                                     disabled />
-                                <input type="text" placeholder="Nazwisko"
-                                    :value="apiDataStore.profile.data[0].last_name" disabled />
                             </div>
                             <!-- <input class="bandInput" placeholder="ID" :value="apiDataStore.profile.data[0].bandId" disabled /> -->
 
@@ -101,8 +100,8 @@ import { IonPage, IonContent } from '@ionic/vue';
                         <input type="text" v-model="person.first_name" placeholder="ID" :disabled="signupLoading" />
                     </div> -->
                             <div v-if="person.first_name" class="names">
-                                <input type="text" placeholder="Imię" :value="person.first_name" disabled />
-                                <input type="text" placeholder="Nazwisko" :value="person.last_name" disabled />
+                                <input type="text" placeholder="Imię i Nazwisko"
+                                    :value="person.first_name + ' ' + person.last_name" disabled />
                             </div>
                             <input v-else type="number" pattern="[0-9]*" inputmode="numeric" class="bandInput"
                                 v-model="person.band" placeholder="Nr opaski"
@@ -128,7 +127,6 @@ import { IonPage, IonContent } from '@ionic/vue';
                     </RouterLink>
                 </div>
                 <LoadingIndicator v-if="apiDataStore.houses.loading || apiDataStore.profile.loading" />
-                <p v-if="error" class="error">{{ error }}</p>
             </main>
         </ion-content>
     </ion-page>
@@ -138,15 +136,10 @@ import { IonPage, IonContent } from '@ionic/vue';
 export default {
     data() {
         return {
-            // groupName: '',
-            // groupSize: 1,
             people: [],
 
-            error: '',
-            // peopleError: '',
 
             signupLoading: false,
-            // success: false,
 
             refreshTimer: null,
             refreshKey: 0,
@@ -275,10 +268,23 @@ export default {
             apiRequest('../api2/leave-house/', 'PUT')
                 .then((data) => {
                     this.success = data.success
-                    this.error = data.error
+                    if (data.error) {
+                        toastController.create({
+                            message: data.error,
+                            duration: 2000,
+                            color: 'danger',
+                            position: 'top'
+                        }).then(toast => toast.present())
+                    }
                 })
                 .catch((error) => {
                     console.error('There was an error!', error)
+                    toastController.create({
+                        message: "Błąd",
+                        duration: 2000,
+                        color: 'danger',
+                        position: 'top'
+                    }).then(toast => toast.present())
                 })
                 .finally(() => {
                     this.signupLoading = false
@@ -291,7 +297,12 @@ export default {
         },
         signup(bandId) {
             if (!bandId) {
-                this.error = 'Nie podano ID użytkownika'
+                toastController.create({
+                    message: 'Nie podano ID użytkownika',
+                    duration: 2000,
+                    color: 'danger',
+                    position: 'top'
+                }).then(toast => toast.present())
                 return
             }
             this.signupLoading = true
@@ -304,10 +315,23 @@ export default {
             )
                 .then((data) => {
                     this.success = data.success
-                    this.error = data.error
+                    if (data.error) {
+                        toastController.create({
+                            message: data.error,
+                            duration: 2000,
+                            color: 'danger',
+                            position: 'top'
+                        }).then(toast => toast.present())
+                    }
                 })
                 .catch((error) => {
                     console.error('There was an error!', error)
+                    toastController.create({
+                        message: "Błąd",
+                        duration: 2000,
+                        color: 'danger',
+                        position: 'top'
+                    }).then(toast => toast.present())
                 })
                 .finally(() => {
                     this.signupLoading = false
@@ -405,24 +429,6 @@ input::placeholder {
     width: 120px;
 }
 
-button {
-    border-radius: 20px;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    font-size: 14px;
-    line-height: 16px;
-    cursor: pointer;
-
-    background-color: var(--bg-light);
-
-    /* width: 100px; */
-    display: flex;
-    justify-content: center;
-
-    /* margin: 0 auto; */
-    /* margin-top: 20px; */
-}
 
 button.success {
     background-color: green;
@@ -430,71 +436,6 @@ button.success {
 
 button.error {
     background-color: darkred;
-}
-
-.progress-bar-container {
-    margin: 20px;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 30px;
-    background-color: var(--bg-light);
-    border-radius: 99px;
-    margin-top: 10px;
-    overflow: hidden;
-    position: relative;
-}
-
-.progress {
-    height: 100%;
-    background-color: var(--theme-dark);
-    border-radius: 10px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: width .2s ease-out;
-}
-
-.progress-green {
-    width: 100%;
-    background-color: #18751880;
-}
-
-.progress-text {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: .7rem;
-    font-weight: 300;
-    opacity: .7;
-    padding: 0 5px;
-}
-
-.progress-info-container {
-    width: 100%;
-    height: 3px;
-    border-radius: 10px;
-    margin-top: 8px;
-    position: relative;
-}
-
-.progress-info {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: .65rem;
-    font-weight: 300;
-    opacity: .7;
-    padding: 0 5px;
-    left: 0;
-    top: 0;
 }
 
 .start-signup-button {
@@ -541,13 +482,13 @@ button {
     line-height: 16px;
     cursor: pointer;
 
-    background-color: var(--bg-light);
+    background-color: var(--bg-light-translusent);
 
-    /* width: 160px; */
+    /* width: 100px; */
     display: flex;
     justify-content: center;
 
-    margin: 0 auto;
+    /* margin: 0 auto; */
     /* margin-top: 20px; */
 }
 

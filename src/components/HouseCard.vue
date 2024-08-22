@@ -170,7 +170,7 @@ export default {
 
 .progress {
     height: 100%;
-    background-color: var(--theme-dark);
+    background-color: var(--bg-light-translusent);
     border-radius: 10px;
     position: absolute;
     top: 0;
