@@ -26,9 +26,9 @@ import { IonPage, IonContent } from '@ionic/vue';
                 <main class="padding-main">
                     <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading">
                         <div class="chat">
-                            <div v-for="(message, index) in apiDataStore.chat.data" class="messageRow" :key="index"
-                                :class="{ messageFromMe: message.fromMe }">
-                                <div style="width: 100%" v-if="message.chat === chat_id">
+                            <div v-for="(message, index) in apiDataStore.chat.messagesForChatWithId(chat_id)"
+                                class="messageRow" :key="index" :class="{ messageFromMe: message.fromMe }">
+                                <div style="width: 100%">
 
                                     <p class="datetime"
                                         v-if="index == 0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.data[index - 1].date) > 8 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.data[index - 1].date), 'day')">
@@ -49,7 +49,7 @@ import { IonPage, IonContent } from '@ionic/vue';
 
                                 </div>
                             </div>
-                            <div v-if="apiDataStore.chat.data.length === 0"
+                            <div v-if="apiDataStore.chat.messagesForChatWithId(chat_id).length === 0"
                                 style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
                                 Witaj w czacie!<br>Bądź
                                 pierwszy/a i

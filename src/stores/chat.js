@@ -9,6 +9,14 @@ export const useChatStore = defineStore('chat', {
   getters: {
     ready() {
       return ready(this)
+    },
+    messagesForChatWithId() {
+      return (id) => {
+        if (!this.data) return null
+        return this.data.filter((item) => {
+          return item.chat === id
+        })
+      }
     }
   },
   actions: {
