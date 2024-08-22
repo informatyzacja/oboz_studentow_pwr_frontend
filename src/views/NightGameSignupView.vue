@@ -28,9 +28,8 @@ import { IonPage, IonContent } from '@ionic/vue';
 
                     <TextBox>
                         <p>UWAGA! Zapisy wykonuje tylko jedna osoba z grupy.</p>
-                        <p>Dla fajnieszej zabawy polecamy, aby w grupie znalazły się zarówno <span
-                                class="bold">chłopacy, jak i
-                                dziewczyny</span>.</p>
+                        <p>Dla fajnieszej zabawy polecamy, aby w grupie znalazły się <span class="bold">osoby obu
+                                płci</span>.</p>
 
                         <!-- <p>Wszystkie osoby w grupie muszą mieć <span class="bold">ukończone 18 lat</span> w dniu
                             gry<span
@@ -59,20 +58,19 @@ import { IonPage, IonContent } from '@ionic/vue';
                         <div class="person" v-if="apiDataStore.profile.ready">
                             <div class="index">1.</div>
                             <div>
-                                <input type="text" placeholder="Imię" :value="apiDataStore.profile.data[0].first_name"
-                                    disabled />
+                                <input type="text" placeholder="Imię" value="Ty" disabled />
                             </div>
-                            <input type="number" pattern="[0-9]*" inputmode="numeric" class="bandInput"
-                                placeholder="Nr opaski" :value="apiDataStore.profile.data[0].bandId" disabled />
+                            <!-- <input type="number" pattern="[0-9]*" inputmode="numeric" class="bandInput"
+                                placeholder="Nr opaski" :value="apiDataStore.profile.data[0].bandId" disabled /> -->
                         </div>
                         <LoadingIndicator v-else inline small />
 
                         <div class="person" v-for="(person, index) in people" :key="index">
                             <div class="index">{{ index + 2 }}.</div>
-                            <div>
+                            <!-- <div>
                                 <input type="text" v-model="person.first_name" placeholder="Imię"
                                     :disabled="signupLoading" />
-                            </div>
+                            </div> -->
                             <input type="text" pattern="[0-9]*" inputmode="numeric" class="bandInput"
                                 v-model="person.band" placeholder="Nr opaski" :disabled="signupLoading" maxlength="6" />
                         </div>
@@ -185,7 +183,9 @@ export default {
         },
         peopleValid() {
             for (let person of this.people) {
-                if (!person.first_name || !person.band) {
+                if (
+                    // !person.first_name ||
+                    !person.band) {
                     this.peopleError = ''
                     return false
                 }
