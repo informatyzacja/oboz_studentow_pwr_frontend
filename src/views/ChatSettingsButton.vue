@@ -13,8 +13,9 @@ import { mapStores } from 'pinia'
     <OverlayView ref="chatSettingsOverlay">
         <div class="padding" v-if="chat">
             <h2>Opcje czatu</h2>
-            <!-- <ion-toggle v-model="chat.mute" @ionChange="notificationsToggled($event)" :disabled="chat.house_chat">Wycisz
-                powiadomienia</ion-toggle> -->
+            <ion-toggle v-model="chat.notifications_blocked" @ionChange="notificationsToggled($event)"
+                :disabled="chat.house_chat">Wycisz
+                powiadomienia</ion-toggle>
 
             <ion-button id="open-action-sheet" :disabled="chat.house_chat" color="danger">Zablokuj</ion-button>
             <ion-action-sheet trigger="open-action-sheet" class="my-custom-class"
@@ -102,7 +103,35 @@ export default {
             }
         },
         notificationsToggled(event) {
-            console.log('notifications toggled', event.detail.checked);
+            apiRequest('../api2/block_chat_notifications/' + this.chat.id + '/',
+                'PUT',
+                { block: event.detail.checked }
+            ).then(data => {
+                if (data.status === 'success') {
+                    toastController.create({
+                        message: 'Powiadomienia ' + (event.detail.checked ? 'wyciszone' : 'włączone'),
+                        duration: 1500,
+                        position: 'top',
+                        color: 'success'
+                    }).then(toast =>
+                        toast.present()
+                    );
+                    this.apiDataStore.chats.fetchData()
+                    return data
+                }
+                throw new Error('Failed to block chat notifications')
+            }).catch(error => {
+                console.error('Error while blocking chat notifications:', error);
+
+                toastController.create({
+                    message: 'Nie udało się zmienić ustawienia wyciszeń powiadomień',
+                    duration: 1500,
+                    position: 'top',
+                    color: 'danger'
+                }).then(toast =>
+                    toast.present()
+                );
+            })
         }
     }
 }
@@ -126,5 +155,9 @@ export default {
 .description {
     font-size: 0.8rem;
     color: var(--text-light);
+}
+
+ion-button {
+    color: white;
 }
 </style>

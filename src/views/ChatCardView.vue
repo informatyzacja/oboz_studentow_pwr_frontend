@@ -1,8 +1,9 @@
 <script setup>
-defineProps(['chat']);
 import { IonIcon } from '@ionic/vue';
 import { home, person, people } from 'ionicons/icons';
 import moment from 'moment';
+defineProps(['chat']);
+import noRemindersIcon from '@/assets/icons8-no-reminders-96.png';
 </script>
 
 <template>
@@ -24,6 +25,7 @@ import moment from 'moment';
                         chat.last_message.message.substring(0, 250)
                     }}{{ chat.last_message.message.length > 250 ? '...' : '' }}
                 </p>
+                <img v-if="chat.notifications_blocked" :src="noRemindersIcon" class="no-reminders" />
             </div>
         </div>
     </div>
@@ -99,11 +101,20 @@ export default {
 .chat-element__message {
     font-size: 0.9rem;
     color: var(--text-gray);
+    display: flex;
+    justify-content: space-between;
+    align-content: start;
 }
 
 .avatar {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.no-reminders {
+    width: 20px;
+    height: 20px;
+    margin-left: .4rem;
 }
 </style>
