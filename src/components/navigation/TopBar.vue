@@ -16,13 +16,16 @@ defineProps({
   },
   image: {
     type: String
+  },
+  background: {
+    type: String
   }
 });
 import { IonNavLink } from '@ionic/vue';
 </script>
 
 <template>
-  <div class="header" :class="{ header_absolute: absolute }">
+  <div class="header" :class="{ header_absolute: absolute }" :style="{ background }">
     <div class="header-left">
       <IonNavLink v-if="backLink || autoBackLink" :router-link="backLink || $router.options.history.state.back || '/'"
         router-direction="back" class="link">

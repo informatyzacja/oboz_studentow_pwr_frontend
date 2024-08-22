@@ -25,18 +25,19 @@ import { IonPage, IonContent } from '@ionic/vue';
         <ion-content :fullscreen="false" ref="content">
             <div>
                 <TopBar :title="apiDataStore.chats.ready && chat && chat.name || 'Czat ?'" autoBackLink class="top-bar"
-                    :image="apiDataStore.chats.ready && chat && chat.avatar">
+                    :image="apiDataStore.chats.ready && chat ? chat.avatar : ''"
+                    background=" url('/src/assets/bg.jpg')">
                     <ChatSettingsButton :chat="chat" />
                 </TopBar>
                 <main class="padding-main">
-                    <CustomTinderCard v-if="chat && chat.tinder_profile" :item="chat.tinder_profile"
-                        class="tinder-card" />
-                    <div v-if="apiDataStore.chat.messagesForChatWithId(chat_id).length === 0"
-                        style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
-                        Witaj na czacie!<br>
-                        Bądź pierwszy/a i napisz coś!
-                    </div>
                     <div v-if="apiDataStore.profile.ready && apiDataStore.chat.ready && !loading">
+                        <CustomTinderCard v-if="chat && chat.tinder_profile" :item="chat.tinder_profile"
+                            class="tinder-card" />
+                        <div v-if="apiDataStore.chat.messagesForChatWithId(chat_id).length === 0"
+                            style="text-align: center; color: rgba(255, 255, 255, 0.546); margin-top: 20px;">
+                            Witaj na czacie!<br>
+                            Bądź pierwszy/a i napisz coś!
+                        </div>
                         <div class="chat">
                             <div v-for="(message, index) in apiDataStore.chat.messagesForChatWithId(chat_id)"
                                 class="messageRow" :key="index" :class="{ messageFromMe: message.fromMe }">
@@ -238,7 +239,7 @@ export default {
 <style scoped>
 .tinder-card {
     margin: 0 auto;
-    margin-top: 45px;
+    margin-top: 47px;
     width: 100%;
     aspect-ratio: 3/4;
 }
@@ -247,7 +248,7 @@ export default {
     position: fixed;
     width: 100%;
     left: 0;
-    top: calc(10px + var(--ion-safe-area-top));
+    padding-top: calc(10px + var(--ion-safe-area-top));
 }
 
 
