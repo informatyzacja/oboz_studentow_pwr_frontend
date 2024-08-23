@@ -12,6 +12,7 @@ import moment from 'moment'
 import { apiSocket } from '@/stores/functions.js'
 
 import sendIcon from '../assets/icons8-paper_plane.png'
+import downArrowIcon from '../assets/icons8-down-100.png'
 
 import { IonPage, IonContent } from '@ionic/vue';
 
@@ -22,7 +23,7 @@ import { IonPage, IonContent } from '@ionic/vue';
 
 
     <ion-page>
-        <ion-content :fullscreen="false" ref="content">
+        <ion-content :fullscreen="false" ref="content" @ionScroll="handleScroll($event)" :scrollEvents="true">
             <div>
                 <TopBar :title="apiDataStore.chats.ready && chat && chat.name || 'Czat ?'" autoBackLink class="top-bar"
                     :image="apiDataStore.chats.ready && chat ? chat.avatar : ''"
@@ -64,12 +65,18 @@ import { IonPage, IonContent } from '@ionic/vue';
                             </div>
                         </div>
 
+                        <div class="goToBottom" @click="$refs.content.$el.scrollToBottom(300)" v-if="!isAtBootom">
+                            <img :src="downArrowIcon" />
+                        </div>
+
+
                         <div class="textBox">
                             <input type="text" v-on:keyup.enter="sendMessage" v-model="currentMessage" placeholder="Aa"
                                 maxlength="500" />
 
                             <button class="textBoxButton" v-if="currentMessage.trim() === ''"
                                 @click="currentMessage = '👍'; sendMessage()">👍</button>
+
 
                             <button class="textBoxButton sendIcon" v-else @click="sendMessage"><img
                                     :src="sendIcon" /></button>
@@ -94,21 +101,27 @@ export default {
             loading: true,
             reconnect: true,
             timer: null,
-            chat_id: parseInt(this.$route.params.id)
+            chat_id: parseInt(this.$route.params.id),
+            scrollTop: 0,
+            scrollElement: null
         }
     },
     computed: {
         ...mapStores(useApiDataStore),
         chat() {
             return this.apiDataStore.chats.withId(this.chat_id)
+        },
+        isAtBootom() {
+            if (!this.scrollElement) return false
+            return this.scrollElement.scrollHeight - this.scrollTop - this.$refs.content.$el.scrollHeight <= 45
         }
     },
     watch: {
-        currentMessage() {
-            this.$refs.content.$el.scrollToBottom(500);
+        async currentMessage() {
+            this.$refs.content.$el.scrollToBottom(300);
         }
     },
-    mounted() {
+    async mounted() {
 
         Promise.all([
             this.apiDataStore.chat.fetchData(),
@@ -126,7 +139,7 @@ export default {
         this.reconnect = true
         this.connect()
 
-
+        this.scrollElement = await this.$refs.content.$el.getScrollElement();
     },
     ionViewWillEnter() {
         this.$refs.content.$el.scrollToBottom(0);
@@ -139,6 +152,9 @@ export default {
         this.chatSocket.close()
     },
     methods: {
+        handleScroll(event) {
+            this.scrollTop = event.detail.scrollTop;
+        },
         async connect() {
             this.chatSocket = await apiSocket('chat/');
 
@@ -168,8 +184,8 @@ export default {
             }.bind(this);
         },
 
-        receiveMessage(data) {
-            const scrollToEnd = Math.abs(window.scrollY + window.innerHeight - document.body.scrollHeight) <= 10
+        async receiveMessage(data) {
+            const scrollToEnd = this.isAtBootom
 
             if (data.user_id === this.apiDataStore.profile.data[0].id) return // don't show own messages
 
@@ -229,9 +245,13 @@ export default {
 <style scoped>
 .tinder-card {
     margin: 0 auto;
-    margin-top: 47px;
     width: 100%;
     aspect-ratio: 3/4;
+    margin-top: 65px;
+}
+
+.scroll {
+    margin-top: 51px;
 }
 
 .top-bar {
@@ -294,6 +314,25 @@ export default {
     margin-top: 0;
 }
 
+.goToBottom {
+    position: fixed;
+    bottom: 65px;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.goToBottom img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    background-color: var(--theme-dark);
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.4);
+}
 
 .textBox {
     width: 100%;

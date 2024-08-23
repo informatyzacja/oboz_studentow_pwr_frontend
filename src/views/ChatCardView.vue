@@ -20,10 +20,10 @@ import noRemindersIcon from '@/assets/icons8-no-reminders-96.png';
                 <p>{{ last_message_date }}</p>
             </div>
             <div class="chat-element__message">
-                <p v-if="chat.last_message">{{ chat.last_message.fromMe ? 'Ty:' :
+                <p v-if="chat && chat.last_message">{{ chat.last_message.fromMe ? 'Ty:' :
                     (chat.last_message.username ? chat.last_message.username + ':' : '') }} {{
-                        chat.last_message.message.substring(0, 250)
-                    }}{{ chat.last_message.message.length > 250 ? '...' : '' }}
+                        chat.last_message.message ? chat.last_message.message.substring(0, 250) : ''
+                    }}{{ chat.last_message.message && chat.last_message.message.length > 250 ? '...' : '' }}
                 </p>
                 <img v-if="chat.notifications_blocked" :src="noRemindersIcon" class="no-reminders" />
             </div>
