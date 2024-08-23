@@ -26,6 +26,7 @@ import { Camera, CameraResultType } from '@capacitor/camera';
                     <h4>Uwórz profil</h4>
                     <h5>Krok 1</h5>
                     <ion-button @click="addPhoto">Wybierz zdjęcie</ion-button>
+                    <p>Zdjęcie zostanie przycięte do formatu 4:3</p>
                 </div>
                 <div v-else-if="!profileData.tinder_profile.description" class="onboarding">
                     <h4>Uwórz profil</h4>
