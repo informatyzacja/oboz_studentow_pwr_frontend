@@ -344,6 +344,8 @@ export default {
     justify-content: center;
     align-items: center;
     background-color: rgba(61, 87, 142, 0.149);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .textBox input {

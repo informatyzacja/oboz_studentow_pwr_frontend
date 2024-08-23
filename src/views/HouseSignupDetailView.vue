@@ -107,7 +107,7 @@ import { IonPage, IonContent, toastController } from '@ionic/vue';
                                 v-model="person.band" placeholder="Nr opaski"
                                 :disabled="signupLoading || person.first_name || !((isFreeForSignup || youAreSigningUp) && youAreSignedUpForThisHouse)"
                                 maxlength="6" />
-                            <button class="button success" @click="signup(person.band)"
+                            <button class="button success" @click="signupPerson(person)"
                                 v-if="!person.first_name && (isFreeForSignup || youAreSigningUp) && youAreSignedUpForThisHouse">Zapisz</button>
                         </div>
                         <LoadingIndicator v-if="signupLoading" inline />
@@ -292,11 +292,8 @@ export default {
                     // this.apiDataStore.houses.fetchData()
                 })
         },
-        signupSelf() {
-            this.signup(this.apiDataStore.profile.data[0].bandId)
-        },
-        signup(bandId) {
-            if (!bandId) {
+        signupPerson(person) {
+            if (!person || !person.band) {
                 toastController.create({
                     message: 'Nie podano ID użytkownika',
                     duration: 2000,
@@ -305,6 +302,12 @@ export default {
                 }).then(toast => toast.present())
                 return
             }
+            this.signup(person.band)
+        },
+        signupSelf() {
+            this.signup()
+        },
+        signup(bandId) {
             this.signupLoading = true
             const body = {
                 bandId: bandId,
