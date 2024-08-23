@@ -56,11 +56,11 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
     </template>
 
     <template #qr>
-      <div class="qr_card" @click="$refs.qrOverlay.show">
-        <img class="qr_card_bg" :src="qrBg" />
+      <div class="qr_card" @click="$refs.qrOverlay.show" v-if="profileData.bandId">
+        <img class=" qr_card_bg" :src="qrBg" />
 
-        <div class="qr_content" v-if="profileData.bandId">
-          <div class="qr">
+        <div class="qr_content">
+          <div class=" qr">
             <div class="qr_div" :class="{ hidden: qrLoading }">
               <VueQr :text="profileData.bandId" :logoSrc="Logo" :logoScale="0.15" :dotScale="0.8" colorDark="black"
                 colorLight="transparent" whiteMargin="false" :margin="0" :callback="qrReady" :size="250" />
@@ -72,9 +72,6 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
             <LoadingIndicator v-if="qrLoading" inline />
           </div>
           {{ profileData.bandId }}
-        </div>
-        <div v-else class="qr_content">
-          <img :src="BlackLogo" class="qr_placeholder_logo" />
         </div>
       </div>
 
@@ -106,7 +103,8 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 
         </div>
       </OverlayView>
-      <IonNavLink router-link="/tinder/profil">
+      <IonNavLink router-link="/tinder/profil"
+        v-if="apiDataStore.profile.ready && (apiDataStore.profile.data[0].tinder_profile.user || apiDataStore.profile.data[0].tinder_register_active)">
         <ItemBox
           :big-text="apiDataStore.profile.ready && apiDataStore.profile.data[0].tinder_profile.user ? 'Profil na tinderze' : 'Utwórz profil na tinderze'"
           :leftIcon="tinderIcon" small leftIconWhite />
