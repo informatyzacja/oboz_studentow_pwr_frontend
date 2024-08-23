@@ -27,7 +27,7 @@ export const useWorkshopStore = defineStore('workshop', {
       }).sort((a, b) => {
         return moment(a.start) - moment(b.start) || a.name.localeCompare(b.name)
       })
-      
+
     },
     withDate() {
       return (date) =>
@@ -74,7 +74,7 @@ export const useWorkshopStore = defineStore('workshop', {
   },
   actions: {
     fetchData() {
-      loadData(this)
+      return loadData(this)
     },
     addLoader(id) {
       this.data.forEach((item) => {

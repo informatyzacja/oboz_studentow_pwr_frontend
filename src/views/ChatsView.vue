@@ -5,7 +5,7 @@ import LoadingIndicator from '../components/LoadingIndicator.vue'
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
-import { IonPage, IonContent, IonNavLink } from '@ionic/vue';
+import { IonPage, IonContent, IonNavLink, IonRefresher, IonRefresherContent } from '@ionic/vue';
 
 import ChatCardView from './ChatCardView.vue'
 import ProfileCircle from '../components/navigation/ProfileCircle.vue'
@@ -19,6 +19,9 @@ import _ from 'lodash';
 <template>
     <ion-page>
         <ion-content :fullscreen="false">
+            <ion-refresher slot="fixed" @ionRefresh="fetchData($event)">
+                <ion-refresher-content></ion-refresher-content>
+            </ion-refresher>
             <main>
                 <top-bar title="Czaty" />
                 <ProfileCircle />
@@ -51,6 +54,14 @@ export default {
     },
     mounted() {
         this.apiDataStore.chats.fetchData()
+    },
+    methods: {
+        async fetchData(event) {
+            await this.apiDataStore.chats.fetchData()
+            if (event) {
+                event.target.complete();
+            }
+        },
     }
 }
 </script>

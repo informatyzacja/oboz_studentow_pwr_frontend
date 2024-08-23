@@ -8,7 +8,7 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import questionMark from '../assets/question-mark.jpg'
-import { IonPage, IonContent } from '@ionic/vue';
+import { IonPage, IonContent, IonRefresher, IonRefresherContent } from '@ionic/vue';
 import ProfileCircle from '../components/navigation/ProfileCircle.vue'
 
 </script>
@@ -16,6 +16,9 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
 <template>
   <ion-page>
     <ion-content :fullscreen="false">
+      <ion-refresher slot="fixed" @ionRefresh="fetchData($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
       <main>
         <TopBar title="Warsztaty" />
         <ProfileCircle />
@@ -151,23 +154,14 @@ export default {
   },
   mounted() {
     this.apiDataStore.workshops.fetchData()
-    this.timer = setInterval(this.apiDataStore.workshops.fetchData, 60000)
-  },
-  beforeUnmount() {
-    clearInterval(this.timer)
   },
   methods: {
-    addAnmateClass(event) {
-      // var card = event.target.parentNode.parentNode
-      // if (card && card.classList.contains('card')) {
-      //   card.id = 'animate'
-      //   return
-      // }
-      // card = card.querySelector('.card')
-      // if (card) {
-      //   card.id = 'animate'
-      // }
-    }
+    async fetchData(event) {
+      await this.apiDataStore.workshops.fetchData()
+      if (event) {
+        event.target.complete();
+      }
+    },
   }
 }
 </script>

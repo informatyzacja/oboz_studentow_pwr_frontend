@@ -121,6 +121,6 @@ h6 {
   line-height: 1.6 !important;
 }
 
-/* h1 {
-  font-size: 2em !important;
-} */
+ion-refresher-content {
+  margin-top: 40px;
+}

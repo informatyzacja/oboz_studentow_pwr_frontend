@@ -296,18 +296,20 @@ export default {
   },
   methods: {
     async fetchData(event) {
-      this.apiDataStore.userWorkshop.fetchData()
-      this.apiDataStore.schedule.fetchData()
-      this.apiDataStore.announcement.fetchData()
-      this.apiDataStore.homeLinks.fetchData()
-      this.apiDataStore.dailyQuest.fetchData()
-      this.apiDataStore.profile.fetchData()
-      this.apiDataStore.nightGameGroupInfo.fetchData()
-      this.apiDataStore.partner.fetchData()
-      await this.apiDataStore.images.fetchData()
-      if (event) {
-        event.target.complete();
-      }
+      Promise.all([this.apiDataStore.userWorkshop.fetchData(),
+      this.apiDataStore.schedule.fetchData(),
+      this.apiDataStore.announcement.fetchData(),
+      this.apiDataStore.homeLinks.fetchData(),
+      this.apiDataStore.dailyQuest.fetchData(),
+      this.apiDataStore.profile.fetchData(),
+      this.apiDataStore.nightGameGroupInfo.fetchData(),
+      this.apiDataStore.partner.fetchData(),
+      this.apiDataStore.images.fetchData()
+      ]).then(() => {
+        if (event) {
+          event.target.complete();
+        }
+      })
     },
     registerPageVisibility() {
       let hidden;
@@ -513,9 +515,5 @@ a.button {
 
 .red-bg {
   background-color: var(--red);
-}
-
-ion-refresher-content {
-  margin-top: 40px;
 }
 </style>

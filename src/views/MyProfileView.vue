@@ -35,7 +35,7 @@ import { logout } from '../functions/login.js'
 
 import { App } from '@capacitor/app';
 
-import { IonNavLink, IonToggle } from '@ionic/vue';
+import { IonNavLink, IonToggle, IonRefresher, IonRefresherContent } from '@ionic/vue';
 
 import { registerForPushNotifications, turnOffNotifications } from '../config.js'
 
@@ -49,6 +49,9 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
     :userWorkshopReady="apiDataStore.userWorkshop.ready" frakcjaLink="/moja-frakcja" grupaLink="/moja-grupa"
     :profileView="true">
     <template #topBar>
+      <ion-refresher slot="fixed" @ionRefresh="fetchData($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
       <TopBar title="Profil" />
     </template>
 
@@ -186,10 +189,6 @@ export default {
     this.apiDataStore.links.fetchData()
     this.apiDataStore.userWorkshop.fetchData()
 
-    this.timer1 = setInterval(this.apiDataStore.profile.fetchData, 300000)
-    this.timer2 = setInterval(this.apiDataStore.links.fetchData, 300000)
-    this.timer3 = setInterval(this.apiDataStore.userWorkshop.fetchData, 300000)
-
     App.getInfo()
       .then((appinfo) => {
         this.version = appinfo.version + ' (' + appinfo.build + ')'
@@ -209,13 +208,19 @@ export default {
       } else {
         turnOffNotifications()
       }
-    }
+    },
+    async fetchData(event) {
+      Promise.all([
+        this.apiDataStore.profile.fetchData(),
+        this.apiDataStore.links.fetchData(),
+        this.apiDataStore.userWorkshop.fetchData()
+      ]).then(() => {
+        if (event) {
+          event.target.complete();
+        }
+      })
+    },
   },
-  beforeUnmount() {
-    clearInterval(this.timer1)
-    clearInterval(this.timer2)
-    clearInterval(this.timer3)
-  }
 }
 </script>
 
