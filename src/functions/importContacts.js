@@ -57,6 +57,13 @@ export async function importContacts() {
         console.error(error)
         toast.dismiss()
         importingContacts = false;
+
+        toastController.create({
+            message: 'Błąd podczas importowania kontaktów: ' + error,
+            duration: 2000,
+            color: 'danger',
+            position: 'top'
+        }).then(toast => toast)
     }
 }
 
