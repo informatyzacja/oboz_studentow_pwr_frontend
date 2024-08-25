@@ -23,7 +23,7 @@ import { Keyboard } from '@capacitor/keyboard';
                 <div>
 
                     <p class="info">
-                        Podaj kod weryfikacyjny wysłany na {{ email }}. <br>
+                        Podaj kod weryfikacyjny wysłany na {{ email }} <br>
                     </p>
 
                     <input id="verification-code" name="verification-code" type="number" autocomplete="one-time-code"
@@ -70,6 +70,7 @@ export default {
         if (await this.storage.get('email')) {
             this.email = await this.storage.get('email');
         } else {
+            console.error('no email')
             this.$router.push('/login')
         }
     },
