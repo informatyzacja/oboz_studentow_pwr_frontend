@@ -8,6 +8,19 @@ const company = "Obóz'24";
 
 export async function importContacts() {
     if (importingContacts) return;
+
+    const permissionStatus = await Contacts.requestPermissions();
+    if (permissionStatus.contacts !== 'granted') {
+        const toast = await toastController.create({
+            message: 'Brak uprawnień do kontaktów!',
+            duration: 2000,
+            color: 'danger',
+            position: 'top'
+        })
+        toast.present()
+        return;
+    }
+
     importingContacts = true;
     const toast = await toastController.create({
         message: 'Importowanie kontaktów... czekaj...',
