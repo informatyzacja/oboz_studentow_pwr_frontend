@@ -22,7 +22,7 @@ export default {
                 && this.apiDataStore.profile.data[0]
         },
         avatar() {
-            return (this.profileData && this.profileData.tinder_profile && this.profileData.tinder_profile.photo) || (this.profileData && this.profileData.photo)
+            return (this.profileData && this.profileData.photo) || (this.profileData && this.profileData.tinder_profile && this.profileData.tinder_profile.photo)
         }
     },
     mounted() {
