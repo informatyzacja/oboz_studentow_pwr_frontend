@@ -116,7 +116,7 @@ export default {
     handleSearch(event) {
       const query = event ? event.target.value.toLowerCase() : '';
       this.filteredUsers = this.bus.users.filter(user => {
-        return user.first_name.toLowerCase().includes(query) || user.last_name.toLowerCase().includes(query) || user.bandId.toLowerCase().includes(query)
+        return (user.first_name || '').toLowerCase().includes(query) || (user.last_name || '').toLowerCase().includes(query) || (user.bandId || '').toLowerCase().includes(query)
       })
     },
     openCard(id) {
