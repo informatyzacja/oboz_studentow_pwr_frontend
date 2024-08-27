@@ -312,6 +312,7 @@ h6 {
   flex-direction: column;
 
   /* height: 218px; */
+  font-size: 20px;
   font-weight: 600;
 }
 
@@ -344,6 +345,10 @@ h6 {
   align-items: center;
   flex-direction: column;
   z-index: 2;
+}
+
+.qr_overlay_inner p {
+  font-size: 32px !important;
 }
 
 .qr_back_arrow {

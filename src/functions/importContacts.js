@@ -36,7 +36,7 @@ export async function importContacts() {
             res.push(Contacts.createContact({
                 contact: {
                     name: {
-                        given: response[i].first_name,
+                        given: `${company} ${response[i].title} ${response[i].first_name}`,
                         family: response[i].last_name,
                     },
                     organization: {
@@ -99,7 +99,12 @@ export async function deleteContacts() {
 
         var res = []
         for (let i = 0; i < contacts.contacts.length; i++) {
-            if (contacts.contacts[i].organization.company === company) {
+            console.log(contacts.contacts[i])
+            if (
+                (contacts.contacts[i].organization && contacts.contacts[i].organization.company && contacts.contacts[i].organization.company.includes(company)) ||
+                (contacts.contacts[i].organization && contacts.contacts[i].organization.jobTitle && contacts.contacts[i].organization.jobTitle.includes(company)) ||
+                (contacts.contacts[i].name && contacts.contacts[i].name.given.includes(company))
+            ) {
                 res.push(Contacts.deleteContact({
                     contactId: contacts.contacts[i].contactId,
                 }));
@@ -119,5 +124,12 @@ export async function deleteContacts() {
     } catch (error) {
         console.error(error)
         toast.dismiss()
+
+        toastController.create({
+            message: 'Błąd podczas usuwania kontaktów: ' + error,
+            duration: 2000,
+            color: 'danger',
+            position: 'top'
+        }).then(toast => toast)
     }
 }

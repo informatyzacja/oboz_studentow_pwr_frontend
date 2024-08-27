@@ -16,6 +16,51 @@ import { IonPage, IonContent, IonRefresher, IonRefresherContent, IonSearchbar } 
 
 <template>
   <ion-page>
+
+
+    <OverlayView ref="userOverlay">
+      <div class="user-overlay">
+        <div v-if="user">
+          <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+
+          <div v-if="user.presence">
+            ✅ Obecny/a
+            <button class="red-bg" @click="setPresence(user.id, false)" v-if="!presence_loading">Oznacz jako
+              nieobecny/a</button>
+            <button class="red-bg" v-else>
+              <LoadingIndicator inline small />
+            </button>
+          </div>
+          <div v-else>
+            ❌ Nieobecny/a
+            <button class="green-bg" @click="setPresence(user.id, true)" v-if="!presence_loading">Oznacz jako
+              obecny/a</button>
+            <button class="green-bg" v-else>
+              <LoadingIndicator inline small />
+            </button>
+          </div>
+
+          <p v-if="user.bandId" style="margin-top: 5px;">Nr opaski: {{ user.bandId }}</p>
+
+          <div class="center" v-else>
+            <h4 style="margin-top: 20px !important;">Dodaj opaskę:</h4>
+            <ScannerBaseView @error="(err) => (error = err)" @result="(res) => {
+              scanFinished(res)
+            }
+              " />
+          </div>
+
+
+          <a :href="'tel:' + user.phoneNumber">
+            <button>Zadzwoń {{ user.phoneNumber }}</button>
+          </a>
+
+        </div>
+        <p v-if="apiDataStore.buses.error" class="error">{{ apiDataStore.buses.error }}</p>
+        <button class="red-bg" @click="$refs.userOverlay.hide()">Zamknij</button>
+      </div>
+    </OverlayView>
+
     <ion-content :fullscreen="false">
       <ion-refresher slot="fixed" @ionRefresh="fetchData($event)">
         <ion-refresher-content></ion-refresher-content>
@@ -37,49 +82,6 @@ import { IonPage, IonContent, IonRefresher, IonRefresherContent, IonSearchbar } 
 
         </div>
 
-
-        <OverlayView ref="userOverlay">
-          <div class="user-overlay">
-            <div v-if="user">
-              <h2>{{ user.first_name }} {{ user.last_name }}</h2>
-
-              <div v-if="user.presence">
-                ✅ Obecny/a
-                <button class="red-bg" @click="setPresence(user.id, false)" v-if="!presence_loading">Oznacz jako
-                  nieobecny/a</button>
-                <button class="red-bg" v-else>
-                  <LoadingIndicator inline small />
-                </button>
-              </div>
-              <div v-else>
-                ❌ Nieobecny/a
-                <button class="green-bg" @click="setPresence(user.id, true)" v-if="!presence_loading">Oznacz jako
-                  obecny/a</button>
-                <button class="green-bg" v-else>
-                  <LoadingIndicator inline small />
-                </button>
-              </div>
-
-              <p v-if="user.bandId" style="margin-top: 5px;">Nr opaski: {{ user.bandId }}</p>
-
-              <div class="center" v-else>
-                <h4 style="margin-top: 20px !important;">Dodaj opaskę:</h4>
-                <ScannerBaseView @error="(err) => (error = err)" @result="(res) => {
-                  scanFinished(res)
-                }
-                  " />
-              </div>
-
-
-              <a :href="'tel:' + user.phoneNumber">
-                <button>Zadzwoń {{ user.phoneNumber }}</button>
-              </a>
-
-            </div>
-            <p v-if="apiDataStore.buses.error" class="error">{{ apiDataStore.buses.error }}</p>
-            <button class="red-bg" @click="$refs.userOverlay.hide()">Zamknij</button>
-          </div>
-        </OverlayView>
 
         <LoadingIndicator v-if="apiDataStore.buses.loading" />
         <p v-if="apiDataStore.buses.error" class="error">{{ apiDataStore.buses.error }}</p>
