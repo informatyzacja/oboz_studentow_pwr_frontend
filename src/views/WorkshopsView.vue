@@ -24,28 +24,27 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
         <ProfileCircle />
         <div class="padding-main" v-if="apiDataStore.workshops.ready && apiDataStore.workshops.data.length">
           <div class="day-changer">
-            <RouterLink v-if="currentDay > 0" :to="{ name: 'warsztatyDay', params: { day: currentDay - 1 } }">
+            <div v-if="currentDay > 0" @click="currentDay -= 1">
               <div class="arrow-circle arrow-circle-left">
                 <div class="arrow arrow-left"></div>
               </div>
-            </RouterLink>
+            </div>
 
             <h5>
               {{ moment(apiDataStore.workshops.futureDates[currentDay]).format('dddd, Do MMMM') }}
             </h5>
 
-            <RouterLink v-if="currentDay < apiDataStore.workshops.futureDates.length - 1"
-              :to="{ name: 'warsztatyDay', params: { day: currentDay + 1 } }">
+            <div v-if="currentDay < apiDataStore.workshops.futureDates.length - 1" @click="currentDay += 1">
               <div class="arrow-circle arrow-circle-right">
                 <div class="arrow arrow-right"></div>
               </div>
-            </RouterLink>
+            </div>
           </div>
 
           <RouterLink :to="{ name: 'warsztatyDetail', params: { id: data.id } }" v-for="( data, index ) in
             apiDataStore.workshops.withDate(
               apiDataStore.workshops.futureDates[currentDay]
-            )" :key="index" @click="addAnmateClass($event)">
+            )" :key="index">
             <HomeCard :name="data.name" :location="data.location"
               :time="moment(data.start).format('H:mm') + ' - ' + moment(data.end).format('H:mm')"
               :imgSrc="data.photo || questionMark" :userCount="data.userCount + '/' + data.userLimit" big />
@@ -74,11 +73,11 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
 }
 
 .arrow-circle-left {
-  background: radial-gradient(50% 50% at 150% 50%, #989898 0%, #6b6b6b 100%);
+  background: var(--gray-text-gradient);
 }
 
 .arrow-circle-right {
-  background: radial-gradient(50% 50% at -50% 50%, #989898 0%, #6b6b6b 100%);
+  background: var(--gray-text-gradient);
 }
 
 .arrow {
@@ -141,13 +140,13 @@ export default {
     }
   },
   created() {
-    this.currentDay = parseInt(this.$route.params.day) || 0
-    this.$watch(
-      () => this.$route.params.day,
-      (newVal) => {
-        this.currentDay = parseInt(newVal) || 0
-      }
-    )
+    // this.currentDay = parseInt(this.$route.params.day) || 0
+    // this.$watch(
+    //   () => this.$route.params.day,
+    //   (newVal) => {
+    //     this.currentDay = parseInt(newVal) || 0
+    //   }
+    // )
   },
   computed: {
     ...mapStores(useApiDataStore)

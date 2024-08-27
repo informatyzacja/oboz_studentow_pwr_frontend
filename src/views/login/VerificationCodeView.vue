@@ -23,7 +23,7 @@ import { Keyboard } from '@capacitor/keyboard';
                 <div>
 
                     <p class="info">
-                        Podaj kod weryfikacyjny wysłany na {{ email }} <br>
+                        Podaj kod weryfikacyjny wysłany na <br>{{ email }}
                     </p>
 
                     <input id="verification-code" name="verification-code" type="number" autocomplete="one-time-code"
@@ -39,6 +39,8 @@ import { Keyboard } from '@capacitor/keyboard';
                         <span v-if="!loading">Zaloguj się</span>
                         <ion-spinner v-else name="dots" />
                     </button>
+
+                    <p class="info2">Jeżeli nie otrzymałeś/aś maila sprawdz folder SPAM oraz poczekaj kilka minut.</p>
 
 
                 </div>
@@ -240,6 +242,14 @@ form {
     font-weight: 600;
     text-align: center;
     margin-bottom: 20px;
+}
+
+.info2 {
+    font-size: 12px;
+    color: var(--text-gray);
+    font-weight: 600;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .back-link {

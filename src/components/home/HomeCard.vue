@@ -115,7 +115,6 @@ defineProps({
   position: absolute;
   bottom: 0;
   padding: 15px;
-  padding-bottom: 25px;
   width: 100%;
   overflow: hidden;
   display: flex;
@@ -123,7 +122,7 @@ defineProps({
   gap: 3px;
   align-items: flex-start;
   justify-content: center;
-  height: 26%;
+  min-height: 26%;
 }
 
 
@@ -158,7 +157,7 @@ defineProps({
   display: inline-block;
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
+  /* overflow-x: hidden; */
   width: 190px;
   padding-right: 1.5rem;
 }
