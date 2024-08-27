@@ -111,7 +111,7 @@ import { IonPage, IonContent } from '@ionic/vue';
                 </div>
 
                 <div class="padding info-screen"
-                    v-if="apiDataStore.nightGameGroupInfo.ready && !apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
+                    v-else-if="apiDataStore.nightGameGroupInfo.ready && !apiDataStore.nightGameGroupInfo.data.free_places && !apiDataStore.nightGameGroupInfo.data.user_in_group">
                     <h3>Brak miejsc!</h3>
                     <img :src="cryingIcon" alt="crying" style="width: 100px; margin: 20px auto; display: block;" />
                     <p>Przepraszamy, ale miejsca na grę nocną już się skończyły.</p>
