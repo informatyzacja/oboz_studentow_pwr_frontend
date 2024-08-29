@@ -418,7 +418,7 @@ button {
   height: 100px;
   margin: 10px;
   border-radius: 10px;
-  max-width: 200px;
+  max-width: 300px;
   object-fit: contain;
 }
 
