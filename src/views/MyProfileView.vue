@@ -151,7 +151,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
         <div class="spacer"></div>
 
         <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small @click="logoutClicked" />
-        <p class="version" v-if="version">{{ versionStore.fullVersion }}</p>
+        <p class="version" v-if="versionStore.fullVersion">{{ versionStore.fullVersion }}</p>
 
 
         <div class="credits">
@@ -173,7 +173,6 @@ export default {
       timer3: null,
 
       qrLoading: true,
-      version: null,
     }
   },
   computed: {
