@@ -21,7 +21,7 @@ import { Keyboard } from '@capacitor/keyboard';
                     </p>
 
                     <p v-if="error" class="errors">
-                        Podany adres e-mail nie jest przypisany do żadnego uczestnika obozu.
+                        {{ error }}
                     </p>
 
                     <input id="email" type="email" autocomplete="email" required class="pill" placeholder="E-MAIL"
@@ -43,13 +43,16 @@ export default {
     data() {
         return {
             email: '',
-            error: false,
+            error: null,
             loading: false
         }
     },
     async mounted() {
         this.storage = new Storage();
         await this.storage.create();
+        if (await this.storage.get('email')) {
+            this.$router.push({ name: 'verification-code' })
+        }
     },
     methods: {
         submit() {
@@ -72,13 +75,16 @@ export default {
                     return data.json()
                 }
             }).then(data => {
+                this.error = null;
                 if (data.exists) {
                     this.storage.set('email', this.email).then(() => {
                         this.$router.push({ name: 'verification-code' })
                     })
                 } else {
-                    this.error = true;
+                    this.error = data.error;
                 }
+            }).catch(() => {
+                this.error = 'Wystąpił błąd. Spróbuj ponownie później.'
             }).finally(() => {
                 this.loading = false
             })

@@ -11,7 +11,7 @@ import { Keyboard } from '@capacitor/keyboard';
 <template>
     <ion-page>
         <ion-content :fullscreen="false">
-            <IonNavLink router-link="/login" router-direction="back">
+            <IonNavLink router-link="/login" router-direction="back" @click="storage.remove('email')">
                 <div class="back-link">
                     <div class="arrow"></div>
                     Wróć
@@ -105,7 +105,7 @@ export default {
                         .then(() => {
                             Preferences.set({ key: 'refresh_token', value: data.refresh })
                                 .then(() => {
-                                    this.$router.push('/home')
+                                    this.$router.push('/')
                                 })
                         })
                 } else {
