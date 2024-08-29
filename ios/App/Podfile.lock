@@ -22,6 +22,9 @@ PODS:
     - Capacitor
   - CapacitorKeyboard (6.0.2):
     - Capacitor
+  - CapacitorLiveUpdates (0.3.1):
+    - Capacitor
+    - IonicLiveUpdates (~> 0.5.4)
   - CapacitorLocalNotifications (6.1.0):
     - Capacitor
   - CapacitorMlkitBarcodeScanning (6.1.0):
@@ -111,6 +114,7 @@ PODS:
   - GoogleUtilitiesComponents (1.1.0):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (3.4.1)
+  - IonicLiveUpdates (0.5.5)
   - MLImage (1.0.0-beta5)
   - MLKitBarcodeScanning (4.0.0):
     - MLKitCommon (~> 10.0)
@@ -151,6 +155,7 @@ DEPENDENCIES:
   - "CapacitorDevice (from `../../node_modules/@capacitor/device`)"
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
   - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
+  - "CapacitorLiveUpdates (from `../../node_modules/@capacitor/live-updates`)"
   - "CapacitorLocalNotifications (from `../../node_modules/@capacitor/local-notifications`)"
   - "CapacitorMlkitBarcodeScanning (from `../../node_modules/@capacitor-mlkit/barcode-scanning`)"
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
@@ -172,6 +177,7 @@ SPEC REPOS:
     - GoogleUtilities
     - GoogleUtilitiesComponents
     - GTMSessionFetcher
+    - IonicLiveUpdates
     - MLImage
     - MLKitBarcodeScanning
     - MLKitCommon
@@ -203,6 +209,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/haptics"
   CapacitorKeyboard:
     :path: "../../node_modules/@capacitor/keyboard"
+  CapacitorLiveUpdates:
+    :path: "../../node_modules/@capacitor/live-updates"
   CapacitorLocalNotifications:
     :path: "../../node_modules/@capacitor/local-notifications"
   CapacitorMlkitBarcodeScanning:
@@ -230,6 +238,7 @@ SPEC CHECKSUMS:
   CapacitorDevice: 7097a1deb4224b77fd13a6e60a355d0062a5d772
   CapacitorHaptics: fe689ade56ef20ec9b041a753c6da70c5d8ec9a9
   CapacitorKeyboard: 2700f9b18687be021e28b5a09b59eb151a46d5e0
+  CapacitorLiveUpdates: 82cf6e546e739075d805de2eef30df1caec1fbcd
   CapacitorLocalNotifications: 6bac9e948b2b8852506c6d74abb2cde140250f86
   CapacitorMlkitBarcodeScanning: 63e217d376f8f63b1be84c0d19568f318e87f4d3
   CapacitorPreferences: e8284bf740cf8c6d3f25409af3c01df87dfeb5a1
@@ -248,6 +257,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: d053d902a8edaa9904e1bd00c37535385b8ed152
   GoogleUtilitiesComponents: 679b2c881db3b615a2777504623df6122dd20afe
   GTMSessionFetcher: 8000756fc1c19d2e5697b90311f7832d2e33f6cd
+  IonicLiveUpdates: 656600ecd2cbaad5d5522aedd35958b9cf20b943
   MLImage: 1824212150da33ef225fbd3dc49f184cf611046c
   MLKitBarcodeScanning: 9cb0ec5ec65bbb5db31de4eba0a3289626beab4e
   MLKitCommon: afcd11b6c0735066a0dde8b4bf2331f6197cbca2
@@ -256,6 +266,6 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
 
-PODFILE CHECKSUM: e7a448fe6a3f8197c794c7b3a1619f5b54720f05
+PODFILE CHECKSUM: 3f1a1f2d0efd4d9ddcf5b62b18f4cde61995c78e
 
 COCOAPODS: 1.15.2

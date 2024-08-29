@@ -27,6 +27,7 @@ import qrBg from '../assets/Grafika za QR.png'
 
 import { REGULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
 
+import { useVersionStore } from '../stores/version.js'
 import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
@@ -150,7 +151,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
         <div class="spacer"></div>
 
         <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small @click="logoutClicked" />
-        <p class="version" v-if="version">v{{ version }}</p>
+        <p class="version" v-if="version">{{ versionStore.fullVersion }}</p>
 
 
         <div class="credits">
@@ -176,7 +177,7 @@ export default {
     }
   },
   computed: {
-    ...mapStores(useApiDataStore),
+    ...mapStores(useApiDataStore, useVersionStore),
     profileData() {
       return this.apiDataStore.profile.data && this.apiDataStore.profile.data.length
         && this.apiDataStore.profile.data[0]
@@ -187,10 +188,7 @@ export default {
     this.apiDataStore.links.fetchData()
     this.apiDataStore.userWorkshop.fetchData()
 
-    App.getInfo()
-      .then((appinfo) => {
-        this.version = appinfo.version + ' (' + appinfo.build + ')'
-      })
+    this.versionStore.refresh()
   },
   methods: {
     async logoutClicked() {
@@ -211,7 +209,8 @@ export default {
       Promise.all([
         this.apiDataStore.profile.fetchData(),
         this.apiDataStore.links.fetchData(),
-        this.apiDataStore.userWorkshop.fetchData()
+        this.apiDataStore.userWorkshop.fetchData(),
+        this.versionStore.refresh()
       ]).then(() => {
         if (event) {
           event.target.complete();
