@@ -42,14 +42,13 @@ import { IonPage, IonContent, IonRefresher, IonRefresherContent, IonSearchbar } 
 
           <p v-if="user.bandId" style="margin-top: 5px;">Nr opaski: {{ user.bandId }}</p>
 
-          <div class="center" v-else>
+          <div class="center" v-if="user.bandId < 300000">
             <h4 style="margin-top: 20px !important;">Dodaj opaskę:</h4>
             <ScannerBaseView @error="(err) => (error = err)" @result="(res) => {
               scanFinished(res)
             }
               " />
           </div>
-
 
           <a :href="'tel:' + user.phoneNumber">
             <button>Zadzwoń {{ user.phoneNumber }}</button>
@@ -70,14 +69,14 @@ import { IonPage, IonContent, IonRefresher, IonRefresherContent, IonSearchbar } 
         <ion-searchbar placeholder="Szukaj" ref="searchbar" @ionInput="handleSearch($event)"></ion-searchbar>
 
 
-        <div class="padding-main" v-if="apiDataStore.buses.ready && bus && bus.users">
+        <div class="padding-main" v-if="apiDataStore.buses.data && bus && bus.users">
 
           <h3>{{ present_users_count }}/{{ bus.users.length }} obecni</h3>
           <h3 style="margin-bottom:10px !important">{{ users_with_band_count }}/{{ bus.users.length }} opaski
           </h3>
 
           <ItemBox :bigText="data.last_name + ' ' + data.first_name" :rightIcon="rightArrow"
-            :smallText="(data.presence ? '✅ Obecny  ' : '❌ Nieobecny  ') + (data.bandId || '❗️Brak opaski')"
+            :smallText="(data.presence ? '✅ Obecny  ' : '❌ Nieobecny  ') + (data.bandId ? (data.bandId >= 300000 ? data.bandId : '▶️ Opaska tymczasowa') : '❗️Brak opaski')"
             v-for="(data, index) in filteredUsers" :key="index" @click="openCard(data.id)" />
 
         </div>
@@ -110,7 +109,7 @@ export default {
       return this.bus && this.bus.users.filter(user => user.presence).length
     },
     users_with_band_count() {
-      return this.bus && this.bus.users.filter(user => user.bandId).length
+      return this.bus && this.bus.users.filter(user => user.bandId && user.bandId >= 300000).length
     },
 
   },
