@@ -128,6 +128,17 @@ defineProps([
             </div>
           </div>
 
+          <!-- meal duty -->
+          <div v-if="profileData && profileData.meal_duty && profileData.meal_duty.length" class="zindex">
+            <h3>Twoje dyżury stołówkowe</h3>
+            <div class="scroll">
+              <div v-for="(data, index) in profileData.meal_duty" :key="index">
+                <ItemBox :leftBigText="moment(data.start).format('HH:mm') + ' - ' + moment(data.end).format('HH:mm')"
+                  :bigText="moment(data.start).format('dddd, DD.MM')" small />
+              </div>
+            </div>
+          </div>
+
           <!-- warsztaty -->
           <div v-if="userWorkshopReady && userWorkshopData.length" class="zindex">
             <h3>Twoje warsztaty</h3>
