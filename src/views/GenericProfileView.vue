@@ -67,6 +67,11 @@ defineProps([
 
               <div class="spacer"></div>
 
+              <!-- faq -->
+              <RouterLink to="/faq" v-if="profileView">
+                <ItemBox bigText="Częste pytania" :rightIcon="rightArrow" :leftIcon="faqIcon" />
+              </RouterLink>
+
               <!-- linki -->
               <div v-if="linksReady && linksData.length">
                 <a v-for="(data, index) in linksData" :key="index" :href="data.url" target="_blank">
@@ -74,10 +79,6 @@ defineProps([
                 </a>
               </div>
 
-              <!-- faq -->
-              <RouterLink to="/faq" v-if="profileView">
-                <ItemBox bigText="Częste pytania" :rightIcon="rightArrow" :leftIcon="faqIcon" small />
-              </RouterLink>
 
               <div class="spacer"></div>
 
