@@ -7,6 +7,7 @@ import { useApiDataStore } from '../stores/api.js'
 import { mapStores } from 'pinia'
 
 import rightArrow from '../assets/arrow.svg'
+import faqIcon from '../assets/icons8-faq.png'
 import phoneIcon from '../assets/phone_icon.svg'
 import { IonPage, IonContent } from '@ionic/vue';
 import ProfileCircle from '../components/navigation/ProfileCircle.vue'
@@ -36,6 +37,11 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
             Brak ratowników
           </p>
 
+
+          <RouterLink to="/faq">
+            <ItemBox class="faq" bigText="Często zadawane pytania FAQ" :rightIcon="rightArrow" :leftIcon="faqIcon" />
+          </RouterLink>
+
           <div v-if="apiDataStore.contacts.ready && apiDataStore.contacts.data.currentSoberDuty.length">
             <h3>Obecnie na dyżurze trzeźwości</h3>
             <div>
@@ -46,6 +52,28 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
               </a>
             </div>
           </div>
+
+
+          <h3>Opiekunowie Twojej frakcji</h3>
+          <div v-if="
+            apiDataStore.contacts.ready &&
+            apiDataStore.contacts.data.fractionWardens &&
+            apiDataStore.contacts.data.fractionWardens.length
+          ">
+            <a v-for="(data, index) in apiDataStore.contacts.data.fractionWardens" :key="index"
+              :href="'tel:' + data.phoneNumber">
+              <ItemBox :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo"
+                :rightIcon="phoneIcon" />
+            </a>
+          </div>
+          <p v-if="
+            apiDataStore.contacts.ready &&
+            apiDataStore.contacts.data.fractionWardens &&
+            !apiDataStore.contacts.data.fractionWardens.length
+          " class="error">
+            Opiekunowie frakcji się najebali
+          </p>
+
 
           <h3>Sztab</h3>
           <div v-if="
@@ -69,9 +97,6 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
           <LoadingIndicator v-if="apiDataStore.contacts.loading" />
           <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
 
-          <RouterLink to="/faq">
-            <ItemBox class="faq" bigText="Więcej pomocy możesz znaleźć w FAQ" :rightIcon="rightArrow" />
-          </RouterLink>
         </div>
       </main>
 
@@ -90,10 +115,11 @@ h3 {
 }
 
 .faq {
-  position: fixed;
+  margin: 25px 0px 15px;
+  /* position: fixed;
   bottom: 0;
   left: 20px;
-  right: 20px;
+  right: 20px; */
 }
 </style>
 

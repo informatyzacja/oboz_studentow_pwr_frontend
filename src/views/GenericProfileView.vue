@@ -69,7 +69,7 @@ defineProps([
 
               <!-- faq -->
               <RouterLink to="/faq" v-if="profileView">
-                <ItemBox bigText="Częste pytania" :rightIcon="rightArrow" :leftIcon="faqIcon" />
+                <ItemBox bigText="Często zadawane pytania FAQ" :rightIcon="rightArrow" :leftIcon="faqIcon" />
               </RouterLink>
 
               <!-- linki -->
