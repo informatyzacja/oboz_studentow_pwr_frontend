@@ -45,7 +45,7 @@ import { IonPage, IonContent } from '@ionic/vue';
                                 <div style="width: 100%">
 
                                     <p class="datetime"
-                                        v-if="index == 0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.data[index - 1].date) > 8 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.data[index - 1].date), 'day')">
+                                        v-if="index == 0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.messagesForChatWithId(chat_id)[index - 1].date) > 8 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.messagesForChatWithId(chat_id)[index - 1].date), 'day')">
                                         {{ moment(message.date).isSame(moment(), 'day') ?
                                             moment(message.date).format('HH:mm') :
                                             moment(message.date).format('DD.MM.YYYY HH:mm') }}
@@ -128,13 +128,16 @@ export default {
             this.apiDataStore.chats.fetchData(),
             this.apiDataStore.profile.fetchData()
         ]).then(() => {
-            this.$refs.content.$el.scrollToBottom(0);
+            setTimeout(() => {
+                this.$refs.content.$el.scrollToBottom(0);
+            }, 10)
         })
 
         this.timer = setInterval(() => {
-            this.apiDataStore.chat.fetchData()
+            this.apiDataStore.chat.fetchData().then(() => {
+                this.$refs.content.$el.scrollToBottom(0);
+            })
         }, 1000 * 60 * 5) // fetch data every 5 minutes
-
 
         this.reconnect = true
         this.connect()
