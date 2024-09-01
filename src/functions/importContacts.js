@@ -12,7 +12,7 @@ export async function importContacts() {
     const permissionStatus = await Contacts.requestPermissions();
     if (permissionStatus.contacts !== 'granted') {
         const toast = await toastController.create({
-            message: 'Brak uprawnień do kontaktów!',
+            message: 'Brak dostępu do kontaktów w telefonie!',
             duration: 2000,
             color: 'danger',
             position: 'top'

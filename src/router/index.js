@@ -220,6 +220,11 @@ const router = createRouter({
           component: () => import('../admin-components/GroupListView.vue')
         },
         {
+          path: '/uczestnicy',
+          name: 'uczestnicy',
+          component: () => import('../admin-components/Participants.vue')
+        },
+        {
           path: '/punkty',
           name: 'punkty',
           component: () => import('../admin-components/PointsView.vue')

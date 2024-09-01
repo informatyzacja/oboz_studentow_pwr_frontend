@@ -30,12 +30,15 @@ import { useHousesStore, useHouseSignupsStore, useHouseSignupsInfoStore } from '
 
 import { useBusStore } from './staff/buses.js'
 
+import { useParticipantStore } from './staff/participants.js'
+
 export const useApiDataStore = defineStore('apiData', {
   state: () => ({
     userWorkshop: useUserWorkshopStore(),
     schedule: useScheduleStore(),
     announcement: useAnnouncementStore(),
     buses: useBusStore(),
+    participants: useParticipantStore(),
     partner: usePartnerStore(),
 
     profile: useProfileStore(),

@@ -61,6 +61,9 @@ import { importContacts, deleteContacts } from '@/functions/importContacts'
           <MenuCard title="Usuń kontakty" :icon="GroupIcon" @click="deleteContacts" v-if="apiDataStore.permissions.ready &&
             apiDataStore.permissions.hasOneOfPermissions(['can_get_contacts'])
           " />
+          <MenuCard title="Uczestnicy" :icon="GroupIcon" link="/uczestnicy" v-if="apiDataStore.permissions.ready &&
+            apiDataStore.permissions.hasOneOfPermissions(['can_change_bands'])
+          " />
 
           <MenuCard title="Warsztaty" :icon="HammerIcon" link="/warsztaty" />
           <MenuCard title="Sos" :icon="SosIcon" link="/sos" />
