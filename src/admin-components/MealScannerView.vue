@@ -4,6 +4,7 @@ import ItemBox from '../components/ItemBox.vue'
 import LoadingIndicator from '../components/LoadingIndicator.vue'
 import ScannerBaseView from './ScannerBaseView.vue'
 import moment from 'moment'
+import OverlayView from '../components/OverlayView.vue'
 
 import { apiRequest } from '../stores/functions.js'
 import { IonPage, IonContent } from '@ionic/vue';
@@ -11,6 +12,19 @@ import { IonPage, IonContent } from '@ionic/vue';
 
 <template>
   <ion-page>
+
+    <OverlayView ref="chooseMeal">
+      <div class="choose-meal-overlay">
+        <div v-for="meal in currentMeals" :key="meal.id">
+          <button @click="currentMeal = meal; $refs.chooseMeal.hide()">
+            {{ meal.name }}, {{ moment(meal.start).format('dddd DD.MM') }}
+          </button>
+        </div>
+        <button class="red-bg" @click="$refs.chooseMeal.hide()">Zamknij</button>
+      </div>
+    </OverlayView>
+
+
     <ion-content :fullscreen="false">
       <main>
         <TopBar title="Walidacja posiłków" backLink="/skaner" />
@@ -23,8 +37,8 @@ import { IonPage, IonContent } from '@ionic/vue';
             ? 'Ładowanie...'
             : currentMeal
               ? currentMeal.name + ', ' + moment(currentMeal.start).format('dddd DD.MM')
-              : 'Obecnie nie odbywa się żaden posiłek'
-            " small />
+              : (currentMeals.length ? 'Wybierz posiłek' : 'Obecnie nie odbywa się żaden posiłek')
+            " small @click="chooseMeal()" />
 
           <div class="center">
             <ScannerBaseView @error="(err) => (error = err)" @result="(res) => {
@@ -81,7 +95,8 @@ export default {
       validationSuccessful: null,
 
       currentMealLoadng: true,
-      currentMeal: null
+      currentMeal: null,
+      currentMeals: []
     }
   },
   methods: {
@@ -140,22 +155,33 @@ export default {
     },
 
     getCurrentMeal() {
-      apiRequest('../staff-api/meal-validation/current-meal/')
+      apiRequest('../staff-api/meal-validation/current-meals/')
         .then((data) => {
-          if (!data.id) {
+          this.currentMeals = data
+          if (data.length === 1) {
+            this.currentMeal = data[0]
+          } else {
             this.currentMeal = null
-            return
           }
-          this.currentMeal = data
         })
         .catch((error) => {
+          this.currentMeals = null
           console.error('There was an error!', error)
         })
         .finally(() => {
           this.currentMealLoadng = false
         })
+    },
+
+    chooseMeal() {
+      if (this.currentMeals.length > 1) {
+        this.$refs.chooseMeal.show();
+      } else if (this.currentMeals.length === 1) {
+        this.currentMeal = this.currentMeals[0];
+      }
     }
   }
+
 }
 </script>
 
@@ -227,5 +253,42 @@ export default {
 
 .success {
   background-color: green;
+}
+
+.choose-meal-overlay {
+  padding: 10px;
+  padding-bottom: 20px;
+  margin: 20px auto;
+  width: 95%;
+  background: var(--bg-lighter);
+  border-radius: 28px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+button {
+  border-radius: 10px;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  line-height: 16px;
+  cursor: pointer;
+
+  background-color: var(--bg);
+
+  width: 130px;
+  display: flex;
+  justify-content: center;
+
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+.red-bg {
+  background-color: var(--red);
 }
 </style>
