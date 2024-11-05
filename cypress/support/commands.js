@@ -33,9 +33,9 @@ Cypress.on('uncaught:exception', (err, runnable) => {
     return true
 })
 
-import { Storage } from '@ionic/storage';
+// import { Storage } from '@ionic/storage';
 
-const storage = new Storage;
+// const storage = new Storage;
 
 // Cypress.Commands.add('enableTutorial', () => {
 //     cy.visit('/', {
@@ -44,3 +44,18 @@ const storage = new Storage;
 //         }
 //     })
 // })
+
+Cypress.Commands.add('login', () => {
+    cy.visit('/');
+    cy.wait(1000);
+
+    cy.contains('Zaloguj się').then(($el) => {
+        if ($el.is(':visible')) {
+            cy.get('input[type="email"]').should('be.visible').type('test@oboz.samorzad.pwr.edu.pl');
+            cy.get('button').click();
+        }
+    });
+
+    cy.get('input[name="verification-code"]').should('be.visible').type('73874544');
+    cy.wait(1000);
+});
