@@ -1,8 +1,3 @@
-// describe('Login', () => {
-//     it('logs in successfully', () => {
-//         cy.login();
-//     });
-// });
 
 describe('Home', () => {
     beforeEach(() => {
