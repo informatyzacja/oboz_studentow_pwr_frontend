@@ -20,12 +20,12 @@ export const useVersionStore = defineStore('version', {
                     this.version = appinfo.version + ' (' + appinfo.build + ')'
                 })
 
-            await LiveUpdates.sync()
-                .then((result) => {
-                    if (!result.snapshot) return
-                    this.liveUpdateVersion = result.snapshot.buildId
-                    this.isNewest = !result.activeApplicationPathChanged
-                })
+            // await LiveUpdates.sync()
+            //     .then((result) => {
+            //         if (!result.snapshot) return
+            //         this.liveUpdateVersion = result.snapshot.buildId
+            //         this.isNewest = !result.activeApplicationPathChanged
+            //     })
         },
     }
 })
