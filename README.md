@@ -1,4 +1,5 @@
 # PWr Students' Camp - Vue.js Project
+### Obóz Studnetów PWr 
 
 This project is a frontend built with Vue.js + Capacitor for an application that manages camps for students of Wrocław University of Science and Technology. The project includes a Django backend and a Vue.js frontend.
 
