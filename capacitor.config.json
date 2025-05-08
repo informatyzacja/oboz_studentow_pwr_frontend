@@ -1,0 +1,19 @@
+{
+    "appId": "pl.edu.pwr.samorzad.oboz",
+    "appName": "oboz-studentow-pwr",
+    "webDir": "dist",
+    "server": {
+        "androidScheme": "https"
+    },
+    "plugins": {
+        "SplashScreen": {
+            "launchAutoHide": false
+        },
+        "LiveUpdates": {
+            "appId": "XXXXXXXXX",
+            "channel": "Production",
+            "autoUpdateMethod": "none",
+            "maxVersions": 2
+        }
+    }
+}
