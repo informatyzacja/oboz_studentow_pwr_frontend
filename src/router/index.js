@@ -259,6 +259,11 @@ const router = createRouter({
           name: 'bus',
           component: () => import('../admin-components/buses/BusView.vue')
         },
+        {
+          path: '/beer-opener',
+          name: 'beer-opener',
+          component: () => import('../views/BeerOpenerView.vue')
+        }
       ]
     }
   ]
