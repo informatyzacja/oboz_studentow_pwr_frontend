@@ -15,6 +15,7 @@ import opaskaIcon from '../assets/icons8-bangles.png'
 import domekIcon from '../assets/icons8-exterior.png'
 import mealIcon from '../assets/icons8-cutlery.png'
 import chatIcon from '../assets/icons8-chat.png'
+import beerIcon from '../assets/icons8-beer.png'
 
 import { IonPage, IonContent, toastController } from '@ionic/vue';
 import { Clipboard } from '@capacitor/clipboard';
@@ -70,6 +71,12 @@ defineProps([
               <!-- faq -->
               <RouterLink to="/faq" v-if="profileView">
                 <ItemBox bigText="Często zadawane pytania FAQ" :rightIcon="rightArrow" :leftIcon="faqIcon" />
+              </RouterLink>
+
+              <!-- otwieracz do piwa -->
+              <RouterLink to="/beer-opener">
+                <ItemBox bigText="Otwieracz do piwa" :rightIcon="rightArrow" :leftIcon="beerIcon" smallText="w razie potrzeby" />
+                
               </RouterLink>
 
               <!-- linki -->
