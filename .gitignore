@@ -107,3 +107,4 @@ coverage
 
 public/version.txt
 environments*
+.env
