@@ -58,7 +58,8 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
             <div class="image_link_container">
               <img :src="homeCardLinkBg" class="image_link" />
               <img :src="rightArrow" class="image_link_arrow" />
-              <p class="image_link_text">Zapisy na domki ruszyły!</p>
+              <p v-if="!apiDataStore.houseSignupsInfo.data.room_instead_of_house" class="image_link_text">Zapisy na domki ruszyły!</p>
+              <p v-else class="image_link_text">Zapisy na pokoje ruszyły!</p>
             </div>
           </RouterLink>
         </div>
