@@ -12,12 +12,16 @@ defineEmits(['error', 'result']);
 </script>
 
 <template>
-  <input type="text" pattern="[0-9]*" inputmode="numeric" maxLength="6" placeholder="Wpisz kod" class="search"
+  <input ref="searchInput" type="text" pattern="[0-9]*" inputmode="numeric" maxLength="6" placeholder="Wpisz kod" class="search"
     v-model="searchQuery" @input="(event) => {
       if (event.target.value.length > event.target.maxLength)
         searchQuery = event.target.value.slice(0, event.target.maxLength)
-    }
-      " />
+    }"
+    @keyup.enter="search"
+    :readonly="isReadonly"
+    @focus="removeReadonly"
+    @blur="handleBlur"
+  />
   <button class="button success" @click="search" v-if="searchQuery != '' && !hideScanner">
     Sprawdź
   </button>
@@ -39,6 +43,7 @@ export default {
       searchQuery: '',
       disable: false,
       qrReaderError: null,
+      isReadonly: true, // można usunąć, ale zostawiam dla czytelności
     }
   },
 
@@ -55,7 +60,12 @@ export default {
       this.qrReaderError = 'ERROR: Twoje urządzenie nie obsługuje skanowania kodów QR';
       this.disable = true
     }
-
+    // Ustaw focus na input po wejściu na widok
+    this.$nextTick(() => {
+      if (this.$refs.searchInput) {
+        this.$refs.searchInput.focus();
+      }
+    });
   },
 
   methods: {
@@ -125,6 +135,17 @@ export default {
 
     userRead(user_id) {
       this.$emit('result', user_id)
+    },
+    removeReadonly() {
+      this.isReadonly = false;
+    },
+    handleBlur() {
+      this.isReadonly = true;
+      setTimeout(() => {
+        if (this.$refs.searchInput) {
+          this.$refs.searchInput.focus();
+        }
+      }, 10);
     },
   }
 }
