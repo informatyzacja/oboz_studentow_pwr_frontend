@@ -52,6 +52,18 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
           </RouterLink>
         </div>
 
+        <!-- Houses Signup -->
+        <div class="padding" v-if="apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.house_signups_active">
+          <RouterLink to="/zapisy">
+            <div class="image_link_container">
+              <img :src="homeCardLinkBg" class="image_link" />
+              <img :src="rightArrow" class="image_link_arrow" />
+              <p v-if="!apiDataStore.houseSignupsInfo.data.room_instead_of_house" class="image_link_text">Zapisy na domki ruszyły!</p>
+              <p v-else class="image_link_text">Zapisy na pokoje ruszyły!</p>
+            </div>
+          </RouterLink>
+        </div>
+
 
         <!-- Announcements -->
         <div v-if="apiDataStore.announcement.ready && apiDataStore.announcement.data.length">
@@ -296,15 +308,17 @@ export default {
   },
   methods: {
     async fetchData(event) {
-      Promise.all([this.apiDataStore.userWorkshop.fetchData(),
-      this.apiDataStore.schedule.fetchData(),
-      this.apiDataStore.announcement.fetchData(),
-      this.apiDataStore.homeLinks.fetchData(),
-      this.apiDataStore.dailyQuest.fetchData(),
-      this.apiDataStore.profile.fetchData(),
-      this.apiDataStore.nightGameGroupInfo.fetchData(),
-      this.apiDataStore.partner.fetchData(),
-      this.apiDataStore.images.fetchData()
+      Promise.all([
+        this.apiDataStore.userWorkshop.fetchData(),
+        this.apiDataStore.schedule.fetchData(),
+        this.apiDataStore.announcement.fetchData(),
+        this.apiDataStore.homeLinks.fetchData(),
+        this.apiDataStore.dailyQuest.fetchData(),
+        this.apiDataStore.profile.fetchData(),
+        this.apiDataStore.nightGameGroupInfo.fetchData(),
+        this.apiDataStore.houseSignupsInfo.fetchData(),
+        this.apiDataStore.partner.fetchData(),
+        this.apiDataStore.images.fetchData()
       ]).then(() => {
         if (event) {
           event.target.complete();
