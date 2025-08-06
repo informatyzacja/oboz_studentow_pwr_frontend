@@ -28,7 +28,7 @@ import { IonNavLink, IonTabBar } from '@ionic/vue'
         </div>
       </IonNavLink>
 
-      <IonNavLink router-link="/profil" router-direction="none">
+      <IonNavLink router-link="/bereal/profil" router-direction="none">
         <div class="navigation_bar__item">
           <img :src="ProfileIcon" />
           <p>Profil</p>
