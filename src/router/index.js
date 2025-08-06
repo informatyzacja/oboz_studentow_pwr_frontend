@@ -20,6 +20,17 @@ const router = createRouter({
       component: () => import('../views/login/VerificationCodeView.vue'),
     },
     {
+      path: '/bereal',
+      component: () => import('../views/bereal/BerealNavigationView.vue'),
+      children: [
+        {
+          path: '/bereal/home',
+          name: 'bereal-home',
+          component: () => import('../views/bereal/BerealHomeView.vue'),
+        }
+      ]
+    },
+    {
       path: '/',
       component: MainView,
       children: [
@@ -263,11 +274,6 @@ const router = createRouter({
           path: '/beer-opener',
           name: 'beer-opener',
           component: () => import('../views/BeerOpenerView.vue')
-        },
-        {
-          path: '/bereal',
-          name: 'bereal',
-          component: () => import('../views/bereal/BerealHomeView.vue'),
         }
       ]
     }
