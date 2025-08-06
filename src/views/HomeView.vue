@@ -53,12 +53,14 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
         </div>
 
         <!-- Houses Signup -->
-        <div class="padding" v-if="apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.house_signups_active">
+        <div class="padding"
+          v-if="apiDataStore.houseSignupsInfo.ready && apiDataStore.houseSignupsInfo.data.house_signups_active">
           <RouterLink to="/zapisy">
             <div class="image_link_container">
               <img :src="homeCardLinkBg" class="image_link" />
               <img :src="rightArrow" class="image_link_arrow" />
-              <p v-if="!apiDataStore.houseSignupsInfo.data.room_instead_of_house" class="image_link_text">Zapisy na domki ruszyły!</p>
+              <p v-if="!apiDataStore.houseSignupsInfo.data.room_instead_of_house" class="image_link_text">Zapisy na
+                domki ruszyły!</p>
               <p v-else class="image_link_text">Zapisy na pokoje ruszyły!</p>
             </div>
           </RouterLink>
@@ -216,6 +218,16 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
             <ItemBox bigText="Tinder obozowy" :rightIcon="rightArrow" :leftIcon="tinderIcon" left-icon-white />
           </RouterLink>
         </div>
+
+        <!-- BeReal -->
+
+        <div class="padding" v-if="apiDataStore.profile.data && apiDataStore.profile.data[0].tinder_profile && apiDataStore.profile.data[0].tinder_profile.user && apiDataStore.profile.data[0].tinder_profile.photo &&
+          apiDataStore.profile.data[0].tinder_profile.description">
+          <RouterLink to="/bereal">
+            <ItemBox bigText="BeReal obozowy" :rightIcon="rightArrow" :leftIcon="tinderIcon" left-icon-white />
+          </RouterLink>
+        </div>
+
 
 
         <LoadingIndicator v-if="apiDataStore.schedule.loading" />

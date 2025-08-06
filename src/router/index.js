@@ -263,6 +263,11 @@ const router = createRouter({
           path: '/beer-opener',
           name: 'beer-opener',
           component: () => import('../views/BeerOpenerView.vue')
+        },
+        {
+          path: '/bereal',
+          name: 'bereal',
+          component: () => import('../views/bereal/BerealHomeView.vue'),
         }
       ]
     }
