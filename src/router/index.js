@@ -20,6 +20,16 @@ const router = createRouter({
       component: () => import('../views/login/VerificationCodeView.vue'),
     },
     {
+      path: '/bereal/camera',
+      name: 'bereal-camera',
+      component: () => import('../views/bereal/BerealCameraView.vue'),
+    },
+    {
+      path: '/bereal/preview',
+      name: 'bereal-preview',
+      component: () => import('../views/bereal/BerealPhotoPreview.vue'),
+    },
+    {
       path: '/bereal',
       component: () => import('../views/bereal/BerealNavigationView.vue'),
       children: [
@@ -32,7 +42,7 @@ const router = createRouter({
           path: '/bereal/profil',
           name: 'bereal-profil',
           component: () => import('../views/bereal/BerealProfileView.vue'),
-        }
+        },
       ]
     },
     {

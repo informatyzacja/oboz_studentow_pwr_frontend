@@ -17,10 +17,10 @@ defineProps({
         <div class="bereal-photo__overlay">
             <div class="bereal-photo__bottom_bar">
                 <div class="bereal-photo__actions">
-                    <div class="bereal-photo__like" @click="like">
+                    <div v-if="num_likes >= 0" class="bereal-photo__like" @click="like">
                         <img v-if="liked" :src="RedHeartIcon" class="heart-icon heart-icon-liked" />
                         <img v-else :src="HeartIcon" class="heart-icon" />
-                        <span>{{ num_likes }}</span>
+                        <span v-if="num_likes > 0">{{ num_likes }}</span>
                     </div>
                 </div>
                 <div class="bereal-photo__user-info">
@@ -67,6 +67,7 @@ export default {
     background-size: cover;
     background-position: center;
     position: relative;
+    background-color: black;
 }
 .bereal-photo__bottom_bar{
     width: 100%;

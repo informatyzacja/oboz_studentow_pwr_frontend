@@ -13,10 +13,7 @@ import { mapStores } from 'pinia'
 import LoadingIndicator from '../../components/LoadingIndicator.vue';
 
 import BerealPhoto from './components/BerealPhoto.vue';
-
-import ItemBox from '../../components/ItemBox.vue'
-
-import CameraIcon from '../../assets/icons8-camera-100.png';
+import { useBerealPostStore } from '@/stores/berealPost.js'
 
 </script>
 
@@ -24,20 +21,23 @@ import CameraIcon from '../../assets/icons8-camera-100.png';
     <ion-page>
         <ion-content :fullscreen="false">
             <main>
-                <TopBar title="BeReal" />
+                <TopBar title="BeReal" back-link="/bereal/camera/" />
 
-                <div class="bereal_top_functions">
-                    <ItemBox big-text="Właśnie się dzieje! Zrób zdjecie 54s..." small />
+                <BerealPhoto class="bereal-photo" :photo1="`data:image/jpeg;base64,${berealPostStore.photo1}`"
+                    :photo2="`data:image/jpeg;base64,${berealPostStore.photo2}`" user_name="Jan Kowalski"
+                    user_profile_photo="https://picsum.photos/seed/profile/100/100" :num_likes="-1" />
 
-                    <IonNavLink router-link="/bereal/camera">
-                        <ItemBox big-text="Zrób zdjęcie" :leftIcon="CameraIcon" small leftIconWhite noRoundIcon />
+
+                <div class="bereal_post_options">
+                    <IonNavLink router-link="/bereal/camera/" router-direction="back" class="link">
+                        <IonButton>
+                            Zrób nowe
+                        </IonButton>
                     </IonNavLink>
+                    <IonButton>
+                        Opublikuj
+                    </IonButton>
                 </div>
-
-                <BerealPhoto v-for="photo in photosRange" :key="photo" class="bereal-photo"
-                    photo1="https://picsum.photos/seed/picsum/800/600"
-                    photo2="https://picsum.photos/seed/picsum2/800/600" user_name="Jan Kowalski"
-                    user_profile_photo="https://picsum.photos/seed/profile/100/100" :num_likes="42" />
             </main>
         </ion-content>
     </ion-page>
@@ -49,9 +49,7 @@ export default {
     }),
     computed: {
         ...mapStores(useApiDataStore),
-        photosRange() {
-            return Array.from({ length: 5 }, (_, i) => i);
-        }
+        ...mapStores(useBerealPostStore),
     },
     async mounted() {
     },
@@ -64,10 +62,13 @@ export default {
 .bereal-photo {
     margin: 10px;
 }
-.bereal_top_functions {
+
+.bereal_post_options {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
+    gap: 7px;
 }
+
 </style>
