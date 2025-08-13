@@ -50,8 +50,9 @@ export default {
         await CameraPreview.start({
             parent: 'cameraPreview',
             position: 'rear',
-            height: 9999,
-            width: 887,
+            // height: 9999,
+            // width: 887,
+            toBack: true,
             disableAudio: true
         });
     },
@@ -73,7 +74,7 @@ export default {
                 this.secondPhoto = base64PictureData;
             }
 
-            CameraPreview.stop();
+            // CameraPreview.stop();
             await this.showPostPreview();
         },
         // Rotate a base64 (no prefix) JPEG by 90deg clockwise (default). Returns base64 without data URL prefix.
@@ -118,12 +119,13 @@ export default {
 <style>
 .camera-preview-content {
     --background: transparent;
+    background-image: none;
 }
 .camera-container {
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: black;
+    /* background-color: black; */
 }
 #cameraPreview, video {
     width: 100%;
@@ -146,7 +148,7 @@ export default {
     height: 80px;
     border-radius: 50%;
     border: white 5px solid;
-    margin: 10px;
+    margin: 20px;
     box-shadow: black 0px 0px 10px;
 }
 #first-photo-preview {

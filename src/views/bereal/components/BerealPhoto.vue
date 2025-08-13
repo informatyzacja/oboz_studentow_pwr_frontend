@@ -1,6 +1,7 @@
 <script setup>
 import HeartIcon from '../../../assets/heart-icon.png';
 import RedHeartIcon from '../../../assets/heart-icon-red.png';
+import DotsIcon from '../../../assets/icons8-dots-90.png';
 
 defineProps({
     photo1: String,
@@ -8,7 +9,8 @@ defineProps({
     user_name: String,
     user_profile_photo: String,
     liked: Boolean,
-    num_likes: Number
+    num_likes: Number,
+    late: Boolean
 });
 </script>
 
@@ -30,6 +32,12 @@ defineProps({
             </div>
             <div class="bereal-photo__additional-photo" @click="swapPhotos"
                 :style="{ backgroundImage: `url(${secondaryPhoto})` }">
+            </div>
+            <div v-if="late" class="bereal-photo__late">
+                LATE
+            </div>
+            <div class="bereal-photo__options">
+                <img :src="DotsIcon" alt="Options" @click="swapPhotos" />
             </div>
         </div>
 
@@ -61,7 +69,7 @@ export default {
 
 <style scoped>
 .bereal-photo {
-    border-radius: 40px;
+    border-radius: 30px;
     overflow: hidden;
     aspect-ratio: 16/9;
     background-size: cover;
@@ -100,7 +108,7 @@ export default {
     left: 10px;
     height: 40%;
     aspect-ratio: 16/9;
-    border-radius: 30px;
+    border-radius: 20px;
     overflow: hidden;
     border: 2px solid white;
     background-size: cover;
@@ -111,7 +119,7 @@ export default {
     align-items: center;
     gap: 10px;
     height: 100%;
-    margin-left: 15px;
+    margin-left: 10px;
 }
 .heart-icon {
     width: 25px;
@@ -126,5 +134,24 @@ export default {
     align-items: center;
     cursor: pointer;
     font-size: 0.8em;
+}
+.bereal-photo__late {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: white;
+    color: black;
+    padding: .08em .4em;
+    border-radius: .4em;
+    opacity: 0.6;
+    font-size: 0.8em;
+}
+.bereal-photo__options {
+    position: absolute;
+    top: 9px;
+    right: 14px;
+    cursor: pointer;
+    width: 12px;
+    filter: invert(100%);
 }
 </style>

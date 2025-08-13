@@ -29,7 +29,7 @@ import CameraIcon from '../../assets/icons8-camera-100.png';
                 <div class="bereal_top_functions">
                     <ItemBox big-text="Właśnie się dzieje! Zrób zdjecie 54s..." small />
 
-                    <IonNavLink router-link="/bereal/camera">
+                    <IonNavLink router-link="/bereal/camera" router-animation="none">
                         <ItemBox big-text="Zrób zdjęcie" :leftIcon="CameraIcon" small leftIconWhite noRoundIcon />
                     </IonNavLink>
                 </div>
@@ -37,7 +37,7 @@ import CameraIcon from '../../assets/icons8-camera-100.png';
                 <BerealPhoto v-for="photo in photosRange" :key="photo" class="bereal-photo"
                     photo1="https://picsum.photos/seed/picsum/800/600"
                     photo2="https://picsum.photos/seed/picsum2/800/600" user_name="Jan Kowalski"
-                    user_profile_photo="https://picsum.photos/seed/profile/100/100" :num_likes="42" />
+                    user_profile_photo="https://picsum.photos/seed/profile/100/100" :num_likes="42" :late="true" />
             </main>
         </ion-content>
     </ion-page>
