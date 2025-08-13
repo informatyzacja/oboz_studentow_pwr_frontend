@@ -3,34 +3,40 @@
   --bg-gradient: linear-gradient(180deg, #3399FF 22.92%, #3399FF 22.93%, #003366 100%);
   --bg-gradent-translusent: var(--bg-gradient);
   /* --bg-gradient-translusent: linear-gradient(180deg, rgba(0, 87, 183, 0.478) 22.92%, rgba(0, 87, 183, 0.478) 22.93%, #8B4513AA 100%); */
-  --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #134d7c 0%, #134b9e 100%);
-  --radial-gradient-circle: radial-gradient(circle, #134d7c 0%, #134b9e 80%);
+  --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #c26b31 0%, #c56d39 100%);
+  --radial-gradient-circle: radial-gradient(circle, #657e92 0%, #134b9e 80%);
 
-  --bg: #053464;
+  --bg: #14191d;
   --bg-translusent: var(--bg);
   /* --bg-translusent: #8B4513194; */
-  --bg-lighter: #2c6fb2;
-  --bg-light: #3c83ca;
-  --bg-light-translusent: rgba(12, 48, 95, 0.44);
+  --bg-lighter: #cc8644;
+  --bg-light: #e7822f;
+  --bg-light-translusent: #a15929c2;
   --bg-light-translusent-hover: rgba(22, 68, 121, 0.177);
+  --nav-color-1: #292929;
+  --nav-color-2: #252525;
+  --nav-icon-color: #b36424;
 
-  --theme-dark: #1579a7;
-  --theme-light: #2f6fc3;
-  --theme-text: #10467c;
+  --back-color-1: #272727;
+  --back-color-2: #161616;
+
+  --theme-dark: #371000;
+  --theme-light: #c46527;
+  --theme-text: #7c3b10;
   --light-text: #ffffff;
 
   --text-gray: #efefefb9;
-  --text-dark: #2b4f8fb9;
+  --text-dark: #a04e28;
   --red-dark: #8B0000;
   --red-action: #dc1212;
   --red: #6d1111;
   --orange: #FFA500;
   --yellow: #FFD700;
 
-  --gray-text-gradient: radial-gradient(50% 50% at 55.81% 50%, #145380b0 0%, #175084c1 100%);
+  --gray-text-gradient: radial-gradient(50% 50% at 55.81% 50%, #bd4a27cb 0%, #af4b1de5 100%);
 
-  --login-button-color: #67add3;
-  --login-button-bg: #104a84;
+  --login-button-color: #ffffff;
+  --login-button-bg: #DC7D28;
 }
 
 
@@ -49,10 +55,10 @@ body {
   font-weight: normal;
 }
 
-/* @font-face {
-  
-  src: url('/vue-public/sui\ generis\ rg.ttf') format('truetype');
-} */
+@font-face {
+  font-family: 'Sui Generis RG';
+  src: url('/vue-public/sui generis rg.ttf') format('truetype');
+}
 
 body {
   min-height: 100vh;
@@ -102,7 +108,7 @@ h3 {
 
 ion-content {
   /* background: var(--bg-translusent); */
-  background-image: url('@/assets/bg.jpg');
+  background-image: linear-gradient(var(--back-color-1), var(--back-color-2));
 }
 
 a {

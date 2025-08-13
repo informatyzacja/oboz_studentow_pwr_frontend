@@ -108,7 +108,7 @@ export default {
 .navigation-bar {
   height: 85px;
   /* background-color: #1b1b1bbb; */
-  background-color: var(--bg-translusent);
+  background-image: linear-gradient(90deg, var(--nav-color-1) 0%, var(--nav-color-2) 100%);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
@@ -156,7 +156,7 @@ export default {
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 9px;
+  font-size: 16px;
   text-align: center;
 
   display: flex;
@@ -172,7 +172,7 @@ export default {
 }
 
 .navigation_bar__item img {
-  filter: drop-shadow(0px 100px 0 var(--theme-dark));
+  filter: drop-shadow(0px 100px 0 var(--nav-icon-color));
   transform: translateY(-100px);
   width: 24px;
   object-fit: contain;
