@@ -21,23 +21,11 @@ import { useBerealPostStore } from '@/stores/berealPost.js'
     <ion-page>
         <ion-content :fullscreen="false">
             <main>
-                <TopBar title="BeerReal" back-link="/bereal/camera/" />
+                <TopBar title="BeerReal" auto-back-link />
 
-                <BerealPhoto class="bereal-photo" :photo1="`data:image/jpeg;base64,${berealPostStore.photo1}`"
-                    :photo2="`data:image/jpeg;base64,${berealPostStore.photo2}`" user_name="Jan Kowalski"
-                    user_profile_photo="https://picsum.photos/seed/profile/100/100" :num_likes="-1" />
-
-
-                <div class="bereal_post_options">
-                    <IonNavLink router-link="/bereal/camera/" router-direction="back" class="link">
-                        <IonButton>
-                            Zrób nowe
-                        </IonButton>
-                    </IonNavLink>
-                    <IonButton>
-                        Opublikuj
-                    </IonButton>
-                </div>
+                <BerealPhoto class="bereal-photo" photo1="https://picsum.photos/seed/post1/300/300"
+                    photo2="https://picsum.photos/seed/post2/300/300" user_name="Jan Kowalski"
+                    user_profile_photo="https://picsum.photos/seed/profile/100/100" :num_likes="18" />
             </main>
         </ion-content>
     </ion-page>
@@ -49,7 +37,6 @@ export default {
     }),
     computed: {
         ...mapStores(useApiDataStore),
-        ...mapStores(useBerealPostStore),
     },
     async mounted() {
     },
@@ -63,12 +50,5 @@ export default {
     margin: 10px;
 }
 
-.bereal_post_options {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 7px;
-}
 
 </style>

@@ -17,7 +17,7 @@ import { Camera, CameraResultType } from '@capacitor/camera';
     <ion-page>
         <ion-content :fullscreen="false">
             <main>
-                <TopBar title="BeReal - Profil" />
+                <TopBar title="BeerReal - Profil" />
 
                 <div class="padding-main">
                     <div class="profile-header">
@@ -31,6 +31,14 @@ import { Camera, CameraResultType } from '@capacitor/camera';
                         <p class="name">{{ name }}</p>
                     </div>
                 </div>
+                <div class="profile-spacer"></div>
+                <div class="profile-posts-list">
+                    <div class="profile-post" v-for="post in posts" :key="post.id">
+                        <IonNavLink :router-link="`/bereal/post/${post.id}`" class="link">
+                            <img :src="post.image" />
+                        </IonNavLink>
+                    </div>
+                </div>
             </main>
         </ion-content>
     </ion-page>
@@ -41,6 +49,15 @@ export default {
     data: () => ({
         'name': 'Jan Kowalski',
         'profile_photo': 'https://picsum.photos/seed/profile/100/100',
+        posts: [
+            { id: 1, image: 'https://picsum.photos/seed/post1/300/300' },
+            { id: 2, image: 'https://picsum.photos/seed/post2/300/300' },
+            { id: 3, image: 'https://picsum.photos/seed/post3/300/300' },
+            { id: 4, image: 'https://picsum.photos/seed/post4/300/300' },
+            { id: 5, image: 'https://picsum.photos/seed/post5/300/300' },
+            { id: 6, image: 'https://picsum.photos/seed/post6/300/300' },
+            { id: 7, image: 'https://picsum.photos/seed/post7/300/300' }
+        ],
     }),
     computed: {
         ...mapStores(useApiDataStore),
@@ -109,5 +126,26 @@ export default {
 .name {
     font-size: 1.6em;
     font-weight: bold;
+}
+.profile-spacer {
+    width: 100%;
+    height: 3px;
+    background-color: var(--theme-text);
+}
+.profile-posts-list {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+}
+.profile-post {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.profile-post img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 </style>

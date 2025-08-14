@@ -24,7 +24,7 @@ import CameraIcon from '../../assets/icons8-camera-100.png';
     <ion-page>
         <ion-content :fullscreen="false">
             <main>
-                <TopBar title="BeReal" />
+                <TopBar title="BeerReal" />
 
                 <div class="bereal_top_functions">
                     <ItemBox big-text="Właśnie się dzieje! Zrób zdjecie 54s..." small />

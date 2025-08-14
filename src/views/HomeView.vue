@@ -219,12 +219,12 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
           </RouterLink>
         </div>
 
-        <!-- BeReal -->
+        <!-- BeerReal -->
 
         <div class="padding" v-if="apiDataStore.profile.data && apiDataStore.profile.data[0].tinder_profile && apiDataStore.profile.data[0].tinder_profile.user && apiDataStore.profile.data[0].tinder_profile.photo &&
           apiDataStore.profile.data[0].tinder_profile.description">
           <RouterLink to="/bereal/home">
-            <ItemBox bigText="BeReal obozowy" :rightIcon="rightArrow" :leftIcon="tinderIcon" left-icon-white />
+            <ItemBox bigText="BeerReal obozowy" :rightIcon="rightArrow" :leftIcon="tinderIcon" left-icon-white />
           </RouterLink>
         </div>
 
