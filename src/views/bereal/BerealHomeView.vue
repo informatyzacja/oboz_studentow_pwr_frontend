@@ -27,7 +27,7 @@ import CameraIcon from '../../assets/icons8-camera-100.png';
                 <TopBar title="BeerReal" />
 
                 <div class="bereal_top_functions">
-                    <ItemBox big-text="Właśnie się dzieje! Zrób zdjecie 54s..." small />
+                    <ItemBox :big-text="'Właśnie się dzieje! Zrób zdjecie ' + secondsLeft + 's...'" small />
 
                     <IonNavLink router-link="/bereal/camera" router-animation="none">
                         <ItemBox big-text="Zrób zdjęcie" :leftIcon="CameraIcon" small leftIconWhite noRoundIcon />
@@ -46,14 +46,33 @@ import CameraIcon from '../../assets/icons8-camera-100.png';
 <script>
 export default {
     data: () => ({
+        berealEventDeadline: new Date(Date.now() + 53 * 1000),
+        now: Date.now(),
+        timerId: null
     }),
     computed: {
         ...mapStores(useApiDataStore),
         photosRange() {
             return Array.from({ length: 5 }, (_, i) => i);
+        },
+        isEventActive() {
+            return this.now < this.berealEventDeadline;
+        },
+        secondsLeft() {
+            return Math.max(0, Math.floor((this.berealEventDeadline - this.now) / 1000));
         }
     },
-    async mounted() {
+    mounted() {
+        this.timerId = setInterval(() => {
+            this.now = Date.now();
+            if (!this.isEventActive) {
+                clearInterval(this.timerId);
+                this.timerId = null;
+            }
+        }, 100);
+    },
+    unmounted() {
+        if (this.timerId) clearInterval(this.timerId);
     },
     methods: {
     }
