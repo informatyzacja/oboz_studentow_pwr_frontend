@@ -4,6 +4,7 @@ import RedHeartIcon from '../../../assets/heart-icon-red.png';
 import DotsIcon from '../../../assets/icons8-dots-90.png';
 import { toastController, IonActionSheet } from '@ionic/vue';
 import { apiRequest } from '@/stores/functions';
+import { alertController } from '@ionic/vue';
 
 defineProps({
     photo1: String,
@@ -117,15 +118,48 @@ export default {
                 }
             });
         },
-        report() {
-            this.$emit('report');
+        async report() {
             console.log(`Reported post with ID: ${this.id}`);
-            toastController.create({
-                message: 'Post został zgłoszony!',
-                duration: 2000,
-                color: 'success',
-                position: 'top'
-            }).then(toast => toast.present())
+            // show alert asking for reason
+            const alert = await alertController.create({
+                header: 'Zgłoś post',
+                inputs: [
+                    {
+                        name: 'reason',
+                        type: 'text',
+                        placeholder: 'Podaj powód zgłoszenia'
+                    }
+                ],
+                buttons: [
+                    {
+                        text: 'Anuluj',
+                        role: 'cancel'
+                    },
+                    {
+                        text: 'Zgłoś',
+                        handler: (data) => {
+                            this.submitReport(data.reason);
+                        }
+                    }
+                ]
+            });
+            await alert.present();
+        },
+        submitReport(reason) {
+            apiRequest(
+                `../api2/bereal/report/${this.id}/`,
+                'POST',
+                { reason: reason }
+            ).then(res => {
+                if (res.success) {
+                    toastController.create({
+                        message: 'Post został zgłoszony!',
+                        duration: 2000,
+                        color: 'success',
+                        position: 'top'
+                    }).then(toast => toast.present())
+                }
+            });
         }
     }
 };
