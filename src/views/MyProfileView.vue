@@ -156,7 +156,9 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 
         <div class="credits">
           <p>© Obóz Studentów PWr {{ moment().format('YYYY') }}</p>
-          <p>Made with 🍺 by <a href="https://www.facebook.com/Marvin.Ruc/" target="_blank"><u>Marvin</u></a></p>
+          <p>Made with 🍺 by <a href="https://www.facebook.com/Marvin.Ruc/" target="_blank"><u>Marvin</u></a> & <a
+              href="https://samorzad.pwr.edu.pl/o-samorzadzie/struktura-samorzadu/komisje-samorzadu/komisja-ds-informatyzacji"
+              target="_blank"><u>Komisja ds. Informatyzacji SSPWr</u></a> 🖥️</p>
         </div>
 
       </div>
