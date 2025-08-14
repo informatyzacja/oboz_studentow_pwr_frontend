@@ -32,6 +32,13 @@ import { useBusStore } from './staff/buses.js'
 
 import { useParticipantStore } from './staff/participants.js'
 
+import { 
+  useBerealStatusStore,
+  useBerealPostsStore,
+  useBerealProfileStore,
+  useBerealUploadStore
+} from './bereal.js'
+
 export const useApiDataStore = defineStore('apiData', {
   state: () => ({
     userWorkshop: useUserWorkshopStore(),
@@ -64,5 +71,11 @@ export const useApiDataStore = defineStore('apiData', {
     houses: useHousesStore(),
     houseSignups: useHouseSignupsStore(),
     houseSignupsInfo: useHouseSignupsInfoStore(),
+
+    // BeReal stores
+    berealStatus: useBerealStatusStore(),
+    berealPosts: useBerealPostsStore(),
+    berealProfile: useBerealProfileStore(),
+    berealUpload: useBerealUploadStore(),
   })
 })

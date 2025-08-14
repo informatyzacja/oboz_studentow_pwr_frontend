@@ -24,7 +24,7 @@ import graNocna from '../assets/gra nocna.png'
 import ItemBox from '../components/ItemBox.vue'
 import tinderIcon from '../assets/icons8-tinder-100.png'
 
-import { IonPage, IonContent, IonRefresher, IonRefresherContent } from '@ionic/vue';
+import { IonPage, IonContent, IonRefresher, IonRefresherContent, IonIcon } from '@ionic/vue';
 
 import SavePhotoButton from '@/components/SavePhotoButton.vue'
 
@@ -40,6 +40,25 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
       <main>
         <TopBar title="Home" />
         <ProfileCircle />
+
+        <!-- BeReal Status -->
+        <div class="padding" v-if="apiDataStore.berealStatus.ready && (apiDataStore.berealStatus.data.is_active || apiDataStore.berealStatus.data.user_posted_today)">
+          <RouterLink to="/bereal">
+            <div class="bereal-home-card" :class="{ 'active': apiDataStore.berealStatus.data.is_active }">
+              <div class="bereal-icon">
+                <ion-icon name="camera"></ion-icon>
+              </div>
+              <div class="bereal-content">
+                <h4 v-if="apiDataStore.berealStatus.data.is_active">🔥 BeReal jest aktywny!</h4>
+                <h4 v-else>📸 BeReal</h4>
+                <p v-if="apiDataStore.berealStatus.data.is_active">Dodaj swoje zdjęcie z obozu</p>
+                <p v-else-if="apiDataStore.berealStatus.data.user_posted_today">Dzisiaj już dodałeś zdjęcie</p>
+                <p v-else>Zobacz co robią inni na obozie</p>
+              </div>
+              <img :src="rightArrow" class="bereal-arrow" />
+            </div>
+          </RouterLink>
+        </div>
 
         <!-- Night Game Signup -->
         <div class="padding"
@@ -273,6 +292,9 @@ export default {
     this.timer7 = setInterval(this.apiDataStore.homeLinks.fetchData, 60000)
     this.timer8 = setInterval(this.apiDataStore.images.fetchData, 60000)
 
+    // BeReal status check every 2 minutes
+    setInterval(this.apiDataStore.berealStatus.fetchData, 120000)
+
 
     // push notifications
     PushNotifications.checkPermissions().then((permStatus) => {
@@ -318,7 +340,8 @@ export default {
         this.apiDataStore.nightGameGroupInfo.fetchData(),
         this.apiDataStore.houseSignupsInfo.fetchData(),
         this.apiDataStore.partner.fetchData(),
-        this.apiDataStore.images.fetchData()
+        this.apiDataStore.images.fetchData(),
+        this.apiDataStore.berealStatus.fetchData()
       ]).then(() => {
         if (event) {
           event.target.complete();
@@ -529,5 +552,64 @@ a.button {
 
 .red-bg {
   background-color: var(--red);
+}
+
+/* BeReal Home Card */
+.bereal-home-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.bereal-home-card.active {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.bereal-icon {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.bereal-content {
+  flex: 1;
+}
+
+.bereal-content h4 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.bereal-content p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.bereal-arrow {
+  width: 10px;
+  height: 20px;
+  filter: brightness(0) invert(1);
 }
 </style>

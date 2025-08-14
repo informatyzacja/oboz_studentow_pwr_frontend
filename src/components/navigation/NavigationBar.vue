@@ -7,6 +7,7 @@ import HammerIcon from '../../assets/icons8-hammer-90.png'
 import CalendarIcon from '../../assets/icons8-calendar-100.png'
 // import UserIcon from '../../assets/icons8-male_user.png'
 import MenuIcon from '../../assets/icons8-squared_menu.png'
+import CameraIcon from '../../assets/icons8-beer.png' // Using beer icon as placeholder for BeReal
 
 // import ScannerIcon from '../../assets/icons8-barcode_reader.png'
 
@@ -51,6 +52,14 @@ import { IonNavLink, IonTabBar } from '@ionic/vue'
           <img :src="Logo" alt="logo" />
         </div>
       </IonNavLink>
+      
+      <IonNavLink router-link="/bereal" router-direction="none">
+        <div class="navigation_bar__item">
+          <img :src="CameraIcon" alt="bereal" />
+          <p>BeReal</p>
+        </div>
+      </IonNavLink>
+      
       <IonNavLink router-link="/harmonogram" router-direction="none">
         <div class="navigation_bar__item">
           <img :src="CalendarIcon" alt="harmonogram" />
@@ -124,7 +133,7 @@ export default {
 
 .navigation-bar__content {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   max-width: 550px;
   margin: 0 auto;
 }
