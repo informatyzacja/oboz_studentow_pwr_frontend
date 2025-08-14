@@ -15,7 +15,8 @@ defineProps({
     num_likes: Number,
     late: Boolean,
     id: Number,
-    hide_options: Boolean
+    hide_options: Boolean,
+    is_post_owner: Boolean
 });
 </script>
 
@@ -81,7 +82,18 @@ export default {
         }
     },
     mounted() {
-
+        if (this.is_post_owner) {
+            this.actionSheetButtons.unshift({
+                text: 'Usuń post',
+                role: 'destructive',
+                data: {
+                    action: 'delete',
+                },
+                handler: () => {
+                    this.delete(this.id)
+                }
+            });
+        }
     },
     methods: {
         swapPhotos() {
@@ -158,6 +170,22 @@ export default {
                         color: 'success',
                         position: 'top'
                     }).then(toast => toast.present())
+                }
+            });
+        },
+        delete(id) {
+            apiRequest(
+                `../api2/bereal/delete/${id}/`,
+                'DELETE'
+            ).then(res => {
+                if (res.success) {
+                    toastController.create({
+                        message: 'Post został usunięty!',
+                        duration: 2000,
+                        color: 'success',
+                        position: 'top'
+                    }).then(toast => toast.present())
+                    this.$emit('post-deleted', id);
                 }
             });
         }
