@@ -17,7 +17,7 @@ import { CameraPreview } from '@capacitor-community/camera-preview';
 
 <template>
     <ion-page>
-        <ion-content :fullscreen="true" class="camera-preview-content">
+        <ion-content :fullscreen="true" class="camera-preview-content" scroll-y="false">
             <div class="camera-container">
                 <div id="first-photo-preview" :style="previewFirstPhoto"></div>
                 <div id="cameraPreview"></div>
@@ -47,14 +47,25 @@ export default {
         }
     },
     async mounted() {
-        await CameraPreview.start({
+        // await CameraPreview.start({
+        //     parent: 'cameraPreview',
+        //     position: 'rear',
+        //     // height: 9999,
+        //     // width: 887,
+        //     toBack: true,
+        //     disableAudio: true
+        // });
+    },
+    ionViewWillEnter() {
+        CameraPreview.start({
             parent: 'cameraPreview',
             position: 'rear',
-            // height: 9999,
-            // width: 887,
             toBack: true,
             disableAudio: true
         });
+    },
+    ionViewDidLeave() {
+        CameraPreview.stop();
     },
     methods: {
         async caputre() {
@@ -74,7 +85,6 @@ export default {
                 this.secondPhoto = base64PictureData;
             }
 
-            // CameraPreview.stop();
             await this.showPostPreview();
         },
         // Rotate a base64 (no prefix) JPEG by 90deg clockwise (default). Returns base64 without data URL prefix.
