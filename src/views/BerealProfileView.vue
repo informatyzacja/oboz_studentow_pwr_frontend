@@ -17,7 +17,7 @@ import { mapStores } from 'pinia'
       </ion-refresher>
       
       <main>
-        <TopBar title="Profil BeReal" :showBackButton="true" />
+        <TopBar title="Profil BeReal" :autoBackLink="true" />
         
         <!-- Profile Info -->
         <div class="padding" v-if="apiDataStore.berealProfile.ready && apiDataStore.berealProfile.data">
