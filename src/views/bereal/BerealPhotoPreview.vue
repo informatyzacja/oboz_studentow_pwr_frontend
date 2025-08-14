@@ -1,6 +1,6 @@
 <script setup>
 
-import { IonPage, IonContent, IonIcon, IonButton, toastController, IonNavLink } from '@ionic/vue';
+import { IonPage, IonContent, IonIcon, IonButton, toastController, IonNavLink, } from '@ionic/vue';
 import Tinder from '@/components/vue-tinder/Tinder.vue'
 import { apiRequest } from '@/stores/functions'
 import TopBar from '@/components/navigation/TopBar.vue'
@@ -25,7 +25,7 @@ import { useBerealPostStore } from '@/stores/berealPost.js'
 
                 <BerealPhoto class="bereal-photo" :photo1="`data:image/jpeg;base64,${berealPostStore.photo1}`"
                     :photo2="`data:image/jpeg;base64,${berealPostStore.photo2}`" user_name="Jan Kowalski"
-                    user_profile_photo="https://picsum.photos/seed/profile/100/100" :num_likes="-1" />
+                    user_profile_photo="https://picsum.photos/seed/profile/100/100" :num_likes="-1" :hide_options="true"/>
 
 
                 <div class="bereal_post_options">
@@ -34,8 +34,11 @@ import { useBerealPostStore } from '@/stores/berealPost.js'
                             Zrób nowe
                         </IonButton>
                     </IonNavLink>
-                    <IonButton>
+                    <IonButton @click="post" v-if="!loading">
                         Opublikuj
+                    </IonButton>
+                    <IonButton v-else>
+                        <LoadingIndicator inline small />
                     </IonButton>
                 </div>
             </main>
@@ -46,14 +49,46 @@ import { useBerealPostStore } from '@/stores/berealPost.js'
 <script>
 export default {
     data: () => ({
+        loading: false
     }),
     computed: {
         ...mapStores(useApiDataStore),
         ...mapStores(useBerealPostStore),
     },
     async mounted() {
+        if (this.berealPostStore.photo1 === null || this.berealPostStore.photo2 === null) {
+            const toast = await toastController.create({
+                message: 'Nie wykonano zdjęć do publikacji',
+                duration: 2000,
+                position: 'top',
+                color: 'danger'
+            });
+            await toast.present();
+            this.$router.push('/bereal/home');
+        }
     },
     methods: {
+        post() {
+            this.loading = true
+            apiRequest('../api2/bereal/upload/', 'POST', {
+                photo1: this.berealPostStore.photo1,
+                photo2: this.berealPostStore.photo2,
+            }).then(res => {
+                if (res.success) {
+                    toastController.create({
+                        message: 'Post został opublikowany!',
+                        duration: 2000,
+                        color: 'success',
+                        position: 'top'
+                    }).then(toast => toast.present())
+                    this.berealPostStore.clear()
+                    this.apiDataStore.bereal.data = null
+                    this.$router.push('/bereal/home')
+                }
+            }).finally(() => {
+                this.loading = false
+            });
+        }
     }
 }
 </script>

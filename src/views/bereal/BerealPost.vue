@@ -13,7 +13,6 @@ import { mapStores } from 'pinia'
 import LoadingIndicator from '../../components/LoadingIndicator.vue';
 
 import BerealPhoto from './components/BerealPhoto.vue';
-import { useBerealPostStore } from '@/stores/berealPost.js'
 
 </script>
 
@@ -23,9 +22,9 @@ import { useBerealPostStore } from '@/stores/berealPost.js'
             <main>
                 <TopBar title="BeerReal" auto-back-link />
 
-                <BerealPhoto class="bereal-photo" photo1="https://picsum.photos/seed/post1/300/300"
-                    photo2="https://picsum.photos/seed/post2/300/300" user_name="Jan Kowalski"
-                    user_profile_photo="https://picsum.photos/seed/profile/100/100" :num_likes="18" />
+                <BerealPhoto class="bereal-photo" v-if="data" :photo1="data.photo1" :photo2="data.photo2"
+                    :user_name="data.user_name" :user_profile_photo="data.user_photo" :num_likes="data.likes_count"
+                    :late="data.is_late" :liked="data.is_liked_by_user" />
             </main>
         </ion-content>
     </ion-page>
@@ -34,13 +33,29 @@ import { useBerealPostStore } from '@/stores/berealPost.js'
 <script>
 export default {
     data: () => ({
+        data: null
     }),
     computed: {
         ...mapStores(useApiDataStore),
     },
     async mounted() {
+        this.fetchData();
+    },
+    watch: {
+        '$route.params.id': 'fetchData'
     },
     methods: {
+        fetchData() {
+            if (!this.$route.params.id) return;
+
+            apiRequest(
+                `../api2/bereal/post/${this.$route.params.id}/`,
+            ).then(res => {
+                if (res.success) {
+                    this.data = res.post;
+                }
+            });
+        }
     }
 }
 </script>

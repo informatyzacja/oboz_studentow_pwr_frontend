@@ -7,5 +7,9 @@ export const useBerealPostStore = defineStore('berealPost', {
     getters: {
     },
     actions: {
+        clear() {
+            this.photo1 = null;
+            this.photo2 = null;
+        }
     }
 })

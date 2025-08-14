@@ -20,22 +20,22 @@ import { Camera, CameraResultType } from '@capacitor/camera';
                 <TopBar title="BeerReal - Profil" />
 
                 <div class="padding-main">
-                    <div class="profile-header">
+                    <div class="profile-header" v-if="apiDataStore.berealProfile.data">
                         <div class="profile-photo-container">
-                            <img :src="profile_photo" class="profile-photo" />
+                            <img :src="apiDataStore.berealProfile.data.user.photo" class="profile-photo" />
                             <div class="edit-icon" @click="changePhoto">
                                 <img :src="RefreshIcon" alt="Edit Profile" />
                             </div>
 
                         </div>
-                        <p class="name">{{ name }}</p>
+                        <p class="name">{{ apiDataStore.berealProfile.data.user.first_name }} {{ apiDataStore.berealProfile.data.user.last_name }}</p>
                     </div>
                 </div>
                 <div class="profile-spacer"></div>
-                <div class="profile-posts-list">
-                    <div class="profile-post" v-for="post in posts" :key="post.id">
+                <div class="profile-posts-list" v-if="apiDataStore.berealProfile.data">
+                    <div class="profile-post" v-for="post in apiDataStore.berealProfile.data.posts" :key="post.id">
                         <IonNavLink :router-link="`/bereal/post/${post.id}`" class="link">
-                            <img :src="post.image" />
+                            <img :src="post.photo1" />
                         </IonNavLink>
                     </div>
                 </div>
@@ -47,22 +47,12 @@ import { Camera, CameraResultType } from '@capacitor/camera';
 <script>
 export default {
     data: () => ({
-        'name': 'Jan Kowalski',
-        'profile_photo': 'https://picsum.photos/seed/profile/100/100',
-        posts: [
-            { id: 1, image: 'https://picsum.photos/seed/post1/300/300' },
-            { id: 2, image: 'https://picsum.photos/seed/post2/300/300' },
-            { id: 3, image: 'https://picsum.photos/seed/post3/300/300' },
-            { id: 4, image: 'https://picsum.photos/seed/post4/300/300' },
-            { id: 5, image: 'https://picsum.photos/seed/post5/300/300' },
-            { id: 6, image: 'https://picsum.photos/seed/post6/300/300' },
-            { id: 7, image: 'https://picsum.photos/seed/post7/300/300' }
-        ],
     }),
     computed: {
         ...mapStores(useApiDataStore),
     },
     async mounted() {
+        this.fetchData();
     },
     methods: {
         changePhoto() {
@@ -75,9 +65,14 @@ export default {
                     photo: photo.dataUrl,
                 }).then(res => {
                     if (res.success) {
-                        this.apiDataStore.profile.data[0].tinder_profile = res.tinder_profile;
+                        this.apiDataStore.berealProfile.data.user.photo = res.tinder_profile.photo;
                     }
                 });
+            });
+        },
+        fetchData($event) {
+            this.apiDataStore.berealProfile.fetchData().then(() => {
+                if ($event) $event.target.complete();
             });
         }
     }

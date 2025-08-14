@@ -2,7 +2,7 @@
 import HeartIcon from '../../../assets/heart-icon.png';
 import RedHeartIcon from '../../../assets/heart-icon-red.png';
 import DotsIcon from '../../../assets/icons8-dots-90.png';
-import { toastController } from '@ionic/vue';
+import { toastController, IonActionSheet } from '@ionic/vue';
 
 defineProps({
     photo1: String,
@@ -12,7 +12,8 @@ defineProps({
     liked: Boolean,
     num_likes: Number,
     late: Boolean,
-    id: Number
+    id: Number,
+    hide_options: Boolean
 });
 </script>
 
@@ -29,7 +30,7 @@ defineProps({
                 </div>
                 <div class="bereal-photo__user-info">
                     <span class="user-name">{{ user_name }}</span>
-                    <img :src="user_profile_photo" alt="User Profile Photo" class="user-profile-photo" />
+                    <img :src="user_profile_photo" class="user-profile-photo" />
                 </div>
             </div>
             <div class="bereal-photo__additional-photo" @click="swapPhotos"
@@ -38,7 +39,7 @@ defineProps({
             <div v-if="late" class="bereal-photo__late">
                 LATE
             </div>
-            <div class="bereal-photo__options">
+            <div class="bereal-photo__options" v-if="!hide_options">
                 <img :src="DotsIcon" :id="'open-action-sheet-' + id" />
                 <ion-action-sheet :trigger="'open-action-sheet-' + id"
                     :buttons="actionSheetButtons"></ion-action-sheet>
@@ -132,8 +133,10 @@ export default {
 }
 .user-profile-photo {
     height: 90%;
+    aspect-ratio: 1/1;
     border-radius: 50%;
     object-fit: cover;
+    background-color: gray;
 }
 .bereal-photo__additional-photo {
     position: absolute;
