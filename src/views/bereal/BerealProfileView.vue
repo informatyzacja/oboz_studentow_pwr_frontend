@@ -71,13 +71,11 @@ export default {
                 allowEditing: true,
                 resultType: CameraResultType.DataUrl,
             }).then((photo) => {
-
-                // TODO: Replace with your API endpoint
-                apiRequest('XXXX', 'POST', {
+                apiRequest('../api2/tinder/upload-profile-photo/', 'POST', {
                     photo: photo.dataUrl,
                 }).then(res => {
                     if (res.success) {
-                        // TODO: Update profile photo in your store or state
+                        this.apiDataStore.profile.data[0].tinder_profile = res.tinder_profile;
                     }
                 });
             });
@@ -142,6 +140,7 @@ export default {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    background-color: #c4c4c4;
 }
 .profile-post img {
     width: 100%;
