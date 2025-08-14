@@ -22,7 +22,7 @@ import BerealPhoto from './components/BerealPhoto.vue';
             <main>
                 <TopBar title="BeerReal" auto-back-link />
 
-                <BerealPhoto class="bereal-photo" v-if="data" :photo1="data.photo1" :photo2="data.photo2"
+                <BerealPhoto class="bereal-photo" v-if="data" :photo1="data.photo1" :photo2="data.photo2" :id="data.id"
                     :user_name="data.user_name" :user_profile_photo="data.user_photo" :num_likes="data.likes_count"
                     :late="data.is_late" :liked="data.is_liked_by_user" />
             </main>

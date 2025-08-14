@@ -135,6 +135,7 @@ export default {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    aspect-ratio: 1/1;
     background-color: #c4c4c4;
 }
 .profile-post img {

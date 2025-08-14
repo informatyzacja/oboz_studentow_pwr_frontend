@@ -3,6 +3,7 @@ import HeartIcon from '../../../assets/heart-icon.png';
 import RedHeartIcon from '../../../assets/heart-icon-red.png';
 import DotsIcon from '../../../assets/icons8-dots-90.png';
 import { toastController, IonActionSheet } from '@ionic/vue';
+import { apiRequest } from '@/stores/functions';
 
 defineProps({
     photo1: String,
@@ -22,10 +23,10 @@ defineProps({
         <div class="bereal-photo__overlay">
             <div class="bereal-photo__bottom_bar">
                 <div class="bereal-photo__actions">
-                    <div v-if="num_likes >= 0" class="bereal-photo__like" @click="like">
-                        <img v-if="liked" :src="RedHeartIcon" class="heart-icon heart-icon-liked" />
+                    <div v-if="_num_likes >= 0" class="bereal-photo__like" @click="like_or_unlike">
+                        <img v-if="_liked" :src="RedHeartIcon" class="heart-icon heart-icon-liked" />
                         <img v-else :src="HeartIcon" class="heart-icon" />
-                        <span v-if="num_likes > 0">{{ num_likes }}</span>
+                        <span v-if="_num_likes > 0">{{ _num_likes }}</span>
                     </div>
                 </div>
                 <div class="bereal-photo__user-info">
@@ -55,6 +56,8 @@ export default {
         return {
             mainPhoto: this.$props.photo1 || '',
             secondaryPhoto: this.$props.photo2 || '',
+            _liked: this.$props.liked || false,
+            _num_likes: this.$props.num_likes || 0,
             actionSheetButtons: [
                 {
                     text: 'Zgłoś post naruszający zasady',
@@ -77,6 +80,7 @@ export default {
         }
     },
     mounted() {
+
     },
     methods: {
         swapPhotos() {
@@ -84,8 +88,34 @@ export default {
             this.mainPhoto = this.secondaryPhoto;
             this.secondaryPhoto = temp;
         },
+        like_or_unlike() {
+            if (this._liked) {
+                this.unlike();
+            } else {
+                this.like();
+            }
+        },
         like() {
-            this.$emit('like');
+            apiRequest(
+                `../api2/bereal/like/${this.id}/`,
+                'POST' 
+            ).then(res => {
+                if (res.success) {
+                    this._liked = true;
+                    this._num_likes++;
+                }
+            });
+        },
+        unlike() {
+            apiRequest(
+                `../api2/bereal/unlike/${this.id}/`,
+                'DELETE'
+            ).then(res => {
+                if (res.success) {
+                    this._liked = false;
+                    this._num_likes--;
+                }
+            });
         },
         report() {
             this.$emit('report');
