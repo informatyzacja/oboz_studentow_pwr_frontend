@@ -46,10 +46,10 @@ export default {
     },
     methods: {
         fetchData() {
-            if (!this.$route.params.id) return;
+            if (!this.$route.params.post_id) return;
 
             apiRequest(
-                `../api2/bereal/post/${this.$route.params.id}/`,
+                `../api2/bereal/post/${this.$route.params.post_id}/`,
             ).then(res => {
                 if (res.success) {
                     this.data = res.post;

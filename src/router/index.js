@@ -44,7 +44,12 @@ const router = createRouter({
           component: () => import('../views/bereal/BerealProfileView.vue'),
         },
         {
-          path: '/bereal/post/:id',
+          path: '/bereal/profil/:profile_id',
+          name: 'bereal-profil-id',
+          component: () => import('../views/bereal/BerealProfileView.vue'),
+        },
+        {
+          path: '/bereal/post/:post_id',
           name: 'bereal-post',
           component: () => import('../views/bereal/BerealPost.vue'),
         }

@@ -4,11 +4,12 @@ import RedHeartIcon from '../../../assets/heart-icon-red.png';
 import DotsIcon from '../../../assets/icons8-dots-90.png';
 import { toastController, IonActionSheet } from '@ionic/vue';
 import { apiRequest } from '@/stores/functions';
-import { alertController } from '@ionic/vue';
+import { alertController, IonNavLink } from '@ionic/vue';
 
 defineProps({
     photo1: String,
     photo2: String,
+    user_id: Number,
     user_name: String,
     user_profile_photo: String,
     liked: Boolean,
@@ -31,10 +32,10 @@ defineProps({
                         <span v-if="_num_likes > 0">{{ _num_likes }}</span>
                     </div>
                 </div>
-                <div class="bereal-photo__user-info">
+                <ion-nav-link :router-link="`/bereal/profil/${user_id}`" class="bereal-photo__user-info">
                     <span class="user-name">{{ user_name }}</span>
                     <img :src="user_profile_photo" class="user-profile-photo" />
-                </div>
+                </ion-nav-link>
             </div>
             <div class="bereal-photo__additional-photo" @click="swapPhotos"
                 :style="{ backgroundImage: `url(${secondaryPhoto})` }">
@@ -44,8 +45,7 @@ defineProps({
             </div>
             <div class="bereal-photo__options" v-if="!hide_options">
                 <img :src="DotsIcon" :id="'open-action-sheet-' + id" />
-                <ion-action-sheet :trigger="'open-action-sheet-' + id"
-                    :buttons="actionSheetButtons"></ion-action-sheet>
+                <ion-action-sheet :trigger="'open-action-sheet-' + id" :buttons="actionSheetButtons"></ion-action-sheet>
             </div>
         </div>
 
@@ -61,16 +61,6 @@ export default {
             _liked: this.$props.liked || false,
             _num_likes: this.$props.num_likes || 0,
             actionSheetButtons: [
-                {
-                    text: 'Zgłoś post naruszający zasady',
-                    role: 'destructive',
-                    data: {
-                        action: 'delete',
-                    },
-                    handler: () => {
-                        this.report(this.id)
-                    }
-                },
                 {
                     text: 'Anuluj',
                     role: 'cancel',
@@ -91,6 +81,17 @@ export default {
                 },
                 handler: () => {
                     this.delete(this.id)
+                }
+            });
+        } else {
+            this.actionSheetButtons.unshift({
+                text: 'Zgłoś post',
+                role: 'destructive',
+                data: {
+                    action: 'report',
+                },
+                handler: () => {
+                    this.report();
                 }
             });
         }

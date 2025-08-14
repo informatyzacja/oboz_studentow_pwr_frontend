@@ -54,7 +54,7 @@ import CameraIcon from '../../assets/icons8-camera-100.png';
                     <BerealPhoto v-for="post in apiDataStore.bereal.data.posts" :key="post.id" :id="post.id"
                         class="bereal-photo" :photo1="post.photo1" :photo2="post.photo2" :user_name="post.user_name"
                         :user_profile_photo="post.user_photo" :num_likes="post.likes_count" :late="post.is_late"
-                        :liked="post.is_liked_by_user" :is_post_owner="post.is_post_owner" />
+                        :liked="post.is_liked_by_user" :is_post_owner="post.is_post_owner" :user_id="post.user" />
                 </div>
             </main>
         </ion-content>
@@ -86,6 +86,9 @@ export default {
             }
         }, 100);
         this.fetchData();
+    },
+    ionViewWillEnter() {
+        // this.fetchData();
     },
     unmounted() {
         if (this.timerId) clearInterval(this.timerId);

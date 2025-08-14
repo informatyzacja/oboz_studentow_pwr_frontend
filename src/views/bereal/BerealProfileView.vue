@@ -17,18 +17,20 @@ import { Camera, CameraResultType } from '@capacitor/camera';
     <ion-page>
         <ion-content :fullscreen="false">
             <main>
-                <TopBar title="BeerReal - Profil" />
+                <TopBar v-if="$route.params.id" title="BeerReal - Profil" auto-back-link=""/>
+                <TopBar v-else title="BeerReal - Profil" />
 
                 <div class="padding-main">
                     <div class="profile-header" v-if="apiDataStore.berealProfile.data">
                         <div class="profile-photo-container">
                             <img :src="apiDataStore.berealProfile.data.user.photo" class="profile-photo" />
-                            <div class="edit-icon" @click="changePhoto">
+                            <div v-if="!$route.params.id" class="edit-icon" @click="changePhoto">
                                 <img :src="RefreshIcon" alt="Edit Profile" />
                             </div>
 
                         </div>
-                        <p class="name">{{ apiDataStore.berealProfile.data.user.first_name }} {{ apiDataStore.berealProfile.data.user.last_name }}</p>
+                        <p class="name">{{ apiDataStore.berealProfile.data.user.first_name }} {{
+                            apiDataStore.berealProfile.data.user.last_name }}</p>
                     </div>
                 </div>
                 <div class="profile-spacer"></div>
@@ -71,6 +73,8 @@ export default {
             });
         },
         fetchData($event) {
+            this.apiDataStore.berealProfile.data = null; // Reset data to avoid showing old data
+            this.apiDataStore.berealProfile.id = this.$route.params.profile_id;
             this.apiDataStore.berealProfile.fetchData().then(() => {
                 if ($event) $event.target.complete();
             });

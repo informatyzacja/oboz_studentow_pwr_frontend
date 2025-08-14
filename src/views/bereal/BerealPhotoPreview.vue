@@ -24,8 +24,10 @@ import { useBerealPostStore } from '@/stores/berealPost.js'
                 <TopBar title="BeerReal" back-link="/bereal/camera/" />
 
                 <BerealPhoto class="bereal-photo" :photo1="`data:image/jpeg;base64,${berealPostStore.photo1}`"
-                    :photo2="`data:image/jpeg;base64,${berealPostStore.photo2}`" user_name="Jan Kowalski"
-                    user_profile_photo="https://picsum.photos/seed/profile/100/100" :num_likes="-1" :hide_options="true"/>
+                    :photo2="`data:image/jpeg;base64,${berealPostStore.photo2}`" :user_name="apiDataStore.berealProfile.data && apiDataStore.berealProfile.data.user.first_name"
+                    :user_profile_photo="apiDataStore.berealProfile.data && apiDataStore.berealProfile.data.user.photo"
+                    :num_likes="-1"
+                    :hide_options="true" />
 
 
                 <div class="bereal_post_options">
@@ -66,6 +68,8 @@ export default {
             await toast.present();
             this.$router.push('/bereal/home');
         }
+        this.apiDataStore.berealProfile.id = null;
+        this.apiDataStore.berealProfile.fetchData();
     },
     methods: {
         post() {
