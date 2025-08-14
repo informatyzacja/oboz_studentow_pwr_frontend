@@ -2,6 +2,7 @@
 import HeartIcon from '../../../assets/heart-icon.png';
 import RedHeartIcon from '../../../assets/heart-icon-red.png';
 import DotsIcon from '../../../assets/icons8-dots-90.png';
+import { toastController } from '@ionic/vue';
 
 defineProps({
     photo1: String,
@@ -10,7 +11,8 @@ defineProps({
     user_profile_photo: String,
     liked: Boolean,
     num_likes: Number,
-    late: Boolean
+    late: Boolean,
+    id: Number
 });
 </script>
 
@@ -37,7 +39,9 @@ defineProps({
                 LATE
             </div>
             <div class="bereal-photo__options">
-                <img :src="DotsIcon" alt="Options" @click="swapPhotos" />
+                <img :src="DotsIcon" :id="'open-action-sheet-' + id" />
+                <ion-action-sheet :trigger="'open-action-sheet-' + id"
+                    :buttons="actionSheetButtons"></ion-action-sheet>
             </div>
         </div>
 
@@ -49,7 +53,26 @@ export default {
     data() {
         return {
             mainPhoto: this.$props.photo1 || '',
-            secondaryPhoto: this.$props.photo2 || ''
+            secondaryPhoto: this.$props.photo2 || '',
+            actionSheetButtons: [
+                {
+                    text: 'Zgłoś post naruszający zasady',
+                    role: 'destructive',
+                    data: {
+                        action: 'delete',
+                    },
+                    handler: () => {
+                        this.report(this.id)
+                    }
+                },
+                {
+                    text: 'Anuluj',
+                    role: 'cancel',
+                    data: {
+                        action: 'cancel',
+                    },
+                },
+            ]
         }
     },
     mounted() {
@@ -62,6 +85,16 @@ export default {
         },
         like() {
             this.$emit('like');
+        },
+        report() {
+            this.$emit('report');
+            console.log(`Reported post with ID: ${this.id}`);
+            toastController.create({
+                message: 'Post został zgłoszony!',
+                duration: 2000,
+                color: 'success',
+                position: 'top'
+            }).then(toast => toast.present())
         }
     }
 };

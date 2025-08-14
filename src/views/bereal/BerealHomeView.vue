@@ -34,7 +34,7 @@ import CameraIcon from '../../assets/icons8-camera-100.png';
                     </IonNavLink>
                 </div>
 
-                <BerealPhoto v-for="photo in photosRange" :key="photo" class="bereal-photo"
+                <BerealPhoto v-for="photo in photosRange" :key="photo" :id="photo" class="bereal-photo"
                     photo1="https://picsum.photos/seed/picsum/800/600"
                     photo2="https://picsum.photos/seed/picsum2/800/600" user_name="Jan Kowalski"
                     user_profile_photo="https://picsum.photos/seed/profile/100/100" :num_likes="42" :late="true" />
