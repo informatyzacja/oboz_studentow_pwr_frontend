@@ -27,7 +27,7 @@ import { IonPage, IonContent } from '@ionic/vue';
             <div>
                 <TopBar :title="apiDataStore.chats.ready && chat && chat.name || 'Czat ?'" autoBackLink class="top-bar"
                     :image="apiDataStore.chats.ready && chat ? chat.avatar : ''"
-                    background=" url('/src/assets/bg.jpg')">
+                    background="var(--app-bg)">
                     <ChatSettingsButton :chat="chat" />
                 </TopBar>
                 <main class="padding-main">
