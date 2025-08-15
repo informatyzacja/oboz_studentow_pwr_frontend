@@ -1,6 +1,6 @@
 <script setup>
 
-import { IonPage, IonContent, IonIcon, IonButton, toastController, IonNavLink, IonRefresher, IonRefresherContent } from '@ionic/vue';
+import { IonPage, IonContent, IonIcon, IonButton, toastController, IonNavLink, IonRefresher, IonRefresherContent, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/vue';
 import Tinder from '@/components/vue-tinder/Tinder.vue'
 import { apiRequest } from '@/stores/functions'
 import TopBar from '@/components/navigation/TopBar.vue'
@@ -23,6 +23,7 @@ import CameraIcon from '../../assets/icons8-camera-100.png';
 <template>
     <ion-page>
         <ion-content :fullscreen="false">
+            <!-- eslint-disable-next-line vue/no-deprecated-slot-attribute -->
             <ion-refresher slot="fixed" @ionRefresh="fetchData($event)">
                 <ion-refresher-content></ion-refresher-content>
             </ion-refresher>
@@ -30,7 +31,7 @@ import CameraIcon from '../../assets/icons8-camera-100.png';
                 <TopBar title="BeerReal" />
 
                 <div class="bereal_top_functions">
-                    <ItemBox v-if="apiDataStore.bereal.data && !apiDataStore.bereal.data.bereal_status.can_post "
+                    <ItemBox v-if="apiDataStore.bereal.data && !apiDataStore.bereal.data.bereal_status.can_post && apiDataStore.bereal.data.bereal_status.was_today"
                         :big-text="'Przesłałeś/aś już dzisiaj BeerReala'" small />
                     <ItemBox
                         v-else-if="apiDataStore.bereal.data && apiDataStore.bereal.data.bereal_status.is_active && isEventActive"
@@ -54,7 +55,16 @@ import CameraIcon from '../../assets/icons8-camera-100.png';
                     <BerealPhoto v-for="post in apiDataStore.bereal.data.posts" :key="post.id" :id="post.id"
                         class="bereal-photo" :photo1="post.photo1" :photo2="post.photo2" :user_name="post.user_name"
                         :user_profile_photo="post.user_photo" :num_likes="post.likes_count" :late="post.is_late"
-                        :liked="post.is_liked_by_user" :is_post_owner="post.is_post_owner" :user_id="post.user" />
+                        :liked="post.is_liked_by_user" :is_post_owner="post.is_post_owner" :user_id="post.user"
+                        @post-deleted="onPostDeleted" />
+                    <ion-infinite-scroll
+                        v-if="apiDataStore.bereal.pagination?.has_next"
+                        @ionInfinite="loadMore($event)" threshold="100px">
+                        <ion-infinite-scroll-content
+                            loading-spinner="bubbles"
+                            loading-text="Ładowanie...">
+                        </ion-infinite-scroll-content>
+                    </ion-infinite-scroll>
                 </div>
             </main>
         </ion-content>
@@ -78,30 +88,52 @@ export default {
         }
     },
     mounted() {
-        this.timerId = setInterval(() => {
-            this.now = Date.now();
-            if (!this.isEventActive) {
-                clearInterval(this.timerId);
-                this.timerId = null;
-            }
-        }, 100);
         this.fetchData();
-    },
-    ionViewWillEnter() {
-        // this.fetchData();
     },
     unmounted() {
         if (this.timerId) clearInterval(this.timerId);
     },
     methods: {
+        startInterval() {
+            if (this.timerId) return; // Prevent multiple intervals
+            this.timerId = setInterval(() => {
+                this.now = Date.now();
+                if (!this.isEventActive) {
+                    clearInterval(this.timerId);
+                    this.timerId = null;
+                }
+            }, 1000);
+        },
         async fetchData(event) {
             await this.apiDataStore.bereal.fetchData();
             if (event) event.target.complete();
             if (this.apiDataStore.bereal.data.bereal_status.is_active) {
                 this.berealEventDeadline = new Date(this.apiDataStore.bereal.data.bereal_status.deadline);
+                this.startInterval();
             } else {
                 this.berealEventDeadline = null;
             }
+        },
+        async loadMore(event) {
+            const pagination = this.apiDataStore.bereal.pagination || this.apiDataStore.bereal.data?.pagination
+            if (!pagination || !pagination.has_next) {
+                event.target.disabled = true
+                event.target.complete()
+                return
+            }
+            const nextPage = (pagination.current_page || 1) + 1
+            await this.apiDataStore.bereal.fetchPage(nextPage, true)
+            // Update local pagination reference
+            const updated = this.apiDataStore.bereal.pagination || this.apiDataStore.bereal.data?.pagination
+            if (!updated?.has_next) {
+                event.target.disabled = true
+            }
+            event.target.complete()
+        },
+        onPostDeleted(id) {
+            if (!this.apiDataStore?.bereal?.data?.posts) return
+            // Reassign to trigger reactivity
+            this.apiDataStore.bereal.data.posts = this.apiDataStore.bereal.data.posts.filter(p => p.id !== id)
         }
     }
 }

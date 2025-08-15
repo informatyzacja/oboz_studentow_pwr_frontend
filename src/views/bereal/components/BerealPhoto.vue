@@ -44,8 +44,8 @@ defineProps({
                 LATE
             </div>
             <div class="bereal-photo__options" v-if="!hide_options">
-                <img :src="DotsIcon" :id="'open-action-sheet-' + id" />
-                <ion-action-sheet :trigger="'open-action-sheet-' + id" :buttons="actionSheetButtons"></ion-action-sheet>
+                <img :src="DotsIcon" :id="`open-action-sheet-${id}-${random_id}`" />
+                <ion-action-sheet :trigger="`open-action-sheet-${id}-${random_id}`" :buttons="actionSheetButtons"></ion-action-sheet>
             </div>
         </div>
 
@@ -68,8 +68,13 @@ export default {
                         action: 'cancel',
                     },
                 },
-            ]
+            ],
+            random_id: Math.random().toString(36).slice(2, 10)
         }
+    },
+    watch: {
+        '$props.liked': 'updateLikedStatus',
+        '$props.num_likes': 'updateNumLikes',
     },
     mounted() {
         if (this.is_post_owner) {
@@ -97,6 +102,12 @@ export default {
         }
     },
     methods: {
+        updateLikedStatus() {
+            this._liked = this.$props.liked;
+        },
+        updateNumLikes() {
+            this._num_likes = this.$props.num_likes;
+        },
         swapPhotos() {
             const temp = this.mainPhoto;
             this.mainPhoto = this.secondaryPhoto;
@@ -187,6 +198,7 @@ export default {
                         position: 'top'
                     }).then(toast => toast.present())
                     this.$emit('post-deleted', id);
+                    
                 }
             });
         }

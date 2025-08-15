@@ -24,7 +24,8 @@ import BerealPhoto from './components/BerealPhoto.vue';
 
                 <BerealPhoto class="bereal-photo" v-if="data" :photo1="data.photo1" :photo2="data.photo2" :id="data.id"
                     :user_name="data.user_name" :user_profile_photo="data.user_photo" :num_likes="data.likes_count"
-                    :late="data.is_late" :liked="data.is_liked_by_user" :is_post_owner="data.is_post_owner" />
+                    :late="data.is_late" :liked="data.is_liked_by_user" :is_post_owner="data.is_post_owner"
+                    @post-deleted="onPostDeleted" />
             </main>
         </ion-content>
     </ion-page>
@@ -55,6 +56,12 @@ export default {
                     this.data = res.post;
                 }
             });
+        },
+        onPostDeleted() {
+            if (!this.apiDataStore?.bereal?.data?.posts) return
+            // Reassign to trigger reactivity
+            this.apiDataStore.bereal.data.posts = this.apiDataStore.bereal.data.posts.filter(p => p.id !== id)
+            if (this.$router) this.$router.back()
         }
     }
 }

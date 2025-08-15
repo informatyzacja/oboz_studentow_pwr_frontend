@@ -17,7 +17,7 @@ import { Camera, CameraResultType } from '@capacitor/camera';
     <ion-page>
         <ion-content :fullscreen="false">
             <main>
-                <TopBar v-if="$route.params.id" title="BeerReal - Profil" auto-back-link=""/>
+                <TopBar v-if="$route.params.profile_id" title="BeerReal - Profil" back-link="/bereal/home"/>
                 <TopBar v-else title="BeerReal - Profil" />
 
                 <div class="padding-main">

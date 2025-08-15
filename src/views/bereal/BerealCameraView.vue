@@ -47,14 +47,6 @@ export default {
         }
     },
     async mounted() {
-        // await CameraPreview.start({
-        //     parent: 'cameraPreview',
-        //     position: 'rear',
-        //     // height: 9999,
-        //     // width: 887,
-        //     toBack: true,
-        //     disableAudio: true
-        // });
     },
     ionViewWillEnter() {
         CameraPreview.start({

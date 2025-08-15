@@ -1,6 +1,6 @@
 <script setup>
 import BackIcon from '../../../assets/icons8-back-100.png'
-import Logo from '../../../assets/ikona.png'
+import Logo from '../../../assets/bEERreal1.png'
 import ProfileIcon from '../../../assets/icons8-male_user.png'
 
 
@@ -114,6 +114,7 @@ export default {
   position: relative;
   z-index: 110;
   transform: translateZ(10px);
+  background-color: white;
 }
 
 .navigation-bar__logo img {

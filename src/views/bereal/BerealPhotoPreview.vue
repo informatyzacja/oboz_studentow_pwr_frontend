@@ -87,6 +87,7 @@ export default {
                     }).then(toast => toast.present())
                     this.berealPostStore.clear()
                     this.apiDataStore.bereal.data = null
+                    this.apiDataStore.bereal.fetchData()
                     this.$router.push('/bereal/home')
                 }
             }).finally(() => {
