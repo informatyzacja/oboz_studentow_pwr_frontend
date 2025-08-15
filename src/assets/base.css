@@ -6,11 +6,13 @@
   --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #FDCE7E 0%, #f5c470dc 100%); /* Home/Profil */
   --radial-gradient-circle: radial-gradient(circle, #FDCE7E 0%, #f5c470dc 80%);
 
+  --app-bg: #1f1718; /*tło aplikacji*/
+
   --bg: #f5c470dc; 
   --bg-translusent: var(--bg);
   /* --bg-translusent: #8B4513194; */
-  --bg-lighter: #2f291a; /*harmo cień*/
-  --bg-light: #D7B36E; /*menu kafelki*/
+  --bg-lighter: #493429; /*harmo cień*/
+  --bg-light: #ac8131; /*menu kafelki*/
   --bg-light-translusent: #f5c47021; /*profil opcje*/
   /*--bg-light-translusent-hover: rgba(111, 219, 21, 0.177);
 */
@@ -110,7 +112,7 @@ h3 {
 
 ion-content {
   /* background: var(--bg-translusent); */
-  background-color:  #3527298e; /*tło */
+  background-color:  var(--app-bg); /*tło */
 
 }
 a {

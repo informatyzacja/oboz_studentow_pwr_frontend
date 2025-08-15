@@ -113,6 +113,7 @@ h1 {
   display: flex;
   height: 100%;
   justify-content: center;
+  align-items: center;
 }
 
 img {
