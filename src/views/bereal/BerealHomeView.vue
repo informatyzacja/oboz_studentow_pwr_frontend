@@ -1,22 +1,14 @@
 <script setup>
 
 import { IonPage, IonContent, IonIcon, IonButton, toastController, IonNavLink, IonRefresher, IonRefresherContent, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/vue';
-import Tinder from '@/components/vue-tinder/Tinder.vue'
-import { apiRequest } from '@/stores/functions'
 import TopBar from '@/components/navigation/TopBar.vue'
-import { refresh, close, heart, star, help } from 'ionicons/icons'
-import OverlayView from '../../components/OverlayView.vue';
-import ProfileCircle from '@/components/navigation/ProfileCircle.vue'
+import BerealAlert from './components/BerealAlert.vue';
 
 import { useApiDataStore } from '@/stores/api.js'
 import { mapStores } from 'pinia'
 import LoadingIndicator from '../../components/LoadingIndicator.vue';
 
 import BerealPhoto from './components/BerealPhoto.vue';
-
-import ItemBox from '../../components/ItemBox.vue'
-
-import CameraIcon from '../../assets/icons8-camera-100.png';
 
 </script>
 
@@ -30,23 +22,7 @@ import CameraIcon from '../../assets/icons8-camera-100.png';
             <main>
                 <TopBar title="BeerReal" />
 
-                <div class="bereal_top_functions">
-                    <ItemBox v-if="apiDataStore.bereal.data && !apiDataStore.bereal.data.bereal_status.can_post && apiDataStore.bereal.data.bereal_status.was_today"
-                        :big-text="'Przesłałeś/aś już dzisiaj BeerReala'" small />
-                    <ItemBox
-                        v-else-if="apiDataStore.bereal.data && apiDataStore.bereal.data.bereal_status.is_active && isEventActive"
-                        :big-text="'Właśnie się dzieje! Zrób zdjecie ' + secondsLeft + 's...'" small />
-                    <ItemBox
-                        v-else-if="apiDataStore.bereal.data && (!apiDataStore.bereal.data.bereal_status.is_active || !isEventActive) && apiDataStore.bereal.data.bereal_status.was_today"
-                        :big-text="'Dzisiejszy BeerReal był o ' + new Date(apiDataStore.bereal.data.bereal_status.deadline).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ', ale nadal możesz przesłać zdjęcie.'"
-                        small />
-
-                    <IonNavLink v-if="apiDataStore.bereal.data && apiDataStore.bereal.data.bereal_status.can_post"
-                        router-link="/bereal/camera" router-animation="none">
-                        <ItemBox big-text="Zrób zdjęcie" :leftIcon="CameraIcon" small leftIconWhite noRoundIcon />
-                    </IonNavLink>
-                </div>
-
+                <BerealAlert v-if="apiDataStore.bereal.data" :bereal_status="apiDataStore.bereal.data.bereal_status"/>
 
                 <LoadingIndicator v-if="apiDataStore.bereal.loading" />
                 <p v-if="apiDataStore.bereal.error" class="error">{{ apiDataStore.bereal.error }}</p>
@@ -57,14 +33,15 @@ import CameraIcon from '../../assets/icons8-camera-100.png';
                         :user_profile_photo="post.user_photo" :num_likes="post.likes_count" :late="post.is_late"
                         :liked="post.is_liked_by_user" :is_post_owner="post.is_post_owner" :user_id="post.user"
                         @post-deleted="onPostDeleted" />
-                    <ion-infinite-scroll
-                        v-if="apiDataStore.bereal.pagination?.has_next"
-                        @ionInfinite="loadMore($event)" threshold="100px">
-                        <ion-infinite-scroll-content
-                            loading-spinner="bubbles"
-                            loading-text="Ładowanie...">
+                    <ion-infinite-scroll v-if="apiDataStore.bereal.pagination?.has_next" @ionInfinite="loadMore($event)"
+                        threshold="100px">
+                        <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Ładowanie...">
                         </ion-infinite-scroll-content>
                     </ion-infinite-scroll>
+
+                    <div v-if="apiDataStore.bereal.data.posts.length === 0" class="padding-main">
+                        <p>Brak postów do wyświetlenia</p>
+                    </div>
                 </div>
             </main>
         </ion-content>
@@ -74,45 +51,17 @@ import CameraIcon from '../../assets/icons8-camera-100.png';
 <script>
 export default {
     data: () => ({
-        berealEventDeadline: null,
-        now: Date.now(),
-        timerId: null
     }),
     computed: {
         ...mapStores(useApiDataStore),
-        isEventActive() {
-            return this.now < this.berealEventDeadline;
-        },
-        secondsLeft() {
-            return Math.max(0, Math.floor((this.berealEventDeadline - this.now) / 1000));
-        }
     },
     mounted() {
         this.fetchData();
     },
-    unmounted() {
-        if (this.timerId) clearInterval(this.timerId);
-    },
     methods: {
-        startInterval() {
-            if (this.timerId) return; // Prevent multiple intervals
-            this.timerId = setInterval(() => {
-                this.now = Date.now();
-                if (!this.isEventActive) {
-                    clearInterval(this.timerId);
-                    this.timerId = null;
-                }
-            }, 1000);
-        },
         async fetchData(event) {
             await this.apiDataStore.bereal.fetchData();
             if (event) event.target.complete();
-            if (this.apiDataStore.bereal.data.bereal_status.is_active) {
-                this.berealEventDeadline = new Date(this.apiDataStore.bereal.data.bereal_status.deadline);
-                this.startInterval();
-            } else {
-                this.berealEventDeadline = null;
-            }
         },
         async loadMore(event) {
             const pagination = this.apiDataStore.bereal.pagination || this.apiDataStore.bereal.data?.pagination
@@ -138,16 +87,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.bereal-photo {
-    margin: 10px;
-}
-.bereal_top_functions {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 0 10px;
-}
-</style>

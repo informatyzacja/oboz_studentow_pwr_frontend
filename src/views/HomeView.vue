@@ -30,6 +30,8 @@ import { IonPage, IonContent, IonRefresher, IonRefresherContent } from '@ionic/v
 import SavePhotoButton from '@/components/SavePhotoButton.vue'
 
 import ProfileCircle from '../components/navigation/ProfileCircle.vue'
+
+import BerealAlert from '../views/bereal/components/BerealAlert.vue'
 </script>
 
 <template>
@@ -41,6 +43,10 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
       <main>
         <TopBar title="Home" />
         <ProfileCircle />
+
+
+        <BerealAlert v-if="apiDataStore.berealStatus.ready && apiDataStore.berealStatus.data.can_post"
+          :bereal_status="apiDataStore.berealStatus.data" show_only_if_live />
 
         <!-- Night Game Signup -->
         <div class="padding"
