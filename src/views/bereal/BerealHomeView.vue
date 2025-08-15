@@ -22,12 +22,12 @@ import BerealPhoto from './components/BerealPhoto.vue';
             <main>
                 <TopBar title="BeerReal" />
 
-                <BerealAlert v-if="apiDataStore.bereal.data" :bereal_status="apiDataStore.bereal.data.bereal_status"/>
+                <BerealAlert v-if="apiDataStore.bereal.data" :bereal_status="apiDataStore.bereal.data.bereal_status" />
 
                 <LoadingIndicator v-if="apiDataStore.bereal.loading" />
                 <p v-if="apiDataStore.bereal.error" class="error">{{ apiDataStore.bereal.error }}</p>
 
-                <div v-if="apiDataStore.bereal.data">
+                <div v-if="apiDataStore.bereal.data" class="padding-main">
                     <BerealPhoto v-for="post in apiDataStore.bereal.data.posts" :key="post.id" :id="post.id"
                         class="bereal-photo" :photo1="post.photo1" :photo2="post.photo2" :user_name="post.user_name"
                         :user_profile_photo="post.user_photo" :num_likes="post.likes_count" :late="post.is_late"
@@ -39,7 +39,7 @@ import BerealPhoto from './components/BerealPhoto.vue';
                         </ion-infinite-scroll-content>
                     </ion-infinite-scroll>
 
-                    <div v-if="apiDataStore.bereal.data.posts.length === 0" class="padding-main">
+                    <div v-if="apiDataStore.bereal.data.posts.length === 0">
                         <p>Brak postów do wyświetlenia</p>
                     </div>
                 </div>

@@ -6,6 +6,8 @@ import { toastController, IonActionSheet } from '@ionic/vue';
 import { apiRequest } from '@/stores/functions';
 import { alertController, IonNavLink } from '@ionic/vue';
 
+import { personCircle } from 'ionicons/icons';
+
 defineProps({
     photo1: String,
     photo2: String,
@@ -34,7 +36,7 @@ defineProps({
                 </div>
                 <ion-nav-link :router-link="`/bereal/profil/${user_id}`" class="bereal-photo__user-info">
                     <span class="user-name">{{ user_name }}</span>
-                    <img :src="user_profile_photo" class="user-profile-photo" />
+                    <img :src="user_profile_photo || personCircle" class="user-profile-photo" />
                 </ion-nav-link>
             </div>
             <div class="bereal-photo__additional-photo" @click="swapPhotos"

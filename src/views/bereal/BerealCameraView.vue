@@ -173,6 +173,7 @@ onIonViewDidLeave(() => {
 .camera-preview-content {
     --background: transparent;
     background-image: none;
+    background: transparent;
 }
 .camera-container {
     position: relative;

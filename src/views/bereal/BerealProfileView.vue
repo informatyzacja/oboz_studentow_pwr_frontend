@@ -10,7 +10,7 @@ import { mapStores } from 'pinia'
 import RefreshIcon from '../../assets/icons8-refresh.png';
 import { Camera, CameraResultType } from '@capacitor/camera';
 
-
+import { personCircle } from 'ionicons/icons';
 </script>
 
 <template>
@@ -23,7 +23,7 @@ import { Camera, CameraResultType } from '@capacitor/camera';
                 <div class="padding-main">
                     <div class="profile-header" v-if="apiDataStore.berealProfile.data">
                         <div class="profile-photo-container">
-                            <img :src="apiDataStore.berealProfile.data.user.photo" class="profile-photo" />
+                            <img :src="apiDataStore.berealProfile.data.user.photo || personCircle" class="profile-photo" />
                             <div v-if="!$route.params.id" class="edit-icon" @click="changePhoto">
                                 <img :src="RefreshIcon" alt="Edit Profile" />
                             </div>
