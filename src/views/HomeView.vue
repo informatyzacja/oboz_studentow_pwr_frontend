@@ -23,6 +23,7 @@ import megaphoneIcon from '../assets/icons8-megaphone-100.png'
 import graNocna from '../assets/gra nocna.png'
 import ItemBox from '../components/ItemBox.vue'
 import tinderIcon from '../assets/icons8-tinder-100.png'
+import beerRealLogo from  '../assets/bEERreal1.png'
 
 import { IonPage, IonContent, IonRefresher, IonRefresherContent } from '@ionic/vue';
 
@@ -221,7 +222,7 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
         <div class="padding" v-if="apiDataStore.profile.data && apiDataStore.profile.data[0].tinder_profile && apiDataStore.profile.data[0].tinder_profile.user && apiDataStore.profile.data[0].tinder_profile.photo &&
           apiDataStore.profile.data[0].tinder_profile.description">
           <RouterLink to="/bereal/home">
-            <ItemBox bigText="BeerReal obozowy" :rightIcon="rightArrow" :leftIcon="tinderIcon" left-icon-white />
+            <ItemBox bigText="BeerReal obozowy" :rightIcon="rightArrow" :leftIcon="beerRealLogo" left-icon-white />
           </RouterLink>
         </div>
 
