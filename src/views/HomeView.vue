@@ -210,7 +210,7 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
 
         <!-- Tinder -->
 
-        <div class="padding" v-if="apiDataStore.profile.data && apiDataStore.profile.data[0].tinder_profile && apiDataStore.profile.data[0].tinder_profile.user && apiDataStore.profile.data[0].tinder_profile.photo &&
+        <div class="padding" v-if="apiDataStore.profile.data && apiDataStore.profile.data[0].tinder_active && apiDataStore.profile.data[0].tinder_profile && apiDataStore.profile.data[0].tinder_profile.user && apiDataStore.profile.data[0].tinder_profile.photo &&
           apiDataStore.profile.data[0].tinder_profile.description">
           <RouterLink to="/tinder">
             <ItemBox bigText="Tinder obozowy" :rightIcon="rightArrow" :leftIcon="tinderIcon" left-icon-white />
@@ -218,15 +218,11 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
         </div>
 
         <!-- BeerReal -->
-
-        <div class="padding" v-if="apiDataStore.profile.data && apiDataStore.profile.data[0].tinder_profile && apiDataStore.profile.data[0].tinder_profile.user && apiDataStore.profile.data[0].tinder_profile.photo &&
-          apiDataStore.profile.data[0].tinder_profile.description">
+        <div class="padding" v-if="apiDataStore.berealStatus.ready && apiDataStore.berealStatus.data.is_active">
           <RouterLink to="/bereal/home">
             <ItemBox bigText="BeerReal obozowy" :rightIcon="rightArrow" :leftIcon="beerRealLogo" left-icon-white />
           </RouterLink>
         </div>
-
-
 
         <LoadingIndicator v-if="apiDataStore.schedule.loading" />
         <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
@@ -254,8 +250,9 @@ export default {
       timer6: null,
       timer7: null,
       timer8: null,
+      timer9: null,
 
-      partenrsScroll: null,
+      partnersScroll: null,
       scrollDirectionLeft: true,
 
       showPushNotificationCard: false,
@@ -282,6 +279,7 @@ export default {
     this.timer6 = setInterval(this.apiDataStore.partner.fetchData, 60000)
     this.timer7 = setInterval(this.apiDataStore.homeLinks.fetchData, 60000)
     this.timer8 = setInterval(this.apiDataStore.images.fetchData, 60000)
+    this.timer9 = setInterval(this.apiDataStore.berealStatus.fetchData, 60000)
 
 
     // push notifications
@@ -328,7 +326,8 @@ export default {
         this.apiDataStore.nightGameGroupInfo.fetchData(),
         this.apiDataStore.houseSignupsInfo.fetchData(),
         this.apiDataStore.partner.fetchData(),
-        this.apiDataStore.images.fetchData()
+        this.apiDataStore.images.fetchData(),
+        this.apiDataStore.berealStatus.fetchData()
       ]).then(() => {
         if (event) {
           event.target.complete();
@@ -371,6 +370,7 @@ export default {
     clearInterval(this.timer6)
     clearInterval(this.timer7)
     clearInterval(this.timer8)
+    clearInterval(this.timer9)
 
     clearInterval(this.partnersScroll)
 

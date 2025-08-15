@@ -77,3 +77,19 @@ export const useBerealProfileStore = defineStore('berealProfile', {
   }
 })
 
+
+
+export const useBerealStatusStore = defineStore('berealStatus', {
+  state: () => ({ loading: true, error: null, data: null, url: '../api2/bereal/status/' }),
+  getters: {
+    ready() {
+      return ready(this)
+    }
+  },
+  actions: {
+    fetchData() {
+      return loadData(this)
+    }
+  }
+})
+
