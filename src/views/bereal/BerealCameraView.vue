@@ -38,7 +38,6 @@ const previewFirstPhoto = computed(() => {
 const isLeftLandscape = computed(() => orientationAngle.value === 270 || orientationAngle.value === -90);
 const isRightLandscape = computed(() => orientationAngle.value === 90);
 const isLandscape = computed(() => isLeftLandscape.value || isRightLandscape.value);
-const debugOrientation = computed(() => `${orientationAngle.value}°`);
 
 // Functions
 async function refreshOrientation() {
@@ -223,7 +222,7 @@ onIonViewDidLeave(() => {
     bottom: 10px;
     width: 40px;
     height: 40px;
-    z-index: 10;
+    z-index: 60;
     filter: invert(1);
 }
 .orientation-overlay {
