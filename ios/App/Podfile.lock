@@ -7,6 +7,8 @@ PODS:
     - Capacitor
   - CapacitorClipboard (6.0.1):
     - Capacitor
+  - CapacitorCommunityCameraPreview (6.0.1):
+    - Capacitor
   - CapacitorCommunityContacts (6.0.6):
     - Capacitor
   - CapacitorCommunityFcm (6.0.0):
@@ -33,6 +35,8 @@ PODS:
   - CapacitorPreferences (6.0.2):
     - Capacitor
   - CapacitorPushNotifications (6.0.2):
+    - Capacitor
+  - CapacitorScreenOrientation (6.0.3):
     - Capacitor
   - CapacitorShare (6.0.2):
     - Capacitor
@@ -148,6 +152,7 @@ DEPENDENCIES:
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorCamera (from `../../node_modules/@capacitor/camera`)"
   - "CapacitorClipboard (from `../../node_modules/@capacitor/clipboard`)"
+  - "CapacitorCommunityCameraPreview (from `../../node_modules/@capacitor-community/camera-preview`)"
   - "CapacitorCommunityContacts (from `../../node_modules/@capacitor-community/contacts`)"
   - "CapacitorCommunityFcm (from `../../node_modules/@capacitor-community/fcm`)"
   - "CapacitorCommunityMedia (from `../../node_modules/@capacitor-community/media`)"
@@ -160,6 +165,7 @@ DEPENDENCIES:
   - "CapacitorMlkitBarcodeScanning (from `../../node_modules/@capacitor-mlkit/barcode-scanning`)"
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
   - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
+  - "CapacitorScreenOrientation (from `../../node_modules/@capacitor/screen-orientation`)"
   - "CapacitorShare (from `../../node_modules/@capacitor/share`)"
   - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
@@ -195,6 +201,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/camera"
   CapacitorClipboard:
     :path: "../../node_modules/@capacitor/clipboard"
+  CapacitorCommunityCameraPreview:
+    :path: "../../node_modules/@capacitor-community/camera-preview"
   CapacitorCommunityContacts:
     :path: "../../node_modules/@capacitor-community/contacts"
   CapacitorCommunityFcm:
@@ -219,6 +227,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/preferences"
   CapacitorPushNotifications:
     :path: "../../node_modules/@capacitor/push-notifications"
+  CapacitorScreenOrientation:
+    :path: "../../node_modules/@capacitor/screen-orientation"
   CapacitorShare:
     :path: "../../node_modules/@capacitor/share"
   CapacitorSplashScreen:
@@ -231,6 +241,7 @@ SPEC CHECKSUMS:
   CapacitorApp: 0bc633b4eae40a1f32cd2834788fad3bc42da6a1
   CapacitorCamera: ed022171dbf3853e68eec877b4d78995378af6b7
   CapacitorClipboard: 756cd7e83e8d5d19b0c74f40b57517c287bd5fe2
+  CapacitorCommunityCameraPreview: 3b37673576ad824c282429a0bd093b45d0215921
   CapacitorCommunityContacts: 04d749aa9202f1ecedf64f51ecc599ac6aedcfde
   CapacitorCommunityFcm: a4a524712c41db0a97e23f7f7d4b38b5d33de7a0
   CapacitorCommunityMedia: 51cc6c8782b92cf622d9644cac37ae024fafb377
@@ -243,6 +254,7 @@ SPEC CHECKSUMS:
   CapacitorMlkitBarcodeScanning: 63e217d376f8f63b1be84c0d19568f318e87f4d3
   CapacitorPreferences: e8284bf740cf8c6d3f25409af3c01df87dfeb5a1
   CapacitorPushNotifications: ccd797926c030acad3d5498ef452c735c90a2c89
+  CapacitorScreenOrientation: 3bb823f5d265190301cdc5d58a568a287d98972a
   CapacitorShare: 591ae4693d85686ceb590db8e8b44aa014ec6490
   CapacitorSplashScreen: 250df9ef8014fac5c7c1fd231f0f8b1d8f0b5624
   CapacitorStatusBar: b81d4fb5d4e0064c712018071b3ab4b810b39a63
@@ -266,6 +278,6 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
 
-PODFILE CHECKSUM: 3f1a1f2d0efd4d9ddcf5b62b18f4cde61995c78e
+PODFILE CHECKSUM: 42779b78ccbab4b3d1406d336de0295e98dffb8f
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

@@ -27,7 +27,7 @@ import { IonPage, IonContent } from '@ionic/vue';
             <div>
                 <TopBar :title="apiDataStore.chats.ready && chat && chat.name || 'Czat ?'" autoBackLink class="top-bar"
                     :image="apiDataStore.chats.ready && chat ? chat.avatar : ''"
-                    background=" url('/src/assets/bg.jpg')">
+                    background="var(--app-bg)">
                     <ChatSettingsButton :chat="chat" />
                 </TopBar>
                 <main class="padding-main">
@@ -285,7 +285,7 @@ export default {
 }
 
 .messageFromMe .message {
-    background-color: var(--theme-dark);
+    background-color: var(--chatt-color);
     border-radius: 20px 20px 5px 20px;
     margin: 2px;
     margin-left: 35px;
@@ -410,7 +410,7 @@ export default {
 
 .sendIcon img {
     height: 100%;
-    filter: drop-shadow(0px 100px 0 var(--theme-dark));
+    filter: drop-shadow(0px 100px 0 var(--send-button));
     transform: translateY(-100px);
 }
 

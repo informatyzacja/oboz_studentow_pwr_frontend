@@ -1,4 +1,5 @@
 <script setup>
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import SosIcon from '../../assets/icons8-sos.png'
 // import MapIcon from '../../assets/icons8-map_marker.png'
 import Logo from '../../assets/ikona.png'
@@ -13,9 +14,42 @@ import MenuIcon from '../../assets/icons8-squared_menu.png'
 import ChatIcon from '../../assets/icons8-chat.png'
 
 import { useApiDataStore } from '../../stores/api.js'
-import { mapStores } from 'pinia'
-
 import { IonNavLink, IonTabBar } from '@ionic/vue'
+
+// store instance (was previously accessed through mapStores in Options API)
+const apiDataStore = useApiDataStore()
+
+// reactive state
+const showIosInstallMessage = ref(false)
+const versionTimer = ref(null)
+
+// computed helpers
+const isIos = computed(() => {
+  const userAgent = window.navigator.userAgent.toLowerCase()
+  return /iphone|ipod/.test(userAgent)
+})
+
+const isInStandaloneMode = computed(() => {
+  return ('standalone' in window.navigator) && (window.navigator.standalone)
+})
+
+const iOSversion = computed(() => {
+  const userAgent = window.navigator.userAgent
+  if (/iP(hone|od|ad)/.test(userAgent)) {
+    const v = userAgent.match(/OS (\d+)_(\d+)_?(\d+)?/)
+    return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)]
+  }
+  return false
+})
+
+onMounted(() => {
+  // trigger permissions fetch (previously in mounted())
+  apiDataStore.permissions.fetchData()
+})
+
+onBeforeUnmount(() => {
+  if (versionTimer.value) clearInterval(versionTimer.value)
+});
 </script>
 
 <template>
@@ -68,41 +102,6 @@ import { IonNavLink, IonTabBar } from '@ionic/vue'
   </IonTabBar>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      showIosInstallMessage: false,
-      versionTimer: null,
-    }
-  },
-  computed: {
-    ...mapStores(useApiDataStore),
-    isIos() {
-      const userAgent = window.navigator.userAgent.toLowerCase();
-      return /iphone|ipod/.test(userAgent);
-    },
-    isInStandaloneMode() {
-      return ('standalone' in window.navigator) && (window.navigator.standalone);
-    },
-    iOSversion() {
-      const userAgent = window.navigator.userAgent
-      if (/iP(hone|od|ad)/.test(userAgent)) {
-        // supports iOS 2.0 and later: <http://bit.ly/TJjs1V>
-        var v = (userAgent).match(/OS (\d+)_(\d+)_?(\d+)?/);
-        return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
-      }
-      return false;
-    }
-  },
-  mounted() {
-    this.apiDataStore.permissions.fetchData()
-  },
-  beforeUnmount() {
-    clearInterval(this.versionTimer)
-  },
-}
-</script>
 
 <style scoped>
 .navigation-bar {
