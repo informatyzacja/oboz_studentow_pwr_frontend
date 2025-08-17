@@ -59,17 +59,29 @@ const addListeners = async () => {
                     body: notification.body,
                     id: 1,
                     sound: 'default',
+                    extra: {
+                        link: notification.data?.link || null,
+                    },
                 },
             ],
         });
     });
 
     await PushNotifications.addListener('pushNotificationActionPerformed', notification => {
-        console.log('Push notification action performed', notification.actionId, notification.inputValue);
+        console.log('Push notification action performed', notification, notification.actionId, notification.inputValue);
+        if (notification.actionId === 'tap' && notification.notification.data?.link) {
+            router.push(notification.notification.data.link);
+        }
     });
+
+    await LocalNotifications.addListener('localNotificationActionPerformed', notification => {
+        console.log('Local notification action performed', notification, notification.actionId);
+        if (notification.actionId === 'tap' && notification.notification.extra?.link) {
+            router.push(notification.notification.extra.link);
+        }
+    });
+
 }
-
-
 
 router.isReady().then(() => {
     app.mount('#app');
