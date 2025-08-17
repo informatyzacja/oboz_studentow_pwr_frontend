@@ -55,7 +55,7 @@ export default {
         onPostDeleted() {
             if (!this.apiDataStore?.bereal?.data?.posts) return
             // Reassign to trigger reactivity
-            this.apiDataStore.bereal.data.posts = this.apiDataStore.bereal.data.posts.filter(p => p.id !== this.data.id)
+            this.apiDataStore.bereal.data.posts = this.apiDataStore.bereal.data.posts.filter(p => p.id !== this.data?.id)
             if (this.$router) this.$router.back()
         }
     }
