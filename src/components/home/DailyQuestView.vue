@@ -66,7 +66,7 @@ export default {
 <style scoped>
 .daily-quest {
   /* THEME COLORS */
-  background: radial-gradient(farthest-corner at 90% 90%, #34ade1 0%, #1c6386 100%);
+  background: var(--daily-quest-gradient);
   border-radius: 20px;
   padding: 15px 15px 5px 20px;
   margin-bottom: 20px;
