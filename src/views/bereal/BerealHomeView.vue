@@ -87,3 +87,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.bereal-photo {
+    margin-bottom: 8px;
+}
+</style>
