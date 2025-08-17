@@ -119,6 +119,7 @@ export default {
     height: 200px;
     border-radius: 50%;
     margin-bottom: 10px;
+    object-fit: cover;
 }
 .name {
     font-size: 1.6em;
