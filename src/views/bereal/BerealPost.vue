@@ -1,16 +1,11 @@
 <script setup>
 
 import { IonPage, IonContent, IonIcon, IonButton, toastController, IonNavLink } from '@ionic/vue';
-import Tinder from '@/components/vue-tinder/Tinder.vue'
 import { apiRequest } from '@/stores/functions'
 import TopBar from '@/components/navigation/TopBar.vue'
-import { refresh, close, heart, star, help } from 'ionicons/icons'
-import OverlayView from '../../components/OverlayView.vue';
-import ProfileCircle from '@/components/navigation/ProfileCircle.vue'
 
 import { useApiDataStore } from '@/stores/api.js'
 import { mapStores } from 'pinia'
-import LoadingIndicator from '../../components/LoadingIndicator.vue';
 
 import BerealPhoto from './components/BerealPhoto.vue';
 
@@ -60,7 +55,7 @@ export default {
         onPostDeleted() {
             if (!this.apiDataStore?.bereal?.data?.posts) return
             // Reassign to trigger reactivity
-            this.apiDataStore.bereal.data.posts = this.apiDataStore.bereal.data.posts.filter(p => p.id !== id)
+            this.apiDataStore.bereal.data.posts = this.apiDataStore.bereal.data.posts.filter(p => p.id !== this.data?.id)
             if (this.$router) this.$router.back()
         }
     }

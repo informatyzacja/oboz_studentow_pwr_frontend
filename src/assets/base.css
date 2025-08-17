@@ -13,7 +13,7 @@
   /* --bg-translusent: #8B4513194; */
   --bg-lighter: #493429; /*harmo cień*/
   --bg-light: #ac8131; /*menu kafelki*/
-  --bg-light-translusent: #f5c47021; /*profil opcje*/
+  --bg-light-translusent: #f5c47091; /*profil opcje*/
   /*--bg-light-translusent-hover: rgba(111, 219, 21, 0.177);
 */
   --theme-dark: #371000; /* kolor ikon - domyśl sie których */
@@ -24,7 +24,7 @@
   --send-button: #FDCE7E;
 
   --text-gray: #efefefb9; /* harmo - miejsce + czaty msg*/
-  --text-dark: #FDCE7E; /* Opcje - chatt */
+  --text-dark: #c5861a; /* Opcje - chatt */
   --red-dark: #8B0000;
   --red-action: #dc1212;
   --red: #6d1111;
@@ -37,6 +37,8 @@
   --login-button-bg: #f5c47021; /* przyciski log */
   
   --bottom-nav-gradient: linear-gradient(90deg, #80A9D0, #FDCE7E, #80A9D0);
+
+  --daily-quest-gradient: radial-gradient(farthest-corner at 90% 90%, #FDCE7E 0%, #80A9D0 100%);
 
 /*ion-tab-bar {
   background: url('@/assets/Molo-final.png') no-repeat center center;

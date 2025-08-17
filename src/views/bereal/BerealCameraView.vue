@@ -1,6 +1,6 @@
 <script setup>
 import { IonPage, IonContent, IonNavLink, IonButton, onIonViewWillEnter, onIonViewDidLeave } from '@ionic/vue';
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useBerealPostStore } from '@/stores/berealPost.js';
 import CancelIcon from '../../assets/icons8-cancel.png';
@@ -59,13 +59,9 @@ async function refreshOrientation() {
 
 // Listen for orientation change events from plugin
 async function addOrientationListener() {
-    try {
-        await ScreenOrientation.addListener('screenOrientationChange', () => {
-            refreshOrientation();
-        });
-    } catch (e) {
-    // Fallback usunięty na życzenie – brak dodatkowych listenerów
-    }
+    await ScreenOrientation.addListener('screenOrientationChange', () => {
+        refreshOrientation();
+    });
 }
 
 async function capture() {
