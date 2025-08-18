@@ -66,14 +66,14 @@ import { nextTick } from 'vue'
                         </div>
 
                         <div class="goToBottom" @pointerdown="cacheFocusState" @touchstart="cacheFocusState"
-                             @click.prevent="scrollToBottomAndRefocus" v-if="!isAtBootom">
+                             @click.prevent="scrollToBottomAndRefocus" v-if="!isAtBottom">
                             <img :src="downArrowIcon" />
                         </div>
 
 
                         <div class="textBox">
                             <input ref="messageInput" type="text" v-on:keyup.enter="sendMessage"
-                                v-model="currentMessage" placeholder="Aa" maxlength="500" />
+                                v-model="currentMessage" placeholder="Aa" maxlength="500" @focus="keyboardOpened" @blur="keyboardClosed"/>
 
                             <button class="textBoxButton" v-if="currentMessage.trim() === ''" type="button"
                                 tabindex="-1" @pointerdown="cacheFocusState" @touchstart="cacheFocusState"
@@ -117,7 +117,7 @@ export default {
         chat() {
             return this.apiDataStore.chats.withId(this.chat_id)
         },
-        isAtBootom() {
+        isAtBottom() {
             if (!this.scrollElement) return false
             return this.scrollElement.scrollHeight - this.scrollTop - this.$refs.content.$el.scrollHeight <= 45
         },
@@ -135,8 +135,9 @@ export default {
     async mounted() {
         // Prepare ResizeObserver (attached lazily when chat element exists & is visible)
         this.resizeObserver = new ResizeObserver(() => {
+            console.log("resize")
             // auto-scroll only if user near bottom to avoid jumping while user reads history
-            if (this.isAtBootom) this.scrollToBottom(0);
+            if (this.isAtBottom) this.scrollToBottom(0);
             this.detachResizeObserver();
         });
 
@@ -189,7 +190,7 @@ export default {
         scrollToBottomDelay() {
             setTimeout(() => {
                 this.scrollToBottom();
-            }, 500);
+            }, 100);
         },
         async connect() {
             this.chatSocket = await apiSocket('chat/');
@@ -221,7 +222,7 @@ export default {
         },
 
         async receiveMessage(data) {
-            const scrollToEnd = this.isAtBootom
+            const scrollToEnd = this.isAtBottom
 
             if (data.user_id === this.apiDataStore.profile.data[0].id) return // don't show own messages
 
@@ -319,6 +320,20 @@ export default {
                     this.$refs.messageInput.focus();
                 }
             });
+        },
+        keyboardOpened() {
+            if (this.isAtBottom) {
+                setTimeout(() => {
+                    this.scrollToBottom();
+                }, 700);
+            }
+        },
+        keyboardClosed() {
+            if (this.isAtBottom) {
+                setTimeout(() => {
+                    this.scrollToBottom();
+                }, 700);
+            }
         }
 
     }
