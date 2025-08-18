@@ -50,7 +50,7 @@ export default {
     computed: {
         ...mapStores(useApiDataStore),
         chatingUserId() {
-            if (!this.apiDataStore.profile.data[0]?.id) return
+            if (!this.apiDataStore.profile.data || !this.apiDataStore.profile.data[0]?.id) return
             return this.chat.users.find(user_id => user_id !== this.apiDataStore.profile.data[0]?.id) || null;
         }
     },
