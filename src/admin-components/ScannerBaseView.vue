@@ -12,27 +12,23 @@ defineEmits(['error', 'result']);
 </script>
 
 <template>
-  <input ref="searchInput" type="text" pattern="[0-9]*" inputmode="numeric" maxLength="6" placeholder="Wpisz kod" class="search"
-    v-model="searchQuery" @input="(event) => {
+  <div class="center">
+    <input ref="searchInput" type="text" pattern="[0-9]*" inputmode="numeric" maxLength="6" placeholder="Wpisz kod"
+      class="search" v-model="searchQuery" @input="(event) => {
       if (event.target.value.length > event.target.maxLength)
         searchQuery = event.target.value.slice(0, event.target.maxLength)
-    }"
-    @keyup.enter="search"
-    :readonly="isReadonly"
-    @focus="removeReadonly"
-    @blur="handleBlur"
-  />
-  <button class="button success" @click="search" v-if="searchQuery != '' && !hideScanner">
-    Sprawdź
-  </button>
+    }" @keyup.enter="search" :readonly="isReadonly" @focus="removeReadonly" @blur="handleBlur" @click="refocus"/>
+    <button class="button success" @click="search" v-if="searchQuery != '' && !hideScanner">
+      Sprawdź
+    </button>
 
 
-  <button class="button success" @click="startStan" v-if="!disable">
-    Otwórz skaner
-  </button>
+    <button class="button success" @click="startStan" v-if="!disable">
+      Otwórz skaner
+    </button>
 
-  <p class="error" v-if="qrReaderError">{{ qrReaderError }}</p>
-
+    <p class="error" v-if="qrReaderError">{{ qrReaderError }}</p>
+  </div>
 </template>
 
 <script>
@@ -43,7 +39,8 @@ export default {
       searchQuery: '',
       disable: false,
       qrReaderError: null,
-      isReadonly: true, // można usunąć, ale zostawiam dla czytelności
+      isReadonly: true, 
+      lockReadOnly: false,
     }
   },
 
@@ -140,6 +137,9 @@ export default {
       this.isReadonly = false;
     },
     handleBlur() {
+      if (this.lockReadOnly) {
+        return
+      }
       this.isReadonly = true;
       setTimeout(() => {
         if (this.$refs.searchInput) {
@@ -147,6 +147,18 @@ export default {
         }
       }, 10);
     },
+    refocus() {
+      this.lockReadOnly = true;
+      this.isReadonly = false;
+      if (this.$refs.searchInput) {
+        this.$refs.searchInput.blur();
+        setTimeout(() => {
+          if (this.$refs.searchInput) {
+            this.$refs.searchInput.focus();
+          }
+        }, 10);
+      }
+    }
   }
 }
 </script>
