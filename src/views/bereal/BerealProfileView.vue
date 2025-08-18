@@ -17,7 +17,7 @@ import { personCircle } from 'ionicons/icons';
     <ion-page>
         <ion-content :fullscreen="false">
             <main>
-                <TopBar v-if="$route.params.profile_id" title="BeerReal - Profil" back-link="/bereal/home"/>
+                <TopBar v-if="$route.params.profile_id" title="BeerReal - Profil" auto-back-link/>
                 <TopBar v-else title="BeerReal - Profil" />
 
                 <div class="padding-main">

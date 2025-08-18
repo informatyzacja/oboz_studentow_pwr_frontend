@@ -34,7 +34,7 @@ defineProps({
                         <span v-if="_num_likes > 0">{{ _num_likes }}</span>
                     </div>
                 </div>
-                <ion-nav-link :router-link="`/bereal/profil/${user_id}`" class="bereal-photo__user-info">
+                <ion-nav-link :router-link="user_id ? `/bereal/profil/${user_id}` : null" class="bereal-photo__user-info">
                     <span class="user-name">{{ user_name }}</span>
                     <img :src="user_profile_photo || personCircle" class="user-profile-photo" />
                 </ion-nav-link>
