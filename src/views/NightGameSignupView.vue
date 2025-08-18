@@ -28,8 +28,7 @@ import { IonPage, IonContent } from '@ionic/vue';
 
                     <TextBox>
                         <p>UWAGA! Zapisy wykonuje tylko jedna osoba z grupy.</p>
-                        <p>Dla fajnieszej zabawy polecamy, aby w grupie znalazły się <span class="bold">osoby obu
-                                płci</span>.</p>
+                        <p>Dla fajnieszej zabawy polecamy, aby w grupie znalazły się <span class="bold">osoby różnej płci</span>.</p>
 
                         <!-- <p>Wszystkie osoby w grupie muszą mieć <span class="bold">ukończone 18 lat</span> w dniu
                             gry<span
