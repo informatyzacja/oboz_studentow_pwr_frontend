@@ -56,6 +56,9 @@ export default {
     async mounted() {
         this.fetchData();
     },
+    watch: {
+        '$route.params.profile_id': 'fetchData'
+    },
     methods: {
         changePhoto() {
             Camera.getPhoto({
@@ -76,7 +79,7 @@ export default {
             this.apiDataStore.berealProfile.data = null; // Reset data to avoid showing old data
             this.apiDataStore.berealProfile.id = this.$route.params.profile_id;
             this.apiDataStore.berealProfile.fetchData().then(() => {
-                if ($event) $event.target.complete();
+                if ($event?.target) $event.target.complete();
             });
         }
     }
