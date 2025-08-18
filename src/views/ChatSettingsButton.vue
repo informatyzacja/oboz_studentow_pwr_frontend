@@ -1,32 +1,45 @@
 <script setup>
 import OverlayView from '@/components/OverlayView.vue';
-import { IonToggle, IonActionSheet, IonButton, toastController } from '@ionic/vue';
+import { IonToggle, IonActionSheet, IonButton, toastController, IonNavLink } from '@ionic/vue';
 import { apiRequest } from '@/stores/functions.js'
+import BeerRealLogo from '@/assets/bEERreal1.png'
 
-import { useApiDataStore } from '../stores/api.js'
+import { useApiDataStore } from '@/stores/api.js'
 import { mapStores } from 'pinia'
 </script>
 
 <template>
-    <p class="infoButton" @click="showChatSettings">Opcje</p>
+    <div>
+        <p class="infoButton" @click="showChatSettings">Opcje</p>
 
-    <OverlayView ref="chatSettingsOverlay">
-        <div class="padding" v-if="chat">
-            <h2>Opcje czatu</h2>
-            <ion-toggle v-model="chat.notifications_blocked" @ionChange="notificationsToggled($event)"
-                :disabled="chat.house_chat">Wycisz
-                powiadomienia</ion-toggle>
+        <OverlayView ref="chatSettingsOverlay">
+            <div class="padding" v-if="chat">
+                <h2>Czat</h2>
 
-            <ion-button id="open-action-sheet" :disabled="chat.house_chat" color="danger">Zablokuj</ion-button>
-            <ion-action-sheet trigger="open-action-sheet" class="my-custom-class"
-                header="Czy jesteś pewien/pewna, że chcesz zablokwować ten czat?"
-                sub-header="Czat zniknie z historii. Tej operacji nie da się cofnąć." :buttons="actionSheetButtons"
-                @didDismiss="didDismiss"></ion-action-sheet>
+                <div v-if="chat.users.length == 2 && chatingUserId">
+                    <h3>Linki</h3>
+                    <IonNavLink :router-link="`/bereal/profil/${chatingUserId}`" class="infoButton">
+                        <img :src="BeerRealLogo" alt="BeerReal Logo" class="app-icon-logo" />
+                    </IonNavLink>
+                </div>
 
-            <ion-button @click="$refs.chatSettingsOverlay.hide()" :disabled="chat.house_chat">Gotowe</ion-button>
+                <h3>Opcje</h3>
+                <ion-toggle v-model="chat.notifications_blocked" @ionChange="notificationsToggled($event)"
+                    :disabled="chat.house_chat" color="success">Wycisz
+                    powiadomienia</ion-toggle>
 
-        </div>
-    </OverlayView>
+                <ion-button id="open-action-sheet" :disabled="chat.house_chat" color="danger">Zablokuj</ion-button>
+                <ion-action-sheet trigger="open-action-sheet" class="my-custom-class"
+                    header="Czy jesteś pewien/pewna, że chcesz zablokwować ten czat?"
+                    sub-header="Czat zniknie z historii. Tej operacji nie da się cofnąć." :buttons="actionSheetButtons"
+                    @didDismiss="didDismiss"></ion-action-sheet>
+
+
+                <ion-button @click="$refs.chatSettingsOverlay.hide()" :disabled="chat.house_chat">Gotowe</ion-button>
+
+            </div>
+        </OverlayView>
+    </div>
 </template>
 
 <script>
@@ -36,6 +49,10 @@ export default {
     },
     computed: {
         ...mapStores(useApiDataStore),
+        chatingUserId() {
+            if (!this.apiDataStore.profile.data[0]?.id) return
+            return this.chat.users.find(user_id => user_id !== this.apiDataStore.profile.data[0]?.id) || null;
+        }
     },
     data() {
         return {
@@ -159,5 +176,16 @@ export default {
 
 ion-button {
     color: white;
+}
+ion-toggle {
+    --track-background: #ddd;
+}
+.app-icon-logo {
+    --size: 60px;
+    width: var(--size);
+    height: var(--size);
+    object-fit: contain;
+    background-color: white;
+    border-radius: 50%;
 }
 </style>
