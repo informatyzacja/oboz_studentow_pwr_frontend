@@ -149,6 +149,7 @@ export default {
             // show alert asking for reason
             const alert = await alertController.create({
                 header: 'Zgłoś post',
+                cssClass: 'custom-alert',
                 inputs: [
                     {
                         name: 'reason',
@@ -169,6 +170,7 @@ export default {
                     }
                 ]
             });
+
             await alert.present();
         },
         submitReport(reason) {
