@@ -1,12 +1,19 @@
 <script setup>
 import HeartIcon from '../../../assets/heart-icon.png';
 import RedHeartIcon from '../../../assets/heart-icon-red.png';
+import EnlargeIcon from '../../../assets/enlarge-icon.png';
 import DotsIcon from '../../../assets/icons8-dots-90.png';
 import { toastController, IonActionSheet } from '@ionic/vue';
 import { apiRequest } from '@/stores/functions';
 import { alertController, IonNavLink } from '@ionic/vue';
 
 import { personCircle } from 'ionicons/icons';
+
+import { ref } from 'vue';
+import { IonModal } from '@ionic/vue';
+
+const showModal = ref(false);
+const modalPhoto = ref('');
 
 defineProps({
     photo1: String,
@@ -32,6 +39,9 @@ defineProps({
                         <img v-if="_liked" :src="RedHeartIcon" class="heart-icon heart-icon-liked" />
                         <img v-else :src="HeartIcon" class="heart-icon" />
                         <span v-if="_num_likes > 0">{{ _num_likes }}</span>
+                    </div>
+                    <div class="bereal-photo__enlarge" @click="enlargePhoto">
+                        <img :src="EnlargeIcon" class="enlarge-icon" />
                     </div>
                 </div>
                 <ion-nav-link :router-link="user_id ? `/bereal/profil/${user_id}` : null" class="bereal-photo__user-info">
@@ -110,11 +120,15 @@ export default {
         updateNumLikes() {
             this._num_likes = this.$props.num_likes;
         },
+        enlargePhoto() {
+            this.$emit('enlarge-photo', this.mainPhoto);
+        },
         swapPhotos() {
             const temp = this.mainPhoto;
             this.mainPhoto = this.secondaryPhoto;
             this.secondaryPhoto = temp;
         },
+        
         like_or_unlike() {
             if (this._liked) {
                 this.unlike();
@@ -146,7 +160,6 @@ export default {
         },
         async report() {
             console.log(`Reported post with ID: ${this.id}`);
-            // show alert asking for reason
             const alert = await alertController.create({
                 header: 'Zgłoś post',
                 inputs: [
@@ -297,4 +310,11 @@ export default {
     width: 12px;
     filter: invert(100%);
 }
+.enlarge-icon {
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+  transform: translateY(5px);
+}
+
 </style>

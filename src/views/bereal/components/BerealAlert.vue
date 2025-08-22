@@ -85,6 +85,9 @@ onBeforeUnmount(stopTimer);
 <template>
     <div class="bereal_top_functions" v-if="!show_only_if_live || isEventActive">
         <ItemBox
+            v-if="!bereal_status.was_today"
+            :big-text="'Dziś jeszcze nie było BeerReala'" small />
+        <ItemBox
             v-if="!bereal_status.can_post && bereal_status.was_today"
             :big-text="'Przesłałeś/aś już dzisiaj BeerReala'" small />
         <ItemBox

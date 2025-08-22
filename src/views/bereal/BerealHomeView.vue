@@ -7,6 +7,7 @@ import BerealAlert from './components/BerealAlert.vue';
 import { useApiDataStore } from '@/stores/api.js'
 import { mapStores } from 'pinia'
 import LoadingIndicator from '../../components/LoadingIndicator.vue';
+import { IonModal } from '@ionic/vue';
 
 import BerealPhoto from './components/BerealPhoto.vue';
 
@@ -31,8 +32,17 @@ import BerealPhoto from './components/BerealPhoto.vue';
                     <BerealPhoto v-for="post in apiDataStore.bereal.data.posts" :key="post.id" :id="post.id"
                         class="bereal-photo" :photo1="post.photo1" :photo2="post.photo2" :user_name="post.user_name"
                         :user_profile_photo="post.user_photo" :num_likes="post.likes_count" :late="post.is_late"
-                        :liked="post.is_liked_by_user" :is_post_owner="post.is_post_owner" :user_id="post.user"
-                        @post-deleted="onPostDeleted" />
+                        :liked="post.is_liked_by_user" :is_post_owner="post.is_post_owner" :user_id="post.user" @enlarge-photo="onEnlargePhoto"/>
+                    <ion-modal :is-open="enlargedPhoto !== null" @didDismiss="closeModal">
+                        <div class="modal-photo-container" @click.self="closeModal">
+                            <img 
+                                :src="enlargedPhoto" 
+                                class="modal-photo"
+                                :style="{ transform: `rotate(${rotation}deg) scale(${scale})` }"
+                                @click="rotatePhoto"
+                            />
+                        </div>
+                    </ion-modal>
                     <ion-infinite-scroll v-if="apiDataStore.bereal.pagination?.has_next" @ionInfinite="loadMore($event)"
                         threshold="100px">
                         <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Ładowanie...">
@@ -50,8 +60,13 @@ import BerealPhoto from './components/BerealPhoto.vue';
 
 <script>
 export default {
-    data: () => ({
-    }),
+    data() {
+        return {
+            enlargedPhoto: null,
+            rotation: 0,
+            scale: 1
+        }
+    },
     computed: {
         ...mapStores(useApiDataStore),
     },
@@ -64,32 +79,77 @@ export default {
             if (event) event.target.complete();
         },
         async loadMore(event) {
-            const pagination = this.apiDataStore.bereal.pagination || this.apiDataStore.bereal.data?.pagination
+            const pagination = this.apiDataStore.bereal.pagination || this.apiDataStore.bereal.data?.pagination;
             if (!pagination || !pagination.has_next) {
-                event.target.disabled = true
-                event.target.complete()
-                return
+                event.target.disabled = true;
+                event.target.complete();
+                return;
             }
-            const nextPage = (pagination.current_page || 1) + 1
-            await this.apiDataStore.bereal.fetchPage(nextPage, true)
-            // Update local pagination reference
-            const updated = this.apiDataStore.bereal.pagination || this.apiDataStore.bereal.data?.pagination
+            const nextPage = (pagination.current_page || 1) + 1;
+            await this.apiDataStore.bereal.fetchPage(nextPage, true);
+            const updated = this.apiDataStore.bereal.pagination || this.apiDataStore.bereal.data?.pagination;
             if (!updated?.has_next) {
-                event.target.disabled = true
+                event.target.disabled = true;
             }
-            event.target.complete()
+            event.target.complete();
         },
         onPostDeleted(id) {
-            if (!this.apiDataStore?.bereal?.data?.posts) return
-            // Reassign to trigger reactivity
-            this.apiDataStore.bereal.data.posts = this.apiDataStore.bereal.data.posts.filter(p => p.id !== id)
+            if (!this.apiDataStore?.bereal?.data?.posts) return;
+            this.apiDataStore.bereal.data.posts = this.apiDataStore.bereal.data.posts.filter(p => p.id !== id);
+        },
+        onEnlargePhoto(photoUrl) {
+            this.enlargedPhoto = photoUrl
+            this.rotation = 0
+            this.adjustScale()
+        },
+        closeModal() {
+            this.enlargedPhoto = null
+            this.rotation = 0
+        },
+        adjustScale() {
+            if (Math.abs(this.rotation) % 180 === 90) {
+                this.scale = window.innerHeight / window.innerWidth
+            } else {
+                this.scale = 1
+            }
+        },
+        rotatePhoto() {
+            this.rotation = (this.rotation - 90) % 360
+            this.adjustScale()
         }
     }
 }
+
 </script>
 
 <style scoped>
 .bereal-photo {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
+
+.modal-photo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background: rgba(0,0,0,0.9);
+}
+
+.modal-photo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border: 2px solid white;
+    border-radius: 20px;
+    transition: transform 0.3s ease; 
+}
+
+
+
 </style>
+
+
+
+
+
