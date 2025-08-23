@@ -60,6 +60,7 @@ export default {
     methods: {
         fetchData() {
             if (!this.$route.params.post_id) return;
+            console.log("Dane BeerReal:", this.apiDataStore.bereal.data);
 
             apiRequest(
                 `../api2/bereal/post/${this.$route.params.post_id}/`,
@@ -77,7 +78,7 @@ export default {
         },
         onEnlargePhoto(photoUrl) {
             this.enlargedPhoto = photoUrl
-            this.rotation = 0 // reset przy otwieraniu
+            this.rotation = 0
         },
         closeModal() {
             this.enlargedPhoto = null
@@ -133,6 +134,3 @@ export default {
 
 
 </style>
-
-
-jest okey?

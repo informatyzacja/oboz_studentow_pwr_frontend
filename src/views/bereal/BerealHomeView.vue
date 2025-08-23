@@ -22,8 +22,49 @@ import BerealPhoto from './components/BerealPhoto.vue';
             </ion-refresher>
             <main>
                 <TopBar title="BeerReal" />
-
                 <BerealAlert v-if="apiDataStore.bereal.data" :bereal_status="apiDataStore.bereal.data.bereal_status" />
+                <div class="top-right-text">
+                    <span 
+                        :class="{ active: selectedTab === 'oboz', inactive: selectedTab !== 'oboz' }"
+                        @click="selectedTab = 'oboz'">
+                        Obóz
+                    </span>
+                    /
+                    <span 
+                        :class="{ active: selectedTab === 'frakcja', inactive: selectedTab !== 'frakcja' }"
+                        @click="selectedTab = 'frakcja'">
+                        Frakcja
+                    </span>
+
+                    <span class="separator">|</span>
+
+                    <span 
+                        :class="{ active: selectedTime === 'dzisiaj', inactive: selectedTime !== 'dzisiaj' }"
+                        @click="selectedTime = 'dzisiaj'">
+                        Dzisiaj
+                    </span>
+                    /
+                    <span 
+                        :class="{ active: selectedTime === 'all', inactive: selectedTime !== 'all' }"
+                        @click="selectedTime = 'all'">
+                        All time
+                    </span>
+
+                    <span class="separator">|</span>
+
+                    <span 
+                        :class="{ active: selectedSort === 'popular', inactive: selectedSort !== 'popular' }"
+                        @click="selectedSort = 'popular'">
+                        Popularność
+                    </span>
+                    /
+                    <span 
+                        :class="{ active: selectedSort === 'recent', inactive: selectedSort !== 'recent' }"
+                        @click="selectedSort = 'recent'">
+                        Ostatnie
+                    </span>
+
+                </div>
 
                 <LoadingIndicator v-if="apiDataStore.bereal.loading" />
                 <p v-if="apiDataStore.bereal.error" class="error">{{ apiDataStore.bereal.error }}</p>
@@ -64,7 +105,10 @@ export default {
         return {
             enlargedPhoto: null,
             rotation: 0,
-            scale: 1
+            scale: 1,
+            selectedTab: "oboz",
+            selectedTime: "dzisiaj",
+            selectedSort: "recent"
         }
     },
     computed: {
@@ -144,6 +188,32 @@ export default {
     border-radius: 20px;
     transition: transform 0.3s ease; 
 }
+.top-right-text {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+  user-select: none;
+  margin: 10px 0;
+  z-index: 10;
+}
+
+.top-right-text span {
+  padding: 0 4px;
+}
+
+.top-right-text .active {
+  color: #FDCE7E;
+}
+
+.top-right-text .inactive {
+  color: #f5c47091;
+}
+
+
+
 
 
 
