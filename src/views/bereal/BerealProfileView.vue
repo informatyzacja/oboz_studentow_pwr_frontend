@@ -24,9 +24,9 @@ import { personCircle } from 'ionicons/icons';
                     <div class="profile-header" v-if="apiDataStore.berealProfile.data">
                         <div class="profile-photo-container">
                             <img :src="apiDataStore.berealProfile.data.user.photo || personCircle" class="profile-photo" />
-                            <div v-if="!$route.params.id" class="edit-icon" @click="changePhoto">
-                                <img :src="RefreshIcon" alt="Edit Profile" />
-                            </div>
+                                <div v-if="isOwnProfile" class="edit-icon" @click="changePhoto">
+                                    <img :src="RefreshIcon" alt="Edit Profile" />
+                                </div>
 
                         </div>
                         <p class="name">{{ apiDataStore.berealProfile.data.user.first_name }} {{
@@ -52,6 +52,19 @@ export default {
     }),
     computed: {
         ...mapStores(useApiDataStore),
+
+       // true tylko gdy przeglądamy własny profil (porównujemy id profilu w URL z id zalogowanego użytkownika)
+       isOwnProfile() {
+           const viewedId = this.$route.params.profile_id || this.$route.params.id;
+           // brak parametru => własny profil
+           if (!viewedId) return true;
+           // spróbuj pobrać id aktualnie zalogowanego użytkownika ze store
+           const currentUserId = (this.apiDataStore.user && this.apiDataStore.user.id)
+               || (this.apiDataStore.me && this.apiDataStore.me.id)
+               || localStorage.getItem('user_id'); // fallback jeśli store nie trzyma id
+           if (!currentUserId) return false;
+           return String(currentUserId) === String(viewedId);
+       }
     },
     async mounted() {
         this.fetchData();

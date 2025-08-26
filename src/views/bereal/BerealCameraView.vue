@@ -18,6 +18,16 @@ const captureOrientationAngles = ref([]); // [angleFirst, angleSecond]
 const berealPostStore = useBerealPostStore();
 const router = useRouter();
 
+router.beforeEach((to, from, next) => {
+    if (to.path === '/bereal/camera' && localStorage.getItem('bereal_post_published') === '1') {
+        localStorage.removeItem('bereal_post_published');
+        return next({ path: '/bereal/home', replace: true });
+    }
+    next();
+});
+
+
+
 // Computed
 const previewFirstPhoto = computed(() => {
     if (!firstPhoto.value) return {};
@@ -69,19 +79,25 @@ async function capture() {
     if (!isLandscape.value && !ignoreOrientationWarning.value) return; // block only if not dismissed
     const result = await CameraPreview.capture({ quality: 85 });
     const base64PictureData = result.value;
+
+    // Normalizuj obraz od razu do trybu poziomego.
+    // Jeśli telefon jest w prawym landscape -> obróć 90, w przeciwnym razie -90 (landscape-left).
+    const targetRotation = isRightLandscape.value ? 90 : -90;
+    const rotated = await rotateBase64Image(base64PictureData, targetRotation);
+
     if (!firstPhoto.value) {
-        firstPhoto.value = base64PictureData;
-        captureOrientationAngles.value[0] = orientationAngle.value;
+        firstPhoto.value = rotated;
+        // oznacz jako już znormalizowane (brak dalszych rotacji)
+        captureOrientationAngles.value[0] = 0;
         CameraPreview.flip();
         return;
     }
     if (!secondPhoto.value) {
-        secondPhoto.value = base64PictureData;
-        captureOrientationAngles.value[1] = orientationAngle.value;
+        secondPhoto.value = rotated;
+        captureOrientationAngles.value[1] = 0;
     }
     await showPostPreview();
 }
-
 function rotateBase64Image(base64, angle = -90) {
     return new Promise(resolve => {
         try {
@@ -128,11 +144,28 @@ async function showPostPreview() {
 
 // Lifecycle
 onMounted(() => {
+    // jeśli post został opublikowany — nie pozwalamy wejść do widoku kamery ponownie
+    if (localStorage.getItem('bereal_post_published') === '1') {
+        localStorage.removeItem('bereal_post_published');
+        router.replace('/bereal/home');
+        return;
+    }
     refreshOrientation();
     addOrientationListener();
 });
-onIonViewWillEnter(() => {
-    CameraPreview.start({ parent: 'cameraPreview', position: 'rear', toBack: true, disableAudio: true });
+onIonViewWillEnter(async() => {
+    if (localStorage.getItem('bereal_post_published') === '1') {
+        localStorage.removeItem('bereal_post_published');
+        router.replace('/bereal/home');
+        return;
+    }
+    try {
+        await CameraPreview.start({ parent: 'cameraPreview', position: 'rear', toBack: true, disableAudio: true });
+    } catch (e) {
+        console.warn('CameraPreview.start failed, redirecting to home', e);
+        router.replace('/bereal/home');
+        return;
+    }
     refreshOrientation();
 });
 onIonViewDidLeave(() => {

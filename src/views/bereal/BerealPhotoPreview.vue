@@ -29,13 +29,10 @@ import { useBerealPostStore } from '@/stores/berealPost.js'
                     :num_likes="-1"
                     :hide_options="true" />
 
-
                 <div class="bereal_post_options">
-                    <IonNavLink router-link="/bereal/camera/" router-direction="back" class="link">
-                        <IonButton>
-                            Zrób nowe
-                        </IonButton>
-                    </IonNavLink>
+                    <IonButton @click="startNew">
+                        Zrób nowe
+                    </IonButton>
                     <IonButton @click="post" v-if="!loading">
                         Opublikuj
                     </IonButton>
@@ -66,12 +63,19 @@ export default {
                 color: 'danger'
             });
             await toast.present();
-            this.$router.push('/bereal/home');
+            this.$router.replace('/bereal/home');
         }
         this.apiDataStore.berealProfile.id = null;
         this.apiDataStore.berealProfile.fetchData();
     },
     methods: {
+
+        startNew() {
+            // usuń blokadę gdy użytkownik świadomie chce zrobić nowy post
+            localStorage.removeItem('bereal_post_published');
+            this.$router.push('/bereal/camera');
+        },
+        
         post() {
             this.loading = true
             apiRequest('../api2/bereal/upload/', 'POST', {
@@ -85,10 +89,11 @@ export default {
                         color: 'success',
                         position: 'top'
                     }).then(toast => toast.present())
+                    localStorage.setItem('bereal_post_published', '1');
                     this.berealPostStore.clear()
                     this.apiDataStore.bereal.data = null
                     this.apiDataStore.bereal.fetchData()
-                    this.$router.push('/bereal/home')
+                    this.$router.replace('/bereal/home')
                 }
             }).finally(() => {
                 this.loading = false

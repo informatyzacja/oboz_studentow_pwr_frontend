@@ -212,6 +212,8 @@ export default {
                         color: 'success',
                         position: 'top'
                     }).then(toast => toast.present())
+                    // usuń blokadę robienia nowego posta po jego usunięciu
+                    localStorage.removeItem('bereal_post_published');
                     this.$emit('post-deleted', id);
                     
                 }
