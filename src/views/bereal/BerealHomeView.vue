@@ -181,8 +181,8 @@ export default {
 }
 
 .modal-photo {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 90vw;
+    max-height: 90%;
     object-fit: contain;
     border: 2px solid white;
     border-radius: 20px;

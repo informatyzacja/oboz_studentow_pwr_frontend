@@ -18,13 +18,6 @@ const captureOrientationAngles = ref([]); // [angleFirst, angleSecond]
 const berealPostStore = useBerealPostStore();
 const router = useRouter();
 
-router.beforeEach((to, from, next) => {
-    if (to.path === '/bereal/camera' && localStorage.getItem('bereal_post_published') === '1') {
-        localStorage.removeItem('bereal_post_published');
-        return next({ path: '/bereal/home', replace: true });
-    }
-    next();
-});
 
 
 
@@ -156,14 +149,14 @@ onMounted(() => {
 onIonViewWillEnter(async() => {
     if (localStorage.getItem('bereal_post_published') === '1') {
         localStorage.removeItem('bereal_post_published');
-        router.replace('/bereal/home');
+
         return;
     }
     try {
         await CameraPreview.start({ parent: 'cameraPreview', position: 'rear', toBack: true, disableAudio: true });
     } catch (e) {
         console.warn('CameraPreview.start failed, redirecting to home', e);
-        router.replace('/bereal/home');
+
         return;
     }
     refreshOrientation();
