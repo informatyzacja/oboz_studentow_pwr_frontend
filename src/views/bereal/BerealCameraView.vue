@@ -73,21 +73,20 @@ async function capture() {
     const result = await CameraPreview.capture({ quality: 85 });
     const base64PictureData = result.value;
 
-    // Normalizuj obraz od razu do trybu poziomego.
-    // Jeśli telefon jest w prawym landscape -> obróć 90, w przeciwnym razie -90 (landscape-left).
-    const targetRotation = isRightLandscape.value ? 90 : -90;
-    const rotated = await rotateBase64Image(base64PictureData, targetRotation);
-
     if (!firstPhoto.value) {
-        firstPhoto.value = rotated;
-        // oznacz jako już znormalizowane (brak dalszych rotacji)
-        captureOrientationAngles.value[0] = 0;
+        firstPhoto.value = base64PictureData;
+        captureOrientationAngles.value[0] = ignoreOrientationWarning.value ? -90 : orientationAngle.value;
+        console.log(captureOrientationAngles.value[0])
         CameraPreview.flip();
+
         return;
     }
     if (!secondPhoto.value) {
-        secondPhoto.value = rotated;
-        captureOrientationAngles.value[1] = 0;
+        secondPhoto.value = base64PictureData;
+        captureOrientationAngles.value[1] = ignoreOrientationWarning.value ? (
+            Capacitor.getPlatform() === 'android' ? 0 : -90
+        ) : orientationAngle.value;
+        console.log(captureOrientationAngles.value[1])
     }
     await showPostPreview();
 }
