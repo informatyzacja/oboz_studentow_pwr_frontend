@@ -1,7 +1,7 @@
 <script setup>
-import { Media } from "@capacitor-community/media";
 import { IonSpinner } from '@ionic/vue';
 import { toastController } from '@ionic/vue'
+import { savePhotoToGallery } from '@/functions/photoSave.js';
 defineProps({
     path: {
         type: String,
@@ -33,9 +33,7 @@ export default {
             if (!this.path) return;
             this.loading = true;
             try {
-                await Media.savePhoto({
-                    path: this.path
-                });
+                await savePhotoToGallery(this.path);
             } catch (error) {
                 // Handle error here
             } finally {

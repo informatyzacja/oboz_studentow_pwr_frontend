@@ -8,7 +8,7 @@ import { useApiDataStore } from '@/stores/api.js'
 import { mapStores } from 'pinia'
 
 import BerealPhoto from './components/BerealPhoto.vue';
-import { Media } from "@capacitor-community/media";
+import { savePhotoToGallery } from '@/functions/photoSave.js';
 
 </script>
 
@@ -91,12 +91,8 @@ export default {
             if (!this.data) return;
             this.loading = true;
             try {
-                await Media.savePhoto({
-                    path: this.data.photo1
-                });
-                await Media.savePhoto({
-                    path: this.data.photo2
-                });
+                await savePhotoToGallery(this.data.photo1);
+                await savePhotoToGallery(this.data.photo2);
             } catch (error) {
                 // Handle error here
             } finally {
