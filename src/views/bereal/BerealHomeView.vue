@@ -8,90 +8,57 @@
       <main>
         <TopBar title="BeerReal" />
 
-        <BerealAlert
-          v-if="apiDataStore.bereal?.data"
-          :bereal_status="apiDataStore.bereal.data.bereal_status"
-        />
+        <BerealAlert v-if="apiDataStore.bereal?.data" :bereal_status="apiDataStore.bereal.data.bereal_status" />
 
-        <div class="top-right-text">
-          <span
-            :class="{ active: selectedTab === 'oboz', inactive: selectedTab !== 'oboz' }"
-            @click="setTab('oboz')"
-          >Obóz</span>
-          /
-          <span
-            :class="{ active: selectedTab === 'frakcja', inactive: selectedTab !== 'frakcja' }"
-            @click="setTab('frakcja')"
-          >Frakcja</span>
-
-          <span class="separator">|</span>
-
-          <span
-            :class="{ active: selectedTime === 'dzisiaj', inactive: selectedTime !== 'dzisiaj' }"
-            @click="setTime('dzisiaj')"
-          >Dzisiaj</span>
-          /
-          <span
-            :class="{ active: selectedTime === 'all', inactive: selectedTime !== 'all' }"
-            @click="setTime('all')"
-          >All time</span>
-
-          <span class="separator">|</span>
-
-          <span
-            :class="{ active: selectedSort === 'popular', inactive: selectedSort !== 'popular' }"
-            @click="setSort('popular')"
-          >Popularność</span>
-          /
-          <span
-            :class="{ active: selectedSort === 'recent', inactive: selectedSort !== 'recent' }"
-            @click="setSort('recent')"
-          >Ostatnie</span>
-        </div>
 
         <LoadingIndicator v-if="apiDataStore.bereal?.loading" />
         <p v-if="apiDataStore.bereal?.error" class="error">{{ apiDataStore.bereal.error }}</p>
 
         <div class="padding-main">
+
+          <div class="top-right-text">
+            <span :class="{ active: selectedTab === 'oboz', inactive: selectedTab !== 'oboz' }"
+              @click="setTab('oboz')">Obóz</span>
+            /
+            <span :class="{ active: selectedTab === 'frakcja', inactive: selectedTab !== 'frakcja' }"
+              @click="setTab('frakcja')">Frakcja</span>
+
+            <span class="separator">|</span>
+
+            <span :class="{ active: selectedTime === 'dzisiaj', inactive: selectedTime !== 'dzisiaj' }"
+              @click="setTime('dzisiaj')">Dzisiaj</span>
+            /
+            <span :class="{ active: selectedTime === 'all', inactive: selectedTime !== 'all' }"
+              @click="setTime('all')">All time</span>
+
+            <span class="separator">|</span>
+
+            <span :class="{ active: selectedSort === 'popular', inactive: selectedSort !== 'popular' }"
+              @click="setSort('popular')">Popularność</span>
+            /
+            <span :class="{ active: selectedSort === 'recent', inactive: selectedSort !== 'recent' }"
+              @click="setSort('recent')">Ostatnie</span>
+          </div>
           <div v-if="!apiDataStore.bereal?.loading && data.posts.length === 0" class="no-posts">
             <p>Brak postów do wyświetlenia</p>
           </div>
 
-          <BerealPhoto
-            v-for="post in data.posts"
-            :key="post.id"
-            :id="post.id"
-            class="bereal-photo"
-            :photo1="post.photo1"
-            :photo2="post.photo2"
-            :user_name="post.user_name"
-            :user_profile_photo="post.user_photo"
-            :num_likes="post.likes_count"
-            :late="post.is_late"
-            :liked="post.is_liked_by_user"
-            :is_post_owner="post.is_post_owner"
-            :user_id="post.user"
-            @enlarge-photo="onEnlargePhoto"
-            @post-deleted="onPostDeleted"
-          />
+          <BerealPhoto v-for="post in data.posts" :key="post.id" :id="post.id" class="bereal-photo"
+            :photo1="post.photo1" :photo2="post.photo2" :user_name="post.user_name"
+            :user_profile_photo="post.user_photo" :num_likes="post.likes_count" :late="post.is_late"
+            :liked="post.is_liked_by_user" :is_post_owner="post.is_post_owner" :user_id="post.user"
+            @enlarge-photo="onEnlargePhoto" @post-deleted="onPostDeleted" />
 
           <ion-modal :is-open="enlargedPhoto !== null" @didDismiss="closeModal">
             <div class="modal-photo-container" @click.self="closeModal">
-              <img
-                :src="enlargedPhoto"
-                class="modal-photo"
-                :style="{ transform: `rotate(${rotation}deg) scale(${scale})` }"
-                @click="rotatePhoto"
-              />
+              <img :src="enlargedPhoto" class="modal-photo"
+                :style="{ transform: `rotate(${rotation}deg) scale(${scale})` }" @click="rotatePhoto" />
             </div>
           </ion-modal>
 
-          <ion-infinite-scroll
-            v-if="data.pagination?.has_next"
-            @ionInfinite="loadMore"
-            threshold="100px"
-          >
-            <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Ładowanie..."></ion-infinite-scroll-content>
+          <ion-infinite-scroll v-if="data.pagination?.has_next" @ionInfinite="loadMore" threshold="100px">
+            <ion-infinite-scroll-content loading-spinner="bubbles"
+              loading-text="Ładowanie..."></ion-infinite-scroll-content>
           </ion-infinite-scroll>
         </div>
       </main>
