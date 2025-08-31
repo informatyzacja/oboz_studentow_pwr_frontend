@@ -140,6 +140,7 @@ export default {
 .name {
     font-size: 1.6em;
     font-weight: bold;
+    color: var(--light-text);
 }
 .profile-spacer {
     width: 100%;

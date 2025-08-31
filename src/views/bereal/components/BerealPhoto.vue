@@ -9,12 +9,6 @@ import { alertController, IonNavLink } from '@ionic/vue';
 
 import { personCircle } from 'ionicons/icons';
 
-import { ref } from 'vue';
-import { IonModal } from '@ionic/vue';
-
-const showModal = ref(false);
-const modalPhoto = ref('');
-
 defineProps({
     photo1: String,
     photo2: String,
