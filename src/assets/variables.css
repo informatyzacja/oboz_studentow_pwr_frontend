@@ -80,9 +80,14 @@ http://ionicframework.com/docs/theming/ */
   --app-card-shadow: 0 .15rem .8rem .1rem rgba(0, 0, 0, .25);
   --app-elem-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 
-  --ion-text-color: black;
+  --ion-text-color: white;
   --ion-background-color: #371000;
 
+
+}
+
+.alert-title {
+  color: black !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -203,6 +208,10 @@ http://ionicframework.com/docs/theming/ */
     --ion-background-color: #371000;
     --ion-toolbar-background: var(--ion-color-step-150);
     --ion-toolbar-border-color: var(--ion-color-step-250);
+  }
+
+  .alert-title {
+    color: white !important;
   }
 
 
