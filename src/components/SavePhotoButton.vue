@@ -1,6 +1,7 @@
 <script setup>
 import { Media } from "@capacitor-community/media";
 import { IonSpinner } from '@ionic/vue';
+import { toastController } from '@ionic/vue'
 defineProps({
     path: {
         type: String,
@@ -39,6 +40,12 @@ export default {
                 // Handle error here
             } finally {
                 this.loading = false;
+                toastController.create({
+                    message: 'Zdjęcia zostały zapisane!',
+                    duration: 2000,
+                    color: 'success',
+                    position: 'top'
+                }).then(toast => toast.present());
             }
         }
     }

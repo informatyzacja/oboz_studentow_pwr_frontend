@@ -8,6 +8,7 @@ import { useApiDataStore } from '@/stores/api.js'
 import { mapStores } from 'pinia'
 
 import BerealPhoto from './components/BerealPhoto.vue';
+import { Media } from "@capacitor-community/media";
 
 </script>
 
@@ -20,20 +21,17 @@ import BerealPhoto from './components/BerealPhoto.vue';
                 <BerealPhoto class="bereal-photo" v-if="data" :photo1="data.photo1" :photo2="data.photo2" :id="data.id"
                     :user_name="data.user_name" :user_profile_photo="data.user_photo" :num_likes="data.likes_count"
                     :late="data.is_late" :liked="data.is_liked_by_user" :is_post_owner="data.is_post_owner"
-                    @post-deleted="onPostDeleted" @enlarge-photo="onEnlargePhoto"/>
+                    @post-deleted="onPostDeleted" @enlarge-photo="onEnlargePhoto" />
 
                 <div v-if="data?.is_post_owner" class="post-actions">
-                    <button class="download-btn" @click="downloadPhoto">Pobierz zdjęcie</button>
+                    <button class="download-btn" @click="downloadPhoto" v-if="!loading">Zapisz zdjęcia w galerii</button>
+                    <ion-spinner v-if="loading" class="spinner" name="dots" color="light" />
                 </div>
 
                 <ion-modal :is-open="enlargedPhoto !== null" @didDismiss="closeModal">
                     <div class="modal-photo-container" @click.self="closeModal">
-                        <img 
-                            :src="enlargedPhoto" 
-                            class="modal-photo"
-                            :style="{ transform: `rotate(${rotation}deg)` }"
-                            @click="rotatePhoto"
-                        />
+                        <img :src="enlargedPhoto" class="modal-photo" :style="{ transform: `rotate(${rotation}deg)` }"
+                            @click="rotatePhoto" />
                     </div>
                 </ion-modal>
             </main>
@@ -46,7 +44,8 @@ export default {
     data: () => ({
         data: null,
         enlargedPhoto: null,
-        rotation: 0
+        rotation: 0,
+        loading: false,
     }),
     computed: {
         ...mapStores(useApiDataStore),
@@ -86,6 +85,29 @@ export default {
         },
         rotatePhoto() {
             this.rotation = (this.rotation - 90) % 360
+        }, 
+        async downloadPhoto() {
+            if (this.loading) return;
+            if (!this.data) return;
+            this.loading = true;
+            try {
+                await Media.savePhoto({
+                    path: this.data.photo1
+                });
+                await Media.savePhoto({
+                    path: this.data.photo2
+                });
+            } catch (error) {
+                // Handle error here
+            } finally {
+                this.loading = false;
+                toastController.create({
+                    message: 'Zdjęcia zostały zapisane!',
+                    duration: 2000,
+                    color: 'success',
+                    position: 'top'
+                }).then(toast => toast.present());
+            }
         }
         
     }
