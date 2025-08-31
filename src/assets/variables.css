@@ -83,6 +83,11 @@ http://ionicframework.com/docs/theming/ */
   --ion-text-color: white;
   --ion-background-color: #371000;
 
+
+}
+
+.alert-title {
+  color: black !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -203,6 +208,10 @@ http://ionicframework.com/docs/theming/ */
     --ion-background-color: #371000;
     --ion-toolbar-background: var(--ion-color-step-150);
     --ion-toolbar-border-color: var(--ion-color-step-250);
+  }
+
+  .alert-title {
+    color: white !important;
   }
 
 

@@ -3,6 +3,8 @@ import { ref, computed, watch, onBeforeUnmount, onMounted, toRefs } from 'vue'
 import { IonNavLink } from '@ionic/vue'
 import ItemBox from '../../../components/ItemBox.vue'
 import CameraIcon from '../../../assets/icons8-camera-100.png';
+import { useRouter } from 'vue-router'
+import { IonButton } from '@ionic/vue'
 
 
 // Use toRefs to keep reactivity when destructuring props
@@ -17,7 +19,7 @@ const rawProps = defineProps({
     }
 })
 const { bereal_status, show_only_if_live } = toRefs(rawProps)
-
+const router = useRouter()
 
 const secondsLeft = ref(0);
 let timerId = null;
@@ -55,6 +57,12 @@ function stopTimer() {
     }
 }
 
+function startCamera() {
+    // usuń blokadę po publikacji – pozwól wejść do kamery
+    localStorage.removeItem('bereal_post_published')
+    router.push('/bereal/camera')
+}
+
 onMounted(() => {
     if (getDeadline()) startTimer(); else stopTimer()
 })
@@ -85,6 +93,9 @@ onBeforeUnmount(stopTimer);
 <template>
     <div class="bereal_top_functions" v-if="!show_only_if_live || isEventActive">
         <ItemBox
+            v-if="!bereal_status.was_today"
+            :big-text="'Dziś jeszcze nie było BeerReala'" small />
+        <ItemBox
             v-if="!bereal_status.can_post && bereal_status.was_today"
             :big-text="'Przesłałeś/aś już dzisiaj BeerReala'" small />
         <ItemBox
@@ -95,10 +106,9 @@ onBeforeUnmount(stopTimer);
             :big-text="'Dzisiejszy BeerReal był o ' + new Date(bereal_status.deadline).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ', ale nadal możesz przesłać zdjęcie.'"
             small />
 
-        <IonNavLink v-if="bereal_status.can_post"
-            router-link="/bereal/camera" router-animation="none">
+        <IonButton v-if="bereal_status.can_post" @click="startCamera" fill="clear" class="camera-link">
             <ItemBox big-text="Zrób zdjęcie" :leftIcon="CameraIcon" small leftIconWhite noRoundIcon />
-        </IonNavLink>
+        </IonButton>
     </div>
 </template>
 
