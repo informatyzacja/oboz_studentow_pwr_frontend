@@ -105,7 +105,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
         </div>
       </OverlayView>
       <IonNavLink router-link="/tinder/profil"
-        v-if="apiDataStore.profile.ready && (apiDataStore.profile.data[0].tinder_profile.user || apiDataStore.profile.data[0].tinder_register_active)">
+        v-if="apiDataStore.profile.ready && apiDataStore.profile.data[0].tinder_register_active">
         <ItemBox
           :big-text="apiDataStore.profile.ready && apiDataStore.profile.data[0].tinder_profile.user ? 'Profil na tinderze' : 'Utwórz profil na tinderze'"
           :leftIcon="tinderIcon" small leftIconWhite />
@@ -156,7 +156,9 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 
         <div class="credits">
           <p>© Obóz Studentów PWr {{ moment().format('YYYY') }}</p>
-          <p>Made with 🍺 by <a href="https://www.facebook.com/Marvin.Ruc/" target="_blank"><u>Marvin</u></a></p>
+          <p>Made with 🍺 by <a href="https://www.facebook.com/Marvin.Ruc/" target="_blank"><u>Marvin</u></a> & <a
+              href="https://samorzad.pwr.edu.pl/o-samorzadzie/struktura-samorzadu/komisje-samorzadu/komisja-ds-informatyzacji"
+              target="_blank"><u>Komisja ds. Informatyzacji SSPWr</u></a> 🖥️</p>
         </div>
 
       </div>

@@ -15,6 +15,7 @@ import sendIcon from '../assets/icons8-paper_plane.png'
 import downArrowIcon from '../assets/icons8-down-100.png'
 
 import { IonPage, IonContent } from '@ionic/vue';
+import { nextTick } from 'vue'
 
 </script>
 
@@ -26,8 +27,7 @@ import { IonPage, IonContent } from '@ionic/vue';
         <ion-content :fullscreen="false" ref="content" @ionScroll="handleScroll($event)" :scrollEvents="true">
             <div>
                 <TopBar :title="apiDataStore.chats.ready && chat && chat.name || 'Czat ?'" autoBackLink class="top-bar"
-                    :image="apiDataStore.chats.ready && chat ? chat.avatar : ''"
-                    background=" url('/src/assets/bg.jpg')">
+                    :image="apiDataStore.chats.ready && chat ? chat.avatar : ''" background="var(--app-bg)">
                     <ChatSettingsButton :chat="chat" />
                 </TopBar>
                 <main class="padding-main">
@@ -39,7 +39,7 @@ import { IonPage, IonContent } from '@ionic/vue';
                             Witaj na czacie!<br>
                             Bądź pierwszy/a i napisz coś!
                         </div>
-                        <div class="chat">
+                        <div class="chat" ref="chat">
                             <div v-for="(message, index) in apiDataStore.chat.messagesForChatWithId(chat_id)"
                                 class="messageRow" :key="index" :class="{ messageFromMe: message.fromMe }">
                                 <div style="width: 100%">
@@ -47,14 +47,14 @@ import { IonPage, IonContent } from '@ionic/vue';
                                     <p class="datetime"
                                         v-if="index == 0 || Date.parse(message.date) - Date.parse(apiDataStore.chat.messagesForChatWithId(chat_id)[index - 1].date) > 8 * 60 * 1000 || !moment(message.date).isSame(moment(apiDataStore.chat.messagesForChatWithId(chat_id)[index - 1].date), 'day')">
                                         {{ moment(message.date).isSame(moment(), 'day') ?
-                                            moment(message.date).format('HH:mm') :
-                                            moment(message.date).format('DD.MM.YYYY HH:mm') }}
+                                        moment(message.date).format('HH:mm') :
+                                        moment(message.date).format('DD.MM.YYYY HH:mm') }}
                                     </p>
 
                                     <p class="messageUser"
-                                        v-if="index == 0 || apiDataStore.chat.data[index - 1].user_id != message.user_id">
-                                        {{
-                                            !message.fromMe ? message.username : '' }}</p>
+                                        v-if="(index == 0 || apiDataStore.chat.messagesForChatWithId(chat_id)[index - 1].user_id != message.user_id)">
+                                        {{ !message.fromMe && chat && chat.users.length > 2 ? message.username : '' }}
+                                    </p>
 
                                     <div class="message"
                                         :class="{ messageEmoji: message.message.length === 2 && /\p{Extended_Pictographic}/u.test(message.message) }">
@@ -65,21 +65,23 @@ import { IonPage, IonContent } from '@ionic/vue';
                             </div>
                         </div>
 
-                        <div class="goToBottom" @click="$refs.content.$el.scrollToBottom(300)" v-if="!isAtBootom">
+                        <div class="goToBottom" @pointerdown="cacheFocusState" @touchstart="cacheFocusState"
+                             @click.prevent="scrollToBottomAndRefocus" v-if="!isAtBottom">
                             <img :src="downArrowIcon" />
                         </div>
 
 
                         <div class="textBox">
-                            <input type="text" v-on:keyup.enter="sendMessage" v-model="currentMessage" placeholder="Aa"
-                                maxlength="500" />
+                            <input ref="messageInput" type="text" v-on:keyup.enter="sendMessage"
+                                v-model="currentMessage" placeholder="Aa" maxlength="500" @focus="keyboardOpened" @blur="keyboardClosed"/>
 
-                            <button class="textBoxButton" v-if="currentMessage.trim() === ''"
-                                @click="currentMessage = '👍'; sendMessage()">👍</button>
+                            <button class="textBoxButton" v-if="currentMessage.trim() === ''" type="button"
+                                tabindex="-1" @pointerdown="cacheFocusState" @touchstart="cacheFocusState"
+                                @click.prevent="currentMessage = '🍺'; sendMessage()">🍺</button>
 
-
-                            <button class="textBoxButton sendIcon" v-else @click="sendMessage"><img
-                                    :src="sendIcon" /></button>
+                            <button class="textBoxButton sendIcon" v-else type="button" tabindex="-1"
+                                @pointerdown="cacheFocusState" @touchstart="cacheFocusState"
+                                @click.prevent="sendMessage"><img :src="sendIcon" /></button>
 
                         </div>
                     </div>
@@ -103,7 +105,11 @@ export default {
             timer: null,
             chat_id: parseInt(this.$route.params.id),
             scrollTop: 0,
-            scrollElement: null
+            scrollElement: null,
+            resizeObserver: null,
+            intersectionObserver: null,
+            resizeObserverAttached: false,
+            wasInputFocused: false // nowy bufor poprzedniego fokusu
         }
     },
     computed: {
@@ -111,27 +117,39 @@ export default {
         chat() {
             return this.apiDataStore.chats.withId(this.chat_id)
         },
-        isAtBootom() {
+        isAtBottom() {
             if (!this.scrollElement) return false
             return this.scrollElement.scrollHeight - this.scrollTop - this.$refs.content.$el.scrollHeight <= 45
+        },
+        chatVisible() { // mirrors v-if condition controlling the chat DOM
+            return this.apiDataStore.profile.ready && this.apiDataStore.chat.ready && !this.loading
         }
     },
     watch: {
-        async currentMessage() {
-            this.$refs.content.$el.scrollToBottom(300);
+        chatVisible(val) {
+            if (val) {
+                this.attachResizeObserverWhenReady();
+            }
         }
     },
     async mounted() {
+        // Prepare ResizeObserver (attached lazily when chat element exists & is visible)
+        this.resizeObserver = new ResizeObserver(() => {
+            console.log("resize")
+            // auto-scroll only if user near bottom to avoid jumping while user reads history
+            if (this.isAtBottom) this.scrollToBottom(0);
+            this.detachResizeObserver();
+        });
+
+        if (this.chatVisible) {
+            this.attachResizeObserverWhenReady();
+        }
 
         Promise.all([
             this.apiDataStore.chat.fetchData(),
             this.apiDataStore.chats.fetchData(),
             this.apiDataStore.profile.fetchData()
-        ]).then(() => {
-            setTimeout(() => {
-                this.$refs.content.$el.scrollToBottom(0);
-            }, 10)
-        })
+        ])
 
         this.timer = setInterval(() => {
             this.apiDataStore.chat.fetchData().then(() => {
@@ -143,6 +161,7 @@ export default {
         this.connect()
 
         this.scrollElement = await this.$refs.content.$el.getScrollElement();
+
     },
     ionViewWillEnter() {
         this.$refs.content.$el.scrollToBottom(0);
@@ -153,10 +172,25 @@ export default {
         this.chatSocket.onclose = function () { }; // disable onclose handler first
         this.chatSocket.onerror = function () { }; // disable onerror handler first
         this.chatSocket.close()
+        if (this.resizeObserver) this.resizeObserver.disconnect();
+        if (this.intersectionObserver) this.intersectionObserver.disconnect();
     },
     methods: {
         handleScroll(event) {
             this.scrollTop = event.detail.scrollTop;
+        },
+        scrollToBottom(duration = 300) {
+            this.$refs.content.$el.scrollToBottom(duration);
+        },
+        scrollToBottomNextTick() {
+            nextTick(() => {
+                this.scrollToBottom();
+            });
+        },
+        scrollToBottomDelay() {
+            setTimeout(() => {
+                this.scrollToBottom();
+            }, 100);
         },
         async connect() {
             this.chatSocket = await apiSocket('chat/');
@@ -188,7 +222,7 @@ export default {
         },
 
         async receiveMessage(data) {
-            const scrollToEnd = this.isAtBootom
+            const scrollToEnd = this.isAtBottom
 
             if (data.user_id === this.apiDataStore.profile.data[0].id) return // don't show own messages
 
@@ -215,8 +249,13 @@ export default {
             }
         },
 
+        cacheFocusState() {
+            // wywoływane na pointerdown/touchstart przycisku zanim input straci fokus
+            this.wasInputFocused = (document.activeElement === this.$refs.messageInput);
+        },
         sendMessage() {
             if (this.currentMessage.trim() === '') return
+            const wasFocused = (document.activeElement === this.$refs.messageInput) || this.wasInputFocused;
             const message = this.currentMessage.trim()
             this.currentMessage = ''
 
@@ -238,6 +277,63 @@ export default {
             this.$refs.content.$el.scrollToBottom(50);
 
             this.chatSocket.send(JSON.stringify({ message: message, 'chat': this.chat_id }));
+            this.$nextTick(() => {
+                if (wasFocused && this.$refs.messageInput) {
+                    this.$refs.messageInput.focus();
+                }
+                this.wasInputFocused = false; // reset bufora
+            });
+        },
+
+        attachResizeObserverWhenReady() {
+            if (this.resizeObserverAttached) return;
+            this.$nextTick(() => {
+                const el = this.$refs.chat;
+                if (!el) return; // still not in DOM
+                // Use IntersectionObserver to delay ResizeObserver until element is actually in viewport
+                this.intersectionObserver = new IntersectionObserver(entries => {
+                    const entry = entries[0];
+                    if (entry.isIntersecting && !this.resizeObserverAttached) {
+                        this.initResizeObserver();
+                        this.intersectionObserver.disconnect();
+                    }
+                }, { threshold: 0 });
+                this.intersectionObserver.observe(el);
+            });
+        },
+        initResizeObserver() {
+            if (!this.resizeObserver || !this.$refs.chat) return;
+            this.resizeObserver.observe(this.$refs.chat);
+            this.resizeObserverAttached = true;
+        },
+        detachResizeObserver() {
+            if (this.resizeObserver) {
+                this.resizeObserver.disconnect();
+                this.resizeObserverAttached = false;
+            }
+        },
+        scrollToBottomAndRefocus() {
+            const wasFocused = (document.activeElement === this.$refs.messageInput) || this.wasInputFocused;
+            this.$refs.content.$el.scrollToBottom(300);
+            this.$nextTick(() => {
+                if (wasFocused) {
+                    this.$refs.messageInput.focus();
+                }
+            });
+        },
+        keyboardOpened() {
+            if (this.isAtBottom) {
+                setTimeout(() => {
+                    this.scrollToBottom();
+                }, 700);
+            }
+        },
+        keyboardClosed() {
+            if (this.isAtBottom) {
+                setTimeout(() => {
+                    this.scrollToBottom();
+                }, 700);
+            }
         }
 
     }
@@ -285,7 +381,7 @@ export default {
 }
 
 .messageFromMe .message {
-    background-color: var(--theme-dark);
+    background-color: var(--chatt-color);
     border-radius: 20px 20px 5px 20px;
     margin: 2px;
     margin-left: 35px;
@@ -410,7 +506,7 @@ export default {
 
 .sendIcon img {
     height: 100%;
-    filter: drop-shadow(0px 100px 0 var(--theme-dark));
+    filter: drop-shadow(0px 100px 0 var(--send-button));
     transform: translateY(-100px);
 }
 

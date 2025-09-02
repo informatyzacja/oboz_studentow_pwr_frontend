@@ -21,25 +21,28 @@ defineProps({
     type: String
   }
 });
-import { IonNavLink } from '@ionic/vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+function goBack() {
+  router.back();
+}
 </script>
 
 <template>
   <div class="header" :class="{ header_absolute: absolute }" :style="{ background }">
     <div class="header-left">
-      <IonNavLink v-if="backLink || autoBackLink" :router-link="backLink || $router.options.history.state.back || '/'"
-        router-direction="back" class="link">
+      <div class="link" @click="goBack" v-if="backLink || autoBackLink">
         <div class="arrow-circle">
           <div class="arrow"></div>
         </div>
-      </IonNavLink>
+      </div>
       <img v-if="image" :src="image" alt="avatar" />
       <h1>{{ title }}</h1>
     </div>
 
-    <slot></slot>
+      <slot></slot>
 
-  </div>
+    </div>
 </template>
 
 <style scoped>
@@ -113,6 +116,7 @@ h1 {
   display: flex;
   height: 100%;
   justify-content: center;
+  align-items: center;
 }
 
 img {
