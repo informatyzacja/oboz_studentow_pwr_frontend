@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { ready, loadData } from './functions.js'
 import { ref, computed } from 'vue'
 import { apiRequest, request } from '@/stores/functions'
 import { getAuthorizationHeader } from '@/functions/login'
@@ -9,6 +10,12 @@ import { getAuthorizationHeader } from '@/functions/login'
 // GET    /bingo-task/                  -> list all tasks of user (flat)
 // POST   /bingo-task/:id/upload-photo/ -> upload photo
 // POST   /bingo-task/:id/swap/         -> swap task
+
+export const useBingoStatusStore = defineStore('bingoStatus', {
+  state: () => ({ loading: true, error: null, data: null, url: 'bingo-status/' }),
+  getters: { ready() { return ready(this) } },
+  actions: { fetchData() { return loadData(this) } }
+})
 
 export const useBingoStore = defineStore('bingo', () => {
   const instances = ref([])        // bingo boards

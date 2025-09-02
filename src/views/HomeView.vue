@@ -231,8 +231,7 @@ import BerealAlert from '../views/bereal/components/BerealAlert.vue'
         </div>
 
         <!-- Bingo -->
-        <div class="padding">
-        <!-- v-if="apiDataStore.bingoStatus.ready && apiDataStore.bingoStatus.data.is_active"> -->
+        <div class="padding" v-if="apiDataStore.bingoStatus.ready && apiDataStore.bingoStatus.data.is_active">
           <RouterLink to="/bingo">
             <ItemBox bigText="Bingo" :rightIcon="rightArrow" left-icon-white />
           </RouterLink>
@@ -264,7 +263,8 @@ export default {
       timer6: null,
       timer7: null,
       timer8: null,
-      timer9: null,
+  timer9: null,
+  timer10: null,
 
       partnersScroll: null,
       scrollDirectionLeft: true,
@@ -293,7 +293,8 @@ export default {
     this.timer6 = setInterval(this.apiDataStore.partner.fetchData, 60000)
     this.timer7 = setInterval(this.apiDataStore.homeLinks.fetchData, 60000)
     this.timer8 = setInterval(this.apiDataStore.images.fetchData, 60000)
-    this.timer9 = setInterval(this.apiDataStore.berealStatus.fetchData, 60000)
+  this.timer9 = setInterval(this.apiDataStore.berealStatus.fetchData, 60000)
+  this.timer10 = setInterval(this.apiDataStore.bingoStatus.fetchData, 60000)
 
 
     // push notifications
@@ -341,7 +342,8 @@ export default {
         this.apiDataStore.houseSignupsInfo.fetchData(),
         this.apiDataStore.partner.fetchData(),
         this.apiDataStore.images.fetchData(),
-        this.apiDataStore.berealStatus.fetchData()
+  this.apiDataStore.berealStatus.fetchData(),
+  this.apiDataStore.bingoStatus.fetchData()
       ]).then(() => {
         if (event) {
           event.target.complete();
@@ -384,7 +386,8 @@ export default {
     clearInterval(this.timer6)
     clearInterval(this.timer7)
     clearInterval(this.timer8)
-    clearInterval(this.timer9)
+  clearInterval(this.timer9)
+  clearInterval(this.timer10)
 
     clearInterval(this.partnersScroll)
 
