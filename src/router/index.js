@@ -305,16 +305,11 @@ const router = createRouter({
           name: 'bingo',
           component: () => import('../components/BingoDummy.vue')
         },
-                {
-          path: '/bingo-dummy',
-          name: 'bingo-dummy',
-          component: () => import('../components/BingoDummy.vue')
-        },
-        {
-          path: '/bingo-admin',
-          name: 'bingo-admin',
-          component: () => import('../admin-components/BingoAdminView.vue')
-        }
+        // {
+        //   path: '/bingo-admin',
+        //   name: 'bingo-admin',
+        //   component: () => import('../admin-components/BingoAdminView.vue')
+        // }
 
       ]
     }
