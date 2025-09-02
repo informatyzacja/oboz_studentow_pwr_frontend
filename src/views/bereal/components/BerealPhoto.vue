@@ -156,6 +156,7 @@ export default {
             console.log(`Reported post with ID: ${this.id}`);
             const alert = await alertController.create({
                 header: 'Zgłoś post',
+                cssClass: 'custom-alert',
                 inputs: [
                     {
                         name: 'reason',
@@ -176,6 +177,7 @@ export default {
                     }
                 ]
             });
+
             await alert.present();
         },
         submitReport(reason) {

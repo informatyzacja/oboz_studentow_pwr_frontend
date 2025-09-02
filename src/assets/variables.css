@@ -89,6 +89,23 @@ http://ionicframework.com/docs/theming/ */
 .alert-title {
   color: black !important;
 }
+/* zglos post - zglos/anuluj */
+.md ion-action-sheet {
+  --background: #fdce7e00;              
+  --button-background: #c19f5e;      
+  --button-color: rgb(255, 255, 255);
+  --button-border-radius: 50% !important;
+
+}
+ /* zglos post - powod */
+.custom-alert .alert-wrapper {
+    background-color: #c19f5e !important;
+    border-radius: 20px; 
+}
+
+.custom-alert .alert-button {
+    color: rgb(255, 255, 255); /* tekst przycisków - anuluj zglos*/
+}
 
 @media (prefers-color-scheme: dark) {
   /*
