@@ -86,5 +86,14 @@ export const useBingoStore = defineStore('bingo', () => {
     return data
   }
 
-  return { instances, tasks, tasksGrid, activeInstance, loading, error, fetchInstances, fetchTasks, uploadPhoto, submitForReview, swapTask }
+  async function generateBoard() {
+    const data = await apiRequest('bingo/generate/', 'POST')
+    if (data) {
+      await fetchInstances()
+      await fetchTasks()
+    }
+    return data
+  }
+
+  return { instances, tasks, tasksGrid, activeInstance, loading, error, fetchInstances, fetchTasks, uploadPhoto, submitForReview, swapTask, generateBoard }
 })

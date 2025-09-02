@@ -7,7 +7,12 @@
         <div class="bingo-container">
           <div v-if="loading" class="loading">Ładowanie...</div>
           <template v-else>
-            <div v-if="!grid.length" class="empty">Brak aktywnej planszy bingo.</div>
+            <div v-if="!grid.length" class="empty">
+              <ion-button class="generate-btn" @click="generate()" :disabled="generating">
+                {{ generating ? 'Generuję...' : 'Wygeneruj planszę' }}
+              </ion-button>
+              <p v-if="genError" class="error-msg">{{ genError }}</p>
+            </div>
             <div v-else class="bingo-grid">
               <div v-for="(row, rowIndex) in grid" :key="rowIndex" class="bingo-row">
                 <div v-for="cell in row" :key="cell.id" class="bingo-cell" :class="'state-' + cell.task_state"
@@ -76,13 +81,15 @@
 import { ref, computed, onMounted } from 'vue'
 import { Camera, CameraResultType } from '@capacitor/camera'
 import { useBingoStore } from '@/stores/bingo'
-import { IonPage, IonContent } from '@ionic/vue'
+import { IonPage, IonContent, IonButton } from '@ionic/vue'
 import TopBar from '@/components/navigation/TopBar.vue';
 
 const bingo = useBingoStore()
 const showModal = ref(false)
 const activeTask = ref(null)
 const takingPhoto = ref(false)
+const generating = ref(false)
+const genError = ref('')
 
 const loading = computed(() => bingo.loading)
 const grid = computed(() => bingo.tasksGrid)
@@ -163,6 +170,24 @@ async function swap(task) {
   // refresh activeTask reference (id stays the same but content changed)
   const refreshed = grid.value.flat().find(t => t.id === task.id)
   if (refreshed) activeTask.value = refreshed
+}
+
+async function generate() {
+  genError.value = ''
+  if (generating.value) return
+  try {
+    generating.value = true
+    await bingo.generateBoard()
+  } catch (e) {
+    try {
+      const data = await e.json?.()
+      genError.value = data?.error || 'Nie udało się wygenerować planszy.'
+    } catch (_) {
+      genError.value = 'Nie udało się wygenerować planszy.'
+    }
+  } finally {
+    generating.value = false
+  }
 }
 
 onMounted(async () => {
@@ -404,5 +429,25 @@ onMounted(async () => {
   font-size: 14px;
   color: #fff;
   letter-spacing: .5px;
+}
+
+.generate-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+.generate-btn:disabled {
+  opacity: .6;
+  cursor: default;
+}
+.error-msg {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 6px;
 }
 </style>
