@@ -230,6 +230,14 @@ import BerealAlert from '../views/bereal/components/BerealAlert.vue'
           </RouterLink>
         </div>
 
+        <!-- Bingo -->
+        <div class="padding">
+        <!-- v-if="apiDataStore.bingoStatus.ready && apiDataStore.bingoStatus.data.is_active"> -->
+          <RouterLink to="/bingo">
+            <ItemBox bigText="Bingo" :rightIcon="rightArrow" left-icon-white />
+          </RouterLink>
+        </div>
+
         <LoadingIndicator v-if="apiDataStore.schedule.loading" />
         <p v-if="apiDataStore.schedule.error" class="error">{{ apiDataStore.schedule.error }}</p>
       </main>

@@ -300,6 +300,11 @@ const router = createRouter({
           name: 'beer-opener',
           component: () => import('../views/BeerOpenerView.vue')
         },
+        {
+          path: '/bingo',
+          name: 'bingo',
+          component: () => import('../components/BingoDummy.vue')
+        },
                 {
           path: '/bingo-dummy',
           name: 'bingo-dummy',

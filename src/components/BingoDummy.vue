@@ -1,264 +1,183 @@
+
 <template>
-  <div class="bingo-container">
-    <div class="bingo-grid">
-      <div
-        v-for="(row, rowIndex) in bingoData"
-        :key="rowIndex"
-        class="bingo-row"
-      >
-        <div
-          v-for="(cell, colIndex) in row"
-          :key="colIndex"
-          class="bingo-cell"
-          :class="{ 
-            'bingo-cell--filled': cell.image,
-            'bingo-cell--pending': cell.status === 'pending',
-            'bingo-cell--approved': cell.status === 'approved',
-            'bingo-cell--rejected': cell.status === 'rejected'
-          }"
-          @click="onCellClick(rowIndex, colIndex)"
-          :data-status="cell.status"
-        >          <img v-if="cell.image" :src="cell.image" class="bingo-img" />
-          <span v-else>{{ cell.text }}</span>
-        </div>
-      </div>
-    </div>
+  <ion-page>
+    <ion-content :fullscreen="false">
+      <main>
+        <TopBar title="Bingo" :autoBackLink="true" />
+        <div class="bingo-container">
+          <div v-if="loading" class="loading">Ładowanie...</div>
+          <template v-else>
+            <div v-if="!grid.length" class="empty">Brak aktywnej planszy bingo.</div>
+            <div v-else class="bingo-grid">
+              <div v-for="(row, rowIndex) in grid" :key="rowIndex" class="bingo-row">
+                <div v-for="cell in row" :key="cell.id" class="bingo-cell" :class="'state-' + cell.task_state"
+                  @click="openTask(cell)">
+                  <img v-if="cell.photo_proof" :src="cell.photo_proof" class="bingo-img" />
+                  <span v-else>{{ cell.task.task_name }}</span>
+                </div>
+              </div>
+            </div>
 
-    <div v-if="showModal" class="bingo-modal" @click.self="closeModal">
-      <div class="bingo-modal-content">
-        <img :src="selectedCell.image" class="bingo-modal-img" v-if="selectedCell.image" />
-        <div class="bingo-modal-desc">{{ selectedCell.text }}</div>
-        <div class="bingo-modal-actions">
-          <button class="capture-btn" @click="captureImage">Zrób zdjęcie</button>
-          <span class="or-divider">lub</span>
-          <input type="file" accept="image/*" @change="onImageChange" />
-        </div>
-        <button v-if="selectedCell.image" @click="removeImage">Usuń zdjęcie</button>
-        <button @click="closeModal">Zamknij</button>
-      </div>
-    </div>    <div class="bingo-status" v-if="checkForSubmittableBingo()">
-      <button class="submit-bingo-btn" @click="submitBingo" v-if="!submissionPending">Wyślij bingo do sprawdzenia</button>
-      <div class="status-message" v-else>Bingo zostało wysłane do sprawdzenia</div>
-    </div>
+            <!-- <div class="bingo-status" v-if="instance">
+              <button class="submit-bingo-btn"
+                :disabled="!instance.can_submit_for_review || instance.review_status !== 'in_progress'"
+                @click="submitBoard">
+                {{ submitButtonText }}
+              </button>
+              <div class="status-message" v-if="instance.review_status !== 'in_progress'">
+                Status: {{ translateStatus(instance.review_status) }}
+              </div>
+            </div> -->
+          </template>
 
-    <div class="bingo-legend">
-      <div class="legend-item">
-        <div class="legend-dot pending"></div>
-        <span>Czeka na sprawdzenie</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-dot approved"></div>
-        <span>Zaakceptowane</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-dot rejected"></div>
-        <span>Odrzucone</span>
-      </div>
-    </div>
-  </div>
+          <!-- Modal szczegółów zadania -->
+          <div v-if="showModal" class="bingo-modal" @click.self="closeModal">
+            <div class="bingo-modal-content">
+              <h3>{{ activeTask.task.task_name }}</h3>
+              <p v-if="activeTask.task.description" class="desc">{{ activeTask.task.description }}</p>
+              <img v-if="activeTask.photo_proof" :src="activeTask.photo_proof" class="bingo-modal-img" />
+              <div v-else class="placeholder">Brak zdjęcia</div>
+
+              <!-- <div class="task-state" :class="'state-' + activeTask.task_state">Stan: {{
+                translateTaskState(activeTask.task_state) }}</div> -->
+
+              <div v-if="takingPhoto" class="uploading-overlay">
+                <div class="spinner"></div>
+                <div class="uploading-text">Wysyłam zdjęcie...</div>
+              </div>
+              <div class="bingo-modal-actions" v-else-if="canModifyTask(activeTask)">
+                <button class="capture-btn" @click="takePhoto">Zrób zdjęcie</button>
+              </div>
+              <button @click="closeModal" class="close-btn">Zamknij</button>
+            </div>
+          </div>
+
+          <!-- <div class="bingo-legend">
+            <div class="legend-item">
+              <div class="legend-dot state-not_started"></div><span>Nie rozpoczęte</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot state-submitted"></div><span>Wysłane</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot state-approved"></div><span>Zaakceptowane</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot state-rejected"></div><span>Odrzucone</span>
+            </div>
+          </div> -->
+        </div>
+      </main>
+    </ion-content>
+  </ion-page>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { Camera, CameraResultType } from '@capacitor/camera';
-import { Preferences } from '@capacitor/preferences';
+import { ref, computed, onMounted } from 'vue'
+import { Camera, CameraResultType } from '@capacitor/camera'
+import { useBingoStore } from '@/stores/bingo'
+import { IonPage, IonContent } from '@ionic/vue'
+import TopBar from '@/components/navigation/TopBar.vue';
 
-const bingoData = ref(generateDummyBingo());
-const showModal = ref(false);
-const selectedCell = ref({});
-const selectedRow = ref(null);
-const selectedCol = ref(null);
-const winner = ref(false);
-const submissionPending = ref(false);
+const bingo = useBingoStore()
+const showModal = ref(false)
+const activeTask = ref(null)
+const takingPhoto = ref(false)
 
-function generateDummyBingo() {
-  const tasks = [
-    'Zrób zdjęcie jak ktoś zeruje piwo',
-    'Zrób zdjęcie grupy',
-    'Zrób zdjęcie roweru',
-    'Zrób zdjęcie z kadry',
-    'Zrób zdjęcie z flagą',
-    'Zrób zdjęcie z psem',
-    'Zrób zdjęcie z kotem',
-    'Zrób zdjęcie z grillem',
-    'Zrób zdjęcie z ogniskiem',
-    'Zrób zdjęcie z gitarą',
-    'Zrób zdjęcie z planszówką',
-    'Zrób zdjęcie z kubkiem',
-    'Zrób zdjęcie z plecakiem',
-    'Zrób zdjęcie z namiotem',
-    'Zrób zdjęcie z mapą',
-    'Zrób zdjęcie z medalem',
-    'Zrób zdjęcie z rowerem',
-    'Zrób zdjęcie z piłką',
-    'Zrób zdjęcie z książką',
-    'Zrób zdjęcie z kawą',
-    'Zrób zdjęcie z herbatą',
-    'Zrób zdjęcie z drużyną',
-    'Zrób zdjęcie z trenerem',
-    'Zrób zdjęcie z sędzią',
-    'Zrób zdjęcie z podium',
-  ];
-  let i = 0;
-  return Array.from({ length: 5 }, () =>    Array.from({ length: 5 }, () => ({ 
-      text: tasks[i++], 
-      image: null,
-      status: 'empty'
-    }))
-  );
+const loading = computed(() => bingo.loading)
+const grid = computed(() => bingo.tasksGrid)
+const instance = computed(() => bingo.activeInstance)
+
+const submitButtonText = computed(() => {
+  if (!instance.value) return ''
+  if (instance.value.review_status === 'in_progress') {
+    return instance.value.can_submit_for_review ? 'Wyślij bingo do sprawdzenia' : 'Brak pełnej linii'
+  }
+  if (instance.value.review_status === 'pending_review') return 'Oczekuje na weryfikację'
+  if (instance.value.review_status === 'needs_correction') return 'Wymaga poprawek'
+  if (instance.value.review_status === 'completed') return 'Zakończone'
+  return ''
+})
+
+function translateStatus(status) {
+  return {
+    in_progress: 'W trakcie',
+    pending_review: 'Oczekuje na sprawdzenie',
+    needs_correction: 'Wymaga poprawy',
+    completed: 'Zakończone'
+  }[status] || status
 }
 
-function onCellClick(row, col) {
-  selectedCell.value = bingoData.value[row][col];
-  selectedRow.value = row;
-  selectedCol.value = col;
-  showModal.value = true;
+function translateTaskState(state) {
+  return {
+    not_started: 'Nie rozpoczęte',
+    submitted: 'Wysłane',
+    approved: 'Zaakceptowane',
+    rejected: 'Odrzucone'
+  }[state] || state
 }
 
-function closeModal() {
-  showModal.value = false;
-  selectedCell.value = {};
-  selectedRow.value = null;
-  selectedCol.value = null;
+function openTask(task) {
+  activeTask.value = task
+  showModal.value = true
+}
+function closeModal() { showModal.value = false; activeTask.value = null }
+
+function canModifyTask(task) {
+  if (!instance.value) return false
+  return ['in_progress', 'needs_correction'].includes(instance.value.review_status)
+}
+function canSwap(task) {
+  return canModifyTask(task) && task.task_state === 'not_started' && !instance.value.swap_used
 }
 
-async function captureImage() {
+async function takePhoto() {
+  if (takingPhoto.value || !activeTask.value) return
   try {
-    const image = await Camera.getPhoto({
-      quality: 60,
-      allowEditing: true,
-      resultType: CameraResultType.DataUrl
-    });
-      bingoData.value[selectedRow.value][selectedCol.value] = {
-      ...selectedCell.value,
-      image: image.dataUrl,
-      status: 'pending'
-    };
-    
-    checkWin();
-    closeModal();
-    await saveBingoState();
-  } catch (error) {
-    console.error('Error capturing photo:', error);
-  }
+    const photo = await Camera.getPhoto({ quality: 70, resultType: CameraResultType.Uri })
+    // fetch blob
+    takingPhoto.value = true
+    const blob = await fetch(photo.webPath).then(r => r.blob())
+    await bingo.uploadPhoto(activeTask.value.id, blob)
+    closeModal()
+  } catch (e) {
+    console.error(e)
+  } finally { takingPhoto.value = false }
 }
 
-async function saveBingoState() {
-  await Preferences.set({
-    key: 'bingoState',
-    value: JSON.stringify(bingoData.value)
-  });
+async function onFileChange(e) {
+  const file = e.target.files[0]
+  if (!file || !activeTask.value) return
+  await bingo.uploadPhoto(activeTask.value.id, file)
+  closeModal()
 }
 
-async function loadBingoState() {
-  const saved = await Preferences.get({ key: 'bingoState' });
-  if (saved && saved.value) {
-    try {
-      bingoData.value = JSON.parse(saved.value);
-      checkWin();
-    } catch (e) {
-      console.error('Error loading saved state:', e);
-    }
-  }
+async function submitBoard() {
+  if (!instance.value) return
+  if (!instance.value.can_submit_for_review) return
+  await bingo.submitForReview()
 }
 
-function onImageChange(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (ev) => {    bingoData.value[selectedRow.value][selectedCol.value] = {
-      ...selectedCell.value,
-      image: ev.target.result,
-      status: 'pending'
-    };
-    checkWin();
-    saveBingoState();
-    closeModal();
-  };
-  reader.readAsDataURL(file);
-}
-
-function removeImage() {    bingoData.value[selectedRow.value][selectedCol.value] = {
-      ...selectedCell.value,
-      image: null,
-      status: 'empty'
-    };
-  saveBingoState();
-  closeModal();
-}
-
-function isWinningCell(row, col) {
-  if (!winner.value) return false;
-  return isWinningRow(row) || isWinningCol(col);
-}
-
-function isWinningRow(row) {
-  return bingoData.value[row].every((cell) => cell.image);
-}
-
-function isWinningCol(col) {
-  return bingoData.value.every((row) => row[col].image);
-}
-
-function checkForSubmittableBingo() {
-  for (let i = 0; i < 5; i++) {
-    if (
-      bingoData.value[i].every(cell => cell.image && (cell.status === 'pending' || cell.status === 'approved')) ||
-      bingoData.value.every(row => row[i].image && (row[i].status === 'pending' || row[i].status === 'approved'))
-    ) {
-      return true;
-    }
-  }
-  return false;
-}
-
-function checkWin() {
-  for (let i = 0; i < 5; i++) {
-    if (
-      bingoData.value[i].every(cell => cell.status === 'approved') ||
-      bingoData.value.every(row => row[i].status === 'approved')
-    ) {
-      winner.value = true;
-      return;
-    }
-  }
-  winner.value = false;
-}
-
-async function submitBingo() {
-  submissionPending.value = true;
-  await saveBingoState();
-}
-
-function getStatusText(status) {
-  switch (status) {
-    case 'pending':
-      return 'Czeka na sprawdzenie';
-    case 'approved':
-      return 'Zaakceptowane';
-    case 'rejected':
-      return 'Odrzucone';
-    default:
-      return '';
-  }
+async function swap(task) {
+  await bingo.swapTask(task.id)
+  // refresh activeTask reference (id stays the same but content changed)
+  const refreshed = grid.value.flat().find(t => t.id === task.id)
+  if (refreshed) activeTask.value = refreshed
 }
 
 onMounted(async () => {
-  await loadBingoState();
+  await bingo.fetchInstances()
+  await bingo.fetchTasks()
 });
 </script>
 
 <style scoped>
 .bingo-container {
-  width: 100%;
-  min-height: calc(100vh - 60px);
   padding: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
-  color: var(--text);
   position: relative;
 }
 .bingo-grid {
@@ -389,6 +308,7 @@ onMounted(async () => {
 .bingo-legend {
   margin-top: 20px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 16px;
   width: 100%;
@@ -421,5 +341,68 @@ onMounted(async () => {
 }
 .bingo-cell {
   position: relative;
+}
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 12px;
+}
+
+/* states */
+.state-submitted {
+  border: 4px solid #2196F3;
+}
+
+.state-approved {
+  border: 4px solid #4CAF50;
+}
+
+.state-rejected {
+  border: 4px solid #F44336;
+}
+
+.state-not_started {
+  border: 4px solid #777;
+}
+
+.task-state {
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+
+/* uploading overlay */
+.uploading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  gap: 12px;
+  z-index: 10;
+}
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 4px solid rgba(255,255,255,0.25);
+  border-top-color: #4CAF50;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.uploading-text {
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: .5px;
 }
 </style>

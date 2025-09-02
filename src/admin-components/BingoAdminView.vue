@@ -3,49 +3,39 @@
     <ion-content :fullscreen="false">
       <main>
         <TopBar title="Sprawdzanie Bingo" />
-
         <div class="bingo-list">
-          <div v-for="(submission, index) in submissions" :key="index" class="bingo-submission">
+          <div v-if="loading" class="info">Ładowanie...</div>
+          <div v-else-if="!instances.length" class="info">Brak zgłoszeń do weryfikacji.</div>
+          <div v-else v-for="inst in instances" :key="inst.id" class="bingo-submission">
             <div class="submission-header">
-              <h3>{{ submission.user }} - Bingo #{{ submission.id }}</h3>
-              <span class="submission-date">{{ formatDate(submission.date) }}</span>
+              <h3>Użytkownik #{{ inst.user }} | Plansza #{{ inst.id }}</h3>
+              <span class="submission-date">Status: {{ translateStatus(inst.review_status) }}</span>
             </div>
-
             <div class="bingo-grid">
-              <div v-for="(row, rowIndex) in submission.grid" :key="rowIndex" class="bingo-row">
-                <div v-for="(cell, colIndex) in row" :key="colIndex" 
-                     class="bingo-cell"
-                     :class="{ 
-                       'bingo-cell--filled': cell.image,
-                       'bingo-cell--pending': cell.status === 'pending',
-                       'bingo-cell--approved': cell.status === 'approved',
-                       'bingo-cell--rejected': cell.status === 'rejected'
-                     }"
-                     @click="openImagePreview(cell)">
-                  <img v-if="cell.image" :src="cell.image" class="bingo-img" />
-                  <span v-else>{{ cell.text }}</span>
+              <div v-for="(row,rowIdx) in inst.tasks_grid" :key="rowIdx" class="bingo-row">
+                <div v-for="task in row" :key="task.id" class="bingo-cell" :class="'state-' + task.task_state" @click="openTask(inst, task)">
+                  <img v-if="task.photo_proof" :src="task.photo_proof" class="bingo-img" />
+                  <span v-else>{{ task.task.task_name }}</span>
                 </div>
               </div>
-            </div>            
-            <div class="submission-actions">
-              <div class="review-buttons" v-if="selectedSubmission === index">
-                <button class="finish-btn" @click="finishReview(index)">Zakończ sprawdzanie</button>
-              </div>
-              <button v-else class="review-btn" @click="startReview(index)">Rozpocznij sprawdzanie</button>
+            </div>
+            <div class="submission-actions" v-if="inst.id === activeInstanceId">
+              <button class="approve-btn" @click="approveWin(inst)">Zatwierdź wygraną</button>
             </div>
           </div>
         </div>
 
-        <!-- Modal podglądu zdjęcia -->
-        <div v-if="showPreview" class="preview-modal" @click.self="closePreview">
+        <div v-if="showModal" class="preview-modal" @click.self="closeModal">
           <div class="preview-content">
-            <img :src="previewImage.image" class="preview-img" />
-            <div class="preview-desc">{{ previewImage.text }}</div>
-            <div class="preview-actions" v-if="selectedSubmission !== null">
-              <button class="approve-btn" @click="approveImage">Akceptuj</button>
-              <button class="reject-btn" @click="rejectImage">Odrzuć</button>
+            <h3>{{ activeTask.task.task_name }}</h3>
+            <img v-if="activeTask.photo_proof" :src="activeTask.photo_proof" class="preview-img" />
+            <div class="preview-desc">Stan: {{ translateTaskState(activeTask.task_state) }}</div>
+            <textarea v-model="reviewComment" placeholder="Komentarz (wymagany przy odrzuceniu)"></textarea>
+            <div class="preview-actions">
+              <button class="approve-btn" @click="reviewTask('approved')">Akceptuj</button>
+              <button class="reject-btn" @click="reviewTask('rejected')">Odrzuć</button>
             </div>
-            <button class="close-btn" @click="closePreview">Zamknij</button>
+            <button class="close-btn" @click="closeModal">Zamknij</button>
           </div>
         </div>
       </main>
@@ -54,121 +44,67 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { IonPage, IonContent } from '@ionic/vue';
-import TopBar from '../components/navigation/TopBar.vue';
+import { ref, onMounted } from 'vue'
+import { IonPage, IonContent, toastController } from '@ionic/vue'
+import TopBar from '../components/navigation/TopBar.vue'
+import { apiRequest, request } from '@/stores/functions'
+import { getAuthorizationHeader } from '@/functions/login'
 
-// Mock URLs do przykładowych zdjęć
-const mockImageUrls = [
-  'https://picsum.photos/200',
-  'https://picsum.photos/201',
-  'https://picsum.photos/202',
-  'https://picsum.photos/203',
-  'https://picsum.photos/204',
-];
+const instances = ref([])
+const loading = ref(false)
+const activeInstanceId = ref(null)
+const showModal = ref(false)
+const activeTask = ref(null)
+const reviewComment = ref('')
 
-const submissions = ref([
-  {
-    id: 1,
-    user: 'Jan Kowalski',
-    date: new Date(),
-    grid: generateMockGrid()
-  },
-  {
-    id: 2,
-    user: 'Anna Nowak',
-    date: new Date(Date.now() - 24 * 60 * 60 * 1000), // wczoraj
-    grid: generateMockGrid()
+function translateStatus(s) {
+  return { pending_review: 'Oczekuje', in_progress: 'W trakcie', needs_correction: 'Wymaga poprawek', completed: 'Zakończone' }[s] || s
+}
+function translateTaskState(s) {
+  return { not_started: 'Nie rozpoczęte', submitted: 'Wysłane', approved: 'Zaakceptowane', rejected: 'Odrzucone' }[s] || s
+}
+
+async function fetchInstances() {
+  loading.value = true
+  try {
+    const data = await apiRequest('bingo-review/')
+    if (data) instances.value = data
+  } finally { loading.value = false }
+}
+
+function openTask(instance, task) {
+  activeInstanceId.value = instance.id
+  activeTask.value = task
+  reviewComment.value = ''
+  showModal.value = true
+}
+function closeModal() { showModal.value = false; activeTask.value = null }
+
+async function reviewTask(state) {
+  if (!activeInstanceId.value || !activeTask.value) return
+  if (state === 'rejected' && !reviewComment.value) {
+    (await toastController.create({ message: 'Komentarz wymagany przy odrzuceniu', duration: 1500, color: 'danger'})).present();
+    return
   }
-]);
-
-function generateMockGrid() {
-  const tasks = [
-    'Zrób zdjęcie jak ktoś zeruje piwo',
-    'Zrób zdjęcie grupy',
-    'Zrób zdjęcie roweru',
-    'Zrób zdjęcie z kadry',
-    'Zrób zdjęcie z flagą',
-    'Zrób zdjęcie z psem',
-    'Zrób zdjęcie z kotem',
-    'Zrób zdjęcie z grillem',
-    'Zrób zdjęcie z ogniskiem',
-    'Zrób zdjęcie z gitarą',
-    'Zrób zdjęcie z planszówką',
-    'Zrób zdjęcie z kubkiem',
-    'Zrób zdjęcie z plecakiem',
-    'Zrób zdjęcie z namiotem',
-    'Zrób zdjęcie z mapą',
-    'Zrób zdjęcie z medalem',
-    'Zrób zdjęcie z rowerem',
-    'Zrób zdjęcie z piłką',
-    'Zrób zdjęcie z książką',
-    'Zrób zdjęcie z kawą',
-    'Zrób zdjęcie z herbatą',
-    'Zrób zdjęcie z drużyną',
-    'Zrób zdjęcie z trenerem',
-    'Zrób zdjęcie z sędzią',
-    'Zrób zdjęcie z podium'
-  ];
-
-  let grid = [];
-  for (let i = 0; i < 5; i++) {
-    let row = [];
-    for (let j = 0; j < 5; j++) {
-      const idx = i * 5 + j;
-      row.push({
-        text: tasks[idx],
-        image: mockImageUrls[Math.floor(Math.random() * mockImageUrls.length)],
-        status: 'pending'
-      });
-    }
-    grid.push(row);
+  const body = { task_state: state, reviewer_comment: reviewComment.value }
+  const headers = await getAuthorizationHeader(); if (!headers) return
+  const res = await request(`bingo-review/${activeInstanceId.value}/review-task/${activeTask.value.id}/`, { method: 'POST', headers: { ...headers, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+  if (res.ok) {
+    await fetchInstances();
+    closeModal();
   }
-  return grid;
 }
 
-const selectedSubmission = ref(null);
-const showPreview = ref(false);
-const previewImage = ref(null);
-const selectedCell = ref(null);
-
-function formatDate(date) {
-  return new Date(date).toLocaleString();
-}
-
-function openImagePreview(cell) {
-  if (!cell.image) return;
-  previewImage.value = cell;
-  showPreview.value = true;
-}
-
-function closePreview() {
-  showPreview.value = false;
-  previewImage.value = null;
-}
-
-function startReview(index) {
-  selectedSubmission.value = index;
-}
-
-function approveImage() {
-  if (previewImage.value) {
-    previewImage.value.status = 'approved';
+async function approveWin(instance) {
+  const headers = await getAuthorizationHeader(); if (!headers) return
+  const res = await request(`bingo-review/${instance.id}/approve-win/`, { method: 'POST', headers })
+  if (res.ok) {
+    (await toastController.create({ message: 'Wygrana zatwierdzona', duration: 1500, color: 'success'})).present();
+    await fetchInstances();
   }
-  closePreview();
 }
 
-function rejectImage() {
-  if (previewImage.value) {
-    previewImage.value.status = 'rejected';
-  }
-  closePreview();
-}
-
-
-function finishReview(index) {
-  selectedSubmission.value = null;
-}
+onMounted(fetchInstances);
 </script>
 
 <style scoped>
@@ -327,15 +263,9 @@ button {
   color: var(--text);
 }
 
-.bingo-cell--pending {
-  border-color: #FFA726;
-}
-
-.bingo-cell--approved {
-  border-color: #4CAF50;
-}
-
-.bingo-cell--rejected {
-  border-color: #F44336;
-}
+/* states */
+.state-submitted { border: 2px solid #2196F3; }
+.state-approved { border: 2px solid #4CAF50; }
+.state-rejected { border: 2px solid #F44336; }
+.state-not_started { border: 2px solid #777; }
 </style>
