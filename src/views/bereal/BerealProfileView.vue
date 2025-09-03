@@ -17,16 +17,16 @@ import { personCircle } from 'ionicons/icons';
     <ion-page>
         <ion-content :fullscreen="false">
             <main>
-                <TopBar v-if="$route.params.profile_id" title="BeerReal - Profil" back-link="/bereal/home"/>
+                <TopBar v-if="$route.params.profile_id" title="BeerReal - Profil" auto-back-link/>
                 <TopBar v-else title="BeerReal - Profil" />
 
                 <div class="padding-main">
                     <div class="profile-header" v-if="apiDataStore.berealProfile.data">
                         <div class="profile-photo-container">
                             <img :src="apiDataStore.berealProfile.data.user.photo || personCircle" class="profile-photo" />
-                            <div v-if="!$route.params.id" class="edit-icon" @click="changePhoto">
-                                <img :src="RefreshIcon" alt="Edit Profile" />
-                            </div>
+                                <div v-if="isOwnProfile" class="edit-icon" @click="changePhoto">
+                                    <img :src="RefreshIcon" alt="Edit Profile" />
+                                </div>
 
                         </div>
                         <p class="name">{{ apiDataStore.berealProfile.data.user.first_name }} {{
@@ -52,9 +52,25 @@ export default {
     }),
     computed: {
         ...mapStores(useApiDataStore),
+
+       // true tylko gdy przeglądamy własny profil (porównujemy id profilu w URL z id zalogowanego użytkownika)
+       isOwnProfile() {
+           const viewedId = this.$route.params.profile_id || this.$route.params.id;
+           // brak parametru => własny profil
+           if (!viewedId) return true;
+           // spróbuj pobrać id aktualnie zalogowanego użytkownika ze store
+           const currentUserId = (this.apiDataStore.user && this.apiDataStore.user.id)
+               || (this.apiDataStore.me && this.apiDataStore.me.id)
+               || localStorage.getItem('user_id'); // fallback jeśli store nie trzyma id
+           if (!currentUserId) return false;
+           return String(currentUserId) === String(viewedId);
+       }
     },
     async mounted() {
         this.fetchData();
+    },
+    watch: {
+        '$route.params.profile_id': 'fetchData'
     },
     methods: {
         changePhoto() {
@@ -76,7 +92,7 @@ export default {
             this.apiDataStore.berealProfile.data = null; // Reset data to avoid showing old data
             this.apiDataStore.berealProfile.id = this.$route.params.profile_id;
             this.apiDataStore.berealProfile.fetchData().then(() => {
-                if ($event) $event.target.complete();
+                if ($event?.target) $event.target.complete();
             });
         }
     }
@@ -119,10 +135,12 @@ export default {
     height: 200px;
     border-radius: 50%;
     margin-bottom: 10px;
+    object-fit: cover;
 }
 .name {
     font-size: 1.6em;
     font-weight: bold;
+    color: var(--light-text);
 }
 .profile-spacer {
     width: 100%;

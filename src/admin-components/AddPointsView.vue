@@ -74,7 +74,7 @@ import { IonPage, IonContent } from '@ionic/vue';
                         <textarea v-model="description" rows="4" cols="50" :disabled="disabled"></textarea>
 
                         <button class="button success" @click="addPoints"
-                            v-if="points != 0 && description && selectedGroup && apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_min <= points && points <= apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_max && !loading && !success">Dodaj</button>
+                            v-if="points != 0 && description && selectedGroup && selectedGroup !== 'scan' && apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_min <= points && points <= apiDataStore.pointTypes.withTypes(selectedGroupType, selectedPointType).points_max && !loading && !success">Dodaj</button>
                         <LoadingIndicator v-if="loading" />
                         <p class="success">{{ info }}</p>
                         <p v-if="error" class="error">{{ error }}</p>

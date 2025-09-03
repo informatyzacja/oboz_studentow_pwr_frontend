@@ -99,6 +99,7 @@ h5 {
   padding: 1px;
   font-size: 17px;
   line-height: 19px !important;
+  color: var(--light-text);
 }
 
 h6 {

@@ -299,7 +299,18 @@ const router = createRouter({
           path: '/beer-opener',
           name: 'beer-opener',
           component: () => import('../views/BeerOpenerView.vue')
-        }
+        },
+        {
+          path: '/bingo',
+          name: 'bingo',
+          component: () => import('../components/BingoDummy.vue')
+        },
+        // {
+        //   path: '/bingo-admin',
+        //   name: 'bingo-admin',
+        //   component: () => import('../admin-components/BingoAdminView.vue')
+        // }
+
       ]
     }
   ]

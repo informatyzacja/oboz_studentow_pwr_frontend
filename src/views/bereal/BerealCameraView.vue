@@ -12,10 +12,14 @@ const firstPhoto = ref(null);
 const secondPhoto = ref(null);
 const orientationAngle = ref(0); // 0 portrait, 270 left landscape, 90 right landscape inferred
 const orientationType = ref('unknown');
+const ignoreOrientationWarning = ref(false); // user chose to bypass landscape requirement
 // store orientation at capture time for each photo
 const captureOrientationAngles = ref([]); // [angleFirst, angleSecond]
 const berealPostStore = useBerealPostStore();
 const router = useRouter();
+
+
+
 
 // Computed
 const previewFirstPhoto = computed(() => {
@@ -65,22 +69,27 @@ async function addOrientationListener() {
 }
 
 async function capture() {
-    if (!isLandscape.value) return; // require any landscape orientation
+    if (!isLandscape.value && !ignoreOrientationWarning.value) return; // block only if not dismissed
     const result = await CameraPreview.capture({ quality: 85 });
     const base64PictureData = result.value;
+
     if (!firstPhoto.value) {
         firstPhoto.value = base64PictureData;
-        captureOrientationAngles.value[0] = orientationAngle.value;
+        captureOrientationAngles.value[0] = ignoreOrientationWarning.value ? -90 : orientationAngle.value;
+        console.log(captureOrientationAngles.value[0])
         CameraPreview.flip();
+
         return;
     }
     if (!secondPhoto.value) {
         secondPhoto.value = base64PictureData;
-        captureOrientationAngles.value[1] = orientationAngle.value;
+        captureOrientationAngles.value[1] = ignoreOrientationWarning.value ? (
+            Capacitor.getPlatform() === 'android' ? 0 : -90
+        ) : orientationAngle.value;
+        console.log(captureOrientationAngles.value[1])
     }
     await showPostPreview();
 }
-
 function rotateBase64Image(base64, angle = -90) {
     return new Promise(resolve => {
         try {
@@ -127,11 +136,28 @@ async function showPostPreview() {
 
 // Lifecycle
 onMounted(() => {
+    // jeśli post został opublikowany — nie pozwalamy wejść do widoku kamery ponownie
+    if (localStorage.getItem('bereal_post_published') === '1') {
+        localStorage.removeItem('bereal_post_published');
+        router.replace('/bereal/home');
+        return;
+    }
     refreshOrientation();
     addOrientationListener();
 });
-onIonViewWillEnter(() => {
-    CameraPreview.start({ parent: 'cameraPreview', position: 'rear', toBack: true, disableAudio: true });
+onIonViewWillEnter(async() => {
+    if (localStorage.getItem('bereal_post_published') === '1') {
+        localStorage.removeItem('bereal_post_published');
+
+        return;
+    }
+    try {
+        await CameraPreview.start({ parent: 'cameraPreview', position: 'rear', toBack: true, disableAudio: true });
+    } catch (e) {
+        console.warn('CameraPreview.start failed, redirecting to home', e);
+
+        return;
+    }
     refreshOrientation();
 });
 onIonViewDidLeave(() => {
@@ -145,15 +171,17 @@ onIonViewDidLeave(() => {
         <ion-content :fullscreen="true" class="camera-preview-content" scroll-y="false">
             <div class="camera-container">
         <!-- Overlay shown when orientation is not any landscape -->
-        <div v-if="!isLandscape" class="orientation-overlay">
+        <div v-if="!isLandscape && !ignoreOrientationWarning" class="orientation-overlay">
             <div class="orientation-box">
                 <p class="orientation-text">Obróć telefon w tryb poziomy</p>
+        <button class="orientation-dismiss" @click="ignoreOrientationWarning = true">OK</button>
             </div>
         </div>
         <div id="first-photo-preview" :style="previewFirstPhoto"></div>
         <div id="cameraPreview"></div>
         <div id="camera-button-container">
-            <div id="camera-button" @click="capture" :class="{ disabled: !isLandscape }"></div>
+        <div v-if="ignoreOrientationWarning" id="orientation-info">Góra &uarr;</div>
+        <div id="camera-button" @click="capture" :class="{ disabled: !isLandscape && !ignoreOrientationWarning }"></div>
                 </div>
                 <IonNavLink router-link="/bereal/home/" router-direction="back" class="link">
                     <img :src="CancelIcon" class="cancel-button" />
@@ -246,9 +274,33 @@ onIonViewDidLeave(() => {
     margin: 0;
     font-weight: 600;
 }
+.orientation-dismiss {
+    margin-top: 16px;
+    background: #ffffff;
+    color: #000;
+    font-weight: 600;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 24px;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.orientation-dismiss:active {
+    opacity: 0.8;
+}
 .orientation-sub {
     color: #ccc;
     font-size: 14px;
     margin: 0;
+}
+#orientation-info {
+    position: absolute;
+    transform: rotate(90deg);
+    right: 10px;
+    bottom: 100px;
+    font-size: 1.2rem;
+    text-shadow: 0 0 6px rgba(0,0,0,0.8), 0 0 2px rgba(0,0,0,0.6);
+    font-weight: 600;
+    color: #fff;
 }
 </style>
