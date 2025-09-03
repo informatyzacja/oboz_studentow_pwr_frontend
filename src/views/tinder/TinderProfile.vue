@@ -17,7 +17,7 @@ import { Camera, CameraResultType } from '@capacitor/camera';
     <ion-page>
         <ion-content>
             <main v-if="profileData && profileData.tinder_profile">
-                <TopBar title="Profil na tinderze" back-link="/profil" />
+                <TopBar title="Profil na Obozer" back-link="/profil" />
                 <CustomTinderCard class="tinder-card" :item="profileData.tinder_profile" editable
                     @editDescription="$refs.editDescriptionOverlay.show();"
                     v-if="profileData.tinder_profile.user && profileData.tinder_profile.photo && profileData.tinder_profile.description"

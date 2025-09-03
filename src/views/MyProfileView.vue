@@ -107,7 +107,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
       <IonNavLink router-link="/tinder/profil"
         v-if="apiDataStore.profile.ready && (apiDataStore.profile.data[0].tinder_profile.user || apiDataStore.profile.data[0].tinder_register_active)">
         <ItemBox
-          :big-text="apiDataStore.profile.ready && apiDataStore.profile.data[0].tinder_profile.user ? 'Profil na tinderze' : 'Utwórz profil na tinderze'"
+          :big-text="apiDataStore.profile.ready && apiDataStore.profile.data[0].tinder_profile.user ? 'Profil na Obozer' : 'Utwórz profil na Obozer'"
           :leftIcon="tinderIcon" small leftIconWhite />
       </IonNavLink>
     </template>
