@@ -20,7 +20,7 @@ import ChatCardView from '@/views/ChatCardView.vue'
     <ion-page>
         <ion-content :fullscreen="false">
             <main>
-                <TopBar title="Tinder" backLink="/home" />
+                <TopBar title="Obozer" backLink="/home" />
                 <ProfileCircle />
 
                 <h2 v-if="noMoreProfiles && !queue.length">Koniec profilów.<br>Sprawdź później, czy dołączył ktoś nowy.
@@ -31,7 +31,7 @@ import ChatCardView from '@/views/ChatCardView.vue'
                 <OverlayView ref="helpOverlay">
                     <div class="help-overlay">
                         <div class="help-content">
-                            <h4>Jak działa tinder obozowy?</h4>
+                            <h4>Jak działa Obozer?</h4>
                             <div class="action-desc">
                                 <ion-icon :icon="heart" color="success"></ion-icon>
                                 <p><span class="action-desc-title">Like</span> - Przesuń w prawo, aby polubić</p>
@@ -79,7 +79,7 @@ import ChatCardView from '@/views/ChatCardView.vue'
 
                 <LoadingIndicator v-if="!queue.length && !noMoreProfiles && !info" />
 
-                <Tinder ref="tinder" key-name="id" :queue="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
+                <Tinder ref="obozer" key-name="id" :queue="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
                     <template v-slot="scope">
                         <CustomTinderCard :item="scope.data" />
                     </template>
