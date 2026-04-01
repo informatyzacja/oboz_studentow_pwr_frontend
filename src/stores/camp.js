@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { getActiveCampId, setActiveCampId } from '@/functions/login.js'
 import { apiRequest } from '@/stores/functions.js'
+import router from '@/router/index.js'
 
 export const useCampStore = defineStore('camp', {
     state: () => ({
@@ -13,7 +14,7 @@ export const useCampStore = defineStore('camp', {
         async loadPersistedCampId() {
             const campId = await getActiveCampId()
             if (campId) {
-                this.activeCampId = campId
+                this.activeCampId = String(campId)
             }
         },
         async fetchAndSetCamp() {
@@ -29,7 +30,7 @@ export const useCampStore = defineStore('camp', {
                 }
                 this.camps = data
                 const active = data.find((c) => c.is_active) || data[data.length - 1]
-                this.activeCampId = active.id
+                this.activeCampId = String(active.id)
                 await setActiveCampId(active.id)
             } catch (e) {
                 this.error = e
@@ -38,8 +39,9 @@ export const useCampStore = defineStore('camp', {
             }
         },
         async switchCamp(campId) {
-            this.activeCampId = campId
+            this.activeCampId = String(campId)
             await setActiveCampId(campId)
+            router.replace('/')
         },
     },
 })
