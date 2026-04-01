@@ -84,4 +84,18 @@ export async function veryifyToken() {
 export async function logout() {
     await Preferences.remove({ key: 'access_token' })
     await Preferences.remove({ key: 'refresh_token' })
+    await Preferences.remove({ key: 'active_camp_id' })
+}
+
+export async function getActiveCampId() {
+    const result = await Preferences.get({ key: 'active_camp_id' })
+    return result.value ? result.value : null
+}
+
+export async function setActiveCampId(campId) {
+    if (campId === null || campId === undefined) {
+        await Preferences.remove({ key: 'active_camp_id' })
+    } else {
+        await Preferences.set({ key: 'active_camp_id', value: String(campId) })
+    }
 }

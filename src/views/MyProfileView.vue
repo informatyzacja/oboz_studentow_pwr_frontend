@@ -29,6 +29,7 @@ import { REGULAMIN_LINK, POLITYKA_PRYWATNOSCI_LINK } from '../config.js'
 
 import { useVersionStore } from '../stores/version.js'
 import { useApiDataStore } from '../stores/api.js'
+import { useCampStore } from '../stores/camp.js'
 import { mapStores } from 'pinia'
 
 
@@ -150,6 +151,19 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 
         <div class="spacer"></div>
 
+        <div v-if="campStore.camps.length > 1">
+          <h5>Aktywny obóz</h5>
+          <ItemBox
+            v-for="camp in campStore.camps"
+            :key="camp.id"
+            :big-text="camp.name"
+            small
+            :bgColor="campStore.activeCampId === String(camp.id) ? 'var(--theme-light)' : undefined"
+            @click="campStore.switchCamp(camp.id)"
+          />
+          <div class="spacer"></div>
+        </div>
+
         <ItemBox big-text="Wyloguj" bgColor="var(--red)" :leftIcon="logoutIcon" small @click="logoutClicked" />
         <p class="version" v-if="versionStore.fullVersion">{{ versionStore.fullVersion }}</p>
 
@@ -178,7 +192,7 @@ export default {
     }
   },
   computed: {
-    ...mapStores(useApiDataStore, useVersionStore),
+    ...mapStores(useApiDataStore, useVersionStore, useCampStore),
     profileData() {
       return this.apiDataStore.profile.data && this.apiDataStore.profile.data.length
         && this.apiDataStore.profile.data[0]
@@ -190,6 +204,10 @@ export default {
     this.apiDataStore.userWorkshop.fetchData()
 
     this.versionStore.refresh()
+    this.campStore.loadPersistedCampId()
+    if (this.campStore.camps.length === 0) {
+      this.campStore.fetchAndSetCamp()
+    }
   },
   methods: {
     async logoutClicked() {
