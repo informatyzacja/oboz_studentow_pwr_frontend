@@ -1,5 +1,5 @@
 const VITE_API_URL = import.meta.env.VITE_API_URL
-import { getAuthorizationHeader, refreshToken, getAccessToken } from '@/functions/login.js'
+import { getAuthorizationHeader, refreshToken, getAccessToken, getActiveCampId } from '@/functions/login.js'
 import { toastController } from '@ionic/vue';
 import { WS_API_URL } from '@/config'
 
@@ -32,10 +32,13 @@ export async function request(url, options) {
 export async function apiRequest(url, method = 'GET', body = null, retry = false, data = null) {
   const headers = await getAuthorizationHeader()
   if (!headers) return
+  const activeCampId = await getActiveCampId()
+  const campHeader = activeCampId ? { 'X-Camp-Id': activeCampId } : {}
   const options = {
     method: method,
     headers: {
       ...headers,
+      ...campHeader,
       'Content-Type': 'application/json',
     }
   }

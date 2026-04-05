@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import SosIcon from '../../assets/icons8-sos.png'
 // import MapIcon from '../../assets/icons8-map_marker.png'
-import Logo from '../../assets/ikona.png'
+import Logo from '../../assets/logo-obozownik.png'
 import HammerIcon from '../../assets/icons8-hammer-90.png'
 // import WorkshopIcon from '../../assets/warsztaty.svg'
 import CalendarIcon from '../../assets/icons8-calendar-100.png'
@@ -14,10 +14,12 @@ import MenuIcon from '../../assets/icons8-squared_menu.png'
 import ChatIcon from '../../assets/icons8-chat.png'
 
 import { useApiDataStore } from '../../stores/api.js'
+import { useCampStore } from '../../stores/camp.js'
 import { IonNavLink, IonTabBar } from '@ionic/vue'
 
 // store instance (was previously accessed through mapStores in Options API)
 const apiDataStore = useApiDataStore()
+const campStore = useCampStore()
 
 // reactive state
 const showIosInstallMessage = ref(false)
@@ -50,6 +52,10 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (versionTimer.value) clearInterval(versionTimer.value)
 });
+
+const navLogo = computed(() => campStore.campLogoUrl || Logo)
+const workshopsEnabled = computed(() => campStore.isFeatureEnabled('workshops'))
+const scheduleEnabled = computed(() => campStore.isFeatureEnabled('schedule'))
 </script>
 
 <template>
@@ -66,13 +72,17 @@ onBeforeUnmount(() => {
 
 
       <IonNavLink router-link="/warsztaty" router-direction="none"
-        v-if="!apiDataStore.permissions.ready || !apiDataStore.permissions.data.length">
+        v-if="workshopsEnabled && (!apiDataStore.permissions.ready || !apiDataStore.permissions.data.length)">
         <div class="navigation_bar__item">
           <img :src="HammerIcon" alt="warsztaty" />
           <p>Warsztaty</p>
         </div>
       </IonNavLink>
-      <IonNavLink router-link="/admin-menu" router-direction="none" v-else>
+      <IonNavLink
+        router-link="/admin-menu"
+        router-direction="none"
+        v-if="apiDataStore.permissions.ready && apiDataStore.permissions.data.length"
+      >
         <div class="navigation_bar__item">
           <img :src="MenuIcon" alt="menu" />
           <p>Menu</p>
@@ -82,10 +92,10 @@ onBeforeUnmount(() => {
 
       <IonNavLink router-link="/" router-direction="none">
         <div class="navigation-bar__logo">
-          <img :src="Logo" alt="logo" />
+          <img :src="navLogo" alt="logo" />
         </div>
       </IonNavLink>
-      <IonNavLink router-link="/harmonogram" router-direction="none">
+      <IonNavLink router-link="/harmonogram" router-direction="none" v-if="scheduleEnabled">
         <div class="navigation_bar__item">
           <img :src="CalendarIcon" alt="harmonogram" />
           <p>Harmonogram</p>

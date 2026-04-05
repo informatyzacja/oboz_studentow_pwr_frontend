@@ -1,6 +1,6 @@
 <script setup>
 import { IonPage, IonContent, IonSpinner, IonNavLink } from '@ionic/vue';
-import logo from '@/assets/splash-circle.png';
+import logo from '@/assets/logo-obozownik.png';
 
 import { request } from '@/stores/functions';
 import { Preferences } from '@capacitor/preferences'
@@ -104,7 +104,10 @@ export default {
                     Preferences.set({ key: 'access_token', value: data.access })
                         .then(() => {
                             Preferences.set({ key: 'refresh_token', value: data.refresh })
-                                .then(() => {
+                                .then(async () => {
+                                    const { useCampStore } = await import('@/stores/camp.js')
+                                    const campStore = useCampStore()
+                                    await campStore.fetchAndSetCamp()
                                     this.$router.push('/')
                                 })
                         })
