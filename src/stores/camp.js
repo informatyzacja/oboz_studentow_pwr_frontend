@@ -21,7 +21,7 @@ export const useCampStore = defineStore('camp', {
             this.loading = true
             this.error = null
             try {
-                const data = await apiRequest('camps/my/')
+                const data = await apiRequest('../api2/camps/my/')
                 if (!data || !Array.isArray(data) || data.length === 0) {
                     this.camps = []
                     this.activeCampId = null
