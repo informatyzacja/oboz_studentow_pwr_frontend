@@ -4,6 +4,15 @@ import router from '@/router/index.js';
 
 const VITE_API_URL = import.meta.env.VITE_API_URL
 
+function resetLoginTheme() {
+    const root = document.documentElement
+    root.style.setProperty('--theme-light', '#58A8FF')
+    root.style.setProperty('--theme-dark', '#123B69')
+    root.style.setProperty('--theme-text', '#8DBFEA')
+    root.style.setProperty('--login-button-color', '#D7ECFF')
+    root.style.setProperty('--login-button-bg', '#2A5D9C33')
+}
+
 export async function loginGetToken(email, password) {
     const response = await fetch(`${VITE_API_URL}token/`, {
         method: 'POST',
@@ -85,6 +94,7 @@ export async function logout() {
     await Preferences.remove({ key: 'access_token' })
     await Preferences.remove({ key: 'refresh_token' })
     await Preferences.remove({ key: 'active_camp_id' })
+    resetLoginTheme()
 }
 
 export async function getActiveCampId() {

@@ -20,7 +20,7 @@ import tinderIcon from '../assets/icons8-tinder-100.png'
 
 import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 import OverlayView from '../components/OverlayView.vue'
-import Logo from '../assets/ikona.png'
+import Logo from '../assets/logo-obozownik.png'
 
 import qrBg from '../assets/Grafika za QR.png'
 // import backArrow from '../assets/strzala- do qr.svg'
@@ -64,7 +64,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
         <div class="qr_content">
           <div class=" qr">
             <div class="qr_div" :class="{ hidden: qrLoading }">
-              <VueQr :text="profileData.bandId" :logoSrc="Logo" :logoScale="0.15" :dotScale="0.8" colorDark="black"
+              <VueQr :text="profileData.bandId" :logoSrc="campLogo" :logoScale="0.15" :dotScale="0.8" colorDark="black"
                 colorLight="transparent" whiteMargin="false" :margin="0" :callback="qrReady" :size="250" />
               <span class="top"></span>
               <span class="right"></span>
@@ -91,7 +91,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
               wydawania posiłków
             </h6>
             <div class="qr_div" :class="{ hidden: qrLoading }">
-              <VueQr :text="profileData.bandId" :logoSrc="Logo" :logoScale="0.15" :dotScale="0.8" colorDark="black"
+              <VueQr :text="profileData.bandId" :logoSrc="campLogo" :logoScale="0.15" :dotScale="0.8" colorDark="black"
                 colorLight="transparent" whiteMargin="false" :margin="0" :callback="qrReady" :size="700" />
               <span class="top"></span>
               <span class="right"></span>
@@ -196,6 +196,9 @@ export default {
     profileData() {
       return this.apiDataStore.profile.data && this.apiDataStore.profile.data.length
         && this.apiDataStore.profile.data[0]
+    },
+    campLogo() {
+      return this.campStore.campLogoUrl || Logo
     }
   },
   mounted() {

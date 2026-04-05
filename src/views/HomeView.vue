@@ -9,6 +9,7 @@ import DailyQuestView from '../components/home/DailyQuestView.vue'
 import OverlayView from '../components/OverlayView.vue'
 
 import { useApiDataStore } from '../stores/api.js'
+import { useCampStore } from '../stores/camp.js'
 import { mapStores } from 'pinia'
 
 import PushNotficationsPopupView from '../components/PushNotficationsPopupView.vue'
@@ -146,7 +147,7 @@ import BerealAlert from '../views/bereal/components/BerealAlert.vue'
 
 
         <!-- Workshops -->
-        <div v-if="apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
+        <div v-if="campStore.isFeatureEnabled('workshops') && apiDataStore.userWorkshop.ready && apiDataStore.userWorkshop.today.length">
           <h3>Twoje dzisiejsze warsztaty</h3>
           <div class="scroll">
             <RouterLink v-for="( data, index ) in apiDataStore.userWorkshop.today " :key="index"
@@ -159,7 +160,7 @@ import BerealAlert from '../views/bereal/components/BerealAlert.vue'
         </div>
 
         <!-- Schedule - now -->
-        <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length">
+        <div v-if="campStore.isFeatureEnabled('schedule') && apiDataStore.schedule.ready && apiDataStore.schedule.rightNow.length">
           <h3>Co się teraz dzieje?</h3>
           <div class="scroll">
             <RouterLink v-for="( data, index ) in apiDataStore.schedule.rightNow " :key="index"
@@ -190,7 +191,7 @@ import BerealAlert from '../views/bereal/components/BerealAlert.vue'
         </div>
 
         <!-- Schedule - up next -->
-        <div v-if="apiDataStore.schedule.ready && apiDataStore.schedule.upNext.length">
+        <div v-if="campStore.isFeatureEnabled('schedule') && apiDataStore.schedule.ready && apiDataStore.schedule.upNext.length">
           <h3>Następne</h3>
           <div class="scroll">
             <RouterLink v-for="( data, index ) in apiDataStore.schedule.upNext " :key="index"
@@ -216,7 +217,7 @@ import BerealAlert from '../views/bereal/components/BerealAlert.vue'
 
         <!-- Tinder -->
 
-        <div class="padding" v-if="apiDataStore.profile.data && apiDataStore.profile.data[0].tinder_active && apiDataStore.profile.data[0].tinder_profile && apiDataStore.profile.data[0].tinder_profile.user && apiDataStore.profile.data[0].tinder_profile.photo &&
+        <div class="padding" v-if="campStore.isFeatureEnabled('tinder') && apiDataStore.profile.data && apiDataStore.profile.data[0].tinder_active && apiDataStore.profile.data[0].tinder_profile && apiDataStore.profile.data[0].tinder_profile.user && apiDataStore.profile.data[0].tinder_profile.photo &&
           apiDataStore.profile.data[0].tinder_profile.description">
           <RouterLink to="/tinder">
             <ItemBox bigText="Obozer" :rightIcon="rightArrow" :leftIcon="tinderIcon" left-icon-white />
@@ -224,14 +225,14 @@ import BerealAlert from '../views/bereal/components/BerealAlert.vue'
         </div>
 
         <!-- BeerReal -->
-        <div class="padding" v-if="apiDataStore.berealStatus.ready && apiDataStore.berealStatus.data.is_active">
+        <div class="padding" v-if="campStore.isFeatureEnabled('bereal') && apiDataStore.berealStatus.ready && apiDataStore.berealStatus.data.is_active">
           <RouterLink to="/bereal/home">
             <ItemBox bigText="BeerReal" :rightIcon="rightArrow" :leftIcon="beerRealLogo" left-icon-white />
           </RouterLink>
         </div>
 
         <!-- Bingo -->
-        <div class="padding" v-if="apiDataStore.bingoStatus.ready && apiDataStore.bingoStatus.data.is_active">
+        <div class="padding" v-if="campStore.isFeatureEnabled('bingo') && apiDataStore.bingoStatus.ready && apiDataStore.bingoStatus.data.is_active">
           <RouterLink to="/bingo">
             <ItemBox bigText="Bingo" :rightIcon="rightArrow" left-icon-white />
           </RouterLink>
@@ -275,7 +276,7 @@ export default {
     }
   },
   computed: {
-    ...mapStores(useApiDataStore),
+    ...mapStores(useApiDataStore, useCampStore),
     isIos() {
       const userAgent = window.navigator.userAgent.toLowerCase();
       return /iphone|ipod/.test(userAgent);

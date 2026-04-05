@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router'
 import MainView from '../views/MainView.vue'
 import { getAccessToken } from '../functions/login.js'
+import { useCampStore } from '../stores/camp.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,35 +23,42 @@ const router = createRouter({
     {
       path: '/bereal/camera',
       name: 'bereal-camera',
+      meta: { feature: 'bereal' },
       component: () => import('../views/bereal/BerealCameraView.vue'),
     },
     {
       path: '/bereal/preview',
       name: 'bereal-preview',
+      meta: { feature: 'bereal' },
       component: () => import('../views/bereal/BerealPhotoPreview.vue'),
     },
     {
       path: '/bereal',
+      meta: { feature: 'bereal' },
       component: () => import('../views/bereal/BerealNavigationView.vue'),
       children: [
         {
           path: '/bereal/home',
           name: 'bereal-home',
+          meta: { feature: 'bereal' },
           component: () => import('../views/bereal/BerealHomeView.vue'),
         },
         {
           path: '/bereal/profil',
           name: 'bereal-profil',
+          meta: { feature: 'bereal' },
           component: () => import('../views/bereal/BerealProfileView.vue'),
         },
         {
           path: '/bereal/profil/:profile_id',
           name: 'bereal-profil-id',
+          meta: { feature: 'bereal' },
           component: () => import('../views/bereal/BerealProfileView.vue'),
         },
         {
           path: '/bereal/post/:post_id',
           name: 'bereal-post',
+          meta: { feature: 'bereal' },
           component: () => import('../views/bereal/BerealPost.vue'),
         }
       ]
@@ -66,16 +74,19 @@ const router = createRouter({
         {
           path: 'tinder',
           name: 'tinder',
+          meta: { feature: 'tinder' },
           component: () => import('../views/tinder/TinderView.vue')
         },
         {
           path: 'tinder/help',
           name: 'tinder-help',
+          meta: { feature: 'tinder' },
           component: () => import('../views/tinder/TinderView.vue')
         },
         {
           path: 'tinder/profil',
           name: 'tinder-profil',
+          meta: { feature: 'tinder' },
           component: () => import('../views/tinder/TinderProfile.vue')
         },
         {
@@ -114,36 +125,39 @@ const router = createRouter({
         {
           path: 'warsztaty',
           name: 'warsztaty',
+          meta: { feature: 'workshops' },
           component: () => import('../views/WorkshopsView.vue'),
           // meta: { type: 'main' },
         },
         {
           path: 'warsztaty/:day',
           name: 'warsztatyDay',
+          meta: { feature: 'workshops', transition: 'fade' },
           component: () => import('../views/WorkshopsView.vue'),
-          meta: { transition: 'fade' },
         },
         {
           path: '/warsztaty/info/:id',
           name: 'warsztatyDetail',
+          meta: { feature: 'workshops' },
           component: () => import('../views/WorkshopDetailView.vue'),
           // meta: { transition: 'workshop' },
         },
         {
           path: '/harmonogram',
           name: 'schedule',
+          meta: { type: 'main', feature: 'schedule' },
           component: () => import('../views/ScheduleView.vue'),
-          meta: { type: 'main' },
         },
         {
           path: '/harmonogram/:day',
           name: 'scheduleDay',
+          meta: { transition: 'fade', feature: 'schedule' },
           component: () => import('../views/ScheduleView.vue'),
-          meta: { transition: 'fade' },
         },
         {
           path: '/harmonogram/info/:id',
           name: 'scheduleDetail',
+          meta: { feature: 'schedule' },
           component: () => import('../views/ScheduleDetailView.vue'),
         },
         {
@@ -223,6 +237,7 @@ const router = createRouter({
         {
           path: '/skaner/punkty/:groupType?/:pointTypeId?',
           name: 'skaner-punkty',
+          meta: { feature: 'points' },
           component: () => import('../admin-components/AddPointsScannerView.vue')
         },
         {
@@ -263,16 +278,19 @@ const router = createRouter({
         {
           path: '/punkty',
           name: 'punkty',
+          meta: { feature: 'points' },
           component: () => import('../admin-components/PointsView.vue')
         },
         {
           path: '/punkty/dodaj/:groupType?/:pointTypeId?/:groupId?',
           name: 'punkty-dodaj',
+          meta: { feature: 'points' },
           component: () => import('../admin-components/AddPointsView.vue')
         },
         {
           path: '/ranking',
           name: 'ranking',
+          meta: { feature: 'points' },
           component: () => import('../admin-components/PointsRankingView.vue')
         },
         {
@@ -303,6 +321,7 @@ const router = createRouter({
         {
           path: '/bingo',
           name: 'bingo',
+          meta: { feature: 'bingo' },
           component: () => import('../components/BingoDummy.vue')
         },
         // {
@@ -319,22 +338,43 @@ const router = createRouter({
 import { useApiDataStore } from '../stores/api.js'
 
 // permission check
-router.beforeEach(async (to, from, next) => {
-  if (to.name === 'register' || to.name === 'verification-code') return next()
+router.beforeEach(async (to) => {
+  const campStore = useCampStore()
+  if (to.name === 'register' || to.name === 'verification-code') {
+    campStore.resetLoginTheme()
+    return true
+  }
 
-  await getAccessToken().then((token) => {
-    if (token) {
-      const apiDataStore = useApiDataStore()
-      if (!apiDataStore.permissions.hasPermissionsNeeded(to)) {
-        next('/')
-      } else {
-        next()
-      }
+  const token = await getAccessToken()
+  if (!token) {
+    return '/register'
+  }
+
+  const apiDataStore = useApiDataStore()
+  if (!apiDataStore.permissions.hasPermissionsNeeded(to)) {
+    return '/'
+  }
+
+  if (!campStore.activeCampId) {
+    await campStore.loadPersistedCampId()
+  }
+
+  try {
+    if (campStore.activeCampId) {
+      await campStore.ensureActiveCampSettings()
     } else {
-      next('/register')
+      await campStore.fetchAndSetCamp()
     }
-  })
+  } catch (e) {
+    return true
+  }
 
+  const featureName = to.meta?.feature
+  if (featureName && !campStore.isFeatureEnabled(featureName)) {
+    return '/home'
+  }
+
+  return true
 })
 
 export default router

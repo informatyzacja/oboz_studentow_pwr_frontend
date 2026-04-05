@@ -6,7 +6,7 @@
   --radial-gradient: radial-gradient(50% 50% at 55.81% 50%, #FDCE7E 0%, #f5c470dc 100%); /* Home/Profil */
   --radial-gradient-circle: radial-gradient(circle, #FDCE7E 0%, #f5c470dc 80%);
 
-  --app-bg: #1f1718; /*tło aplikacji*/
+  --app-bg: #17171f; /*tło aplikacji*/
 
   --bg: #573804dc; 
   --bg-translusent: var(--bg);
@@ -16,9 +16,9 @@
   --bg-light-translusent: #f5c47091; /*profil opcje*/
   /*--bg-light-translusent-hover: rgba(111, 219, 21, 0.177);
 */
-  --theme-dark: #371000; /* kolor ikon - domyśl sie których */
-  --theme-light: #FDCE7E; /* ZALOGUJ SIE*/
-  --theme-text: #7FA9CF; /* qr efekt + maly tekst an ekranie logowania*/
+  --theme-dark: #123B69; /* kolor ikon i kontrast akcji */
+  --theme-light: #58A8FF; /* stały kolor loginu */
+  --theme-text: #8DBFEA; /* stały kolor opisów loginu */
   --light-text: #ffffff; /* malutki text */
   --chatt-color: #80A9D0;
   --send-button: #FDCE7E;
@@ -33,8 +33,8 @@
 
   --gray-text-gradient: radial-gradient(50% 50% at 55.81% 50%, #FDCE7E 0%, #f5c470dc 100%); /* harmo data na gorze */
 
-  --login-button-color: #FDCE7E; /*tekst - zaloguj sie*/
-  --login-button-bg: #f5c47021; /* przyciski log */
+  --login-button-color: #D7ECFF; /* tekst - zaloguj sie */
+  --login-button-bg: #2A5D9C33; /* przyciski log */
   
   --bottom-nav-gradient: linear-gradient(90deg, #80A9D0, #FDCE7E, #80A9D0);
 

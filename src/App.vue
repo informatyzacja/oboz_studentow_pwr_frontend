@@ -6,12 +6,17 @@ import 'moment/dist/locale/pl'
 import { IonApp, IonRouterOutlet } from '@ionic/vue';
 import { onMounted } from 'vue';
 import { useCampStore } from '@/stores/camp.js';
+import { getAccessToken } from '@/functions/login.js';
 
 moment.locale('pl')
 
-onMounted(() => {
+onMounted(async () => {
   const campStore = useCampStore()
-  campStore.loadPersistedCampId()
+  await campStore.loadPersistedCampId()
+  const token = await getAccessToken()
+  if (token) {
+    await campStore.fetchAndSetCamp()
+  }
 })
 
 </script>

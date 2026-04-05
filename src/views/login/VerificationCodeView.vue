@@ -1,6 +1,6 @@
 <script setup>
 import { IonPage, IonContent, IonSpinner, IonNavLink } from '@ionic/vue';
-import logo from '@/assets/splash-circle.png';
+import logo from '@/assets/logo-obozownik.png';
 
 import { request } from '@/stores/functions';
 import { Preferences } from '@capacitor/preferences'
