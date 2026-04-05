@@ -34,8 +34,9 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: calc(33vw - 25px);
-  height: calc(33vw - 25px);
+  width: calc(33% - 15px);
+  height: auto;
+  aspect-ratio: 1 / 1;
   background-color: var(--color-primary);
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
