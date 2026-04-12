@@ -21,21 +21,14 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
         <TopBar title="SOS" />
         <ProfileCircle />
         <div class="sos">
-          <h3>Ratownicy</h3>
           <div v-if="apiDataStore.contacts.ready && apiDataStore.contacts.data.lifeGuard.length">
+            <h3>Ratownicy</h3>
             <a v-for="(data, index) in apiDataStore.contacts.data.lifeGuard" :key="index"
               :href="'tel:' + data.phoneNumber">
               <ItemBox :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo"
                 :rightIcon="phoneIcon" bgColor="var(--red)" />
             </a>
           </div>
-          <p v-if="
-            apiDataStore.contacts.ready &&
-            apiDataStore.contacts.data.lifeGuard &&
-            !apiDataStore.contacts.data.lifeGuard.length
-          " class="error">
-            Brak ratowników
-          </p>
 
 
           <RouterLink to="/faq">
@@ -54,45 +47,30 @@ import ProfileCircle from '../components/navigation/ProfileCircle.vue'
           </div>
 
 
-          <h3>Opiekunowie Twojej frakcji</h3>
           <div v-if="
             apiDataStore.contacts.ready &&
             apiDataStore.contacts.data.fractionWardens &&
             apiDataStore.contacts.data.fractionWardens.length
           ">
+            <h3>Opiekunowie Twojej frakcji</h3>
             <a v-for="(data, index) in apiDataStore.contacts.data.fractionWardens" :key="index"
               :href="'tel:' + data.phoneNumber">
               <ItemBox :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo"
                 :rightIcon="phoneIcon" />
             </a>
           </div>
-          <p v-if="
-            apiDataStore.contacts.ready &&
-            apiDataStore.contacts.data.fractionWardens &&
-            !apiDataStore.contacts.data.fractionWardens.length
-          " class="error">
-            Opiekunowie frakcji się najebali
-          </p>
 
-
-          <h3>Sztab</h3>
           <div v-if="
             apiDataStore.contacts.ready &&
             apiDataStore.contacts.data.staff &&
             apiDataStore.contacts.data.staff.length
           ">
+            <h3>Sztab</h3>
             <a v-for="(data, index) in apiDataStore.contacts.data.staff" :key="index" :href="'tel:' + data.phoneNumber">
               <ItemBox :bigText="data.first_name + ' ' + data.last_name" :smallText="data.title" :leftIcon="data.photo"
                 :rightIcon="phoneIcon" />
             </a>
           </div>
-          <p v-if="
-            apiDataStore.contacts.ready &&
-            apiDataStore.contacts.data.staff &&
-            !apiDataStore.contacts.data.staff.length
-          " class="error">
-            Sztab się najebał
-          </p>
 
           <LoadingIndicator v-if="apiDataStore.contacts.loading" />
           <p v-if="apiDataStore.contacts.error" class="error">{{ apiDataStore.contacts.error }}</p>
