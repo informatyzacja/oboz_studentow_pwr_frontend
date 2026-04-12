@@ -1,48 +1,48 @@
 PODS:
-  - Capacitor (6.1.2):
+  - Capacitor (6.2.1):
     - CapacitorCordova
-  - CapacitorApp (6.0.1):
+  - CapacitorApp (6.0.3):
     - Capacitor
-  - CapacitorCamera (6.0.2):
+  - CapacitorCamera (6.1.3):
     - Capacitor
-  - CapacitorClipboard (6.0.1):
+  - CapacitorClipboard (6.0.3):
     - Capacitor
   - CapacitorCommunityCameraPreview (6.0.1):
     - Capacitor
-  - CapacitorCommunityContacts (6.0.6):
+  - CapacitorCommunityContacts (6.1.1):
     - Capacitor
-  - CapacitorCommunityFcm (6.0.0):
+  - CapacitorCommunityFcm (6.0.1):
     - Capacitor
     - Firebase/Messaging
   - CapacitorCommunityMedia (6.0.0):
     - Capacitor
     - SDWebImage
-  - CapacitorCordova (6.1.2)
-  - CapacitorDevice (6.0.1):
+  - CapacitorCordova (6.2.1)
+  - CapacitorDevice (6.0.3):
     - Capacitor
-  - CapacitorHaptics (6.0.1):
+  - CapacitorHaptics (6.0.3):
     - Capacitor
-  - CapacitorKeyboard (6.0.2):
+  - CapacitorKeyboard (6.0.4):
     - Capacitor
   - CapacitorLiveUpdates (0.3.1):
     - Capacitor
     - IonicLiveUpdates (~> 0.5.4)
-  - CapacitorLocalNotifications (6.1.0):
+  - CapacitorLocalNotifications (6.1.3):
     - Capacitor
-  - CapacitorMlkitBarcodeScanning (6.1.0):
+  - CapacitorMlkitBarcodeScanning (6.2.0):
     - Capacitor
     - GoogleMLKit/BarcodeScanning (= 5.0.0)
-  - CapacitorPreferences (6.0.2):
+  - CapacitorPreferences (6.0.4):
     - Capacitor
-  - CapacitorPushNotifications (6.0.2):
+  - CapacitorPushNotifications (6.0.5):
     - Capacitor
-  - CapacitorScreenOrientation (6.0.3):
+  - CapacitorScreenOrientation (6.0.4):
     - Capacitor
-  - CapacitorShare (6.0.2):
+  - CapacitorShare (6.0.4):
     - Capacitor
-  - CapacitorSplashScreen (6.0.2):
+  - CapacitorSplashScreen (6.0.4):
     - Capacitor
-  - CapacitorStatusBar (6.0.1):
+  - CapacitorStatusBar (6.0.3):
     - Capacitor
   - Firebase/CoreOnly (10.25.0):
     - FirebaseCore (= 10.25.0)
@@ -237,27 +237,27 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/status-bar"
 
 SPEC CHECKSUMS:
-  Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
-  CapacitorApp: 0bc633b4eae40a1f32cd2834788fad3bc42da6a1
-  CapacitorCamera: ed022171dbf3853e68eec877b4d78995378af6b7
-  CapacitorClipboard: 756cd7e83e8d5d19b0c74f40b57517c287bd5fe2
+  Capacitor: 1e0d0e7330dea9f983b50da737d8918abcf273f8
+  CapacitorApp: 22c94146dfaae1159ab7059cbd51e76d9f2d45ec
+  CapacitorCamera: 36dd808d7a49f946c1743b41d518208777e1fbd9
+  CapacitorClipboard: b65bdab75c7f944fdd51d4fa4faa84b8da054d47
   CapacitorCommunityCameraPreview: 3b37673576ad824c282429a0bd093b45d0215921
-  CapacitorCommunityContacts: 04d749aa9202f1ecedf64f51ecc599ac6aedcfde
-  CapacitorCommunityFcm: a4a524712c41db0a97e23f7f7d4b38b5d33de7a0
+  CapacitorCommunityContacts: 5c39644b972056cb0b078daac1223d07a1df92fb
+  CapacitorCommunityFcm: 0a32662314c7f940356c5bf1b0246ca4b4120f33
   CapacitorCommunityMedia: 51cc6c8782b92cf622d9644cac37ae024fafb377
-  CapacitorCordova: f48c89f96c319101cd2f0ce8a2b7449b5fb8b3dd
-  CapacitorDevice: 7097a1deb4224b77fd13a6e60a355d0062a5d772
-  CapacitorHaptics: fe689ade56ef20ec9b041a753c6da70c5d8ec9a9
-  CapacitorKeyboard: 2700f9b18687be021e28b5a09b59eb151a46d5e0
+  CapacitorCordova: 8d93e14982f440181be7304aa9559ca631d77fff
+  CapacitorDevice: b75f969620ef37865e8bfaaacd2f98c0a770156c
+  CapacitorHaptics: 1618db3e2d11f252c20127838b184dbc893194bc
+  CapacitorKeyboard: 5ce1e52b8b86ade4995f926a8ac736212d5102fa
   CapacitorLiveUpdates: 82cf6e546e739075d805de2eef30df1caec1fbcd
-  CapacitorLocalNotifications: 6bac9e948b2b8852506c6d74abb2cde140250f86
-  CapacitorMlkitBarcodeScanning: 63e217d376f8f63b1be84c0d19568f318e87f4d3
-  CapacitorPreferences: e8284bf740cf8c6d3f25409af3c01df87dfeb5a1
-  CapacitorPushNotifications: ccd797926c030acad3d5498ef452c735c90a2c89
-  CapacitorScreenOrientation: 3bb823f5d265190301cdc5d58a568a287d98972a
-  CapacitorShare: 591ae4693d85686ceb590db8e8b44aa014ec6490
-  CapacitorSplashScreen: 250df9ef8014fac5c7c1fd231f0f8b1d8f0b5624
-  CapacitorStatusBar: b81d4fb5d4e0064c712018071b3ab4b810b39a63
+  CapacitorLocalNotifications: b205182fab8947a0c412d56d72b709738a9d28e7
+  CapacitorMlkitBarcodeScanning: 178fb57424ec688b6a2fceee506ecc1ea00d1c8d
+  CapacitorPreferences: 877e40a640ee4311d4f7e334227a7b40052b9039
+  CapacitorPushNotifications: 83974a7be0f6829c26148f6ed65745b96a7d16bd
+  CapacitorScreenOrientation: 00a95b0e2c75610be324e5ac7c6b5754745646d1
+  CapacitorShare: 44c43f74b95500ba7399c2ac21f0d55efc1a931e
+  CapacitorSplashScreen: f65292695df7d7b24a22954a6cfbaecadd1718a4
+  CapacitorStatusBar: 38665f1a18c55677098367a29f6b42126b72dc65
   Firebase: 0312a2352584f782ea56f66d91606891d4607f06
   FirebaseCore: 7ec4d0484817f12c3373955bc87762d96842d483
   FirebaseCoreInternal: 910a81992c33715fec9263ca7381d59ab3a750b7
