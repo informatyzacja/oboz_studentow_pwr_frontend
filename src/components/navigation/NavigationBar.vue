@@ -112,11 +112,11 @@ onBeforeUnmount(() => {
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
 
-  /* position: fixed;
+  position: fixed;
   bottom: 0;
   width: 100%;
   left: 0;
-  right: 0; */
+  right: 0;
 
   z-index: 5;
 }

@@ -79,7 +79,7 @@ import ChatCardView from '@/views/ChatCardView.vue'
 
                 <LoadingIndicator v-if="!queue.length && !noMoreProfiles && !info" />
 
-                <Tinder ref="obozer" key-name="id" :queue="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
+                <Tinder ref="tinder" key-name="id" :queue="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
                     <template v-slot="scope">
                         <CustomTinderCard :item="scope.data" />
                     </template>
