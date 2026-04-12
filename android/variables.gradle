@@ -1,5 +1,5 @@
 ext {
-    minSdkVersion = 22
+    minSdkVersion = 24
     // Updated to meet Google Play requirement to target Android 15 (API level 35)
     compileSdkVersion = 35
     targetSdkVersion = 35
