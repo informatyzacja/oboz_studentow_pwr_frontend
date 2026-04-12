@@ -13,5 +13,9 @@ ext {
     junitVersion = '4.13.2'
     androidxJunitVersion = '1.1.5'
     androidxEspressoCoreVersion = '3.5.1'
+    androidxCameraCamera2Version = '1.5.3'
+    androidxCameraCoreVersion = '1.5.3'
+    androidxCameraLifecycleVersion = '1.5.3'
+    androidxCameraViewVersion = '1.5.3'
     cordovaAndroidVersion = '12.0.1'
 }
