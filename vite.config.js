@@ -11,7 +11,7 @@ export default defineConfig({
   plugins: [vue(), VitePWA({
     includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'safari-pinned-tab.svg'],
     manifest: {
-      name: 'Obóz Studentów PWr',
+      name: 'Eventownik',
       short_name: 'Obóz PWR',
       /* THEME COLORS */
       theme_color: '#84c6e7',
@@ -19,7 +19,7 @@ export default defineConfig({
       background_color: '#131313',
       orientation: "portrait-primary",
       lang: 'pl',
-      description: "Aplikacja mobilna Obóz Studentów PWr",
+      description: "Aplikacja mobilna Eventownik",
       appleMobileWebAppCapable: 'yes',
       appleMobileWebAppStatusBarStyle: 'black-translucent',
       id: '/app/',

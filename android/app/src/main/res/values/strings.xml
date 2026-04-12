@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Obóz Studentów PWr</string>
-    <string name="title_activity_main">Obóz Studentów PWr</string>
+    <string name="app_name">Eventownik</string>
+    <string name="title_activity_main">Eventownik</string>
     <string name="package_name">pl.edu.pwr.samorzad.oboz</string>
     <string name="custom_url_scheme">pl.edu.pwr.samorzad.oboz</string>
 </resources>
