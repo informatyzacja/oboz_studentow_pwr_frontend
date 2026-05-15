@@ -21,7 +21,7 @@ moment.locale('pl')
 main {
   /* min-height: 100vh; */
   padding-top: max(var(--ion-safe-area-top), var(--ion-padding, 16px)) !important;
-  padding-bottom: var(--nav-height);
+  padding-bottom: calc(var(--nav-height) + 16px);
 }
 
 .page {
