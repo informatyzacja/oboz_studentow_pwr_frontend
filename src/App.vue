@@ -15,9 +15,13 @@ moment.locale('pl')
 </template>
 
 <style>
+:root {
+  --nav-height: 85px
+}
 main {
   /* min-height: 100vh; */
   padding-top: max(var(--ion-safe-area-top), var(--ion-padding, 16px)) !important;
+  padding-bottom: calc(var(--nav-height) + 16px);
 }
 
 .page {

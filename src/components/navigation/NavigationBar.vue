@@ -105,7 +105,8 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .navigation-bar {
-  height: 85px;
+  height: var(--nav-height);
+  border: 0;
   /* background-color: #1b1b1bbb; */
   background-color: var(--bg-translusent);
   backdrop-filter: blur(10px);
